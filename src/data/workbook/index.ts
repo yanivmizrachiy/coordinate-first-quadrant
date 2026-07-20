@@ -28,6 +28,7 @@ export const TOPICS: WorkbookTopic[] = [
   { id: 'errors', title: 'זיהוי ותיקון טעויות', pages: [25, 26] },
   { id: 'rect', title: 'מלבנים, ריבועים, היקף ושטח', pages: [27, 28, 29, 30] },
   { id: 'rightangle', title: 'זווית ישרה במערכת הצירים', pages: [31, 32, 33, 34] },
+  { id: 'enrichment', title: 'זוג סדור, מקביל ומאונך — העשרה', pages: [35, 36] },
 ];
 
 const byNumber = new Map(WORKBOOK.map((p) => [p.n, p]));

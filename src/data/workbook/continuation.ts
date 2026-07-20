@@ -115,4 +115,59 @@ const page34: WorkbookPageContent = {
     '</div>' + FOOTER + '</section>',
 };
 
-export const CONTINUATION_PAGES: WorkbookPageContent[] = [page31, page32, page33, page34];
+const page35: WorkbookPageContent = {
+  n: 35,
+  id: 'page-35',
+  sectionClass: 'sheet guided',
+  title: 'הזוג הסדור — סדר, סוגריים ותרגול',
+  subtitle: 'x משמאל, y מימין — יש סדר, ולכן זוג סדור',
+  html:
+    '<section aria-labelledby="title-35" class="sheet guided" id="page-35">' +
+    '<header class="sheet-header"><div><h1 id="title-35">הזוג הסדור — סדר, סוגריים ותרגול</h1><p>x משמאל, y מימין — יש סדר, ולכן זוג סדור</p></div><div aria-label="עמוד 35" class="sheet-number">35</div></header>' +
+    '<div class="sheet-content">' +
+    '<div class="rule-box">כל נקודה נכתבת כ<b>זוג סדור</b> בתוך סוגריים: <span class="math-ltr" dir="ltr">(x,y)</span>. המספר ה<b>שמאלי</b> הוא שיעור <span class="math-ltr" dir="ltr">x</span>, והמספר ה<b>ימני</b> הוא שיעור <span class="math-ltr" dir="ltr">y</span>. הסדר קובע — ולכן זהו זוג <b>סדור</b>.</div>' +
+    '<section class="q-card"><h3>א. נתונה נקודה — כתבו את שיעוריה.</h3><ul class="tasks">' +
+    '<li>נקודה <span class="math-ltr" dir="ltr">A(3,5)</span>: שיעור <span class="math-ltr" dir="ltr">x =</span> <span class="blank" style="--blank-width:3ch"></span> , שיעור <span class="math-ltr" dir="ltr">y =</span> <span class="blank" style="--blank-width:3ch"></span></li>' +
+    '<li>נקודה <span class="math-ltr" dir="ltr">B(6,2)</span>: שיעור <span class="math-ltr" dir="ltr">x =</span> <span class="blank" style="--blank-width:3ch"></span> , שיעור <span class="math-ltr" dir="ltr">y =</span> <span class="blank" style="--blank-width:3ch"></span></li>' +
+    '</ul></section>' +
+    '<section class="q-card"><h3>ב. נתונים שיעורים — כתבו את הזוג הסדור.</h3><ul class="tasks">' +
+    '<li>שיעור <span class="math-ltr" dir="ltr">x</span> הוא 4 ושיעור <span class="math-ltr" dir="ltr">y</span> הוא 7: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>' +
+    '<li>שיעור <span class="math-ltr" dir="ltr">x</span> הוא 8 ושיעור <span class="math-ltr" dir="ltr">y</span> הוא 1: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>' +
+    '</ul></section>' +
+    '<section class="q-card"><h3>ג. הסדר משנה!</h3><p>האם נקודה <span class="math-ltr" dir="ltr">(2,6)</span> ונקודה <span class="math-ltr" dir="ltr">(6,2)</span> הן אותה נקודה? <span class="blank" style="--blank-width:6ch"></span></p><p>הסבירו מדוע:</p><div class="answer-line"></div></section>' +
+    '<section class="q-card"><h3>ד. כתבו כל נקודה — האות משמאל לסוגריים.</h3><ul class="tasks">' +
+    '<li>נקודה בשם <span class="math-ltr" dir="ltr">C</span> ששיעוריה 5 ו־3: <span class="pair math-ltr" dir="ltr">C(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>' +
+    '<li>נקודה בשם <span class="math-ltr" dir="ltr">D</span> ששיעוריה 0 ו־4: <span class="pair math-ltr" dir="ltr">D(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>' +
+    '</ul></section>' +
+    '</div>' + FOOTER + '</section>',
+};
+
+const page36: WorkbookPageContent = {
+  n: 36,
+  id: 'page-36',
+  sectionClass: 'sheet guided',
+  title: 'מקביל ומאונך במערכת הצירים',
+  subtitle: 'קטע מקביל לציר x הוא מאונך לציר y',
+  html:
+    '<section aria-labelledby="title-36" class="sheet guided" id="page-36">' +
+    '<header class="sheet-header"><div><h1 id="title-36">מקביל ומאונך במערכת הצירים</h1><p>קטע מקביל לציר x הוא מאונך לציר y</p></div><div aria-label="עמוד 36" class="sheet-number">36</div></header>' +
+    '<div class="sheet-content">' +
+    '<div class="rule-box">קטע <b>אופקי</b> מקביל לציר <span class="math-ltr" dir="ltr">x</span> — ולכן הוא <b>מאונך</b> לציר <span class="math-ltr" dir="ltr">y</span>. קטע <b>אנכי</b> מקביל לציר <span class="math-ltr" dir="ltr">y</span> — ולכן הוא <b>מאונך</b> לציר <span class="math-ltr" dir="ltr">x</span>.</div>' +
+    '<div class="cols-2"><section class="q-card"><h3>א. שני קטעים.</h3><div aria-label="קטע אופקי AB וקטע אנכי CD" class="coordinate-grid grid-md" data-arrows="[]" data-labelboxes="[]" data-points=\'[{"x": 1, "y": 2, "label": "A"}, {"x": 6, "y": 2, "label": "B"}, {"x": 3, "y": 3, "label": "C"}, {"x": 3, "y": 6, "label": "D"}]\' data-polygons="[]" data-segments=\'[{"from": [1, 2], "to": [6, 2], "type": "shape"}, {"from": [3, 3], "to": [3, 6], "type": "shape"}]\' role="img"></div>' +
+    '<p>הקטע <span class="math-ltr" dir="ltr">AB</span> מקביל לציר <span class="blank" style="--blank-width:3ch"></span>, כי בשתי נקודותיו <b>שיעור <span class="math-ltr" dir="ltr">y</span> זהה</b>.</p>' +
+    '<p>הקטע <span class="math-ltr" dir="ltr">CD</span> מקביל לציר <span class="blank" style="--blank-width:3ch"></span>, כי בשתי נקודותיו <b>שיעור <span class="math-ltr" dir="ltr">x</span> זהה</b>.</p></section>' +
+    '<section class="q-card"><h3>ב. השלימו.</h3><ul class="tasks compact">' +
+    '<li>קטע שבו <b>שיעור <span class="math-ltr" dir="ltr">y</span> זהה</b> בשתי הנקודות מקביל לציר <span class="blank" style="--blank-width:3ch"></span>.</li>' +
+    '<li>קטע שבו <b>שיעור <span class="math-ltr" dir="ltr">x</span> זהה</b> בשתי הנקודות מקביל לציר <span class="blank" style="--blank-width:3ch"></span>.</li>' +
+    '<li>קטע המקביל לציר <span class="math-ltr" dir="ltr">x</span> מאונך לציר <span class="blank" style="--blank-width:3ch"></span>.</li>' +
+    '<li>קטע המקביל לציר <span class="math-ltr" dir="ltr">y</span> מאונך לציר <span class="blank" style="--blank-width:3ch"></span>.</li>' +
+    '</ul></section></div>' +
+    '<section class="q-card span-2"><h3>ג. סמנו נכון או לא נכון.</h3><table class="tf-table">' +
+    '<tr data-answer="true"><td>קטע המקביל לציר <span class="math-ltr" dir="ltr">x</span> הוא מאונך לציר <span class="math-ltr" dir="ltr">y</span>.</td><td>' + tf('pp-1') + '</td></tr>' +
+    '<tr data-answer="false"><td>בקטע המקביל לציר <span class="math-ltr" dir="ltr">y</span>, שיעור <span class="math-ltr" dir="ltr">y</span> זהה בשתי הנקודות.</td><td>' + tf('pp-2') + '</td></tr>' +
+    '<tr data-answer="true"><td>בקטע המקביל לציר <span class="math-ltr" dir="ltr">x</span>, שיעור <span class="math-ltr" dir="ltr">y</span> זהה בשתי הנקודות.</td><td>' + tf('pp-3') + '</td></tr>' +
+    '</table></section>' +
+    '</div>' + FOOTER + '</section>',
+};
+
+export const CONTINUATION_PAGES: WorkbookPageContent[] = [page31, page32, page33, page34, page35, page36];
