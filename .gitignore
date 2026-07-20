@@ -17,8 +17,11 @@ playwright-report/
 .env.*
 *.pem
 *.key
-*secret*
-*credentials*.json
+*.secret
+*.secret.*
+.secrets/
+secrets.json
+credentials.json
 
 # os / editor
 .DS_Store
