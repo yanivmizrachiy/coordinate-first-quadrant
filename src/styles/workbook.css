@@ -60,6 +60,10 @@
   height: 1.2em; border-bottom: 1.5px solid var(--ink); vertical-align: -.08em;
 }
 .answer-line { height: 1.5em; border-bottom: 1px solid #8994a5; margin-top: 4px; }
+.calc-box { border: 1px dashed #9aa6b6; border-radius: 8px; padding: 7px 10px 5px; margin: 7px 0; background: #fbfcfe; }
+.calc-box > b { display: block; margin-bottom: 3px; color: #40506a; }
+.calc-box .answer-line { border-bottom-style: dashed; }
+.calc-answer { display: inline-block; min-width: 6ch; border: 1.4px solid #1d4ed8; border-radius: 6px; padding: 1px 8px; margin-inline-start: 4px; background: #fff; font-weight: 700; }
 .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; margin-top: 6px; }
 .work-table, .tf-table { width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 13px; }
 .work-table th, .work-table td, .tf-table td {
@@ -123,12 +127,12 @@
 /* Page 7 is the densest sheet and keeps its bespoke sizing. */
 #page-7 .sheet-content { display: grid; gap: 6px; }
 #page-7 .page7-practice-pair { gap: 6px; }
-#page-7 .grid-lg { height: 178px; }
-#page-7 .grid-md { height: 145px; }
-#page-7 .grid-sm { height: 120px; }
-#page-7 .grid-xs { height: 86px; }
+#page-7 .grid-lg { height: 205px; }
+#page-7 .grid-md { height: 178px; }
+#page-7 .grid-sm { height: 150px; }
+#page-7 .grid-xs { height: 132px; }
 #page-7 .q-card { padding: 6px 8px; }
-#page-7 .q-card h3 { margin: -6px -8px 5px; padding: 5px 7px; font-size: 12.4px; }
+#page-7 .q-card h3 { margin: -6px -8px 5px; padding: 5px 7px; font-size: 13px; }
 #page-7 .choice-grid { gap: 3px; }
 
 /* Canonical booklet header/footer treatment. */
