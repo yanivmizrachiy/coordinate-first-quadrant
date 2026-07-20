@@ -2,6 +2,7 @@ import { elem, fromHTML } from '../lib/dom';
 import { navigate } from '../router';
 import { hydrateGrids } from '../lib/coordinateGrid';
 import { WORKBOOK, TOTAL_PAGES } from '../data/workbook';
+import { renderCoverSheet } from './coverSheet';
 import type { ViewContext } from './context';
 
 export function book({ outlet, setTitle }: ViewContext): void {
@@ -16,6 +17,8 @@ export function book({ outlet, setTitle }: ViewContext): void {
   );
 
   const bookEl = elem('div', { class: 'book' });
+  // Approved cover first, then all worksheets — no math content is altered.
+  bookEl.append(renderCoverSheet());
   for (const page of WORKBOOK) {
     bookEl.append(fromHTML(page.html));
   }

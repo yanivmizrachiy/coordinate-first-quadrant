@@ -23,6 +23,14 @@ test('no horizontal overflow on any core view', async ({ page }) => {
   }
 });
 
+test('full booklet shows the approved cover as the first A4 page', async ({ page }) => {
+  await page.goto('/#/book');
+  const first = page.locator('.book > .sheet').first();
+  await expect(first).toHaveClass(/cover-sheet/);
+  // cover + 34 worksheets
+  expect(await page.locator('.book .sheet').count()).toBe(35);
+});
+
 test('games hub lists all eight games', async ({ page }) => {
   await page.goto('/#/games');
   await expect(page.locator('.game-card')).toHaveCount(8);
