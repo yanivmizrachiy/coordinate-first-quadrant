@@ -3,7 +3,7 @@
    coordinate system). These are authored natively to replace the previous
    parabula-next iframes, so the app is fully self-contained (one repo, no
    external dependency). Content follows the locked pedagogy rules:
-   x ציר / y ציר, fill-in tasks, real student names, dual checkboxes on every
+   ציר x / ציר y, fill-in tasks, real student names, dual checkboxes on every
    true/false row, first quadrant only, and the canonical footer on every page.
    =========================================================================== */
 import type { WorkbookPageContent } from './types';
@@ -32,16 +32,16 @@ const page31: WorkbookPageContent = {
     '<div class="sheet-content">' +
     '<div class="completion-intro">' +
     '<div class="completion-title">השלימו את המשפטים</div>' +
-    '<div class="completion-sentence">קטע המקביל ל־x ציר הוא קטע <span class="word-blank word-medium"></span>.</div>' +
-    '<div class="completion-sentence">קטע המקביל ל־y ציר הוא קטע <span class="word-blank word-medium"></span>.</div>' +
+    '<div class="completion-sentence">קטע המקביל לציר x הוא קטע <span class="word-blank word-medium"></span>.</div>' +
+    '<div class="completion-sentence">קטע המקביל לציר y הוא קטע <span class="word-blank word-medium"></span>.</div>' +
     '<div class="completion-sentence">כאשר קטע אופקי וקטע אנכי נפגשים, נוצרת ביניהם זווית <span class="word-blank word-medium"></span>.</div>' +
     '</div>' +
-    '<section class="q-card"><h3>א. דוגמה: הקטע AB מקביל ל־x ציר והקטע BC מקביל ל־y ציר.</h3>' +
+    '<section class="q-card"><h3>א. דוגמה: הקטע AB מקביל לציר x והקטע BC מקביל לציר y.</h3>' +
     '<div class="cols-2"><div aria-label="זווית ישרה בנקודה B בין קטע אופקי לקטע אנכי" class="coordinate-grid grid-md" data-arrows="[]" data-labelboxes=\'[{"text": "זווית ישרה", "at": [4.2, 3.6], "to": [6, 2]}]\' data-points=\'[{"x": 2, "y": 2, "label": "A"}, {"x": 6, "y": 2, "label": "B"}, {"x": 6, "y": 5, "label": "C"}]\' data-polygons="[]" data-segments=\'[{"from": [2, 2], "to": [6, 2], "type": "shape"}, {"from": [6, 2], "to": [6, 5], "type": "shape"}, {"from": [5.5, 2], "to": [5.5, 2.5], "type": "guide"}, {"from": [5.5, 2.5], "to": [6, 2.5], "type": "guide"}]\' role="img"></div>' +
-    '<div><p>הקטע AB מקביל ל־<span class="blank" style="--blank-width:4ch"></span> ציר.</p><p>הקטע BC מקביל ל־<span class="blank" style="--blank-width:4ch"></span> ציר.</p><p class="axis-answer-box">הזווית הישרה נמצאת בנקודה <span class="blank" style="--blank-width:4ch"></span></p></div></div></section>' +
+    '<div><p>הקטע AB מקביל לציר <span class="blank" style="--blank-width:4ch"></span>.</p><p>הקטע BC מקביל לציר <span class="blank" style="--blank-width:4ch"></span>.</p><p class="axis-answer-box">הזווית הישרה נמצאת בנקודה <span class="blank" style="--blank-width:4ch"></span></p></div></div></section>' +
     '<section class="q-card"><h3>ב. נועה מסמנת קטע מ־(1,3) עד (5,3) וקטע מ־(5,3) עד (5,6). איזו זווית נוצרת בנקודה (5,3)?</h3>' +
     '<div class="choice-row"><span class="choice">זווית ישרה</span><span class="choice">אין זווית ישרה</span></div>' +
-    '<p>הקטע הראשון מקביל ל־<span class="blank" style="--blank-width:4ch"></span> ציר; הקטע השני מקביל ל־<span class="blank" style="--blank-width:4ch"></span> ציר.</p></section>' +
+    '<p>הקטע הראשון מקביל לציר <span class="blank" style="--blank-width:4ch"></span>; הקטע השני מקביל לציר <span class="blank" style="--blank-width:4ch"></span>.</p></section>' +
     '</div>' + FOOTER + '</section>',
 };
 
@@ -65,7 +65,7 @@ const page32: WorkbookPageContent = {
     '<div><div aria-label="קטעים בנקודה K" class="coordinate-grid grid-sm" data-arrows="[]" data-labelboxes="[]" data-points=\'[{"x": 2, "y": 5, "label": "A"}, {"x": 2, "y": 1, "label": "K"}, {"x": 7, "y": 1, "label": "B"}]\' data-polygons="[]" data-segments=\'[{"from": [2, 5], "to": [2, 1], "type": "shape"}, {"from": [2, 1], "to": [7, 1], "type": "shape"}]\' role="img"></div><div class="mist-head"><span>הזווית ב־K ישרה</span>' + tf('rt-3') + '</div></div>' +
     '<div><div aria-label="קטעים בנקודה T" class="coordinate-grid grid-sm" data-arrows="[]" data-labelboxes="[]" data-points=\'[{"x": 1, "y": 4, "label": "C"}, {"x": 5, "y": 4, "label": "T"}, {"x": 7, "y": 2, "label": "D"}]\' data-polygons="[]" data-segments=\'[{"from": [1, 4], "to": [5, 4], "type": "shape"}, {"from": [5, 4], "to": [7, 2], "type": "shape"}]\' role="img"></div><div class="mist-head"><span>הזווית ב־T ישרה</span>' + tf('rt-4') + '</div></div>' +
     '</div>' +
-    '<p class="small">הסבירו: זווית ישרה נוצרת כאשר קטע אחד מקביל ל־x ציר והשני מקביל ל־y ציר.</p></section>' +
+    '<p class="small">הסבירו: זווית ישרה נוצרת כאשר קטע אחד מקביל לציר x והשני מקביל לציר y.</p></section>' +
     '</div>' + FOOTER + '</section>',
 };
 
@@ -84,7 +84,7 @@ const page33: WorkbookPageContent = {
     '<section class="q-card"><h3>א. לפי המסלול שלמעלה.</h3><p>בפינה (4,0) הכיוון משתנה מ־<span class="blank" style="--blank-width:5ch"></span> ל־<span class="blank" style="--blank-width:5ch"></span>.</p><p>לכן ב־(4,0) נוצרת זווית <span class="blank" style="--blank-width:5ch"></span>.</p></section>' +
     '<section class="q-card"><h3>ב. אורי בונה מלבן ABCD. בכמה מקודקודי המלבן יש זווית ישרה?</h3>' +
     '<div class="cols-2"><div aria-label="מלבן ABCD עם זוויות ישרות בקודקודים" class="coordinate-grid grid-sm" data-arrows="[]" data-labelboxes="[]" data-points=\'[{"x": 1, "y": 1, "label": "A"}, {"x": 6, "y": 1, "label": "B"}, {"x": 6, "y": 4, "label": "C"}, {"x": 1, "y": 4, "label": "D"}]\' data-polygons=\'[{"points": [[1, 1], [6, 1], [6, 4], [1, 4]]}]\' data-segments="[]" role="img"></div>' +
-    '<div><p class="axis-answer-box">מספר הזוויות הישרות: <span class="blank" style="--blank-width:4ch"></span></p><p>הצלעות AB ו־DC מקבילות ל־<span class="blank" style="--blank-width:4ch"></span> ציר.</p><p>הצלעות AD ו־BC מקבילות ל־<span class="blank" style="--blank-width:4ch"></span> ציר.</p></div></div></section>' +
+    '<div><p class="axis-answer-box">מספר הזוויות הישרות: <span class="blank" style="--blank-width:4ch"></span></p><p>הצלעות AB ו־DC מקבילות לציר <span class="blank" style="--blank-width:4ch"></span>.</p><p>הצלעות AD ו־BC מקבילות לציר <span class="blank" style="--blank-width:4ch"></span>.</p></div></div></section>' +
     '</div>' + FOOTER + '</section>',
 };
 
@@ -100,14 +100,14 @@ const page34: WorkbookPageContent = {
     '<div class="sheet-content">' +
     '<section class="q-card"><h3>א. לפני המלבן ABCD שקודקודיו A(2,1), B(7,1), C(7,5), D(2,5).</h3>' +
     '<div class="cols-2"><div aria-label="מלבן ABCD ברביע הראשון" class="coordinate-grid grid-md" data-arrows="[]" data-labelboxes="[]" data-points=\'[{"x": 2, "y": 1, "label": "A"}, {"x": 7, "y": 1, "label": "B"}, {"x": 7, "y": 5, "label": "C"}, {"x": 2, "y": 5, "label": "D"}]\' data-polygons=\'[{"points": [[2, 1], [7, 1], [7, 5], [2, 5]]}]\' data-segments="[]" role="img"></div>' +
-    '<div><p>צלעות מקבילות ל־x ציר: <span class="blank" style="--blank-width:8ch"></span></p><p>צלעות מקבילות ל־y ציר: <span class="blank" style="--blank-width:8ch"></span></p><p>מספר הזוויות הישרות: <span class="blank" style="--blank-width:3ch"></span></p><p>AB = <span class="blank" style="--blank-width:3ch"></span>, BC = <span class="blank" style="--blank-width:3ch"></span></p><p>היקף = <span class="blank" style="--blank-width:4ch"></span>, שטח = <span class="blank" style="--blank-width:4ch"></span></p></div></div></section>' +
+    '<div><p>צלעות מקבילות לציר x: <span class="blank" style="--blank-width:8ch"></span></p><p>צלעות מקבילות לציר y: <span class="blank" style="--blank-width:8ch"></span></p><p>מספר הזוויות הישרות: <span class="blank" style="--blank-width:3ch"></span></p><p>AB = <span class="blank" style="--blank-width:3ch"></span>, BC = <span class="blank" style="--blank-width:3ch"></span></p><p>היקף = <span class="blank" style="--blank-width:4ch"></span>, שטח = <span class="blank" style="--blank-width:4ch"></span></p></div></div></section>' +
     '<section class="q-card"><h3>ב. דניאל סימן שלושה קודקודים: P(2,2), Q(6,2), R(6,5). סמנו את הקודקוד הרביעי S כך שייווצר מלבן.</h3>' +
     '<div class="cols-2"><div aria-label="שלושה קודקודים לבניית מלבן עם זוויות ישרות" class="coordinate-grid grid-sm" data-arrows="[]" data-labelboxes="[]" data-points=\'[{"x": 2, "y": 2, "label": "P"}, {"x": 6, "y": 2, "label": "Q"}, {"x": 6, "y": 5, "label": "R"}]\' data-polygons="[]" data-segments=\'[{"from": [2, 2], "to": [6, 2], "type": "shape"}, {"from": [6, 2], "to": [6, 5], "type": "shape"}]\' role="img"></div>' +
     '<div><p class="axis-answer-box">S = <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p><p>בקודקוד Q הזווית היא <span class="blank" style="--blank-width:5ch"></span>.</p><p>היקף המלבן = <span class="blank" style="--blank-width:4ch"></span>, שטח = <span class="blank" style="--blank-width:4ch"></span></p></div></div></section>' +
     '<section class="q-card span-2"><h3>ג. סמנו נכון או לא נכון.</h3>' +
     '<table class="tf-table"><tr><td>לכל מלבן יש ארבע זוויות ישרות.</td><td>' + tf('rt-sum-1') + '</td></tr>' +
-    '<tr><td>שני קטעים המקבילים שניהם ל־x ציר יוצרים ביניהם זווית ישרה.</td><td>' + tf('rt-sum-2') + '</td></tr>' +
-    '<tr><td>קטע המקביל ל־x ציר וקטע המקביל ל־y ציר יוצרים זווית ישרה.</td><td>' + tf('rt-sum-3') + '</td></tr></table></section>' +
+    '<tr><td>שני קטעים המקבילים שניהם לציר x יוצרים ביניהם זווית ישרה.</td><td>' + tf('rt-sum-2') + '</td></tr>' +
+    '<tr><td>קטע המקביל לציר x וקטע המקביל לציר y יוצרים זווית ישרה.</td><td>' + tf('rt-sum-3') + '</td></tr></table></section>' +
     '</div>' + FOOTER + '</section>',
 };
 

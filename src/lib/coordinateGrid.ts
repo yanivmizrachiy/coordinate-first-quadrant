@@ -120,14 +120,20 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
   for (let x = 1; x <= XM; x++) {
     svg.append(el('line', { x1: X(x), y1: Y(0) - 4, x2: X(x), y2: Y(0) + 4, stroke: AXIS, 'stroke-width': 1.4, 'vector-effect': 'non-scaling-stroke' }));
     const lab = xl[x];
-    if (lab !== '' && lab !== null && lab !== undefined) {
+    if (lab === '') {
+      // missing number — draw an empty answer box for the student to fill in
+      svg.append(el('rect', { x: X(x) - 11, y: Y(0) + 8, width: 22, height: 18, rx: 3, fill: '#fff', stroke: BLUE, 'stroke-width': 1.4, 'stroke-dasharray': '3 2', 'vector-effect': 'non-scaling-stroke' }));
+    } else if (lab !== null && lab !== undefined) {
       svg.append(el('text', { x: X(x), y: Y(0) + 20, 'text-anchor': 'middle', fill: AXIS, 'font-size': 12, 'font-weight': 700 }, String(lab)));
     }
   }
   for (let y = 1; y <= YM; y++) {
     svg.append(el('line', { x1: X(0) - 4, y1: Y(y), x2: X(0) + 4, y2: Y(y), stroke: AXIS, 'stroke-width': 1.4, 'vector-effect': 'non-scaling-stroke' }));
     const lab = yl[y];
-    if (lab !== '' && lab !== null && lab !== undefined) {
+    if (lab === '') {
+      // missing number — draw an empty answer box for the student to fill in
+      svg.append(el('rect', { x: X(0) - 33, y: Y(y) - 9, width: 22, height: 18, rx: 3, fill: '#fff', stroke: BLUE, 'stroke-width': 1.4, 'stroke-dasharray': '3 2', 'vector-effect': 'non-scaling-stroke' }));
+    } else if (lab !== null && lab !== undefined) {
       svg.append(el('text', { x: X(0) - 11, y: Y(y) + 4, 'text-anchor': 'end', fill: AXIS, 'font-size': 12, 'font-weight': 700 }, String(lab)));
     }
   }

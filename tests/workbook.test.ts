@@ -18,15 +18,19 @@ describe('workbook integrity (CLAUDE.md mandatory checks)', () => {
     }
   });
 
-  it('never uses "ציר x" / "ציר y" (only x ציר / y ציר)', () => {
+  it('axis names use natural Hebrew order (ציר x / ציר y, never x ציר / y ציר)', () => {
     for (const page of WORKBOOK) {
-      expect(page.html.includes('ציר x'), `page ${page.n}`).toBe(false);
-      expect(page.html.includes('ציר y'), `page ${page.n}`).toBe(false);
+      expect(page.html.includes('x ציר'), `page ${page.n}`).toBe(false);
+      expect(page.html.includes('y ציר'), `page ${page.n}`).toBe(false);
     }
   });
 
-  it('has no name/date fields or demo step headings', () => {
-    const forbidden = ['שם התלמיד', 'תאריך', 'שלב 3', 'שלב 4'];
+  it('stays in the first quadrant — never discusses negatives', () => {
+    for (const page of WORKBOOK) expect(page.html.includes('שליל'), `page ${page.n}`).toBe(false);
+  });
+
+  it('has no name/date fields or demo/filler headings', () => {
+    const forbidden = ['שם התלמיד', 'תאריך', 'שלב 3', 'שלב 4', 'ניתוח', 'אתגר', 'בודקים הבנה', 'מכירים את המערכת'];
     for (const page of WORKBOOK) {
       for (const f of forbidden) expect(page.html.includes(f), `page ${page.n}: ${f}`).toBe(false);
     }
