@@ -61,7 +61,7 @@
 }
 .answer-line { height: 1.5em; border-bottom: 1px solid #8994a5; margin-top: 4px; }
 .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; margin-top: 6px; }
-.work-table, .tf-table { width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 13.5px; }
+.work-table, .tf-table { width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 13px; }
 .work-table th, .work-table td, .tf-table td {
   border: 1px solid #adb7c6; padding: 6px 7px; vertical-align: middle;
 }
@@ -86,7 +86,7 @@
 .cols-2 > *, .cols-3 > *, .two-col > *, .page7-practice-pair > * { min-width: 0; }
 .task-grid { gap: 7px 14px; }
 .compact-top { align-items: center; }
-.tiny-labels { text-align: center; font-size: 11px; }
+.tiny-labels { text-align: center; font-size: 13px; }
 .span-2 { grid-column: 1 / -1; }
 .choice-row { display: flex; gap: 6px; flex-wrap: wrap; margin: 4px 0; }
 .choice { border: 1px solid #9da9b8; border-radius: 999px; padding: 3px 9px; background: #fff; display: inline-block; }
@@ -101,21 +101,21 @@
 .mist-card p { margin: 5px 0; font-size: 13px; }
 .mist-card small { color: #5f6b7a; }
 .mist-head { display: flex; justify-content: space-between; font-weight: 800; background: #f3f5f8; margin: -7px -9px 5px; padding: 5px 8px; border-radius: 8px 8px 0 0; align-items: center; gap: 8px; }
-.mist-head span { font-size: 10px; font-weight: 600; }
-.always-row { border-bottom: 1px dashed #d8dee8; padding: 3px 0; font-size: 11px; }
+.mist-head span { font-size: 12px; font-weight: 600; }
+.always-row { border-bottom: 1px dashed #d8dee8; padding: 3px 0; font-size: 13px; }
 .always-row .choice-row { display: inline-flex; margin-inline: 7px; }
 .reason-line { display: inline-block; min-width: 110px; border-bottom: 1px solid #8994a5; }
 .rules .rule-box { text-align: center; margin: 0; }
-.small { font-size: 12px; }
+.small { font-size: 13px; }
 .grid-lg { height: 258px; }
 .grid-md { height: 210px; }
 .grid-sm { height: 165px; }
-.grid-xs { height: 128px; }
-.sheet.guided { font-size: 13.5px; }
+.grid-xs { height: 168px; }
+.sheet.guided { font-size: 13px; }
 .sheet.guided .q-card { padding: 8px 10px; }
 .sheet.guided .q-card h3 { margin: -8px -10px 7px; padding: 6px 9px; font-size: 14px; }
 .sheet.dense { font-size: 13px; }
-.sheet.ultra-dense { font-size: 12.5px; }
+.sheet.ultra-dense { font-size: 13px; }
 .sheet.ultra-dense .q-card { padding: 7px 9px; }
 .sheet.ultra-dense .q-card h3 { margin: -7px -9px 6px; font-size: 13.2px; }
 .sheet.error-page .answer-line { height: 1.25em; }
