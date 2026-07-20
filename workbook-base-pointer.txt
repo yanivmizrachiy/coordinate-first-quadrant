@@ -1,3 +1,0 @@
-Baseline workbook source blob: 2f45a210a3adc10c8d1a3c3fd427056f3b9cb27b
-Original verified commit: a9087db7affc6c14b612b929c89d437fc130afcf
-This pointer is retained for reproducible direct GitHub editing.
