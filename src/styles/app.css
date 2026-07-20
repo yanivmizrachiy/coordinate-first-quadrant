@@ -1,0 +1,153 @@
+/* ===========================================================================
+   App views — home, tables of contents, games hub, game shell, page navigator.
+   =========================================================================== */
+
+/* ---------- Home ---------- */
+.hero {
+  text-align: center;
+  padding: 26px 18px 8px;
+}
+.hero__eyebrow { font-size: 13px; font-weight: 800; letter-spacing: .06em; color: var(--brand); }
+.hero__title { font-size: clamp(26px, 7vw, 40px); font-weight: 900; color: var(--brand-ink); margin: 6px 0 8px; line-height: 1.1; }
+.hero__subtitle { color: var(--muted); font-size: 16px; max-width: 46ch; margin: 0 auto; }
+
+.resume-chip {
+  display: inline-flex; align-items: center; gap: 8px; margin: 16px auto 0;
+  padding: 10px 16px; border-radius: 999px; background: var(--brand-tint);
+  color: var(--brand-ink); font-weight: 800; border: 1px solid #cfe0ff;
+}
+.resume-chip:hover { background: #dfebff; }
+
+.home-grid {
+  display: grid; gap: 14px; margin: 22px auto 0;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) { .home-grid { grid-template-columns: 1fr 1fr; } }
+
+.entry-card {
+  display: flex; align-items: center; gap: 16px; text-align: right;
+  padding: 20px; border-radius: var(--r-lg);
+  background: var(--surface); border: 1px solid var(--hairline);
+  box-shadow: var(--shadow-1); color: var(--ink);
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s;
+}
+.entry-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-2); border-color: #c3d4f5; }
+.entry-card__icon {
+  flex: 0 0 auto; width: 58px; height: 58px; border-radius: 16px;
+  display: grid; place-items: center; font-size: 30px;
+  background: var(--brand-tint); color: var(--brand);
+}
+.entry-card__body { min-width: 0; }
+.entry-card__title { font-size: 20px; font-weight: 900; color: var(--brand-ink); }
+.entry-card__desc { color: var(--muted); font-size: 14.5px; margin-top: 2px; }
+.entry-card--accent .entry-card__icon { background: #e7f7f4; color: var(--accent); }
+
+/* ---------- Section headers ---------- */
+.section-title { display: flex; align-items: baseline; gap: 10px; margin: 26px 4px 12px; }
+.section-title h2 { font-size: 22px; font-weight: 900; color: var(--brand-ink); }
+.section-title span { color: var(--muted); font-size: 14px; }
+
+/* ---------- Workbook table of contents ---------- */
+.toc-topic { margin-bottom: 22px; }
+.toc-topic__head { display: flex; align-items: center; gap: 10px; margin: 0 4px 10px; }
+.toc-topic__badge { width: 30px; height: 30px; border-radius: 9px; background: var(--brand); color: #fff; display: grid; place-items: center; font-weight: 900; font-size: 14px; }
+.toc-topic__title { font-size: 18px; font-weight: 800; color: var(--ink); }
+.toc-grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+.page-card {
+  display: flex; flex-direction: column; gap: 4px; text-align: right;
+  padding: 12px 14px; border-radius: var(--r-md);
+  background: var(--surface); border: 1px solid var(--hairline);
+  box-shadow: var(--shadow-1); color: var(--ink); min-height: 78px;
+  transition: transform .1s, box-shadow .1s, border-color .1s;
+}
+.page-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-2); border-color: #c3d4f5; }
+.page-card__num { font-size: 12px; font-weight: 800; color: var(--brand); }
+.page-card__title { font-size: 15px; font-weight: 800; line-height: 1.25; }
+.page-card__sub { font-size: 12.5px; color: var(--muted); }
+
+/* ---------- Games hub ---------- */
+.games-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+@media (min-width: 560px) { .games-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 900px) { .games-grid { grid-template-columns: 1fr 1fr 1fr; } }
+.game-card {
+  display: flex; flex-direction: column; text-align: right;
+  padding: 18px; border-radius: var(--r-lg);
+  background: var(--surface); border: 1px solid var(--hairline);
+  box-shadow: var(--shadow-1); color: var(--ink);
+  transition: transform .12s, box-shadow .12s, border-color .12s;
+}
+.game-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-2); border-color: #c3d4f5; }
+.game-card__icon { font-size: 34px; }
+.game-card__title { font-size: 19px; font-weight: 900; color: var(--brand-ink); margin-top: 8px; }
+.game-card__desc { color: var(--muted); font-size: 14px; margin-top: 4px; flex: 1 1 auto; }
+.game-card__skill { margin-top: 12px; font-size: 12.5px; font-weight: 800; color: var(--accent); }
+
+/* ---------- Game shell ---------- */
+.game { max-width: 760px; margin: 0 auto; }
+.game__intro {
+  background: var(--brand-tint); border: 1px solid #cfe0ff; border-radius: var(--r-md);
+  padding: 14px 16px; margin-bottom: 18px; line-height: 1.6;
+}
+.game__intro h2 { font-size: 20px; color: var(--brand-ink); margin-bottom: 4px; }
+.game__board { display: grid; gap: 14px; }
+.game__row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 12px 14px; background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-md); }
+.game__prompt { font-weight: 800; }
+.game__hintlist { margin: 0; padding-inline-start: 20px; }
+
+.answer-input {
+  min-height: var(--tapsize); min-width: 72px; padding: 8px 12px;
+  border: 2px solid var(--hairline); border-radius: 10px; font: inherit; font-weight: 800;
+  text-align: center; background: #fff; color: var(--ink);
+}
+.answer-input:focus { border-color: var(--brand); outline: none; }
+.answer-input.is-correct { border-color: var(--ok); background: #f0fdf4; }
+.answer-input.is-wrong { border-color: var(--danger); background: #fef2f2; }
+
+.chip-choice {
+  display: inline-flex; align-items: center; min-height: var(--tapsize);
+  padding: 8px 16px; border-radius: 999px; border: 2px solid var(--hairline);
+  background: #fff; font-weight: 800; color: var(--ink);
+}
+.chip-choice[aria-pressed="true"] { border-color: var(--brand); background: var(--brand-tint); color: var(--brand-ink); }
+.chip-choice.is-correct { border-color: var(--ok); background: #f0fdf4; color: var(--ok); }
+.chip-choice.is-wrong { border-color: var(--danger); background: #fef2f2; color: var(--danger); }
+
+.reveal {
+  margin-top: 16px; padding: 16px; border-radius: var(--r-md);
+  background: #f0fdf4; border: 1px solid #bbf7d0; color: #14532d; font-weight: 800;
+  text-align: center; font-size: 20px;
+}
+.reveal--pending { background: var(--surface-2); border-color: var(--hairline); color: var(--muted); font-weight: 700; font-size: 16px; }
+
+.word-slots { display: inline-flex; gap: 6px; flex-wrap: wrap; direction: rtl; }
+.word-slot {
+  width: 38px; height: 46px; border-radius: 8px; border: 2px solid var(--hairline);
+  display: grid; place-items: center; font-size: 24px; font-weight: 900; background: #fff;
+}
+.word-slot.is-filled { border-color: var(--brand); color: var(--brand-ink); background: var(--brand-tint); }
+
+/* ---------- Page navigator (single-sheet workbook viewer) ---------- */
+.pageviewer { max-width: 210mm; margin: 0 auto; }
+.pageviewer__sheetwrap { display: flex; justify-content: center; }
+.pagenav {
+  position: sticky; bottom: 0; z-index: 40;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 10px 12px; margin-top: 10px;
+  background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(10px);
+  border-top: 1px solid var(--hairline);
+}
+.pagenav__indicator { font-weight: 900; color: var(--brand-ink); min-width: 108px; text-align: center; }
+.pagenav select { min-height: var(--tapsize); border: 1px solid var(--hairline); border-radius: 10px; padding: 6px 10px; font: inherit; font-weight: 700; }
+
+.toolbar-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 14px; }
+
+.empty-note { text-align: center; color: var(--muted); padding: 40px 20px; }
+
+/* ---------- Print: hide all app chrome ---------- */
+@media print {
+  .appbar, .pagenav, .toolbar-row, .section-title, .home-grid, .hero, .games-grid,
+  .toc-topic, .resume-chip, .skip-link, .no-print { display: none !important; }
+  .container { padding: 0; max-width: none; }
+  .app-main { min-height: 0; }
+}
