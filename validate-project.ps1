@@ -1,43 +1,28 @@
-$ErrorActionPreference = 'Stop'
+﻿$ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
-
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $Index = Join-Path $Root 'index.html'
 $Text = Get-Content -LiteralPath $Index -Raw -Encoding UTF8
 
 $Errors = [System.Collections.Generic.List[string]]::new()
-
-foreach ($Page in 1..34) {
-    if ($Text -notmatch ('id="page-' + $Page + '"')) {
-        $Errors.Add("עמוד $Page אינו נמצא.")
-    }
+foreach ($n in 1..34) {
+  if ($Text -notmatch ('id="page-' + $n + '"')) { $Errors.Add("Missing page $n") }
 }
-
-foreach ($File in @(
-    'USER_MEMORY.md',
-    'CLAUDE.md',
-    'docs/CURRENT_REQUIREMENTS.md',
-    'docs/DECISION_LOG.md'
-)) {
-    if (-not (Test-Path -LiteralPath (Join-Path $Root $File))) {
-        $Errors.Add("קובץ חסר: $File")
-    }
+foreach ($Forbidden in @('ציר x','ציר y','שם התלמיד','תאריך:','ניתוח טענה','שלב 3','שלב 4')) {
+  if ($Text.Contains($Forbidden)) { $Errors.Add("Forbidden text: $Forbidden") }
 }
-
-if ($Text.Contains('ציר x')) {
-    $Errors.Add('נמצא ניסוח אסור: ציר x')
+foreach ($Required in @('x</span> ציר','y</span> ציר','השלימו את המשפטים','USER_MEMORY.md')) {
+  if ($Required -eq 'USER_MEMORY.md') {
+    if (-not (Test-Path -LiteralPath (Join-Path $Root $Required))) { $Errors.Add("Missing $Required") }
+  } elseif (-not $Text.Contains($Required)) {
+    $Errors.Add("Missing required content: $Required")
+  }
 }
-
-if ($Text.Contains('ציר y')) {
-    $Errors.Add('נמצא ניסוח אסור: ציר y')
+if ($Text -notmatch 'יניב רז - מדריך מחוזי חט"ב בעיר ירושלים') {
+  $Errors.Add('Missing canonical footer')
 }
-
 if ($Errors.Count -gt 0) {
-    Write-Host 'בדיקת הפרויקט נכשלה:' -ForegroundColor Red
-    $Errors | ForEach-Object {
-        Write-Host " - $_" -ForegroundColor Red
-    }
-    exit 1
+  $Errors | ForEach-Object { Write-Host $_ -ForegroundColor Red }
+  exit 1
 }
-
-Write-Host 'בדיקת הפרויקט עברה בהצלחה.' -ForegroundColor Green
+Write-Host 'All 34-page workbook checks passed.' -ForegroundColor Green

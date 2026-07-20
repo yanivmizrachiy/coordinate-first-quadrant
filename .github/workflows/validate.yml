@@ -1,0 +1,33 @@
+name: Validate workbook
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate 34 pages and active wording
+        shell: python
+        run: |
+          from pathlib import Path
+          text = Path("index.html").read_text(encoding="utf-8")
+          errors = []
+          for n in range(1, 35):
+              if f'id="page-{n}"' not in text:
+                  errors.append(f"missing page {n}")
+          for forbidden in ["ציר x", "ציר y", "שם התלמיד", "תאריך:", "שלב 3", "שלב 4"]:
+              if forbidden in text:
+                  errors.append(f"forbidden text: {forbidden}")
+          for required in ["השלימו את המשפטים", "יניב רז - מדריך מחוזי חט\"ב בעיר ירושלים"]:
+              if required not in text:
+                  errors.append(f"missing required text: {required}")
+          for path in ["CLAUDE.md", "USER_MEMORY.md", "docs/CURRENT_REQUIREMENTS.md", "docs/DECISION_LOG.md"]:
+              if not Path(path).exists():
+                  errors.append(f"missing memory file: {path}")
+          if errors:
+              raise SystemExit("\n".join(errors))
+          print("Workbook validation passed.")
