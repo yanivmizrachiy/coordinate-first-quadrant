@@ -1,0 +1,44 @@
+name: Run stored pedagogy correction
+
+on:
+  push:
+    paths:
+      - .github/workflows/run-pedagogy-payload.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-correction:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract and apply stored correction
+        shell: bash
+        run: |
+          python3 -c "from pathlib import Path; t=Path('.github/workflows/apply-pedagogy-fix.yml').read_text(encoding='utf-8'); m=\"cat > /tmp/pedagogy.patch.gz.b64 <<'PAYLOAD'\"; p=t.split(m,1)[1].split('\nPAYLOAD',1)[0].strip(); Path('/tmp/pedagogy.patch.gz.b64').write_text(p,encoding='ascii')"
+          base64 -d /tmp/pedagogy.patch.gz.b64 | gzip -d > /tmp/pedagogy.patch
+          git apply --check /tmp/pedagogy.patch
+          git apply /tmp/pedagogy.patch
+
+      - name: Validate workbook
+        shell: pwsh
+        run: ./validate-project.ps1
+
+      - name: Commit and publish correction
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html USER_MEMORY.md CLAUDE.md docs/CURRENT_REQUIREMENTS.md docs/DECISION_LOG.md validate-project.ps1
+          if git diff --cached --quiet; then
+            echo "No correction changes were required"
+          else
+            git commit -m "Improve true-false pedagogy and smart grayscale mode"
+            git push origin main
+          fi
