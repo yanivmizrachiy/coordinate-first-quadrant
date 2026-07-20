@@ -3,7 +3,7 @@
    by the table of contents. Legacy pages 1–30 are generated from the original
    booklet; pages 31–34 are authored natively (continuation.ts).
    =========================================================================== */
-import { LEGACY_PAGES } from './legacy-pages.generated';
+import { LEGACY_PAGES } from './legacy-pages';
 import { CONTINUATION_PAGES } from './continuation';
 import type { WorkbookPageContent, WorkbookTopic } from './types';
 
