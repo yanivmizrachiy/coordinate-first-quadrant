@@ -68,8 +68,11 @@ test('no sheet cuts off its own content', async ({ page }) => {
 });
 
 /* Learners write inside the squares. A system squeezed into a narrow column
-   keeps its ratio and collapses to a thumbnail — unusable on paper. */
-test('every coordinate system renders large enough to write on', async ({ page }) => {
+   keeps its ratio and collapses to a thumbnail — unusable on paper. The
+   threshold is about the A4 sheet, so it is measured at full sheet width; a
+   phone scales the whole sheet down and would fail it for the wrong reason. */
+test('every coordinate system renders large enough to write on', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet, not on a phone');
   await page.goto('/#/book');
   await page.waitForTimeout(3500);
   const tiny = await page.evaluate(() =>
@@ -143,8 +146,19 @@ test('every sheet keeps its body text at 13px', async ({ page }) => {
 });
 
 test('a game sheet reveals its answer when solved correctly', async ({ page }) => {
-  // The safe game is a numbered worksheet page now, not a separate area.
-  await page.goto('/#/workbook/37');
+  /* Find the sheet by what it hosts, never by its number — page numbers come
+     from the position in BOOK and move whenever a page is added or split. */
+  await page.goto('/#/workbook');
+  const n = await page.evaluate(async () => {
+    const res = await fetch(location.pathname);
+    void res;
+    location.hash = '#/book';
+    await new Promise((r) => setTimeout(r, 4000));
+    const host = document.querySelector('[data-game-host="coordinate-safe"]');
+    return host?.closest('.sheet')?.querySelector('.sheet-number')?.textContent?.trim() ?? '';
+  });
+  expect(n, 'the coordinate-safe game is not on any sheet').not.toBe('');
+  await page.goto(`/#/workbook/${n}`);
   const answers = ['4', '7', '0', '5'];
   const rows = page.locator('.game__board .game__row');
   const count = await rows.count();
