@@ -37,10 +37,12 @@ ${grid({
 <div class="cols-2">
 <section class="q-card">
 <h3>ב. השלימו על כיוון וגודל.</h3>
+<!-- Same sentence three times on purpose: the shape stays put so the only
+     thing that changes is WHICH part is missing (Yaniv's rule). -->
 <ul class="tasks">
 <li>ככל שזזים ימינה על ציר ${ltr('x')}, המספרים ${blank(6, 'relation')}.</li>
-<li>כדי שהמספרים על ציר ${ltr('y')} יגדלו, זזים ${blank(7, 'direction')}.</li>
-<li>בראשית הצירים המספר על שני הצירים הוא ${blank(3, 'number')}.</li>
+<li>ככל שזזים למעלה על ציר ${blank(3, 'letter')}, המספרים גדלים.</li>
+<li>ככל שזזים ${blank(7, 'direction')} על ציר ${ltr('x')}, המספרים קטנים.</li>
 </ul>
 </section>
 <section class="q-card">
