@@ -6,7 +6,7 @@ import { GAMES } from '../src/games';
 const FOOTER_F1 = 'יניב רז - מדריך מחוזי חט"ב בעיר ירושלים';
 const FOOTER_F2 = 'הדרכה במחוז ירושלים והעיר ירושלים - מנח"י, בהובלת איילת קריספין';
 
-describe('workbook integrity (CLAUDE.md mandatory checks)', () => {
+describe('workbook integrity (USER_MEMORY.md mandatory checks)', () => {
   it('has exactly 51 pages numbered 1..51 (worksheets + games interleaved)', () => {
     expect(TOTAL_PAGES).toBe(51);
     for (let n = 1; n <= 51; n++) expect(pageByNumber(n), `page ${n}`).toBeDefined();
