@@ -43,11 +43,15 @@ describe('nothing is silently cut off the page', () => {
 });
 
 describe('SVG text survives the RTL sheet', () => {
-  it('EVERY label is direction-pinned in one place, not per call site', () => {
-    // Pinning each `el('text', …)` by hand is how „ציר y” stayed reversed after
-    // „ציר x” was fixed: the next label simply forgot. The helper does it now.
+  it('only a label WITHOUT Hebrew is pinned to LTR', () => {
+    /* „ציר y” must stay RTL so the Hebrew word sits on the right and is read
+       first; „(2,5)” must be pinned or RTL mirrors its brackets. One place
+       decides, from the text itself, so no call site can get it wrong. */
     const helper = grid.slice(grid.indexOf('function el('), grid.indexOf('/** Render'));
-    expect(helper).toContain("if (tag === 'text') node.setAttribute('direction', 'ltr')");
+    expect(helper).toMatch(/tag === 'text' && text !== '' && !\/\[[^\]]+\]\/\.test\(text\)/);
+    // and no call site may override that decision for a Hebrew label
+    const axisName = grid.slice(grid.indexOf('spec.axisXName') - 220, grid.indexOf('spec.axisXName'));
+    expect(axisName, 'the axis name is force-pinned again').not.toContain("direction: 'ltr'");
   });
 
   it('an axis number is never left sitting under a point', () => {
