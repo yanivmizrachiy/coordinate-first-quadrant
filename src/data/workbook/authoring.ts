@@ -51,9 +51,25 @@ export function sheet(spec: SheetSpec): WorkbookPageContent {
 
 /* ---- fragments used on nearly every sheet ---- */
 
-/** A line for the learner to write on: `blank(4)` → four characters wide. */
-export const blank = (width = 4): string =>
-  `<span class="blank" style="--blank-width:${width}ch"></span>`;
+/* What the learner has to supply. Yaniv's rule: consecutive completions must
+   ask for DIFFERENT kinds of thing — never the same one three times in a row.
+   Tagging each blank is what lets a test enforce that instead of hoping. */
+export type Missing =
+  | 'letter'    // שם הציר: x / y
+  | 'property'  // תכונה: אופקי / אנכי
+  | 'direction' // כיוון: ימינה / למעלה
+  | 'concept'   // מושג: ראשית הצירים
+  | 'number'    // מספר
+  | 'relation'  // מה קורה: גדלים / קטנים / זהה
+  | 'pair';     // זוג סדור
+
+/** A line for the learner to write on: `blank(4, 'number')` → four wide. */
+export const blank = (width = 4, missing?: Missing): string =>
+  `<span class="blank"${missing ? ` data-missing="${missing}"` : ''} style="--blank-width:${width}ch"></span>`;
+
+/** The wider box used inside a completion sentence. */
+export const wordBlank = (size: 'short' | 'medium' | 'long', missing: Missing, aria: string): string =>
+  `<span class="word-blank word-${size}" data-missing="${missing}" aria-label="${aria}"></span>`;
 
 /** An empty ordered pair, optionally named: `pair('B')` → `B( __ , __ )`. */
 export const pair = (name = ''): string =>
