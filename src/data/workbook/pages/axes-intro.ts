@@ -1,68 +1,60 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet } from '../authoring';
+import { sheet, blank, wordBlank, ltr, pair, grid, wordBank } from '../authoring';
 
 export const AXES_INTRO: WorkbookPageContent = sheet({
-  sectionClass: "sheet guided dense",
-  title: "מכירים את מערכת הצירים",
-  subtitle: "שמות הצירים, הראשית וכיווני הגדילה",
+  sectionClass: 'sheet guided dense',
+  title: 'מכירים את מערכת הצירים',
+  subtitle: 'שמות הצירים, הראשית וכיווני הגדילה',
   content: `
 <div class="rule-box completion-intro">
-<div class="completion-sentence">הציר האנכי הוא ציר <span class="word-blank word-short" aria-label="מקום להשלמת האות y"></span>.
-</div>
-<div class="completion-sentence">הציר ה<span class="word-blank word-medium" aria-label="מקום להשלמת המילה אופקי"></span> הוא ציר <span class="math-ltr" dir="ltr">x</span>.
-</div>
-<div class="completion-sentence">נקודת המפגש בין שני הצירים נקראת <span class="word-blank word-medium" aria-label="מקום להשלמת המילה ראשית"></span> ה<span class="word-blank word-medium" aria-label="מקום להשלמת המילה צירים"></span>.
-</div>
-<div class="completion-sentence">ראשית הצירים נכתבת כזוג סדור <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>.
-</div>
-<div class="completion-sentence">כל הנקודות שעל ציר <span class="math-ltr" dir="ltr">x</span> הן בעלות שיעור <span class="math-ltr" dir="ltr">y</span> ששווה ל־<span class="word-blank word-short" aria-label="מקום להשלמת המספר אפס"></span>.
-</div>
-<div class="completion-sentence">הנקודה <span class="math-ltr" dir="ltr">(0,4)</span> ממוקמת על ציר <span class="word-blank word-short" aria-label="מקום להשלמת האות y"></span>.
-</div>
-<div class="completion-sentence">בנקודה <span class="math-ltr" dir="ltr">(5,0)</span> ערך <span class="math-ltr" dir="ltr">x</span> הוא <span class="word-blank word-short" aria-label="מקום להשלמת המספר חמש"></span> ושיעור <span class="math-ltr" dir="ltr">y</span> הוא <span class="word-blank word-short" aria-label="מקום להשלמת המספר אפס"></span>.
-</div>
+<div class="completion-sentence">הציר האנכי הוא ציר ${wordBlank('short', 'letter', 'מקום להשלמת האות y')}.</div>
+<div class="completion-sentence">הציר ה${wordBlank('medium', 'property', 'מקום להשלמת המילה אופקי')} הוא ציר ${ltr('x')}.</div>
+<div class="completion-sentence">נקודת המפגש בין שני הצירים נקראת ${wordBlank('medium', 'concept', 'מקום להשלמת המילה ראשית')} ה${wordBlank('medium', 'concept', 'מקום להשלמת המילה צירים')}.</div>
+<div class="completion-sentence">ראשית הצירים נכתבת כזוג סדור ${pair()}.</div>
+<div class="completion-sentence">כל הנקודות שעל ציר ${ltr('x')} הן בעלות שיעור ${ltr('y')} ששווה ל־${wordBlank('short', 'number', 'מקום להשלמת המספר אפס')}.</div>
+<div class="completion-sentence">הנקודה ${ltr('(0,4)')} ממוקמת על ציר ${wordBlank('short', 'letter', 'מקום להשלמת האות y')}.</div>
+<div class="completion-sentence">בנקודה ${ltr('(5,0)')} ערך ${ltr('x')} הוא ${wordBlank('short', 'number', 'מקום להשלמת המספר חמש')} ושיעור ${ltr('y')} הוא ${wordBlank('short', 'number', 'מקום להשלמת המספר אפס')}.</div>
 </div>
 <section class="q-card">
-<h3>א. על הסרטוט: כתבו בתיבות את שם כל ציר ואת שם נקודת המפגש, והשלימו את המספרים החסרים שעל הצירים.</h3>
-<div aria-label="מערכת צירים אחת: שלוש תיבות לשמות הצירים והראשית, ותיבות למספרים החסרים" class="coordinate-grid grid-lg" data-axisnames="false" data-arrows="[]" data-labelboxes='[{"text": "……………", "at": [5.4, 0.7], "to": [5, 0]}, {"text": "……………", "at": [1.5, 4.8], "to": [0, 4.2]}, {"text": "……………", "at": [1.7, 1.3], "to": [0, 0]}]' data-points="[]" data-polygons="[]" data-segments="[]" data-xlabels='[0, 1, "", 3, "", 5, "", "", 8]' data-ylabels='[0, "", 2, "", "", 5, ""]' role="img">
-</div>
+<h3>א. השלימו את החסר.</h3>
+${wordBank(['ציר x', 'ציר y', 'ראשית', 'הצירים'])}
+${grid({
+  size: 'lg',
+  // Naming the axes IS the task, so the drawing hides the names and offers
+  // boxes instead: one past the x arrow, one above the y arrow, and — because
+  // „ראשית הצירים” is two words — two stacked boxes at the origin.
+  axisNames: false,
+  originName: true,
+  label: 'מערכת צירים ובה תיבות ריקות לשם ציר x, לשם ציר y ולשתי מילות „ראשית הצירים”, ותיבות למספרים החסרים שעל הצירים',
+  xlabels: [0, 1, '', 3, '', 5, '', '', 8],
+  ylabels: [0, '', 2, '', '', 5, ''],
+})}
 </section>
 <div class="cols-2">
 <section class="q-card">
-<h3>ב. השלימו את כיווני הגדילה.</h3>
+<h3>ב. השלימו את החסר.</h3>
 <ul class="tasks compact">
-<li>המספרים על ציר <span class="math-ltr" dir="ltr">x</span> גדלים כשזזים <span class="blank" style="--blank-width:7ch"></span>.</li>
-<li>המספרים על ציר <span class="math-ltr" dir="ltr">y</span> גדלים כשזזים <span class="blank" style="--blank-width:7ch"></span>.</li>
-<li>בראשית הצירים שיעור <span class="math-ltr" dir="ltr">x</span> הוא <span class="blank" style="--blank-width:4ch"></span> ושיעור <span class="math-ltr" dir="ltr">y</span> הוא <span class="blank" style="--blank-width:4ch"></span>.</li>
+<li>המספרים על ציר ${ltr('x')} גדלים כשזזים ${blank(7, 'direction')}.</li>
+<li>המספרים על ציר ${blank(4, 'letter')} גדלים כשזזים למעלה.</li>
+<li>המספרים על ציר ${ltr('x')} ${blank(6, 'relation')} כשזזים שמאלה.</li>
 </ul>
 </section>
 <section class="q-card">
-<h3>ג. השלימו: מדוע דרושים שני צירים?</h3>
+<h3>ג. נתון זוג סדור — כתבו את השיעורים.</h3>
 <ul class="tasks compact">
-<li>מספר אחד בלבד אומר לנו רק <span class="blank" style="--blank-width:10ch"></span>.</li>
-<li>ציר <span class="math-ltr" dir="ltr">x</span> אומר כמה זזים <span class="blank" style="--blank-width:7ch"></span>.</li>
-<li>ציר <span class="math-ltr" dir="ltr">y</span> אומר כמה זזים <span class="blank" style="--blank-width:7ch"></span>.</li>
+<li>בנקודה ${ltr('A(3,5)')} ערך ${ltr('x')} הוא ${blank(4, 'number')}, ושיעור ${ltr('y')} הוא ${blank(4, 'number')}.</li>
+<li>בנקודה ${ltr('B(6,2)')} המספר 2 הוא שיעור ${blank(4, 'letter')}.</li>
+<li>בנקודה ${ltr('B(6,2)')} המספר 6 הוא ${blank(6, 'concept')} ${ltr('x')}.</li>
 </ul>
 </section>
 </div>
 <section class="q-card">
-<h3>ד. מזוג סדור לשיעורים — ובחזרה.</h3>
-<div class="cols-2">
-<div>
-<p><b>נתון זוג סדור — כתבו את השיעורים:</b></p>
+<h3>ד. נתונים השיעורים — כתבו את הזוג הסדור המתאים.</h3>
 <ul class="tasks compact">
-<li>נקודה <span class="math-ltr" dir="ltr">A(3,5)</span>: ערך <span class="math-ltr" dir="ltr">x</span> הוא <span class="blank" style="--blank-width:4ch"></span>, שיעור <span class="math-ltr" dir="ltr">y</span> הוא <span class="blank" style="--blank-width:4ch"></span>.</li>
-<li>נקודה <span class="math-ltr" dir="ltr">B(6,2)</span>: ערך <span class="math-ltr" dir="ltr">x</span> הוא <span class="blank" style="--blank-width:4ch"></span>, שיעור <span class="math-ltr" dir="ltr">y</span> הוא <span class="blank" style="--blank-width:4ch"></span>.</li>
+<li>ערך ${ltr('x')} שווה 4 ושיעור ${ltr('y')} שווה 7, ולכן הזוג הסדור המתאים הוא ${pair('C')}.</li>
+<li>אם ${ltr('x = 8')} ו־${ltr('y = 1')}, אז הזוג הסדור המתאים הוא ${pair('D')}.</li>
+<li>אם ${ltr('x = 0')} ו־${ltr('y = 6')}, אז הנקודה ממוקמת על ציר ${blank(4, 'letter')}, והזוג הסדור המתאים הוא ${pair('E')}.</li>
 </ul>
-</div>
-<div>
-<p><b>נתונים השיעורים — כתבו כזוג סדור:</b></p>
-<ul class="tasks compact">
-<li>ערך <span class="math-ltr" dir="ltr">x</span> שווה 4 ושיעור <span class="math-ltr" dir="ltr">y</span> שווה 7: <span class="pair math-ltr" dir="ltr">C(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
-<li>ערך <span class="math-ltr" dir="ltr">x</span> שווה 8 ושיעור <span class="math-ltr" dir="ltr">y</span> שווה 1: <span class="pair math-ltr" dir="ltr">D(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
-</ul>
-</div>
-</div>
 </section>
 `,
 });

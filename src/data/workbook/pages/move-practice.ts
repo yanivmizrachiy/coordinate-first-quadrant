@@ -44,11 +44,11 @@ export const MOVE_PRACTICE: WorkbookPageContent = sheet({
 </section>
 <section class="q-card span-2">
 <h3>מגלים את ההזזה</h3>
-<p>לכל שתי נקודות כתבו את ההזזה: כמה יחידות ולאיזה כיוון.</p>
+<p>השלימו את החסר: פעם ההזזה, פעם נקודת הסיום ופעם שיעור אחד.</p>
 <ul class="tasks">
-<li>מנקודה <span class="math-ltr" dir="ltr">(1,5)</span> אל נקודה <span class="math-ltr" dir="ltr">(6,5)</span>: הזזה של <span class="blank" style="--blank-width:14ch"></span></li>
-<li>מנקודה <span class="math-ltr" dir="ltr">(7,2)</span> אל נקודה <span class="math-ltr" dir="ltr">(7,6)</span>: הזזה של <span class="blank" style="--blank-width:14ch"></span></li>
-<li>מנקודה <span class="math-ltr" dir="ltr">(5,4)</span> אל נקודה <span class="math-ltr" dir="ltr">(2,4)</span>: הזזה של <span class="blank" style="--blank-width:14ch"></span></li>
+<li>מנקודה <span class="math-ltr" dir="ltr">(1,5)</span> אל נקודה <span class="math-ltr" dir="ltr">(6,5)</span>: הזזה של <span class="blank" data-missing="relation" style="--blank-width:14ch"></span></li>
+<li>הזזה של 4 יחידות למעלה מנקודה <span class="math-ltr" dir="ltr">(7,2)</span> מגיעה אל נקודה <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>.</li>
+<li>מנקודה <span class="math-ltr" dir="ltr">(5,4)</span> אל נקודה <span class="math-ltr" dir="ltr">(<span class="blank" data-missing="number" style="--blank-width:3ch"></span>,4)</span>: הזזה של 3 יחידות שמאלה.</li>
 </ul>
 </section>
 </div>

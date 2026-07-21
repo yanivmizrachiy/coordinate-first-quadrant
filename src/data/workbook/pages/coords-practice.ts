@@ -15,8 +15,8 @@ export const COORDS_PRACTICE: WorkbookPageContent = sheet({
 </div>
 <ul class="tasks">
 <li>בנקודה <span class="math-ltr" dir="ltr">P(5,2)</span> שיעור <span class="math-ltr" dir="ltr">x</span> הוא <span class="blank" style="--blank-width:6ch"></span>, ושיעור <span class="math-ltr" dir="ltr">y</span> הוא <span class="blank" style="--blank-width:6ch"></span>.</li>
-<li>בנקודה <span class="math-ltr" dir="ltr">Q(0,6)</span> ערך <span class="math-ltr" dir="ltr">x</span> הוא <span class="blank" style="--blank-width:6ch"></span>, וערך <span class="math-ltr" dir="ltr">y</span> הוא <span class="blank" style="--blank-width:6ch"></span>.</li>
-<li>בנקודה <span class="math-ltr" dir="ltr">R(8,0)</span> ערך <span class="math-ltr" dir="ltr">x</span> הוא <span class="blank" style="--blank-width:6ch"></span>, וערך <span class="math-ltr" dir="ltr">y</span> הוא <span class="blank" style="--blank-width:6ch"></span>.</li>
+<li>בנקודה <span class="math-ltr" dir="ltr">Q(0,6)</span> ערך <span class="math-ltr" dir="ltr">x</span> הוא <span class="blank" data-missing="number" style="--blank-width:6ch"></span>, ושיעור <span class="math-ltr" dir="ltr">y</span> הוא <span class="blank" data-missing="number" style="--blank-width:6ch"></span>.</li>
+<li>בנקודה <span class="math-ltr" dir="ltr">R(8,0)</span> שיעור <span class="math-ltr" dir="ltr">y</span> הוא 0, ולכן היא ממוקמת על ציר <span class="blank" data-missing="letter" style="--blank-width:4ch"></span>.</li>
 </ul>
 </section>
 <section class="q-card">

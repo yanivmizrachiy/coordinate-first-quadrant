@@ -22,7 +22,7 @@ export const ORDERED_PAIR_DRILL: WorkbookPageContent = sheet({
 <h3>א. נתונה נקודה — השלימו את שיעוריה.</h3>
 <ul class="tasks">
 <li>בנקודה ${ltr('A(3,5)')} ערך ה־${ltr('x')} הוא ${blank(3, 'number')}, ושיעור ה־${ltr('y')} הוא ${blank(3, 'number')}.</li>
-<li>בנקודה ${ltr('B(6,2)')} ערך ה־${ltr('x')} הוא ${blank(3, 'number')}, ושיעור ה־${ltr('y')} הוא ${blank(3, 'number')}.</li>
+<li>בנקודה ${ltr('B(6,2)')} המספר 2 הוא ${blank(6, 'concept')} ה־${ltr('y')}.</li>
 <li>בנקודה ${ltr('C(0,4)')} ערך ה־${ltr('x')} הוא 0, ולכן היא ממוקמת על ציר ${blank(3, 'letter')}.</li>
 </ul>
 </section>
