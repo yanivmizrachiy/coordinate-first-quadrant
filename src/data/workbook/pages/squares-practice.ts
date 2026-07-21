@@ -13,14 +13,15 @@ export const SQUARES_PRACTICE: WorkbookPageContent = sheet({
 <div aria-label="שלושה קודקודים של ריבוע" class="coordinate-grid grid-xs" data-arrows="[]" data-points='[{"x": 2, "y": 1, "label": "A", "dx": 10, "dy": -10}, {"x": 6, "y": 1, "label": "B", "dx": 10, "dy": -10}, {"x": 6, "y": 5, "label": "C", "dx": 10, "dy": -10}]' data-polygons="[]" data-segments='[{"from": [2, 1], "to": [6, 1], "type": "shape"}, {"from": [6, 1], "to": [6, 5], "type": "shape"}]' role="img">
 </div>
 <p class="axis-answer-box">הקודקוד הרביעי <span class="math-ltr" dir="ltr">D</span>: <span class="blank" style="--blank-width:10ch"></span></p>
-<p>אורך צלע: <span class="blank" style="--blank-width:4ch"></span> &nbsp; היקף: <span class="blank" style="--blank-width:5ch"></span> &nbsp; שטח: <span class="blank" style="--blank-width:5ch"></span></p>
+<p>אורך צלע: <span class="blank" style="--blank-width:4ch"></span> &nbsp; היקף: <span class="blank" style="--blank-width:5ch"></span> יח' &nbsp; שטח: <span class="blank" style="--blank-width:5ch"></span> יח"ר</p>
+<div class="calc-box calc-box--slim"><b>דרך החישוב:</b> <span class="blank" style="--blank-width:24ch"></span></div>
 </section>
 <section class="q-card">
 <h3>ריבוע מתיאור</h3>
 <p>קודקוד שמאלי־תחתון של ריבוע הוא <span class="math-ltr" dir="ltr">(1,2)</span>. אורך הצלע 3 יחידות והצלעות מקבילות לצירים.</p>
 <p>כתבו את שלושת הקודקודים האחרים:</p>
 <p><span class="blank" style="--blank-width:10ch"></span> &nbsp; <span class="blank" style="--blank-width:10ch"></span> &nbsp; <span class="blank" style="--blank-width:10ch"></span></p>
-<p>היקף: <span class="blank" style="--blank-width:5ch"></span> &nbsp; שטח: <span class="blank" style="--blank-width:5ch"></span></p>
+<p>היקף: <span class="blank" style="--blank-width:5ch"></span> יח' &nbsp; שטח: <span class="blank" style="--blank-width:5ch"></span> יח"ר</p>
 </section>
 <section class="q-card">
 <h3>סיכום קצר</h3>

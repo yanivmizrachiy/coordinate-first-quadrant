@@ -77,9 +77,20 @@ export function fitSheet(sheet: HTMLElement): void {
     }
     if (!changed) break;
   }
-  // one step too far is possible on the last pass — give it back
-  while (grids.length && room() < 0) {
-    for (const g of grids) g.style.height = `${Math.round(g.getBoundingClientRect().height - 14)}px`;
+  /* One step too far is possible on the last pass, so give it back — but only
+     what this function added. An unbounded loop here hangs the page whenever
+     the overflow comes from something other than a drawing. */
+  for (let back = 0; back < 6 && room() < 0; back++) {
+    let shrank = false;
+    for (const g of grids) {
+      const added = grown.get(g) ?? 0;
+      if (added <= 0) continue;
+      const step = Math.min(14, added);
+      g.style.height = `${Math.round(g.getBoundingClientRect().height - step)}px`;
+      grown.set(g, added - step);
+      shrank = true;
+    }
+    if (!shrank) break;
   }
 
   const leftover = room();

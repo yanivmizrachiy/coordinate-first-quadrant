@@ -109,6 +109,9 @@
 
 .calc-box { border: 1px dashed #9aa6b6; border-radius: 8px; padding: 7px 10px 5px; margin: 7px 0; background: #fbfcfe; }
 .calc-box > b { display: block; margin-bottom: 3px; color: #40506a; }
+/* One line of working, for a sheet that is already full. */
+.calc-box--slim { padding: 3px 9px; margin: 4px 0; }
+.calc-box--slim > b { display: inline; margin: 0; }
 .calc-box .answer-line { border-bottom-style: dashed; }
 .calc-answer { display: inline-block; min-width: 6ch; border: 1.4px solid #1d4ed8; border-radius: 6px; padding: 1px 8px; margin-inline-start: 4px; background: #fff; font-weight: 700; }
 .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; margin-top: 6px; }

@@ -19,10 +19,10 @@ export const RECTANGLES_PRACTICE: WorkbookPageContent = sheet({
 <div aria-label="מלבן PQRS במערכת צירים" class="coordinate-grid grid-xs" data-arrows="[]" data-points='[{"x": 2, "y": 2, "label": "P", "dx": 10, "dy": -10}, {"x": 7, "y": 2, "label": "Q", "dx": 10, "dy": -10}, {"x": 7, "y": 5, "label": "R", "dx": 10, "dy": -10}, {"x": 2, "y": 5, "label": "S", "dx": 10, "dy": -10}]' data-polygons='[{"points": [[2, 2], [7, 2], [7, 5], [2, 5]], "type": "shape"}]' data-segments="[]" role="img">
 </div>
 <ul class="tasks compact">
-<li>אורך הצלע האופקית <span class="math-ltr" dir="ltr">PQ</span>: <span class="blank" style="--blank-width:4ch"></span> יחידות.</li>
-<li>אורך הצלע האנכית <span class="math-ltr" dir="ltr">QR</span>: <span class="blank" style="--blank-width:4ch"></span> יחידות.</li>
-<li>היקף המלבן: <span class="blank" style="--blank-width:5ch"></span> יחידות.</li>
-<li>שטח המלבן: <span class="blank" style="--blank-width:5ch"></span> יחידות ריבועיות.</li>
+<li>אורך הצלע האופקית <span class="math-ltr" dir="ltr">PQ</span>: <span class="blank" style="--blank-width:4ch"></span> יח'.</li>
+<li>אורך הצלע האנכית <span class="math-ltr" dir="ltr">QR</span>: <span class="blank" style="--blank-width:4ch"></span> יח'.</li>
+<li>היקף המלבן: <span class="blank" style="--blank-width:5ch"></span> יח'.</li>
+<li>שטח המלבן: <span class="blank" style="--blank-width:5ch"></span> יח"ר.</li>
 </ul>
 <div class="calc-box"><b>דרך החישוב (היקף ושטח):</b>
 <div class="answer-line">
@@ -34,7 +34,7 @@ export const RECTANGLES_PRACTICE: WorkbookPageContent = sheet({
 <p>למלבן צלעות מקבילות לצירים. שני קודקודים נגדיים הם <span class="math-ltr" dir="ltr">(1,2)</span> ו־<span class="math-ltr" dir="ltr">(7,5)</span>.</p>
 <p>כתבו את שני הקודקודים האחרים כזוגות סדורים:</p>
 <p><span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp;&nbsp; <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<p>אורך המלבן: <span class="blank" style="--blank-width:4ch"></span> יחידות &nbsp; רוחב המלבן: <span class="blank" style="--blank-width:4ch"></span> יחידות</p>
+<p>אורך המלבן: <span class="blank" style="--blank-width:4ch"></span> יח' &nbsp; רוחב המלבן: <span class="blank" style="--blank-width:4ch"></span> יח'</p>
 <p>איזו מהנקודות הבאות ממוקמת על <b>היקף</b> המלבן? הקיפו.</p>
 <div class="choice-row"><span class="choice"><span class="math-ltr" dir="ltr">(4,2)</span></span><span class="choice"><span class="math-ltr" dir="ltr">(3,3)</span></span><span class="choice"><span class="math-ltr" dir="ltr">(8,5)</span></span><span class="choice"><span class="math-ltr" dir="ltr">(2,6)</span></span>
 </div>
@@ -45,7 +45,7 @@ export const RECTANGLES_PRACTICE: WorkbookPageContent = sheet({
 <div aria-label="מערכת צירים ריקה לבניית מלבן" class="coordinate-grid grid-xs" data-arrows="[]" data-points="[]" data-polygons="[]" data-segments="[]" role="img">
 </div>
 <p class="axis-answer-box">כתבו את ארבעת הקודקודים כזוגות סדורים: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<p>היקף: <span class="blank" style="--blank-width:4ch"></span> יחידות &nbsp; שטח: <span class="blank" style="--blank-width:4ch"></span> יחידות ריבועיות.</p>
+<p>היקף: <span class="blank" style="--blank-width:4ch"></span> יח' &nbsp; שטח: <span class="blank" style="--blank-width:4ch"></span> יח"ר.</p>
 </section>
 </div>
 `,

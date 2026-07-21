@@ -13,7 +13,7 @@ export const SQUARES_INTRO: WorkbookPageContent = sheet({
 <h3>א. הריבוע ABCD.</h3>
 <p>צלעות מקבילות ל־x: <span class="blank" style="--blank-width:8ch"></span></p>
 <p>אורך צלע: <span class="blank" style="--blank-width:3ch"></span></p>
-<p>היקף: <span class="blank" style="--blank-width:4ch"></span> | שטח: <span class="blank" style="--blank-width:4ch"></span></p>
+<p>היקף: <span class="blank" style="--blank-width:4ch"></span> יח' | שטח: <span class="blank" style="--blank-width:4ch"></span> יח"ר</p>
 <p>כיצד יודעים שזה ריבוע?</p>
 <div class="answer-line">
 </div>
@@ -25,12 +25,13 @@ export const SQUARES_INTRO: WorkbookPageContent = sheet({
 <div><b>מלבן א:</b> <span class="math-ltr" dir="ltr">(1,1),(7,1),(7,3),(1,3)</span>
 <div aria-label="מערכת צירים ברביע הראשון" class="coordinate-grid grid-xs" data-arrows="[]" data-labelboxes="[]" data-points='[{"x": 1, "y": 1}, {"x": 7, "y": 1}, {"x": 7, "y": 3}, {"x": 1, "y": 3}]' data-polygons='[{"points": [[1, 1], [7, 1], [7, 3], [1, 3]]}]' data-segments="[]" role="img">
 </div>
-<p>היקף=<span class="blank" style="--blank-width:4ch"></span> שטח=<span class="blank" style="--blank-width:4ch"></span></p>
+<p>היקף=<span class="blank" style="--blank-width:4ch"></span> יח' שטח=<span class="blank" style="--blank-width:4ch"></span> יח"ר</p>
+<div class="calc-box calc-box--slim"><b>דרך החישוב:</b> <span class="blank" style="--blank-width:24ch"></span></div>
 </div>
 <div><b>מלבן ב:</b> <span class="math-ltr" dir="ltr">(2,1),(5,1),(5,5),(2,5)</span>
 <div aria-label="מערכת צירים ברביע הראשון" class="coordinate-grid grid-xs" data-arrows="[]" data-labelboxes="[]" data-points='[{"x": 2, "y": 1}, {"x": 5, "y": 1}, {"x": 5, "y": 5}, {"x": 2, "y": 5}]' data-polygons='[{"points": [[2, 1], [5, 1], [5, 5], [2, 5]]}]' data-segments="[]" role="img">
 </div>
-<p>היקף=<span class="blank" style="--blank-width:4ch"></span> שטח=<span class="blank" style="--blank-width:4ch"></span></p>
+<p>היקף=<span class="blank" style="--blank-width:4ch"></span> יח' שטח=<span class="blank" style="--blank-width:4ch"></span> יח"ר</p>
 </div>
 </div>
 <p>האם אותו שטח מחייב אותו היקף? <span class="blank" style="--blank-width:6ch"></span></p>
@@ -40,14 +41,14 @@ export const SQUARES_INTRO: WorkbookPageContent = sheet({
 <h3>ג. הזיזו את הריבוע (1,1),(4,1),(4,4),(1,4) - 3 ימינה ו־2 למעלה.</h3>
 <p>A′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> B′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
 <p>C′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> D′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<p>היקף=<span class="blank" style="--blank-width:4ch"></span> שטח=<span class="blank" style="--blank-width:4ch"></span></p>
+<p>היקף=<span class="blank" style="--blank-width:4ch"></span> יח' שטח=<span class="blank" style="--blank-width:4ch"></span> יח"ר</p>
 <p>מה נשאר זהה? <span class="blank" style="--blank-width:10ch"></span></p>
 </section>
 <section class="q-card">
 <h3>ד. A(2,2), B(2,6), C(7,6). מצאו D למלבן.</h3>
 <p>D=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
 <p>קטעים מקבילים ל־x: <span class="blank" style="--blank-width:8ch"></span></p>
-<p>היקף=<span class="blank" style="--blank-width:4ch"></span> שטח=<span class="blank" style="--blank-width:4ch"></span></p>
+<p>היקף=<span class="blank" style="--blank-width:4ch"></span> יח' שטח=<span class="blank" style="--blank-width:4ch"></span> יח"ר</p>
 <p>הזיזו יחידה ימינה - קודקודים חדשים:</p>
 <div class="answer-line">
 </div>
