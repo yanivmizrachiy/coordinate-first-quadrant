@@ -12,6 +12,7 @@ import { home } from './views/home';
 import { workbookToc } from './views/workbookToc';
 import { pageViewer } from './views/pageViewer';
 import { book } from './views/book';
+import { ensureFreshBuild } from './lib/freshBuild';
 
 const app = document.getElementById('app');
 if (!app) throw new Error('#app root missing');
@@ -65,3 +66,7 @@ function render(match: RouteMatch): void {
 
 applyGrayscale(grayscale.get());
 startRouter(render);
+
+// A device that opened the site earlier can be holding an old index.html;
+// this notices that and reloads once so nobody reads a stale booklet.
+void ensureFreshBuild();
