@@ -120,10 +120,10 @@ const page35: WorkbookPageContent = {
   id: 'page-35',
   sectionClass: 'sheet guided',
   title: 'הזוג הסדור — סדר, סוגריים ותרגול',
-  subtitle: 'x משמאל, y מימין — יש סדר, ולכן זוג סדור',
+  subtitle: 'x מצד שמאל, y מצד ימין — יש סדר, ולכן זוג סדור',
   html:
     '<section aria-labelledby="title-35" class="sheet guided" id="page-35">' +
-    '<header class="sheet-header"><div><h1 id="title-35">הזוג הסדור — סדר, סוגריים ותרגול</h1><p>x משמאל, y מימין — יש סדר, ולכן זוג סדור</p></div><div aria-label="עמוד 35" class="sheet-number">35</div></header>' +
+    '<header class="sheet-header"><div><h1 id="title-35">הזוג הסדור — סדר, סוגריים ותרגול</h1><p>x מצד שמאל, y מצד ימין — יש סדר, ולכן זוג סדור</p></div><div aria-label="עמוד 35" class="sheet-number">35</div></header>' +
     '<div class="sheet-content">' +
     '<div class="rule-box">כל נקודה נכתבת כ<b>זוג סדור</b> בתוך סוגריים: <span class="math-ltr" dir="ltr">(x,y)</span>. המספר ה<b>שמאלי</b> הוא שיעור <span class="math-ltr" dir="ltr">x</span>, והמספר ה<b>ימני</b> הוא שיעור <span class="math-ltr" dir="ltr">y</span>. הסדר קובע — ולכן זהו זוג <b>סדור</b>.</div>' +
     '<section class="q-card"><h3>א. נתונה נקודה — כתבו את שיעוריה.</h3><ul class="tasks">' +

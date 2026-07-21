@@ -202,14 +202,15 @@
 .completion-intro { display: grid; gap: 8px; padding: 12px 14px; line-height: 1.75; }
 .completion-title { font-weight: 700; color: #1d4ed8; margin-bottom: 1px; }
 .completion-sentence { font-size: 13px; break-inside: avoid; }
+/* One fixed writing-line for EVERY fill-in in the project: .word-blank must
+   match .blank exactly, so lines never float above the text baseline. */
 .word-blank {
-  display: inline-block; vertical-align: baseline; min-height: 1.35em;
-  border-bottom: 1.7px solid #1f2a44; margin-inline: 4px; transform: translateY(-1px);
+  display: inline-block; max-width: 100%; margin-inline: 4px;
+  height: 1.2em; border-bottom: 1.5px solid var(--ink); vertical-align: -.08em;
 }
 .word-short { min-width: 3.2ch; }
 .word-medium { min-width: 7.5ch; }
 .word-long { min-width: 15ch; }
-.word-blank { max-width: 100%; }
 .axis-answer-box { flex-wrap: wrap; }
 
 /* True/False answer boxes (baked in — was previously a runtime patch). */

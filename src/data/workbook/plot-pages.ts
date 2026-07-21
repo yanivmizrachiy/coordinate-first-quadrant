@@ -19,15 +19,16 @@ export const HERO_INTRO: WorkbookPageContent = {
   id: 'page-100',
   sectionClass: 'sheet guided dense',
   title: 'מערכת הצירים והזוג הסדור',
-  subtitle: 'ערך x משמאל, שיעור y מימין',
+  subtitle: 'ערך x מצד שמאל, שיעור y מצד ימין',
   html:
     '<section aria-labelledby="title-100" class="sheet guided dense" id="page-100">' +
-    '<header class="sheet-header"><div><h1 id="title-100">מערכת הצירים והזוג הסדור</h1><p>ערך x משמאל, שיעור y מימין</p></div><div aria-label="עמוד 100" class="sheet-number">100</div></header>' +
+    '<header class="sheet-header"><div><h1 id="title-100">מערכת הצירים והזוג הסדור</h1><p>ערך x מצד שמאל, שיעור y מצד ימין</p></div><div aria-label="עמוד 100" class="sheet-number">100</div></header>' +
     '<main class="sheet-content">' +
     '<div class="rule-box completion-intro">' +
     '<div class="completion-sentence">כל נקודה נכתבת כ<b>זוג סדור</b> בתוך סוגריים: <span class="math-ltr" dir="ltr">(x,y)</span>.</div>' +
-    '<div class="completion-sentence">ערך <span class="word-blank word-short" aria-label="מקום להשלמת האות x"></span> נכתב משמאל, וערך <span class="math-ltr" dir="ltr">y</span> נכתב מ<span class="word-blank word-medium" aria-label="מקום להשלמת המילה ימין"></span>.</div>' +
+    '<div class="completion-sentence">ערך <span class="word-blank word-short" aria-label="מקום להשלמת האות x"></span> נכתב מצד שמאל, וערך <span class="math-ltr" dir="ltr">y</span> נכתב מצד <span class="word-blank word-short" aria-label="מקום להשלמת המילה ימין"></span>.</div>' +
     '<div class="completion-sentence">מכיוון שיש סֵדֶר, קוראים לזה זוג <span class="word-blank word-medium" aria-label="מקום להשלמת המילה סדור"></span>.</div>' +
+    '</div>' +
     '<section class="q-card"><h3>לפניכם מערכת הצירים. ענו עליה בסעיפים שמתחת.</h3>' +
     '<div aria-label="מערכת צירים גדולה ובה הנקודות A B C D" class="coordinate-grid grid-hero" data-arrows="[]" data-labelboxes="[]" data-points=\'[{"x": 2, "y": 5, "label": "A"}, {"x": 6, "y": 3, "label": "B"}, {"x": 4, "y": 0, "label": "C"}, {"x": 0, "y": 4, "label": "D"}]\' data-polygons="[]" data-segments="[]" role="img"></div></section>' +
     '<div class="cols-2">' +
@@ -38,8 +39,8 @@ export const HERO_INTRO: WorkbookPageContent = {
     '<div><span class="pair math-ltr" dir="ltr">D(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></div>' +
     '</div></section>' +
     '<section class="q-card"><h3>ב. בנקודה <span class="math-ltr" dir="ltr">A</span>.</h3><ul class="tasks compact">' +
-    '<li>ערך <span class="math-ltr" dir="ltr">x</span> (משמאל) הוא <span class="blank" style="--blank-width:4ch"></span>.</li>' +
-    '<li>שיעור <span class="math-ltr" dir="ltr">y</span> (מימין) הוא <span class="blank" style="--blank-width:4ch"></span>.</li>' +
+    '<li>ערך <span class="math-ltr" dir="ltr">x</span> (מצד שמאל) הוא <span class="blank" style="--blank-width:4ch"></span>.</li>' +
+    '<li>שיעור <span class="math-ltr" dir="ltr">y</span> (מצד ימין) הוא <span class="blank" style="--blank-width:4ch"></span>.</li>' +
     '</ul></section>' +
     '</div>' +
     '<div class="cols-2">' +
