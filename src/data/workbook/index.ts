@@ -10,7 +10,7 @@
 import { LEGACY_PAGES } from './legacy-pages';
 import { CONTINUATION_PAGES } from './continuation';
 import { HERO_INTRO, PLOT_A, PLOT_B } from './plot-pages';
-import { PLOT_SHAPE, GRAPH_REAL, SHAPE_MOVE } from './practice-pages';
+import { PLOT_SHAPE, GRAPH_REAL, SHAPE_MOVE, READ_PAIRS } from './practice-pages';
 import { GAMES, type GameDefinition } from '../../games';
 import type { WorkbookPageContent, WorkbookTopic } from './types';
 
@@ -76,22 +76,52 @@ function gamePage(g: GameDefinition, n: number): WorkbookPageContent {
 type Slot = WorkbookPageContent | GameDefinition;
 const isGame = (s: Slot): s is GameDefinition => typeof (s as GameDefinition).mount === 'function';
 
-/* The canonical order — worksheets and games interleaved by topic. */
-const ORDER: Slot[] = [
-  // The half-page coordinate system opens the booklet (Yaniv's rule).
-  HERO_INTRO, legacy(1), legacy(2),
-  legacy(3), legacy(4), cont(35), legacy(5), legacy(6),
-  PLOT_A, PLOT_B, legacy(8), PLOT_SHAPE, game('hidden-drawing'),
-  legacy(9), legacy(10), legacy(11), legacy(12), GRAPH_REAL, game('secret-word'),
-  legacy(13), legacy(14), game('color-decode'),
-  legacy(15), legacy(16), game('same-axis'),
-  legacy(17), legacy(18),
-  legacy(19), legacy(20), legacy(21), legacy(22), SHAPE_MOVE, game('encrypted-route'), game('coordinate-maze'),
-  legacy(23), legacy(24), game('coordinate-safe'),
-  legacy(25), legacy(26), game('suspect-point'),
-  legacy(27), legacy(28), legacy(29), legacy(30),
-  cont(36), cont(31), cont(32), cont(33), cont(34),
+/* The canonical order — worksheets and games interleaved, grouped by topic.
+   Page numbers AND the topic map are both derived from this one list, so
+   inserting or splitting a page is a single-line change: never renumber by
+   hand, and a topic can never drift out of sync with the pages it names. */
+const BOOK: { id: string; title: string; slots: Slot[] }[] = [
+  { id: 'intro', title: 'היכרות עם מערכת הצירים', slots: [
+    // The half-page coordinate system opens the booklet (Yaniv's rule).
+    HERO_INTRO, legacy(1), legacy(2),
+  ] },
+  { id: 'coords', title: 'שיעור x, שיעור y והזוג הסדור', slots: [
+    legacy(3), READ_PAIRS, legacy(4), cont(35), legacy(5), legacy(6),
+  ] },
+  { id: 'plot', title: 'סימון נקודות', slots: [
+    PLOT_A, PLOT_B, legacy(8), PLOT_SHAPE, game('hidden-drawing'),
+  ] },
+  { id: 'read', title: 'קריאת נקודות ונקודות על הצירים', slots: [
+    legacy(9), legacy(10), legacy(11), legacy(12), GRAPH_REAL, game('secret-word'),
+  ] },
+  { id: 'language', title: 'שפה של מיקום', slots: [
+    legacy(13), legacy(14), game('color-decode'),
+  ] },
+  { id: 'same', title: 'שיעורים זהים וקטעים מקבילים', slots: [
+    legacy(15), legacy(16), game('same-axis'),
+  ] },
+  { id: 'relations', title: 'יחסים בין שיעורים', slots: [
+    legacy(17), legacy(18),
+  ] },
+  { id: 'move', title: 'הזזה ומרחק במערכת הצירים', slots: [
+    legacy(19), legacy(20), legacy(21), legacy(22), SHAPE_MOVE,
+    game('encrypted-route'), game('coordinate-maze'),
+  ] },
+  { id: 'missing', title: 'שיעור חסר ודפוסים', slots: [
+    legacy(23), legacy(24), game('coordinate-safe'),
+  ] },
+  { id: 'errors', title: 'זיהוי ותיקון טעויות', slots: [
+    legacy(25), legacy(26), game('suspect-point'),
+  ] },
+  { id: 'rect', title: 'מלבנים, ריבועים, היקף ושטח', slots: [
+    legacy(27), legacy(28), legacy(29), legacy(30),
+  ] },
+  { id: 'rightangle', title: 'מקביל, מאונך וזווית ישרה', slots: [
+    cont(36), cont(31), cont(32), cont(33), cont(34),
+  ] },
 ];
+
+const ORDER: Slot[] = BOOK.flatMap((t) => t.slots);
 
 export const WORKBOOK: WorkbookPageContent[] = ORDER.map((slot, i) =>
   isGame(slot) ? gamePage(slot, i + 1) : renumber(slot, i + 1),
@@ -99,20 +129,15 @@ export const WORKBOOK: WorkbookPageContent[] = ORDER.map((slot, i) =>
 
 export const TOTAL_PAGES = WORKBOOK.length;
 
-export const TOPICS: WorkbookTopic[] = [
-  { id: 'intro', title: 'היכרות עם מערכת הצירים', pages: [1, 2, 3] },
-  { id: 'coords', title: 'שיעור x, שיעור y והזוג הסדור', pages: [4, 5, 6, 7, 8] },
-  { id: 'plot', title: 'סימון נקודות', pages: [9, 10, 11, 12, 13] },
-  { id: 'read', title: 'קריאת נקודות ונקודות על הצירים', pages: [14, 15, 16, 17, 18, 19] },
-  { id: 'language', title: 'שפה של מיקום', pages: [20, 21, 22] },
-  { id: 'same', title: 'שיעורים זהים וקטעים מקבילים', pages: [23, 24, 25] },
-  { id: 'relations', title: 'יחסים בין שיעורים', pages: [26, 27] },
-  { id: 'move', title: 'הזזה ומרחק במערכת הצירים', pages: [28, 29, 30, 31, 32, 33, 34] },
-  { id: 'missing', title: 'שיעור חסר ודפוסים', pages: [35, 36, 37] },
-  { id: 'errors', title: 'זיהוי ותיקון טעויות', pages: [38, 39, 40] },
-  { id: 'rect', title: 'מלבנים, ריבועים, היקף ושטח', pages: [41, 42, 43, 44] },
-  { id: 'rightangle', title: 'מקביל, מאונך וזווית ישרה', pages: [45, 46, 47, 48, 49] },
-];
+/* Derived from BOOK — never hand-numbered. */
+export const TOPICS: WorkbookTopic[] = (() => {
+  let n = 0;
+  return BOOK.map((t) => ({
+    id: t.id,
+    title: t.title,
+    pages: t.slots.map(() => ++n),
+  }));
+})();
 
 const byNumber = new Map(WORKBOOK.map((p) => [p.n, p]));
 

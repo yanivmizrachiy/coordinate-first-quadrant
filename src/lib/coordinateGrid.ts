@@ -77,6 +77,12 @@ let markerCounter = 0;
 
 function el(tag: string, attrs: Attrs = {}, text = ''): SVGElement {
   const node = document.createElementNS(NS, tag) as SVGElement;
+  /* Every label in a drawing is written Hebrew-word-first, left to right:
+     „ציר x”, „שיעור y = 3”. The sheet around it is RTL, which would place the
+     Latin part on the LEFT — Yaniv reads that as „x ציר”, written backwards.
+     Pinning the direction here, once, is what keeps a new label from being
+     added later without it. */
+  if (tag === 'text') node.setAttribute('direction', 'ltr');
   for (const [k, v] of Object.entries(attrs)) {
     if (v !== '' && v !== null && v !== undefined) node.setAttribute(k, String(v));
   }

@@ -85,6 +85,33 @@ test('every coordinate system renders large enough to write on', async ({ page }
   expect(tiny, tiny.join(', ')).toHaveLength(0);
 });
 
+/* „ציר x” can be perfectly correct in the source and still print backwards:
+   the sheet is RTL, so without an explicit direction the Latin letter lands on
+   the LEFT and the label reads „x ציר”. Only measuring the glyphs catches it. */
+test('every label in a drawing reads Hebrew-word first, left to right', async ({ page }) => {
+  await page.goto('/#/book');
+  await page.waitForTimeout(3500);
+  const reversed = await page.evaluate(() =>
+    [...document.querySelectorAll('.coordinate-grid text')]
+      .map((t) => {
+        const s = t.textContent ?? '';
+        if (!/[֐-׿]/.test(s) || !/[A-Za-z]/.test(s)) return null;
+        const node = t as SVGTextContentElement;
+        let hebrew = Infinity;
+        let latin = Infinity;
+        for (let i = 0; i < s.length; i++) {
+          const x = node.getStartPositionOfChar(i).x;
+          if (/[֐-׿]/.test(s[i]!)) hebrew = Math.min(hebrew, x);
+          if (/[A-Za-z]/.test(s[i]!)) latin = Math.min(latin, x);
+        }
+        // the Hebrew word must start to the LEFT of the Latin part
+        return hebrew > latin ? s : null;
+      })
+      .filter(Boolean),
+  );
+  expect(reversed, `reversed labels: ${reversed.join(' | ')}`).toHaveLength(0);
+});
+
 test('a game sheet reveals its answer when solved correctly', async ({ page }) => {
   // The safe game is a numbered worksheet page now, not a separate area.
   await page.goto('/#/workbook/37');

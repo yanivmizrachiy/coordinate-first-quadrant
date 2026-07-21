@@ -43,11 +43,11 @@ describe('nothing is silently cut off the page', () => {
 });
 
 describe('SVG text survives the RTL sheet', () => {
-  it('point labels pin their direction', () => {
-    // In an RTL document `text-anchor: start` anchors the RIGHT edge, so an
-    // un-pinned label grows backwards across the dot and onto the axis numbers.
-    const block = grid.slice(grid.indexOf('// Points with labels'));
-    expect(block.slice(0, 800)).toContain("direction: 'ltr'");
+  it('EVERY label is direction-pinned in one place, not per call site', () => {
+    // Pinning each `el('text', …)` by hand is how „ציר y” stayed reversed after
+    // „ציר x” was fixed: the next label simply forgot. The helper does it now.
+    const helper = grid.slice(grid.indexOf('function el('), grid.indexOf('/** Render'));
+    expect(helper).toContain("if (tag === 'text') node.setAttribute('direction', 'ltr')");
   });
 
   it('an axis number is never left sitting under a point', () => {
