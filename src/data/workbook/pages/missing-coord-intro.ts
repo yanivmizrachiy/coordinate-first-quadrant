@@ -9,17 +9,17 @@ export const MISSING_COORD_INTRO: WorkbookPageContent = sheet({
 <section class="q-card">
 <h3>א. השלימו את השיעור החסר.</h3>
 <div class="cols-2 task-grid">
-<div><span class="math-ltr" dir="ltr">A(5,__)</span> על ציר x
+<div><span class="pair math-ltr" dir="ltr">A(5,<span class="pair-blank"></span>)</span> על ציר x
 </div>
-<div><span class="math-ltr" dir="ltr">B(__,4)</span> על ציר y
+<div><span class="pair math-ltr" dir="ltr">B(<span class="pair-blank"></span>,4)</span> על ציר y
 </div>
-<div><span class="math-ltr" dir="ltr">C(3,__)</span> - שני השיעורים זהים
+<div><span class="pair math-ltr" dir="ltr">C(3,<span class="pair-blank"></span>)</span> - שני השיעורים זהים
 </div>
-<div><span class="math-ltr" dir="ltr">D(__,6)</span> - שיעור y גדול פי 2 משיעור x
+<div><span class="pair math-ltr" dir="ltr">D(<span class="pair-blank"></span>,6)</span> - שיעור y גדול פי 2 משיעור x
 </div>
-<div><span class="math-ltr" dir="ltr">E(2,__)</span> - שיעור y גדול ב־3 משיעור x
+<div><span class="pair math-ltr" dir="ltr">E(2,<span class="pair-blank"></span>)</span> - שיעור y גדול ב־3 משיעור x
 </div>
-<div><span class="math-ltr" dir="ltr">F(__,3)</span> - שיעור x גדול ב־4 משיעור y
+<div><span class="pair math-ltr" dir="ltr">F(<span class="pair-blank"></span>,3)</span> - שיעור x גדול ב־4 משיעור y
 </div>
 </div>
 </section>

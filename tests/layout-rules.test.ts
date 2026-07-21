@@ -120,6 +120,33 @@ describe('completions ask for something different each time', () => {
   });
 });
 
+describe('Hebrew and punctuation hold up to proofreading', () => {
+  /* Checked on the markup a reader ends up seeing. An empty element (a blank)
+     is not a space, so it is removed rather than replaced — the raw HTML would
+     otherwise report a space before every full stop that follows a box. */
+  const readable = (html: string): string =>
+    html
+      .replace(/<span class="(blank|word-blank|pair-blank)[^"]*"[^>]*><\/span>/g, '_')
+      .replace(/<[^>]+>/g, '')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/\s+/g, ' ');
+
+  it('no space sits before a comma or a full stop', () => {
+    for (const p of WORKBOOK) {
+      const m = /\S +[.,](\s|$)/.exec(readable(p.html));
+      expect(m?.[0], `page ${p.n}: "${m?.[0]}"`).toBeUndefined();
+    }
+  });
+
+  it('a Hebrew prefix before a Latin letter uses the Hebrew maqaf', () => {
+    for (const p of WORKBOOK) {
+      // „ל-x” is wrong; „ל־x” is right
+      const m = /[א-ת]-[a-zA-Z0-9]/.exec(readable(p.html));
+      expect(m?.[0], `page ${p.n}: "${m?.[0]}"`).toBeUndefined();
+    }
+  });
+});
+
 describe('pages stay easy to edit', () => {
   const dir = new URL('../src/data/workbook/pages/', import.meta.url);
   const files = readdirSync(dir).filter((f) => f !== 'index.ts');
