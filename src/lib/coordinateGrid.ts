@@ -48,6 +48,8 @@ export interface GridSpec {
   labelboxes?: GridLabelBox[];
   xlabels?: (number | string)[];
   ylabels?: (number | string)[];
+  /** Set false to hide the "ציר x" / "ציר y" names (tasks that ask for them). */
+  axisNames?: boolean;
   ariaLabel?: string;
 }
 
@@ -140,14 +142,18 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
     }
   }
 
-  // Origin + axis letters
-  svg.append(
-    el('text', { x: X(0) - 11, y: Y(0) + 22, 'text-anchor': 'end', fill: AXIS, 'font-size': 17, 'font-weight': 800 }, 'O'),
-    // Axis names live in the margins — below the x numbers, above the y arrow.
-    // Mixed Hebrew+Latin flips text-anchor, so pin direction explicitly.
-    el('text', { x: X(XM) + 34, y: Y(0) + 5, 'text-anchor': 'start', direction: 'ltr', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, 'ציר x'),
-    el('text', { x: X(0), y: Y(YM) - 32, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, 'ציר y'),
-  );
+  // Origin marker.
+  svg.append(el('text', { x: X(0) - 11, y: Y(0) + 22, 'text-anchor': 'end', fill: AXIS, 'font-size': 17, 'font-weight': 800 }, 'O'));
+
+  // Axis names sit in the margins. Omitted via data-axisnames="false" when the
+  // task itself is to NAME the axes — printing them would give the answer away.
+  if (spec.axisNames !== false) {
+    svg.append(
+      // Mixed Hebrew+Latin flips text-anchor, so pin direction explicitly.
+      el('text', { x: X(XM) + 34, y: Y(0) + 5, 'text-anchor': 'start', direction: 'ltr', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, 'ציר x'),
+      el('text', { x: X(0), y: Y(YM) - 32, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, 'ציר y'),
+    );
+  }
 
   // Polygons
   for (const p of spec.polygons ?? []) {
@@ -239,6 +245,7 @@ export function hydrateGrids(root: ParentNode = document): void {
     const yl = readJson<(number | string)[] | null>(elm, 'ylabels', null);
     if (xl) spec.xlabels = xl;
     if (yl) spec.ylabels = yl;
+    if (elm.dataset['axisnames'] === 'false') spec.axisNames = false;
     elm.replaceChildren(renderCoordinateGrid(spec));
     elm.dataset['hydrated'] = '1';
   });
