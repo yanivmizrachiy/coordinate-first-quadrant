@@ -9,6 +9,11 @@
    =========================================================================== */
 import {
   AXES_IDENTIFY,
+  POSTER_WORD_SEARCH,
+  POSTER_SECRET_PICTURE,
+  POSTER_SECRET_WORD,
+  POSTER_TREASURE_MAZE,
+  POSTER_ROUTE_RACE,
   HERO_INTRO,
   PLOT_A,
   PLOT_B,
@@ -119,13 +124,13 @@ const BOOK: { id: string; title: string; slots: Slot[] }[] = [
   ] },
   { id: 'coords', title: 'שיעור x, שיעור y והזוג הסדור', slots: [
     HERO_INTRO,
-    COORDS_INTRO, READ_PAIRS, COORDS_PRACTICE, ORDERED_PAIR_DRILL, ORDERED_PAIR_INTRO, ORDERED_PAIR_PRACTICE,
+    COORDS_INTRO, READ_PAIRS, COORDS_PRACTICE, ORDERED_PAIR_DRILL, ORDERED_PAIR_INTRO, ORDERED_PAIR_PRACTICE, POSTER_WORD_SEARCH,
   ] },
   { id: 'plot', title: 'סימון נקודות', slots: [
-    PLOT_A, PLOT_B, PLOT_PRACTICE, PLOT_SHAPE, game('hidden-drawing'),
+    PLOT_A, PLOT_B, PLOT_PRACTICE, POSTER_SECRET_PICTURE, PLOT_SHAPE, game('hidden-drawing'),
   ] },
   { id: 'read', title: 'קריאת נקודות ונקודות על הצירים', slots: [
-    READ_INTRO, READ_PRACTICE, ON_AXES_INTRO, ON_AXES_PRACTICE, GRAPH_REAL, game('secret-word'),
+    READ_INTRO, READ_PRACTICE, ON_AXES_INTRO, ON_AXES_PRACTICE, POSTER_SECRET_WORD, GRAPH_REAL, game('secret-word'),
   ] },
   { id: 'language', title: 'שפה של מיקום', slots: [
     POSITION_LANGUAGE_INTRO, POSITION_LANGUAGE_PRACTICE, game('color-decode'),
@@ -137,7 +142,7 @@ const BOOK: { id: string; title: string; slots: Slot[] }[] = [
     RELATIONS_INTRO, RELATIONS_PRACTICE,
   ] },
   { id: 'move', title: 'הזזה ומרחק במערכת הצירים', slots: [
-    MOVE_INTRO, MOVE_PRACTICE, DISTANCE_INTRO, DISTANCE_PRACTICE, SHAPE_MOVE,
+    MOVE_INTRO, MOVE_PRACTICE, POSTER_ROUTE_RACE, DISTANCE_INTRO, DISTANCE_PRACTICE, SHAPE_MOVE, POSTER_TREASURE_MAZE,
     game('encrypted-route'), game('coordinate-maze'),
   ] },
   { id: 'missing', title: 'שיעור חסר ודפוסים', slots: [
