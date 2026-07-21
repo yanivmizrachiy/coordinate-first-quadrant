@@ -11,15 +11,17 @@
   width: 210mm; min-height: 297mm; margin: 0 auto 18px; padding: 13mm 14mm 11mm;
   background: var(--paper); box-shadow: 0 8px 28px #1f2a4425; border: 1px solid #dfe4ec;
   display: block; position: relative; break-after: page; page-break-after: always;
+  /* Body text is 13px on EVERY sheet variant (practice/guided/dense/game). */
+  font-size: 13px;
 }
 .sheet:last-child { break-after: auto; page-break-after: auto; }
 .sheet-header {
   display: flex; align-items: flex-start; justify-content: space-between; gap: 18px;
   padding-bottom: 4mm; margin-bottom: 4mm; border-bottom: 2px solid var(--ink);
 }
-.eyebrow { font-size: 12px; font-weight: 800; letter-spacing: .04em; color: var(--blue); }
+.eyebrow { font-size: 13px; font-weight: 800; letter-spacing: .04em; color: var(--blue); }
 .sheet h1 { font-size: 27px; line-height: 1.15; margin: 3px 0 4px; }
-.sheet-header p { margin: 0; color: var(--muted); font-size: 14px; }
+.sheet-header p { margin: 0; color: var(--muted); font-size: 13px; }
 .sheet-number {
   width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center;
   background: var(--ink); color: white; font-size: 20px; font-weight: 900; flex: none;
@@ -28,10 +30,12 @@
 .sheet-footer {
   position: absolute; right: 14mm; left: 14mm; bottom: 7mm; display: flex;
   justify-content: space-between; gap: 20px; border-top: 1px solid var(--border);
-  padding-top: 2.5mm; color: var(--muted); font-size: 11px;
+  padding-top: 2.5mm; color: var(--muted); font-size: 13px;
 }
 .two-col { display: block; font-size: 0; }
-.two-col > .q-card { display: inline-block; vertical-align: top; width: 49%; margin: 0 0 10px 1%; font-size: 15px; }
+/* .two-col zeroes the font to kill inline-block whitespace, so the child must
+   restate it — keep it at the canonical 13px. */
+.two-col > .q-card { display: inline-block; vertical-align: top; width: 49%; margin: 0 0 10px 1%; font-size: 13px; }
 .two-col > .span-2 { display: block; width: 100%; margin-left: 0; }
 .q-card {
   border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; background: white;
@@ -40,10 +44,12 @@
 .q-card h3 {
   margin: -10px -12px 9px; padding: 7px 11px; background: var(--soft);
   border-bottom: 1px solid var(--border); border-radius: 10px 10px 0 0;
-  font-size: 16px; color: var(--ink);
+  font-size: 13px; color: var(--ink);
 }
 .q-card p { margin: 5px 0; }
-.tasks { padding-right: 20px; margin: 5px 0; }
+/* No browser bullet discs on worksheets — items are already grouped under an
+   א/ב/ג task heading, so the dots are just visual noise. */
+.tasks { list-style: none; padding-right: 0; margin: 5px 0; }
 .tasks li { margin: 6px 0; }
 .tasks.compact li { margin: 3px 0; }
 .rule-box, .note-box {
@@ -60,8 +66,23 @@
   height: 1.2em; border-bottom: 1.5px solid var(--ink); vertical-align: -.08em;
 }
 .answer-line { height: 1.5em; border-bottom: 1px solid #8994a5; margin-top: 4px; }
+/* A game sheet is a numbered worksheet page that hosts an interactive game.
+   Games are interactive and can run taller than one A4 sheet, so this sheet
+   grows instead of clipping its content. */
+.game-sheet { height: auto; min-height: 297mm; overflow: visible; }
+.game-sheet .sheet-content { display: block; }
+.game-sheet .gz-footer { position: static; margin-top: 10mm; }
+.game-host { min-height: 150mm; }
+.game-host > * { max-width: 100%; }
+/* No sub-13px text anywhere on a sheet, including game-rendered markup. */
+.sheet small, .mist-card small { font-size: 13px; }
+
+.calc-box { border: 1px dashed #9aa6b6; border-radius: 8px; padding: 7px 10px 5px; margin: 7px 0; background: #fbfcfe; }
+.calc-box > b { display: block; margin-bottom: 3px; color: #40506a; }
+.calc-box .answer-line { border-bottom-style: dashed; }
+.calc-answer { display: inline-block; min-width: 6ch; border: 1.4px solid #1d4ed8; border-radius: 6px; padding: 1px 8px; margin-inline-start: 4px; background: #fff; font-weight: 700; }
 .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; margin-top: 6px; }
-.work-table, .tf-table { width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 13.5px; }
+.work-table, .tf-table { width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 13px; }
 .work-table th, .work-table td, .tf-table td {
   border: 1px solid #adb7c6; padding: 6px 7px; vertical-align: middle;
 }
@@ -86,7 +107,7 @@
 .cols-2 > *, .cols-3 > *, .two-col > *, .page7-practice-pair > * { min-width: 0; }
 .task-grid { gap: 7px 14px; }
 .compact-top { align-items: center; }
-.tiny-labels { text-align: center; font-size: 11px; }
+.tiny-labels { text-align: center; font-size: 13px; }
 .span-2 { grid-column: 1 / -1; }
 .choice-row { display: flex; gap: 6px; flex-wrap: wrap; margin: 4px 0; }
 .choice { border: 1px solid #9da9b8; border-radius: 999px; padding: 3px 9px; background: #fff; display: inline-block; }
@@ -101,35 +122,30 @@
 .mist-card p { margin: 5px 0; font-size: 13px; }
 .mist-card small { color: #5f6b7a; }
 .mist-head { display: flex; justify-content: space-between; font-weight: 800; background: #f3f5f8; margin: -7px -9px 5px; padding: 5px 8px; border-radius: 8px 8px 0 0; align-items: center; gap: 8px; }
-.mist-head span { font-size: 10px; font-weight: 600; }
-.always-row { border-bottom: 1px dashed #d8dee8; padding: 3px 0; font-size: 11px; }
+.mist-head span { font-size: 13px; font-weight: 600; }
+.always-row { border-bottom: 1px dashed #d8dee8; padding: 3px 0; font-size: 13px; }
 .always-row .choice-row { display: inline-flex; margin-inline: 7px; }
 .reason-line { display: inline-block; min-width: 110px; border-bottom: 1px solid #8994a5; }
 .rules .rule-box { text-align: center; margin: 0; }
-.small { font-size: 12px; }
+.small { font-size: 13px; }
+/* Half-a-sheet hero grid: one giant system that many questions refer to. */
+.grid-hero { height: 440px; }
 .grid-lg { height: 258px; }
 .grid-md { height: 210px; }
 .grid-sm { height: 165px; }
-.grid-xs { height: 128px; }
-.sheet.guided { font-size: 13.5px; }
+.grid-xs { height: 134px; }
+.sheet.guided { font-size: 13px; }
 .sheet.guided .q-card { padding: 8px 10px; }
-.sheet.guided .q-card h3 { margin: -8px -10px 7px; padding: 6px 9px; font-size: 14px; }
+.sheet.guided .q-card h3 { margin: -8px -10px 7px; padding: 6px 9px; font-size: 13px; }
 .sheet.dense { font-size: 13px; }
-.sheet.ultra-dense { font-size: 12.5px; }
+.sheet.ultra-dense { font-size: 13px; }
 .sheet.ultra-dense .q-card { padding: 7px 9px; }
-.sheet.ultra-dense .q-card h3 { margin: -7px -9px 6px; font-size: 13.2px; }
+.sheet.ultra-dense .q-card h3 { margin: -7px -9px 6px; font-size: 13px; }
 .sheet.error-page .answer-line { height: 1.25em; }
 
-/* Page 7 is the densest sheet and keeps its bespoke sizing. */
-#page-7 .sheet-content { display: grid; gap: 6px; }
-#page-7 .page7-practice-pair { gap: 6px; }
-#page-7 .grid-lg { height: 178px; }
-#page-7 .grid-md { height: 145px; }
-#page-7 .grid-sm { height: 120px; }
-#page-7 .grid-xs { height: 86px; }
-#page-7 .q-card { padding: 6px 8px; }
-#page-7 .q-card h3 { margin: -6px -8px 5px; padding: 5px 7px; font-size: 12.4px; }
-#page-7 .choice-grid { gap: 3px; }
+/* The old ultra-dense sheet with six cramped grids was split into two roomy
+   sheets, so its bespoke id-based sizing is gone. Nothing may key off a
+   `#page-N` id any more — page numbers are positional and can be reordered. */
 
 /* Canonical booklet header/footer treatment. */
 .sheet-header {
@@ -146,7 +162,7 @@
 }
 .sheet-header p {
   color: #475569;
-  font-size: 14px;
+  font-size: 13px;
   margin: 0;
 }
 .sheet-number {
@@ -162,8 +178,8 @@
   padding-top: 3px; border-top: 1px solid #1d4ed8; text-align: center;
   line-height: 1.2; background: #fff;
 }
-.gz-footer .f1 { font-size: 10.5px; font-weight: 500; color: #1f2a44; }
-.gz-footer .f2 { font-size: 9.5px; color: #475569; }
+.gz-footer .f1 { font-size: 13px; font-weight: 500; color: #1f2a44; }
+.gz-footer .f2 { font-size: 13px; color: #475569; }
 
 /* No clipped headings: allow full RTL wrapping. */
 .sheet, .sheet-print-scope { scroll-margin-top: 86px; }
@@ -193,15 +209,16 @@
 /* Completion-task pattern (fill-in intro sentences). */
 .completion-intro { display: grid; gap: 8px; padding: 12px 14px; line-height: 1.75; }
 .completion-title { font-weight: 700; color: #1d4ed8; margin-bottom: 1px; }
-.completion-sentence { font-size: 15px; break-inside: avoid; }
+.completion-sentence { font-size: 13px; break-inside: avoid; }
+/* One fixed writing-line for EVERY fill-in in the project: .word-blank must
+   match .blank exactly, so lines never float above the text baseline. */
 .word-blank {
-  display: inline-block; vertical-align: baseline; min-height: 1.35em;
-  border-bottom: 1.7px solid #1f2a44; margin-inline: 4px; transform: translateY(-1px);
+  display: inline-block; max-width: 100%; margin-inline: 4px;
+  height: 1.2em; border-bottom: 1.5px solid var(--ink); vertical-align: -.08em;
 }
 .word-short { min-width: 3.2ch; }
 .word-medium { min-width: 7.5ch; }
 .word-long { min-width: 15ch; }
-.word-blank { max-width: 100%; }
 .axis-answer-box { flex-wrap: wrap; }
 
 /* True/False answer boxes (baked in — was previously a runtime patch). */
@@ -210,7 +227,7 @@
 .tf-option input { appearance: none; -webkit-appearance: none; width: 18px; height: 18px; margin: 0; border: 1.8px solid #334155; border-radius: 3px; background: #fff; display: grid; place-content: center; flex: 0 0 auto; }
 .tf-option input:checked::after { content: "✓"; font-size: 15px; line-height: 1; font-weight: 900; color: #111827; transform: translateY(-1px); }
 .tf-table td:last-child { width: 38%; min-width: 170px; padding-inline: 8px; }
-.mist-head > .tf-options { display: flex; min-width: auto; gap: 8px; font-size: 11px; font-weight: 700; }
+.mist-head > .tf-options { display: flex; min-width: auto; gap: 8px; font-size: 13px; font-weight: 700; }
 .mist-head > .tf-options .tf-option { gap: 3px; }
 .mist-head > .tf-options input { width: 15px; height: 15px; }
 
@@ -237,7 +254,7 @@
 .cover-placeholder { text-align: center; padding: 24px; color: var(--muted); }
 .cover-placeholder__title { font-size: 22px; font-weight: 900; color: var(--brand-ink); margin-bottom: 10px; }
 .cover-placeholder__file { font-family: var(--font-math); font-weight: 800; color: var(--ink); background: var(--surface-2); border: 1px solid var(--hairline); border-radius: 8px; padding: 6px 12px; display: inline-block; }
-.cover-placeholder__hint { margin-top: 10px; font-size: 14px; }
+.cover-placeholder__hint { margin-top: 10px; font-size: 13px; }
 
 /* ---- Responsive (screen, phones) ---- */
 @media (max-width: 850px) {
@@ -261,7 +278,7 @@
   .pair { flex-wrap: wrap; }
 }
 @media (max-width: 720px) {
-  .completion-sentence { font-size: 14px; }
+  .completion-sentence { font-size: 13px; }
   .word-long { min-width: 12ch; }
 }
 
@@ -276,33 +293,29 @@
   .q-card { box-shadow: none; }
   .sheet-header { padding-bottom: 2.5mm; margin-bottom: 2.5mm; }
   .sheet-header h1 { font-size: 23px; }
-  .sheet-header p { font-size: 12px; }
+  .sheet-header p { font-size: 13px; }
   .sheet-number { width: 36px; height: 36px; font-size: 17px; }
-  .two-col > .q-card { font-size: 12.4px; margin-bottom: 6px; }
+  .two-col > .q-card { font-size: 13px; margin-bottom: 6px; }
   .q-card { padding: 7px 9px; border-radius: 8px; }
-  .q-card h3 { margin: -7px -9px 6px; padding: 5px 8px; font-size: 13.5px; }
+  .q-card h3 { margin: -7px -9px 6px; padding: 5px 8px; font-size: 13px; }
   .tasks li { margin: 3px 0; }
-  .work-table, .tf-table { font-size: 11.5px; margin: 4px 0; }
+  .work-table, .tf-table { font-size: 13px; margin: 4px 0; }
   .work-table th, .work-table td, .tf-table td { padding: 4px 5px; }
   .rule-box, .note-box { padding: 6px 8px; margin: 3px 0 5px; }
   .answer-line { height: 1.25em; }
   .grid-large { height: 190px; }
   .grid-medium { height: 175px; }
   .sheet-content { padding-bottom: 10mm; }
-  .sheet-footer { right: 10mm; left: 10mm; bottom: 5mm; font-size: 9.5px; }
+  .sheet-footer { right: 10mm; left: 10mm; bottom: 5mm; font-size: 13px; }
   .gz-footer { position: absolute; margin: 0; }
 
   .sequence-banner { display: none; }
-  .sheet.guided { font-size: 12.7px; }
-  .sheet.ultra-dense { font-size: 11.8px; }
-  .grid-lg { height: 238px; }
-  .grid-md { height: 196px; }
-  .grid-sm { height: 150px; }
-  .grid-xs { height: 116px; }
-  #page-7 .grid-lg { height: 168px; }
-  #page-7 .grid-md { height: 135px; }
-  #page-7 .grid-sm { height: 110px; }
-  #page-7 .grid-xs { height: 80px; }
+  .sheet.guided { font-size: 13px; }
+  .sheet.ultra-dense { font-size: 13px; }
+  .grid-lg { height: 252px; }
+  .grid-md { height: 212px; }
+  .grid-sm { height: 178px; }
+  .grid-xs { height: 160px; }
 
   .cols-2 { grid-template-columns: 1fr 1fr; }
   .cols-3 { grid-template-columns: repeat(3, 1fr); }
@@ -311,7 +324,7 @@
   .span-2 { grid-column: 1 / -1; }
 
   .sheet.practice .two-col { display: block; font-size: 0; }
-  .sheet.practice .two-col > .q-card { display: inline-block; vertical-align: top; width: 49%; margin: 0 0 6px 1%; font-size: 12.4px; }
+  .sheet.practice .two-col > .q-card { display: inline-block; vertical-align: top; width: 49%; margin: 0 0 6px 1%; font-size: 13px; }
   .sheet.practice .two-col > .span-2 { display: block; width: 100%; margin-left: 0; }
 
   .axis-answer-box { min-height: 28px; padding: 3px 6px; margin: 2px 6px 3px 0 !important; }
@@ -319,5 +332,5 @@
   .word-blank { border-bottom-color: #111827; }
   .tf-option input { width: 4.2mm; height: 4.2mm; border-width: .45mm; }
   .mist-head > .tf-options input { width: 3.7mm; height: 3.7mm; }
-  .tf-option input:checked::after { font-size: 11px; }
+  .tf-option input:checked::after { font-size: 13px; }
 }

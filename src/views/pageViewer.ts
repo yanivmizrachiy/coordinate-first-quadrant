@@ -3,9 +3,10 @@ import { navigate } from '../router';
 import { hydrateGrids } from '../lib/coordinateGrid';
 import { pageByNumber, TOTAL_PAGES, topicOfPage } from '../data/workbook';
 import { lastPage } from '../lib/storage';
+import { gameById } from '../games';
 import type { ViewContext } from './context';
 
-export function pageViewer(n: number): (ctx: ViewContext) => void {
+export function pageViewer(n: number): (ctx: ViewContext) => (() => void) | void {
   return ({ outlet, setTitle }) => {
     const page = Math.min(Math.max(1, Math.trunc(n) || 1), TOTAL_PAGES);
     const data = pageByNumber(page);
@@ -23,9 +24,15 @@ export function pageViewer(n: number): (ctx: ViewContext) => void {
     );
 
     const sheetWrap = elem('div', { class: 'pageviewer__sheetwrap' });
+    let cleanup: (() => void) | undefined;
     if (data) {
       sheetWrap.append(fromHTML(data.html));
       hydrateGrids(sheetWrap);
+      if (data.gameId) {
+        const host = sheetWrap.querySelector<HTMLElement>('[data-game-host]');
+        const g = gameById(data.gameId);
+        if (host && g) cleanup = g.mount(host);
+      }
     } else {
       sheetWrap.append(elem('div', { class: 'empty-note', text: 'העמוד לא נמצא.' }));
     }
@@ -50,6 +57,7 @@ export function pageViewer(n: number): (ctx: ViewContext) => void {
     c.append(viewer);
     outlet.append(c);
     window.scrollTo({ top: 0 });
+    return cleanup;
   };
 }
 

@@ -23,7 +23,7 @@ export function renderCoverSheet(): HTMLElement {
       elem('div', { class: 'cover-placeholder' },
         elem('div', { class: 'cover-placeholder__title', text: 'כאן תופיע כריכת החוברת המאושרת' }),
         elem('div', { class: 'cover-placeholder__file', text: APPROVED_COVER.file }),
-        elem('div', { class: 'cover-placeholder__hint', text: 'יש להעלות את התמונה לתיקייה public/assets/generated-covers/' }),
+        elem('div', { class: 'cover-placeholder__hint', text: 'יש להעלות את התמונה לתיקייה public/assets/covers/' }),
       ),
     );
   });

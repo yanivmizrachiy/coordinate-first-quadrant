@@ -4,11 +4,11 @@
      #/workbook          table of contents
      #/workbook/:n       single page viewer
      #/book              continuous full booklet
-     #/games             games hub
-     #/games/:id         a single game
+   The 8 games are numbered worksheet pages (#/workbook/:n), so there is no
+   separate games area; legacy #/games links fall back to the contents page.
 */
 export interface RouteMatch {
-  name: 'home' | 'workbook' | 'page' | 'book' | 'games' | 'game';
+  name: 'home' | 'workbook' | 'page' | 'book';
   params: Record<string, string>;
 }
 
@@ -18,7 +18,7 @@ export function parseHash(hash: string): RouteMatch {
   const [head, sub] = parts;
   if (head === 'workbook') return sub ? { name: 'page', params: { n: sub } } : { name: 'workbook', params: {} };
   if (head === 'book') return { name: 'book', params: {} };
-  if (head === 'games') return sub ? { name: 'game', params: { id: sub } } : { name: 'games', params: {} };
+  if (head === 'games') return { name: 'workbook', params: {} };
   return { name: 'home', params: {} };
 }
 

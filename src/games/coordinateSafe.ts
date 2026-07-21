@@ -14,7 +14,7 @@ export const coordinateSafePuzzle: RevealPuzzle = {
   steps: [
     { prompt: 'כמה יחידות זזים ימינה מהנקודה (1,2) כדי להגיע ל־(5,2)?', kind: 'text', answer: '4', token: '4' },
     { prompt: 'מהו שיעור x של הנקודה (7,3)?', kind: 'text', answer: '7', token: '7' },
-    { prompt: 'הנקודה (0,5) נמצאת על y ציר. מהו שיעור x שלה?', kind: 'text', answer: '0', token: '0' },
+    { prompt: 'הנקודה (0,5) נמצאת על ציר y. מהו שיעור x שלה?', kind: 'text', answer: '0', token: '0' },
     { prompt: 'כמה יחידות זזים למעלה מהנקודה (2,1) כדי להגיע ל־(2,6)?', kind: 'text', answer: '5', token: '5' },
   ],
 };

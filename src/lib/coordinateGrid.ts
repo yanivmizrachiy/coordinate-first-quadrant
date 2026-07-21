@@ -48,11 +48,15 @@ export interface GridSpec {
   labelboxes?: GridLabelBox[];
   xlabels?: (number | string)[];
   ylabels?: (number | string)[];
+  /** Set false to hide the "ציר x" / "ציר y" names (tasks that ask for them). */
+  axisNames?: boolean;
   ariaLabel?: string;
 }
 
 // Geometry — identical to the original booklet.
-const W = 520, H = 330, L = 56, R = 30, T = 24, B = 48;
+/* Top/bottom margins are deliberately generous: the axis NAMES ("ציר x" /
+   "ציר y") must sit in the margin, never inside the grid or on the arrow. */
+const W = 560, H = 380, L = 56, R = 70, T = 60, B = 62;
 const XM = 8, YM = 6;
 const SX = (W - L - R) / XM;
 const SY = (H - T - B) / YM;
@@ -120,24 +124,36 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
   for (let x = 1; x <= XM; x++) {
     svg.append(el('line', { x1: X(x), y1: Y(0) - 4, x2: X(x), y2: Y(0) + 4, stroke: AXIS, 'stroke-width': 1.4, 'vector-effect': 'non-scaling-stroke' }));
     const lab = xl[x];
-    if (lab !== '' && lab !== null && lab !== undefined) {
-      svg.append(el('text', { x: X(x), y: Y(0) + 20, 'text-anchor': 'middle', fill: AXIS, 'font-size': 12, 'font-weight': 700 }, String(lab)));
+    if (lab === '') {
+      // missing number — draw an empty answer box for the student to fill in
+      svg.append(el('rect', { x: X(x) - 14, y: Y(0) + 8, width: 28, height: 22, rx: 4, fill: '#fff', stroke: BLUE, 'stroke-width': 1.8, 'vector-effect': 'non-scaling-stroke' }));
+    } else if (lab !== null && lab !== undefined) {
+      svg.append(el('text', { x: X(x), y: Y(0) + 21, 'text-anchor': 'middle', fill: AXIS, 'font-size': 17, 'font-weight': 700 }, String(lab)));
     }
   }
   for (let y = 1; y <= YM; y++) {
     svg.append(el('line', { x1: X(0) - 4, y1: Y(y), x2: X(0) + 4, y2: Y(y), stroke: AXIS, 'stroke-width': 1.4, 'vector-effect': 'non-scaling-stroke' }));
     const lab = yl[y];
-    if (lab !== '' && lab !== null && lab !== undefined) {
-      svg.append(el('text', { x: X(0) - 11, y: Y(y) + 4, 'text-anchor': 'end', fill: AXIS, 'font-size': 12, 'font-weight': 700 }, String(lab)));
+    if (lab === '') {
+      // missing number — draw an empty answer box for the student to fill in
+      svg.append(el('rect', { x: X(0) - 42, y: Y(y) - 11, width: 28, height: 22, rx: 4, fill: '#fff', stroke: BLUE, 'stroke-width': 1.8, 'vector-effect': 'non-scaling-stroke' }));
+    } else if (lab !== null && lab !== undefined) {
+      svg.append(el('text', { x: X(0) - 12, y: Y(y) + 5, 'text-anchor': 'end', fill: AXIS, 'font-size': 17, 'font-weight': 700 }, String(lab)));
     }
   }
 
-  // Origin + axis letters
-  svg.append(
-    el('text', { x: X(0) - 10, y: Y(0) + 20, 'text-anchor': 'end', fill: AXIS, 'font-size': 12, 'font-weight': 800 }, 'O'),
-    el('text', { x: X(XM) + 23, y: Y(0) - 10, 'text-anchor': 'middle', fill: AXIS, 'font-size': 14, 'font-weight': 800 }, 'x'),
-    el('text', { x: X(0) + 13, y: Y(YM) - 17, 'text-anchor': 'start', fill: AXIS, 'font-size': 14, 'font-weight': 800 }, 'y'),
-  );
+  // Origin marker.
+  svg.append(el('text', { x: X(0) - 11, y: Y(0) + 22, 'text-anchor': 'end', fill: AXIS, 'font-size': 17, 'font-weight': 800 }, 'O'));
+
+  // Axis names sit in the margins. Omitted via data-axisnames="false" when the
+  // task itself is to NAME the axes — printing them would give the answer away.
+  if (spec.axisNames !== false) {
+    svg.append(
+      // Mixed Hebrew+Latin flips text-anchor, so pin direction explicitly.
+      el('text', { x: X(XM) + 34, y: Y(0) + 5, 'text-anchor': 'start', direction: 'ltr', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, 'ציר x'),
+      el('text', { x: X(0), y: Y(YM) - 32, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, 'ציר y'),
+    );
+  }
 
   // Polygons
   for (const p of spec.polygons ?? []) {
@@ -229,6 +245,7 @@ export function hydrateGrids(root: ParentNode = document): void {
     const yl = readJson<(number | string)[] | null>(elm, 'ylabels', null);
     if (xl) spec.xlabels = xl;
     if (yl) spec.ylabels = yl;
+    if (elm.dataset['axisnames'] === 'false') spec.axisNames = false;
     elm.replaceChildren(renderCoordinateGrid(spec));
     elm.dataset['hydrated'] = '1';
   });

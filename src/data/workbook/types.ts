@@ -13,6 +13,11 @@ export interface WorkbookPageContent {
   subtitle: string;
   /** Full <section>…</section> markup for the sheet. */
   html: string;
+  /**
+   * When set, this sheet hosts an interactive game: the view mounts it into the
+   * page's `[data-game-host]` element and unmounts it on navigation.
+   */
+  gameId?: string;
 }
 
 export interface WorkbookTopic {
