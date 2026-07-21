@@ -2,14 +2,35 @@
    App views — home, tables of contents, games hub, game shell, page navigator.
    =========================================================================== */
 
-/* ---------- Home ---------- */
-.hero {
-  text-align: center;
-  padding: 26px 18px 8px;
+/* ---------- Home ----------
+   The approved cover IS the home screen: shown large and immediately, and it
+   opens the full booklet. width + height:auto keeps the artwork's own ratio. */
+.home-cover {
+  display: block;
+  width: min(94vw, 560px);
+  margin: 14px auto 20px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 12px 36px #1f2a4438;
+  transition: transform .16s ease, box-shadow .16s ease;
 }
-.hero__eyebrow { font-size: 13px; font-weight: 800; letter-spacing: .06em; color: var(--brand); }
-.hero__title { font-size: clamp(26px, 7vw, 40px); font-weight: 900; color: var(--brand-ink); margin: 6px 0 8px; line-height: 1.1; }
-.hero__subtitle { color: var(--muted); font-size: 16px; max-width: 46ch; margin: 0 auto; }
+.home-cover:hover, .home-cover:focus-visible { transform: translateY(-3px); box-shadow: 0 18px 46px #1f2a4447; }
+.home-cover__img { display: block; width: 100%; height: auto; }
+/* Fallback so the home screen is never blank if the artwork is missing. */
+.home-cover--fallback {
+  aspect-ratio: 210 / 297;
+  display: grid;
+  place-content: center;
+  gap: 10px;
+  background: linear-gradient(160deg, #eaf2ff, #fff);
+  border: 2px dashed #94a3b8;
+}
+.home-cover__fallbacktitle { font-size: clamp(26px, 7vw, 40px); font-weight: 900; color: var(--brand-ink); line-height: 1.1; }
+.home-cover__fallbackhint { color: var(--muted); font-size: 16px; }
 
 .resume-chip {
   display: inline-flex; align-items: center; gap: 8px; margin: 16px auto 0;

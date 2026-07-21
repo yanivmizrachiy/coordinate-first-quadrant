@@ -3,6 +3,7 @@ import { navigate } from '../router';
 import { lastPage } from '../lib/storage';
 import { TOTAL_PAGES } from '../data/workbook';
 import { GAMES } from '../games';
+import { APPROVED_COVER } from '../data/cover';
 import type { ViewContext } from './context';
 
 interface Entry { icon: string; title: string; desc: string; href: string; accent?: boolean; }
@@ -11,13 +12,32 @@ export function home({ outlet, setTitle }: ViewContext): void {
   setTitle('מערכת צירים — הרביע הראשון');
   const c = elem('div', { class: 'container' });
 
-  c.append(
-    elem('div', { class: 'hero' },
-      elem('div', { class: 'hero__eyebrow', text: 'חוברת לימוד אינטראקטיבית' }),
-      elem('h1', { class: 'hero__title', text: 'מערכת צירים — הרביע הראשון' }),
-      elem('p', { class: 'hero__subtitle', text: 'לומדים לקרוא ולסמן נקודות, לזהות שיעורים, להזיז נקודות ולפתור שעשועונים — בעברית מלאה, מותאם לנייד ולהדפסה.' }),
-    ),
-  );
+  /* The approved cover IS the home screen — shown large and immediately.
+     Tapping it opens the full booklet, where it is also the first A4 page. */
+  const cover = elem('button', {
+    class: 'home-cover',
+    type: 'button',
+    'aria-label': 'פתיחת החוברת המלאה',
+  });
+  const img = elem('img', {
+    class: 'home-cover__img',
+    src: APPROVED_COVER.src,
+    alt: APPROVED_COVER.alt,
+    decoding: 'async',
+  }) as HTMLImageElement;
+  // If the artwork is missing the screen must still be usable, never blank.
+  img.addEventListener('error', () => {
+    img.remove();
+    cover.classList.add('home-cover--fallback');
+    cover.append(
+      elem('div', { class: 'home-cover__fallbacktitle', text: 'מערכת צירים — הרביע הראשון' }),
+      elem('div', { class: 'home-cover__fallbackhint', text: 'לפתיחת החוברת המלאה' }),
+    );
+  });
+  cover.append(img);
+  cover.addEventListener('click', () => navigate('#/book'));
+
+  c.append(cover, elem('h1', { class: 'visually-hidden', text: 'מערכת צירים — הרביע הראשון' }));
 
   const last = lastPage.get();
   if (last > 1) {
