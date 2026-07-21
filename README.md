@@ -48,7 +48,9 @@ src/
   router.ts                נתב מבוסס hash (מתאים ל-Pages)
   styles/                  מערכת עיצוב: tokens, base, app, workbook, grayscale
   lib/                     coordinateGrid (SVG), coordinateMath (טהור ונבדק), dom, storage
-  data/workbook/           העמודים כנתונים + מערך ORDER + מפת נושאים
+  data/workbook/pages/     קובץ אחד לכל עמוד, בשם שמתאר מה הוא מלמד
+  data/workbook/authoring.ts  בניית הגיליון: כותרת, מספר, כותרת תחתונה, כלי כתיבה
+  data/workbook/index.ts   BOOK — סדר הקריאה, ומכאן נגזרים המספור והנושאים
   games/                   8 המשחקים + מנוע "גילוי מילה/קוד" משותף
   views/                   מסכים: בית (שער + כפתורי פעולה), תוכן עניינים, עמוד, חוברת
 public/assets/covers/      תמונת השער המאושרת
@@ -58,8 +60,8 @@ docs/                      תיעוד אדריכלות, תוכן, משחקים, 
 
 ## כיצד להוסיף עמוד
 
-1. הוסיפו אובייקט `WorkbookPageContent` ב־`src/data/workbook/practice-pages.ts` (או קובץ נתונים חדש) עם `sectionClass`, `title`, `subtitle` ו־`html`. אין צורך לבחור מספר: הוא נגזר מהמיקום.
-2. שבצו את העמוד במקום הנכון במערך `ORDER` שב־`src/data/workbook/index.ts` — המספור מתעדכן לבדו.
+1. צרו קובץ חדש ב־`src/data/workbook/pages/` (שם שמתאר מה העמוד מלמד) והשתמשו ב־`sheet({ sectionClass, title, subtitle, content })`. כותבים רק את תוכן העמוד — הכותרת, מספר העמוד והכותרת התחתונה נבנים לבד. אין צורך לבחור מספר.
+2. ייצאו אותו מ־`pages/index.ts` ושבצו אותו במקום הנכון ב־`BOOK` שב־`src/data/workbook/index.ts` — המספור ומפת הנושאים מתעדכנים לבדם.
 3. גרפים נכתבים כ־`<div class="coordinate-grid grid-md" data-points='…' data-segments='…'>` — הרכיב מצייר אותם אוטומטית.
 4. הריצו `npm test` — הבדיקות אוכפות את כללי `USER_MEMORY.md` (מספור, ניסוח, גודל סרטוטים ועוד).
 

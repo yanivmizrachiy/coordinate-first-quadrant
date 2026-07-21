@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { WORKBOOK, pageByNumber } from '../src/data/workbook';
 
 /* Yaniv's standing layout rules, as executable checks. Each one here is a bug
@@ -53,6 +53,35 @@ describe('SVG text survives the RTL sheet', () => {
   it('an axis number is never left sitting under a point', () => {
     expect(grid).toContain('onXAxis');
     expect(grid).toContain('onYAxis');
+  });
+});
+
+describe('pages stay easy to edit', () => {
+  const dir = new URL('../src/data/workbook/pages/', import.meta.url);
+  const files = readdirSync(dir).filter((f) => f !== 'index.ts');
+
+  it('every worksheet is its own file, named for what it teaches', () => {
+    expect(files.length).toBeGreaterThan(25);
+    for (const f of files) expect(f, f).toMatch(/^[a-z][a-z-]+\.ts$/);
+  });
+
+  it('no page file re-declares the wrapper the authoring layer owns', () => {
+    // A hand-written header or footer is how a sheet ends up without the
+    // canonical footer, or with a page number baked into the markup.
+    for (const f of files) {
+      const src = readFileSync(new URL(f, dir), 'utf8');
+      expect(src, `${f} builds its own header`).not.toContain('sheet-header');
+      expect(src, `${f} builds its own footer`).not.toContain('gz-footer');
+      expect(src, `${f} hardcodes a page number`).not.toMatch(/id="page-\d/);
+    }
+  });
+
+  it('page text is plain HTML — no escaped quotes to fight with', () => {
+    for (const f of files) {
+      const src = readFileSync(new URL(f, dir), 'utf8');
+      expect(src, `${f} still has &quot;`).not.toContain('&quot;');
+      expect(src, `${f} still has escaped quotes`).not.toContain('\\"');
+    }
   });
 });
 

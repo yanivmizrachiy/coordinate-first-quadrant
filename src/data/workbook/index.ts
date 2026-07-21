@@ -7,25 +7,55 @@
    are assigned by POSITION here, so a page can be inserted, split or reordered
    without hand-editing the number baked into every sheet.
    =========================================================================== */
-import { LEGACY_PAGES } from './legacy-pages';
-import { CONTINUATION_PAGES } from './continuation';
-import { HERO_INTRO, PLOT_A, PLOT_B } from './plot-pages';
-import { PLOT_SHAPE, GRAPH_REAL, SHAPE_MOVE, READ_PAIRS } from './practice-pages';
+import {
+  HERO_INTRO,
+  PLOT_A,
+  PLOT_B,
+  PLOT_SHAPE,
+  GRAPH_REAL,
+  SHAPE_MOVE,
+  READ_PAIRS,
+  ORDERED_PAIR_DRILL,
+  PARALLEL_PERPENDICULAR,
+  RIGHT_ANGLE_INTRO,
+  RIGHT_ANGLE_PRACTICE,
+  RIGHT_ANGLE_BUILD,
+  RIGHT_ANGLE_SUMMARY,
+  AXES_INTRO,
+  AXES_PRACTICE,
+  COORDS_INTRO,
+  COORDS_PRACTICE,
+  ORDERED_PAIR_INTRO,
+  ORDERED_PAIR_PRACTICE,
+  PLOT_PRACTICE,
+  READ_INTRO,
+  READ_PRACTICE,
+  ON_AXES_INTRO,
+  ON_AXES_PRACTICE,
+  POSITION_LANGUAGE_INTRO,
+  POSITION_LANGUAGE_PRACTICE,
+  SAME_COORD_INTRO,
+  SAME_COORD_PRACTICE,
+  RELATIONS_INTRO,
+  RELATIONS_PRACTICE,
+  MOVE_INTRO,
+  MOVE_PRACTICE,
+  DISTANCE_INTRO,
+  DISTANCE_PRACTICE,
+  MISSING_COORD_INTRO,
+  MISSING_COORD_PRACTICE,
+  ERRORS_INTRO,
+  ERRORS_PRACTICE,
+  RECTANGLES_INTRO,
+  RECTANGLES_PRACTICE,
+  SQUARES_INTRO,
+  SQUARES_PRACTICE,
+} from './pages';
 import { GAMES, type GameDefinition } from '../../games';
 import type { WorkbookPageContent, WorkbookTopic } from './types';
 
 export type { WorkbookPageContent, WorkbookTopic } from './types';
 
-const legacy = (n: number): WorkbookPageContent => {
-  const p = LEGACY_PAGES.find((x) => x.n === n);
-  if (!p) throw new Error(`legacy page ${n} missing`);
-  return p;
-};
-const cont = (n: number): WorkbookPageContent => {
-  const p = CONTINUATION_PAGES.find((x) => x.n === n);
-  if (!p) throw new Error(`continuation page ${n} missing`);
-  return p;
-};
 const game = (id: string): GameDefinition => {
   const g = GAMES.find((x) => x.id === id);
   if (!g) throw new Error(`game ${id} missing`);
@@ -83,41 +113,41 @@ const isGame = (s: Slot): s is GameDefinition => typeof (s as GameDefinition).mo
 const BOOK: { id: string; title: string; slots: Slot[] }[] = [
   { id: 'intro', title: 'היכרות עם מערכת הצירים', slots: [
     // The half-page coordinate system opens the booklet (Yaniv's rule).
-    HERO_INTRO, legacy(1), legacy(2),
+    HERO_INTRO, AXES_INTRO, AXES_PRACTICE,
   ] },
   { id: 'coords', title: 'שיעור x, שיעור y והזוג הסדור', slots: [
-    legacy(3), READ_PAIRS, legacy(4), cont(35), legacy(5), legacy(6),
+    COORDS_INTRO, READ_PAIRS, COORDS_PRACTICE, ORDERED_PAIR_DRILL, ORDERED_PAIR_INTRO, ORDERED_PAIR_PRACTICE,
   ] },
   { id: 'plot', title: 'סימון נקודות', slots: [
-    PLOT_A, PLOT_B, legacy(8), PLOT_SHAPE, game('hidden-drawing'),
+    PLOT_A, PLOT_B, PLOT_PRACTICE, PLOT_SHAPE, game('hidden-drawing'),
   ] },
   { id: 'read', title: 'קריאת נקודות ונקודות על הצירים', slots: [
-    legacy(9), legacy(10), legacy(11), legacy(12), GRAPH_REAL, game('secret-word'),
+    READ_INTRO, READ_PRACTICE, ON_AXES_INTRO, ON_AXES_PRACTICE, GRAPH_REAL, game('secret-word'),
   ] },
   { id: 'language', title: 'שפה של מיקום', slots: [
-    legacy(13), legacy(14), game('color-decode'),
+    POSITION_LANGUAGE_INTRO, POSITION_LANGUAGE_PRACTICE, game('color-decode'),
   ] },
   { id: 'same', title: 'שיעורים זהים וקטעים מקבילים', slots: [
-    legacy(15), legacy(16), game('same-axis'),
+    SAME_COORD_INTRO, SAME_COORD_PRACTICE, game('same-axis'),
   ] },
   { id: 'relations', title: 'יחסים בין שיעורים', slots: [
-    legacy(17), legacy(18),
+    RELATIONS_INTRO, RELATIONS_PRACTICE,
   ] },
   { id: 'move', title: 'הזזה ומרחק במערכת הצירים', slots: [
-    legacy(19), legacy(20), legacy(21), legacy(22), SHAPE_MOVE,
+    MOVE_INTRO, MOVE_PRACTICE, DISTANCE_INTRO, DISTANCE_PRACTICE, SHAPE_MOVE,
     game('encrypted-route'), game('coordinate-maze'),
   ] },
   { id: 'missing', title: 'שיעור חסר ודפוסים', slots: [
-    legacy(23), legacy(24), game('coordinate-safe'),
+    MISSING_COORD_INTRO, MISSING_COORD_PRACTICE, game('coordinate-safe'),
   ] },
   { id: 'errors', title: 'זיהוי ותיקון טעויות', slots: [
-    legacy(25), legacy(26), game('suspect-point'),
+    ERRORS_INTRO, ERRORS_PRACTICE, game('suspect-point'),
   ] },
   { id: 'rect', title: 'מלבנים, ריבועים, היקף ושטח', slots: [
-    legacy(27), legacy(28), legacy(29), legacy(30),
+    RECTANGLES_INTRO, RECTANGLES_PRACTICE, SQUARES_INTRO, SQUARES_PRACTICE,
   ] },
   { id: 'rightangle', title: 'מקביל, מאונך וזווית ישרה', slots: [
-    cont(36), cont(31), cont(32), cont(33), cont(34),
+    PARALLEL_PERPENDICULAR, RIGHT_ANGLE_INTRO, RIGHT_ANGLE_PRACTICE, RIGHT_ANGLE_BUILD, RIGHT_ANGLE_SUMMARY,
   ] },
 ];
 
