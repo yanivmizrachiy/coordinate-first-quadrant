@@ -51,7 +51,7 @@ export const colorDecodeGame: GameDefinition = {
 
     // rows from top (y = rows-1) down to y = 0, so orientation matches the axes
     for (let y = decodeRows - 1; y >= 0; y--) {
-      grid.append(elem('div', { style: 'display:grid;place-items:center;font-weight:800;color:var(--muted);font-size:12px', text: String(y) }));
+      grid.append(elem('div', { style: 'display:grid;place-items:center;font-weight:800;color:var(--muted);font-size:13px', text: String(y) }));
       for (let x = 0; x < decodeCols; x++) {
         const k = `${x},${y}`;
         const cell = elem('button', {
@@ -69,7 +69,7 @@ export const colorDecodeGame: GameDefinition = {
     // x-axis labels row
     grid.append(elem('div', {}));
     for (let x = 0; x < decodeCols; x++) {
-      grid.append(elem('div', { style: 'display:grid;place-items:center;font-weight:800;color:var(--muted);font-size:12px', text: String(x) }));
+      grid.append(elem('div', { style: 'display:grid;place-items:center;font-weight:800;color:var(--muted);font-size:13px', text: String(x) }));
     }
 
     wrap.append(grid, finalMsg);

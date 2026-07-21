@@ -19,9 +19,9 @@
   display: flex; align-items: flex-start; justify-content: space-between; gap: 18px;
   padding-bottom: 4mm; margin-bottom: 4mm; border-bottom: 2px solid var(--ink);
 }
-.eyebrow { font-size: 12px; font-weight: 800; letter-spacing: .04em; color: var(--blue); }
+.eyebrow { font-size: 13px; font-weight: 800; letter-spacing: .04em; color: var(--blue); }
 .sheet h1 { font-size: 27px; line-height: 1.15; margin: 3px 0 4px; }
-.sheet-header p { margin: 0; color: var(--muted); font-size: 14px; }
+.sheet-header p { margin: 0; color: var(--muted); font-size: 13px; }
 .sheet-number {
   width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center;
   background: var(--ink); color: white; font-size: 20px; font-weight: 900; flex: none;
@@ -30,7 +30,7 @@
 .sheet-footer {
   position: absolute; right: 14mm; left: 14mm; bottom: 7mm; display: flex;
   justify-content: space-between; gap: 20px; border-top: 1px solid var(--border);
-  padding-top: 2.5mm; color: var(--muted); font-size: 11px;
+  padding-top: 2.5mm; color: var(--muted); font-size: 13px;
 }
 .two-col { display: block; font-size: 0; }
 /* .two-col zeroes the font to kill inline-block whitespace, so the child must
@@ -44,7 +44,7 @@
 .q-card h3 {
   margin: -10px -12px 9px; padding: 7px 11px; background: var(--soft);
   border-bottom: 1px solid var(--border); border-radius: 10px 10px 0 0;
-  font-size: 14px; color: var(--ink);
+  font-size: 13px; color: var(--ink);
 }
 .q-card p { margin: 5px 0; }
 .tasks { padding-right: 20px; margin: 5px 0; }
@@ -64,10 +64,16 @@
   height: 1.2em; border-bottom: 1.5px solid var(--ink); vertical-align: -.08em;
 }
 .answer-line { height: 1.5em; border-bottom: 1px solid #8994a5; margin-top: 4px; }
-/* A game sheet is a numbered worksheet page that hosts an interactive game. */
+/* A game sheet is a numbered worksheet page that hosts an interactive game.
+   Games are interactive and can run taller than one A4 sheet, so this sheet
+   grows instead of clipping its content. */
+.game-sheet { height: auto; min-height: 297mm; overflow: visible; }
 .game-sheet .sheet-content { display: block; }
+.game-sheet .gz-footer { position: static; margin-top: 10mm; }
 .game-host { min-height: 150mm; }
 .game-host > * { max-width: 100%; }
+/* No sub-13px text anywhere on a sheet, including game-rendered markup. */
+.sheet small, .mist-card small { font-size: 13px; }
 
 .calc-box { border: 1px dashed #9aa6b6; border-radius: 8px; padding: 7px 10px 5px; margin: 7px 0; background: #fbfcfe; }
 .calc-box > b { display: block; margin-bottom: 3px; color: #40506a; }
@@ -114,7 +120,7 @@
 .mist-card p { margin: 5px 0; font-size: 13px; }
 .mist-card small { color: #5f6b7a; }
 .mist-head { display: flex; justify-content: space-between; font-weight: 800; background: #f3f5f8; margin: -7px -9px 5px; padding: 5px 8px; border-radius: 8px 8px 0 0; align-items: center; gap: 8px; }
-.mist-head span { font-size: 12px; font-weight: 600; }
+.mist-head span { font-size: 13px; font-weight: 600; }
 .always-row { border-bottom: 1px dashed #d8dee8; padding: 3px 0; font-size: 13px; }
 .always-row .choice-row { display: inline-flex; margin-inline: 7px; }
 .reason-line { display: inline-block; min-width: 110px; border-bottom: 1px solid #8994a5; }
@@ -125,14 +131,14 @@
 .grid-lg { height: 258px; }
 .grid-md { height: 210px; }
 .grid-sm { height: 165px; }
-.grid-xs { height: 168px; }
+.grid-xs { height: 134px; }
 .sheet.guided { font-size: 13px; }
 .sheet.guided .q-card { padding: 8px 10px; }
-.sheet.guided .q-card h3 { margin: -8px -10px 7px; padding: 6px 9px; font-size: 14px; }
+.sheet.guided .q-card h3 { margin: -8px -10px 7px; padding: 6px 9px; font-size: 13px; }
 .sheet.dense { font-size: 13px; }
 .sheet.ultra-dense { font-size: 13px; }
 .sheet.ultra-dense .q-card { padding: 7px 9px; }
-.sheet.ultra-dense .q-card h3 { margin: -7px -9px 6px; font-size: 13.2px; }
+.sheet.ultra-dense .q-card h3 { margin: -7px -9px 6px; font-size: 13px; }
 .sheet.error-page .answer-line { height: 1.25em; }
 
 /* The old ultra-dense sheet with six cramped grids was split into two roomy
@@ -154,7 +160,7 @@
 }
 .sheet-header p {
   color: #475569;
-  font-size: 14px;
+  font-size: 13px;
   margin: 0;
 }
 .sheet-number {
@@ -170,8 +176,8 @@
   padding-top: 3px; border-top: 1px solid #1d4ed8; text-align: center;
   line-height: 1.2; background: #fff;
 }
-.gz-footer .f1 { font-size: 10.5px; font-weight: 500; color: #1f2a44; }
-.gz-footer .f2 { font-size: 9.5px; color: #475569; }
+.gz-footer .f1 { font-size: 13px; font-weight: 500; color: #1f2a44; }
+.gz-footer .f2 { font-size: 13px; color: #475569; }
 
 /* No clipped headings: allow full RTL wrapping. */
 .sheet, .sheet-print-scope { scroll-margin-top: 86px; }
@@ -219,7 +225,7 @@
 .tf-option input { appearance: none; -webkit-appearance: none; width: 18px; height: 18px; margin: 0; border: 1.8px solid #334155; border-radius: 3px; background: #fff; display: grid; place-content: center; flex: 0 0 auto; }
 .tf-option input:checked::after { content: "✓"; font-size: 15px; line-height: 1; font-weight: 900; color: #111827; transform: translateY(-1px); }
 .tf-table td:last-child { width: 38%; min-width: 170px; padding-inline: 8px; }
-.mist-head > .tf-options { display: flex; min-width: auto; gap: 8px; font-size: 11px; font-weight: 700; }
+.mist-head > .tf-options { display: flex; min-width: auto; gap: 8px; font-size: 13px; font-weight: 700; }
 .mist-head > .tf-options .tf-option { gap: 3px; }
 .mist-head > .tf-options input { width: 15px; height: 15px; }
 
@@ -246,7 +252,7 @@
 .cover-placeholder { text-align: center; padding: 24px; color: var(--muted); }
 .cover-placeholder__title { font-size: 22px; font-weight: 900; color: var(--brand-ink); margin-bottom: 10px; }
 .cover-placeholder__file { font-family: var(--font-math); font-weight: 800; color: var(--ink); background: var(--surface-2); border: 1px solid var(--hairline); border-radius: 8px; padding: 6px 12px; display: inline-block; }
-.cover-placeholder__hint { margin-top: 10px; font-size: 14px; }
+.cover-placeholder__hint { margin-top: 10px; font-size: 13px; }
 
 /* ---- Responsive (screen, phones) ---- */
 @media (max-width: 850px) {
@@ -285,20 +291,20 @@
   .q-card { box-shadow: none; }
   .sheet-header { padding-bottom: 2.5mm; margin-bottom: 2.5mm; }
   .sheet-header h1 { font-size: 23px; }
-  .sheet-header p { font-size: 12px; }
+  .sheet-header p { font-size: 13px; }
   .sheet-number { width: 36px; height: 36px; font-size: 17px; }
-  .two-col > .q-card { font-size: 12.4px; margin-bottom: 6px; }
+  .two-col > .q-card { font-size: 13px; margin-bottom: 6px; }
   .q-card { padding: 7px 9px; border-radius: 8px; }
-  .q-card h3 { margin: -7px -9px 6px; padding: 5px 8px; font-size: 13.5px; }
+  .q-card h3 { margin: -7px -9px 6px; padding: 5px 8px; font-size: 13px; }
   .tasks li { margin: 3px 0; }
-  .work-table, .tf-table { font-size: 11.5px; margin: 4px 0; }
+  .work-table, .tf-table { font-size: 13px; margin: 4px 0; }
   .work-table th, .work-table td, .tf-table td { padding: 4px 5px; }
   .rule-box, .note-box { padding: 6px 8px; margin: 3px 0 5px; }
   .answer-line { height: 1.25em; }
   .grid-large { height: 190px; }
   .grid-medium { height: 175px; }
   .sheet-content { padding-bottom: 10mm; }
-  .sheet-footer { right: 10mm; left: 10mm; bottom: 5mm; font-size: 9.5px; }
+  .sheet-footer { right: 10mm; left: 10mm; bottom: 5mm; font-size: 13px; }
   .gz-footer { position: absolute; margin: 0; }
 
   .sequence-banner { display: none; }
@@ -324,5 +330,5 @@
   .word-blank { border-bottom-color: #111827; }
   .tf-option input { width: 4.2mm; height: 4.2mm; border-width: .45mm; }
   .mist-head > .tf-options input { width: 3.7mm; height: 3.7mm; }
-  .tf-option input:checked::after { font-size: 11px; }
+  .tf-option input:checked::after { font-size: 13px; }
 }
