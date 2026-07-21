@@ -25,8 +25,14 @@ ${grid({
   size: 'hero',
   axisNames: false,
   originName: true,
-  label: 'מערכת צירים גדולה ובה נקודה A, תיבות ריקות לשמות הצירים, לראשית הצירים ולמספרים החסרים',
-  points: [{ x: 4, y: 3, label: 'A' }],
+  label: 'מערכת צירים גדולה ובה הנקודות A B C, תיבות ריקות לשמות הצירים, לראשית הצירים ולמספרים החסרים',
+  // A is off both axes, B sits on ציר x and C on ציר y — so the questions can
+  // alternate between "which axis is this point on" and "which point is here".
+  points: [
+    { x: 4, y: 3, label: 'A' },
+    { x: 7, y: 0, label: 'B' },
+    { x: 0, y: 4, label: 'C' },
+  ],
   xlabels: [0, 1, 2, '', 4, 5, '', 7, 8],
   ylabels: [0, 1, '', 3, 4, '', 6],
 })}
@@ -40,6 +46,7 @@ ${grid({
 <li>ככל שזזים ימינה על ציר ${ltr('x')}, המספרים ${blank(6, 'relation')}.</li>
 <li>ככל שזזים למעלה על ציר ${blank(3, 'letter')}, המספרים גדלים.</li>
 <li>ככל שזזים ${blank(7, 'direction')} על ציר ${ltr('x')}, המספרים קטנים.</li>
+<li>ככל שזזים למטה על ציר ${ltr('y')}, המספרים ${blank(6, 'relation')}.</li>
 </ul>
 </section>
 <section class="q-card">
@@ -53,20 +60,21 @@ ${grid({
 </div>
 <div class="cols-2">
 <section class="q-card">
-<h3>ד. השלימו.</h3>
-<p>בין כל שני מספרים שכנים ממוקם עוד מספר: ${mixed(3, 1, 2)} ממוקם באמצע, בין 3 ל־4.</p>
+<h3>ד. סמנו על ציר ${ltr('x')} את המספר ${mixed(3, 1, 2)}, והשלימו.</h3>
 <ul class="tasks">
-<li>המספר ${mixed(5, 1, 2)} ממוקם בין המספר 5 למספר ${blank(3, 'number')}.</li>
-<li>כדי לסמן אותו מסמנים ב${blank(5, 'concept')} שבין שני המספרים.</li>
-<li>סמנו על ציר ${ltr('x')} את ${mixed(3, 1, 2)} ואת ${mixed(5, 1, 2)}, ועל ציר ${ltr('y')} את ${mixed(2, 1, 2)}.</li>
+<li>המספר ${mixed(3, 1, 2)} ממוקם מימין למספר ${blank(3, 'number')}.</li>
+<li>המספר ${mixed(3, 1, 2)} ממוקם ${blank(6, 'direction')} למספר 4.</li>
+<li>המספר ${blank(4, 'number')} ממוקם באמצע, בין 5 ל־6.</li>
 </ul>
 </section>
 <section class="q-card">
-<h3>ה. השלימו על נקודה ${ltr('A')} שבסרטוט.</h3>
+<h3>ה. השלימו על הנקודות שבסרטוט.</h3>
+<!-- Alternating on purpose: point -> axis, then axis -> point (Yaniv's rule). -->
 <ul class="tasks">
-<li>נקודה ${ltr('A')} ממוקמת מעל ציר ${blank(3, 'letter')}.</li>
+<li>נקודה ${ltr('B')} ממוקמת על ציר ${blank(3, 'letter')}.</li>
+<li>על ציר ${ltr('y')} ממוקמת נקודה ${blank(3, 'letter')}.</li>
 <li>נקודה ${ltr('A')} ממוקמת ${blank(6, 'direction')} לציר ${ltr('y')}.</li>
-<li>על ציר ${ltr('x')}, מתחת לנקודה ${ltr('A')}, ממוקם המספר ${blank(3, 'number')}.</li>
+<li>מתחת לנקודה ${ltr('A')} ממוקם על ציר ${ltr('x')} המספר ${blank(3, 'number')}.</li>
 </ul>
 </section>
 </div>
