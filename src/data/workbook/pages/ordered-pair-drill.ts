@@ -1,56 +1,54 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet } from '../authoring';
+import { sheet, blank, wordBlank, ltr } from '../authoring';
 
+const PB = '<span class="pair-blank"></span>';
+const pair = (name = ''): string =>
+  `<span class="pair math-ltr" dir="ltr">${name}(${PB},${PB})</span>`;
+
+/* Rewritten to Yaniv's style: the opening rule is a completion rather than a
+   paragraph to read, every task is a full sentence rather than an "x = ___"
+   form, and no two items in a group ask the same thing with different numbers. */
 export const ORDERED_PAIR_DRILL: WorkbookPageContent = sheet({
-  sectionClass: "sheet guided",
-  title: "הזוג הסדור — סדר, סוגריים ותרגול",
-  subtitle: "x מצד שמאל, y מצד ימין — יש סדר, ולכן זוג סדור",
-  contentTag: 'div',
+  sectionClass: 'sheet guided',
+  title: 'הזוג הסדור — סדר, סוגריים ותרגול',
+  subtitle: 'ערך x מצד שמאל, שיעור y מצד ימין',
   content: `
-<div class="rule-box">כל נקודה נכתבת כ<b>זוג סדור</b> בתוך סוגריים: <span class="math-ltr" dir="ltr">(x,y)</span>. המספר ה<b>שמאלי</b> הוא שיעור <span class="math-ltr" dir="ltr">x</span>, והמספר ה<b>ימני</b> הוא שיעור <span class="math-ltr" dir="ltr">y</span>. הסדר קובע — ולכן זהו זוג <b>סדור</b>.
+<div class="rule-box completion-intro">
+<div class="completion-sentence">כל נקודה נכתבת כזוג סדור בתוך ${wordBlank('medium', 'concept', 'מקום להשלמת המילה סוגריים')}.</div>
+<div class="completion-sentence">המספר שנכתב מצד שמאל הוא ערך ${wordBlank('short', 'letter', 'מקום להשלמת האות x')}, והמספר שנכתב מצד ימין הוא שיעור ${ltr('y')}.</div>
+<div class="completion-sentence">מכיוון שיש סֵדֶר, קוראים לזה זוג ${wordBlank('medium', 'concept', 'מקום להשלמת המילה סדור')}.</div>
 </div>
 <section class="q-card">
-<h3>א. נתונה נקודה — כתבו את שיעוריה.</h3>
+<h3>א. נתונה נקודה — השלימו את שיעוריה.</h3>
 <ul class="tasks">
-<li>נקודה <span class="math-ltr" dir="ltr">A(3,5)</span>: שיעור <span class="math-ltr" dir="ltr">x =</span> <span class="blank" style="--blank-width:3ch"></span>, שיעור <span class="math-ltr" dir="ltr">y =</span> <span class="blank" style="--blank-width:3ch"></span></li>
-<li>נקודה <span class="math-ltr" dir="ltr">B(6,2)</span>: שיעור <span class="math-ltr" dir="ltr">x =</span> <span class="blank" style="--blank-width:3ch"></span>, שיעור <span class="math-ltr" dir="ltr">y =</span> <span class="blank" style="--blank-width:3ch"></span></li>
+<li>בנקודה ${ltr('A(3,5)')} ערך ה־${ltr('x')} הוא ${blank(3, 'number')}, ושיעור ה־${ltr('y')} הוא ${blank(3, 'number')}.</li>
+<li>בנקודה ${ltr('B(6,2)')} ערך ה־${ltr('x')} הוא ${blank(3, 'number')}, ושיעור ה־${ltr('y')} הוא ${blank(3, 'number')}.</li>
+<li>בנקודה ${ltr('C(0,4)')} ערך ה־${ltr('x')} הוא 0, ולכן היא ממוקמת על ציר ${blank(3, 'letter')}.</li>
 </ul>
 </section>
 <section class="q-card">
 <h3>ב. נתונים שיעורים — כתבו את הזוג הסדור.</h3>
 <ul class="tasks">
-<li>שיעור <span class="math-ltr" dir="ltr">x</span> הוא 4 ושיעור <span class="math-ltr" dir="ltr">y</span> הוא 7: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
-<li>שיעור <span class="math-ltr" dir="ltr">x</span> הוא 8 ושיעור <span class="math-ltr" dir="ltr">y</span> הוא 1: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>ערך ${ltr('x')} הוא 4 ושיעור ${ltr('y')} הוא 7 &nbsp;←&nbsp; ${pair()}</li>
+<li>נקודה בשם ${ltr('D')} ששיעוריה 8 ו־1 &nbsp;←&nbsp; ${pair('D')}</li>
+<li>נקודה שממוקמת בראשית הצירים &nbsp;←&nbsp; ${pair()}</li>
+<li>נקודה שערך ה־${ltr('x')} שלה 5 והיא ממוקמת על ציר ${ltr('x')} &nbsp;←&nbsp; ${pair()}</li>
 </ul>
 </section>
 <section class="q-card">
-<h3>ג. הסדר משנה!</h3>
-<p>האם נקודה <span class="math-ltr" dir="ltr">(2,6)</span> ונקודה <span class="math-ltr" dir="ltr">(6,2)</span> הן אותה נקודה? <span class="blank" style="--blank-width:6ch"></span></p>
-<p>הסבירו מדוע:</p>
-<div class="answer-line">
-</div>
-</section>
-<section class="q-card">
-<h3>ד. כתבו כל נקודה — האות משמאל לסוגריים.</h3>
+<h3>ג. הסדר משנה.</h3>
 <ul class="tasks">
-<li>נקודה בשם <span class="math-ltr" dir="ltr">C</span> ששיעוריה 5 ו־3: <span class="pair math-ltr" dir="ltr">C(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
-<li>נקודה בשם <span class="math-ltr" dir="ltr">D</span> ששיעוריה 0 ו־4: <span class="pair math-ltr" dir="ltr">D(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>נקודה ${ltr('(2,6)')} ונקודה ${ltr('(6,2)')} ${blank(6, 'relation')} אותה נקודה.</li>
+<li>בנקודה ${ltr('(2,6)')} ערך ה־${ltr('x')} הוא 2, ובנקודה ${ltr('(6,2)')} הוא ${blank(3, 'number')}.</li>
+<li>לכן נקודה ${ltr('(6,2)')} ממוקמת ${blank(6, 'direction')} לנקודה ${ltr('(2,6)')}.</li>
 </ul>
 </section>
 <section class="q-card">
-<h3>ד. השלימו — מהזוג הסדור אל השיעורים.</h3>
+<h3>ד. השלימו — האות נכתבת משמאל לסוגריים.</h3>
 <ul class="tasks">
-<li>בזוג הסדור <span class="math-ltr" dir="ltr">(7,2)</span> שיעור <span class="math-ltr" dir="ltr">x</span> הוא <span class="blank" data-missing="number" style="--blank-width:3ch"></span>.</li>
-<li>בזוג הסדור <span class="math-ltr" dir="ltr">(7,2)</span> המספר 2 הוא שיעור <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>.</li>
-<li>הזוג הסדור נכתב תמיד בתוך <span class="blank" data-missing="concept" style="--blank-width:7ch"></span>.</li>
-</ul>
-</section>
-<section class="q-card">
-<h3>ה. השלימו — מהשיעורים אל הזוג הסדור.</h3>
-<ul class="tasks">
-<li>שיעור <span class="math-ltr" dir="ltr">x</span> הוא 5, שיעור <span class="math-ltr" dir="ltr">y</span> הוא 5 &nbsp;←&nbsp; <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
-<li>שיעור <span class="math-ltr" dir="ltr">x</span> הוא 9, שיעור <span class="math-ltr" dir="ltr">y</span> הוא 3 &nbsp;←&nbsp; <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
-<li>שיעור <span class="math-ltr" dir="ltr">x</span> הוא 4, שיעור <span class="math-ltr" dir="ltr">y</span> הוא 6 &nbsp;←&nbsp; <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>נקודה בשם ${ltr('E')} ששיעוריה 5 ו־3 נכתבת ${pair('E')}</li>
+<li>בזוג הסדור ${ltr('(7,2)')} המספר 2 הוא שיעור ${blank(3, 'letter')}.</li>
+<li>הזוג הסדור נכתב תמיד בתוך ${blank(7, 'concept')}.</li>
 </ul>
 </section>
 `,
