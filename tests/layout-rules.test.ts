@@ -94,6 +94,21 @@ describe('completions ask for something different each time', () => {
     expect(first, 'ראשית הצירים needs two boxes on the drawing').toContain('data-originname="true"');
   });
 
+  it('numbers are digits and fractions, the way a textbook sets them', () => {
+    const text = pageByNumber(1)!.html.replace(/<[^>]+>/g, ' ');
+    for (const spelled of ['שלוש וחצי', 'חמש וחצי', 'שתיים וחצי', 'שבע וחצי']) {
+      expect(text, `spelled-out number "${spelled}"`).not.toContain(spelled);
+    }
+    expect(text, 'decimal point instead of a fraction').not.toMatch(/\d\.\d/);
+    expect(pageByNumber(1)!.html, 'no stacked fraction').toContain('frac__d');
+  });
+
+  it('a position is "ממוקם", never "נמצא"', () => {
+    const text = pageByNumber(1)!.html.replace(/<[^>]+>/g, ' ');
+    expect(text, 'page 1 still says נמצא').not.toContain('נמצא');
+    expect(text).toContain('ממוקם');
+  });
+
   it('a fill-in task offers a word bank instead of a paragraph of directions', () => {
     const first = pageByNumber(1)!.html;
     expect(first, 'no מחסן מילים').toContain('word-bank');

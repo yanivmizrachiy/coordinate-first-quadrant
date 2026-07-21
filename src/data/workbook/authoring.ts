@@ -80,6 +80,16 @@ export const pair = (name = ''): string =>
 export const ltr = (math: string): string =>
   `<span class="math-ltr" dir="ltr">${math}</span>`;
 
+/** A fraction the way a textbook sets it: numerator over denominator. */
+export const frac = (num: number, den: number): string =>
+  `<span class="frac" aria-label="${num} חלקי ${den}">` +
+  `<span class="frac__n">${num}</span><span class="frac__d">${den}</span></span>`;
+
+/** A mixed number — digits, never words: `mixed(3, 1, 2)` → 3½. */
+export const mixed = (whole: number, num: number, den: number): string =>
+  `<span class="mixed math-ltr" dir="ltr" aria-label="${whole} ו-${num} חלקי ${den}">` +
+  `${whole}${frac(num, den)}</span>`;
+
 /** „מחסן מילים” — the words to choose from, so the task needs no explaining. */
 export const wordBank = (words: string[]): string =>
   '<div class="word-bank"><b>מחסן מילים:</b> ' +
