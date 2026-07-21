@@ -48,9 +48,12 @@ export const HERO_INTRO: WorkbookPageContent = {
     '<li>איזו נקודה נמצאת על ציר <span class="math-ltr" dir="ltr">x</span>? <span class="blank" style="--blank-width:4ch"></span></li>' +
     '<li>איזו נקודה נמצאת על ציר <span class="math-ltr" dir="ltr">y</span>? <span class="blank" style="--blank-width:4ch"></span></li>' +
     '</ul></section>' +
-    '<section class="q-card"><h3>ד. סמנו על הסרטוט שתי נקודות נוספות.</h3><ul class="tasks compact">' +
-    '<li>נקודה <span class="math-ltr" dir="ltr">E</span> שבה ערך <span class="math-ltr" dir="ltr">x</span> הוא 7 ושיעור <span class="math-ltr" dir="ltr">y</span> הוא 2.</li>' +
-    '<li>נקודה <span class="math-ltr" dir="ltr">F(1,1)</span>.</li>' +
+    /* This sheet teaches READING a point that is already drawn. Marking new
+       points is a different skill and gets its own sheet later. */
+    '<section class="q-card"><h3>ד. השלימו לפי הסרטוט.</h3><ul class="tasks compact">' +
+    '<li>בנקודה <span class="math-ltr" dir="ltr">B</span> ערך <span class="math-ltr" dir="ltr">x</span> הוא <span class="blank" style="--blank-width:4ch"></span> ושיעור <span class="math-ltr" dir="ltr">y</span> הוא <span class="blank" style="--blank-width:4ch"></span>.</li>' +
+    '<li>בנקודה <span class="math-ltr" dir="ltr">C</span>, שנמצאת על ציר <span class="math-ltr" dir="ltr">x</span>, שיעור <span class="math-ltr" dir="ltr">y</span> הוא <span class="blank" style="--blank-width:4ch"></span>.</li>' +
+    '<li>בנקודה <span class="math-ltr" dir="ltr">D</span>, שנמצאת על ציר <span class="math-ltr" dir="ltr">y</span>, ערך <span class="math-ltr" dir="ltr">x</span> הוא <span class="blank" style="--blank-width:4ch"></span>.</li>' +
     '</ul></section>' +
     '</div>' +
     '</main>' + FOOTER + '</section>',
