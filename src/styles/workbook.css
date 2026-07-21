@@ -47,7 +47,9 @@
   font-size: 13px; color: var(--ink);
 }
 .q-card p { margin: 5px 0; }
-.tasks { padding-right: 20px; margin: 5px 0; }
+/* No browser bullet discs on worksheets — items are already grouped under an
+   א/ב/ג task heading, so the dots are just visual noise. */
+.tasks { list-style: none; padding-right: 0; margin: 5px 0; }
 .tasks li { margin: 6px 0; }
 .tasks.compact li { margin: 3px 0; }
 .rule-box, .note-box {

@@ -93,7 +93,8 @@
 .game__row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
   padding: 12px 14px; background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-md); }
 .game__prompt { font-weight: 800; }
-.game__hintlist { margin: 0; padding-inline-start: 20px; }
+/* No bullet discs on a sheet — same rule as .tasks in workbook.css. */
+.game__hintlist { margin: 0; padding-inline-start: 0; list-style: none; }
 
 .answer-input {
   min-height: var(--tapsize); min-width: 72px; padding: 8px 12px;
