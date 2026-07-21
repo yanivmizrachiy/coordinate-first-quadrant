@@ -1,26 +1,26 @@
 /* ===========================================================================
    Cover page — the approved first page of the booklet.
 
-   Only 05-workbook-cover-final.png is the approved cover. The other generated
-   images (01–04) are alternatives / future design material and must NOT be used
-   as the main cover. Drop the PNGs into public/assets/generated-covers/ (served
-   at assets/generated-covers/) and this wires them in automatically.
+   The approved artwork lives at public/assets/covers/workbook-cover.png and is
+   served at assets/covers/workbook-cover.png (BASE_URL keeps the GitHub Pages
+   subpath working). It is the booklet's first A4 page: it is NOT part of the
+   worksheet numbering, and it never appears when printing a single worksheet.
    =========================================================================== */
 
 export interface CoverImage {
-  /** File name inside public/assets/generated-covers/. */
+  /** File name inside public/assets/covers/. */
   file: string;
   /** Resolved URL (respects the Pages base path). */
   src: string;
   alt: string;
 }
 
-const COVER_DIR = `${import.meta.env.BASE_URL}assets/generated-covers/`;
+const COVER_DIR = `${import.meta.env.BASE_URL}assets/covers/`;
 
 /** THE approved cover — the booklet's first page. */
 export const APPROVED_COVER: CoverImage = {
-  file: '05-workbook-cover-final.png',
-  src: `${COVER_DIR}05-workbook-cover-final.png`,
+  file: 'workbook-cover.png',
+  src: `${COVER_DIR}workbook-cover.png`,
   alt: 'כריכת החוברת: מערכת צירים — הרביע הראשון',
 };
 
