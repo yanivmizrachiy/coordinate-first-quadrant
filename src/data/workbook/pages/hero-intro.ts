@@ -45,8 +45,9 @@ export const HERO_INTRO: WorkbookPageContent = sheet({
 <section class="q-card">
 <h3>ג. נקודות שעל הצירים.</h3>
 <ul class="tasks compact">
-<li>איזו נקודה ממוקמת על ציר <span class="math-ltr" dir="ltr">x</span>? <span class="blank" style="--blank-width:4ch"></span></li>
-<li>איזו נקודה ממוקמת על ציר <span class="math-ltr" dir="ltr">y</span>? <span class="blank" style="--blank-width:4ch"></span></li>
+<li>איזו נקודה ממוקמת על ציר <span class="math-ltr" dir="ltr">x</span>? <span class="blank" data-missing="letter" style="--blank-width:4ch"></span></li>
+<li>נקודה <span class="math-ltr" dir="ltr">D</span> ממוקמת על ציר <span class="blank" data-missing="letter" style="--blank-width:4ch"></span>.</li>
+<li>בנקודה <span class="math-ltr" dir="ltr">C</span> שיעור <span class="math-ltr" dir="ltr">y</span> הוא <span class="blank" data-missing="number" style="--blank-width:4ch"></span>.</li>
 </ul>
 </section>
 <section class="q-card">

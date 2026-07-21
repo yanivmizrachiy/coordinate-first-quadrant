@@ -181,6 +181,50 @@ describe('a group never asks the same question four times', () => {
       expect(text, `page ${p.n} uses "= ___" inside a sentence`).not.toMatch(/(שיעור|ערך)\s*[xy]?\s*=\s*(_|$)/);
     }
   });
+
+  /* USER_MEMORY §5. Yaniv: „פעם המילה שווה ופעם הסימן שווה — ככה רציתי גיוון”.
+     Stating a given one single way through a whole task is the monotony he
+     objects to; the two forms have to sit side by side. */
+  it('a task that states given coordinates uses the word שווה AND the sign =', () => {
+    const readable = (html: string): string => html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+    const teaches = WORKBOOK.filter((p) => readable(p.html).includes('הזוג הסדור המתאים'));
+    expect(teaches.length, 'no page builds an ordered pair from given coordinates').toBeGreaterThan(0);
+    for (const p of teaches) {
+      const text = readable(p.html);
+      expect(text, `page ${p.n} never states a given with the word שווה`).toMatch(/שווה\s*\d/);
+      expect(text, `page ${p.n} never states a given with the sign =`).toMatch(/[xy]\s*=\s*\d/);
+    }
+  });
+
+  /* USER_MEMORY §8. The blank has to MOVE. Two consecutive items whose text is
+     identical once the blank is taken out are the same question twice, however
+     different the numbers or the axis letter look. */
+  it('two items in a row never leave the same sentence with the blank in one place', () => {
+    const skeleton = (li: string): string =>
+      li
+        .replace(/<span class="blank[^>]*><\/span>/g, ' ▮ ')
+        .replace(/<[^>]+>/g, ' ')
+        // Swapping x for y, A for B or AB for BC is not variety — the learner
+        // answers the second item by copying how they answered the first.
+        .replace(/\b[A-Z]{1,2}\b/g, '▲')
+        .replace(/\b[xy]\b/g, '▯')
+        .replace(/\d+/g, '#')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+    for (const p of WORKBOOK) {
+      for (const list of p.html.split('<ul class="tasks').slice(1)) {
+        const items = [...list.split('</ul>')[0]!.matchAll(/<li>([\s\S]*?)<\/li>/g)].map((m) => skeleton(m[1]!));
+        for (let i = 1; i < items.length; i++) {
+          if (!items[i]!.includes('▮')) continue;
+          expect(
+            items[i],
+            `page ${p.n}: two items in a row read "${items[i]!.slice(0, 52)}"`,
+          ).not.toBe(items[i - 1]);
+        }
+      }
+    }
+  });
 });
 
 describe('a poster sheet keeps the design and drops what the rules forbid', () => {

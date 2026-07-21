@@ -16,8 +16,8 @@ export const SAME_COORD_PRACTICE: WorkbookPageContent = sheet({
 </div>
 <p>השלימו:</p>
 <ul class="tasks">
-<li><span class="math-ltr" dir="ltr">P(3,1)</span> ו־<span class="math-ltr" dir="ltr">Q(3,6)</span> - שיעור <span class="blank" style="--blank-width:3ch"></span> זהה.</li>
-<li><span class="math-ltr" dir="ltr">R(1,4)</span> ו־<span class="math-ltr" dir="ltr">S(7,4)</span> - שיעור <span class="blank" style="--blank-width:3ch"></span> זהה.</li>
+<li><span class="math-ltr" dir="ltr">P(3,1)</span> ו־<span class="math-ltr" dir="ltr">Q(3,6)</span> - שיעור <span class="blank" data-missing="letter" style="--blank-width:3ch"></span> זהה.</li>
+<li>ב־<span class="math-ltr" dir="ltr">R(1,4)</span> ו־<span class="math-ltr" dir="ltr">S(7,4)</span> שיעור <span class="math-ltr" dir="ltr">y</span> זהה, ולכן הקטע <span class="math-ltr" dir="ltr">RS</span> מקביל לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>.</li>
 </ul>
 </section>
 <section class="q-card">
@@ -25,9 +25,9 @@ export const SAME_COORD_PRACTICE: WorkbookPageContent = sheet({
 <div aria-label="מערכת צירים עם הקטעים AB BC CD" class="coordinate-grid grid-md" data-arrows="[]" data-points='[{"x": 2, "y": 1, "label": "A", "dx": 10, "dy": -10}, {"x": 2, "y": 5, "label": "B", "dx": 10, "dy": -10}, {"x": 6, "y": 5, "label": "C", "dx": 10, "dy": -10}, {"x": 6, "y": 2, "label": "D", "dx": 10, "dy": -10}]' data-polygons="[]" data-segments='[{"from": [2, 1], "to": [2, 5], "type": "shape"}, {"from": [2, 5], "to": [6, 5], "type": "shape"}, {"from": [6, 5], "to": [6, 2], "type": "shape"}]' role="img">
 </div>
 <ul class="tasks compact">
-<li>הקטע <span class="math-ltr" dir="ltr">AB</span> מקביל לציר <span class="blank" style="--blank-width:3ch"></span>.</li>
-<li>הקטע <span class="math-ltr" dir="ltr">BC</span> מקביל לציר <span class="blank" style="--blank-width:3ch"></span>.</li>
-<li>האם <span class="math-ltr" dir="ltr">CD</span> אופקי או אנכי? <span class="blank" style="--blank-width:7ch"></span></li>
+<li>הקטע <span class="math-ltr" dir="ltr">AB</span> מקביל לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>.</li>
+<li>הקטע <span class="math-ltr" dir="ltr">BC</span> <span class="blank" data-missing="relation" style="--blank-width:6ch"></span> לקטע <span class="math-ltr" dir="ltr">AB</span>.</li>
+<li>האם <span class="math-ltr" dir="ltr">CD</span> אופקי או אנכי? <span class="blank" data-missing="property" style="--blank-width:7ch"></span></li>
 </ul>
 </section>
 <section class="q-card">

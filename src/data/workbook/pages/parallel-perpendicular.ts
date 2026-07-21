@@ -20,10 +20,10 @@ export const PARALLEL_PERPENDICULAR: WorkbookPageContent = sheet({
 <section class="q-card">
 <h3>ב. השלימו.</h3>
 <ul class="tasks compact">
-<li>קטע שבו <b>שיעור <span class="math-ltr" dir="ltr">y</span> זהה</b> בשתי הנקודות מקביל לציר <span class="blank" style="--blank-width:3ch"></span>.</li>
-<li>קטע שבו <b>שיעור <span class="math-ltr" dir="ltr">x</span> זהה</b> בשתי הנקודות מקביל לציר <span class="blank" style="--blank-width:3ch"></span>.</li>
-<li>קטע המקביל לציר <span class="math-ltr" dir="ltr">x</span> מאונך לציר <span class="blank" style="--blank-width:3ch"></span>.</li>
-<li>קטע המקביל לציר <span class="math-ltr" dir="ltr">y</span> מאונך לציר <span class="blank" style="--blank-width:3ch"></span>.</li>
+<li>קטע שבו <b>שיעור <span class="math-ltr" dir="ltr">y</span> זהה</b> בשתי הנקודות מקביל לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>.</li>
+<li>קטע שבו <b>שיעור <span class="blank" data-missing="letter" style="--blank-width:3ch"></span> זהה</b> בשתי הנקודות מקביל לציר <span class="math-ltr" dir="ltr">y</span>.</li>
+<li>קטע המקביל לציר <span class="math-ltr" dir="ltr">x</span> <span class="blank" data-missing="relation" style="--blank-width:6ch"></span> לציר <span class="math-ltr" dir="ltr">y</span>.</li>
+<li>קטע <span class="blank" data-missing="relation" style="--blank-width:6ch"></span> לציר <span class="math-ltr" dir="ltr">y</span> מאונך לציר <span class="math-ltr" dir="ltr">x</span>.</li>
 </ul>
 </section>
 </div>

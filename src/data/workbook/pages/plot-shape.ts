@@ -17,16 +17,16 @@ export const PLOT_SHAPE: WorkbookPageContent = sheet({
 <section class="q-card">
 <h3>ב. מקביל לאיזה ציר?</h3>
 <ul class="tasks compact">
-<li>הקטעים <span class="math-ltr" dir="ltr">AB</span> ו־<span class="math-ltr" dir="ltr">CD</span> מקבילים לציר <span class="blank" style="--blank-width:3ch"></span>.</li>
-<li>הקטעים <span class="math-ltr" dir="ltr">BC</span> ו־<span class="math-ltr" dir="ltr">DA</span> מקבילים לציר <span class="blank" style="--blank-width:3ch"></span>.</li>
+<li>הקטעים <span class="math-ltr" dir="ltr">AB</span> ו־<span class="math-ltr" dir="ltr">CD</span> מקבילים לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>.</li>
+<li>הקטעים <span class="blank" data-missing="letter" style="--blank-width:8ch"></span> ו־<span class="math-ltr" dir="ltr">DA</span> מקבילים לציר <span class="math-ltr" dir="ltr">y</span>.</li>
 <li>קטע המקביל לציר <span class="math-ltr" dir="ltr">x</span> הוא מאונך לציר <span class="blank" style="--blank-width:3ch"></span>.</li>
 </ul>
 </section>
 <section class="q-card">
 <h3>ג. איזה שיעור זהה?</h3>
 <ul class="tasks compact">
-<li>בקטע <span class="math-ltr" dir="ltr">AB</span> שיעור <span class="blank" style="--blank-width:3ch"></span> זהה בשתי הנקודות.</li>
-<li>בקטע <span class="math-ltr" dir="ltr">BC</span> שיעור <span class="blank" style="--blank-width:3ch"></span> זהה בשתי הנקודות.</li>
+<li>בקטע <span class="math-ltr" dir="ltr">AB</span> שיעור <span class="blank" data-missing="letter" style="--blank-width:3ch"></span> זהה בשתי הנקודות.</li>
+<li>בקטע <span class="math-ltr" dir="ltr">BC</span> ערך <span class="math-ltr" dir="ltr">x</span> זהה, ולכן הקטע <span class="blank" data-missing="relation" style="--blank-width:6ch"></span> לציר <span class="math-ltr" dir="ltr">y</span>.</li>
 </ul>
 </section>
 </div>

@@ -26,8 +26,8 @@ export const READ_INTRO: WorkbookPageContent = sheet({
 <section class="q-card">
 <h3>ב. כתבו את שם הנקודה.</h3>
 <ul class="tasks compact">
-<li><span class="math-ltr" dir="ltr">x=4,y=5</span> ← <span class="blank" style="--blank-width:4ch"></span></li>
-<li><span class="math-ltr" dir="ltr">x=7,y=1</span> ← <span class="blank" style="--blank-width:4ch"></span></li>
+<li><span class="math-ltr" dir="ltr">x = 4, y = 5</span> ← <span class="blank" data-missing="letter" style="--blank-width:4ch"></span></li>
+<li>ערך <span class="math-ltr" dir="ltr">x</span> שווה 7 ושיעור <span class="math-ltr" dir="ltr">y</span> שווה 1 ← <span class="blank" data-missing="letter" style="--blank-width:4ch"></span></li>
 <li>שני שיעוריה שווים ל־3 ← <span class="blank" style="--blank-width:4ch"></span></li>
 <li>שיעור y שלה הוא 6 ← <span class="blank" style="--blank-width:4ch"></span></li>
 </ul>

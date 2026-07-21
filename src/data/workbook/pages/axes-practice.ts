@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet } from '../authoring';
+import { sheet, wordBank } from '../authoring';
 
 export const AXES_PRACTICE: WorkbookPageContent = sheet({
   sectionClass: "sheet practice",
@@ -23,12 +23,12 @@ export const AXES_PRACTICE: WorkbookPageContent = sheet({
 </section>
 <section class="q-card">
 <h3>כיווני התנועה על הצירים</h3>
-<p>השלימו במילים <b>ימינה</b>, <b>שמאלה</b>, <b>למעלה</b>, <b>למטה</b>.</p>
+${wordBank(['ימינה', 'שמאלה', 'למעלה', 'למטה', 'x', 'y'])}
 <ul class="tasks">
-<li>כאשר ערך <span class="math-ltr" dir="ltr">x</span> גדל, נעים <span class="blank" style="--blank-width:6ch"></span>.</li>
-<li>כאשר ערך <span class="math-ltr" dir="ltr">y</span> גדל, נעים <span class="blank" style="--blank-width:6ch"></span>.</li>
-<li>כדי לחזור אל ציר <span class="math-ltr" dir="ltr">y</span>, נעים <span class="blank" style="--blank-width:6ch"></span>.</li>
-<li>כדי לחזור אל ציר <span class="math-ltr" dir="ltr">x</span>, נעים <span class="blank" style="--blank-width:6ch"></span>.</li>
+<li>כאשר ערך <span class="math-ltr" dir="ltr">x</span> גדל, נעים <span class="blank" data-missing="direction" style="--blank-width:6ch"></span>.</li>
+<li>כאשר ערך <span class="blank" data-missing="letter" style="--blank-width:4ch"></span> גדל, נעים למעלה.</li>
+<li>כדי לחזור אל ציר <span class="math-ltr" dir="ltr">y</span>, נעים <span class="blank" data-missing="direction" style="--blank-width:6ch"></span>.</li>
+<li>כדי לחזור אל ציר <span class="blank" data-missing="letter" style="--blank-width:4ch"></span>, נעים למטה.</li>
 </ul>
 </section>
 <section class="q-card">

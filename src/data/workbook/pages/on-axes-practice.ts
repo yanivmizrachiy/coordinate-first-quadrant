@@ -17,8 +17,8 @@ export const ON_AXES_PRACTICE: WorkbookPageContent = sheet({
 </div>
 <p>השלימו:</p>
 <ul class="tasks">
-<li>בכל נקודה על ציר <span class="math-ltr" dir="ltr">x</span>, שיעור <span class="math-ltr" dir="ltr">y</span> שווה ל־<span class="blank" style="--blank-width:3ch"></span>.</li>
-<li>בכל נקודה על ציר <span class="math-ltr" dir="ltr">y</span>, שיעור <span class="math-ltr" dir="ltr">x</span> שווה ל־<span class="blank" style="--blank-width:3ch"></span>.</li>
+<li>בכל נקודה על ציר <span class="math-ltr" dir="ltr">x</span>, שיעור <span class="math-ltr" dir="ltr">y</span> שווה ל־<span class="blank" data-missing="number" style="--blank-width:3ch"></span>.</li>
+<li>בכל נקודה על ציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>, ערך <span class="math-ltr" dir="ltr">x</span> שווה ל־0.</li>
 </ul>
 </section>
 <section class="q-card">
