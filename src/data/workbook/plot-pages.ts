@@ -12,43 +12,6 @@ const FOOTER =
 
 const pair = '<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>';
 
-const tf = (name: string) =>
-  '<div class="tf-options" role="group" aria-label="סמנו נכון או לא נכון">' +
-  `<label class="tf-option"><input type="radio" name="${name}" value="true"><span>נכון</span></label>` +
-  `<label class="tf-option"><input type="radio" name="${name}" value="false"><span>לא נכון</span></label>` +
-  '</div>';
-
-/* Page 1 held two full-size grids plus a 5-row true/false table and an open
-   question — it overflowed the A4 sheet. Per the rule "add a page, never cram",
-   the checking half lives here. */
-export const INTRO_CHECK: WorkbookPageContent = {
-  n: 103,
-  id: 'page-103',
-  sectionClass: 'sheet guided',
-  title: 'בודקים את מערכת הצירים',
-  subtitle: 'נכון או לא נכון, וכיווני הגדילה של השיעורים',
-  html:
-    '<section aria-labelledby="title-103" class="sheet guided" id="page-103">' +
-    '<header class="sheet-header"><div><h1 id="title-103">בודקים את מערכת הצירים</h1><p>נכון או לא נכון, וכיווני הגדילה של השיעורים</p></div><div aria-label="עמוד 103" class="sheet-number">103</div></header>' +
-    '<main class="sheet-content">' +
-    '<section class="q-card"><h3>א. סמנו בכל שורה אם המשפט נכון או לא נכון.</h3>' +
-    '<table class="tf-table" data-balanced="true"><tbody>' +
-    '<tr data-answer="true"><td>ציר <span class="math-ltr" dir="ltr">x</span> הוא הציר האופקי.</td><td>' + tf('tf-103-1') + '</td></tr>' +
-    '<tr data-answer="false"><td>ציר <span class="math-ltr" dir="ltr">y</span> הוא הציר האופקי.</td><td>' + tf('tf-103-2') + '</td></tr>' +
-    '<tr data-answer="true"><td>ראשית הצירים נמצאת על שני הצירים.</td><td>' + tf('tf-103-3') + '</td></tr>' +
-    '<tr data-answer="false"><td>המספרים על ציר <span class="math-ltr" dir="ltr">x</span> גדלים כשזזים שמאלה.</td><td>' + tf('tf-103-4') + '</td></tr>' +
-    '<tr data-answer="false"><td>המספרים על ציר <span class="math-ltr" dir="ltr">y</span> גדלים כשזזים למטה.</td><td>' + tf('tf-103-5') + '</td></tr>' +
-    '</tbody></table></section>' +
-    '<section class="q-card"><h3>ב. השלימו את כיווני הגדילה.</h3><ul class="tasks compact">' +
-    '<li>המספרים על ציר <span class="math-ltr" dir="ltr">x</span> גדלים כשזזים <span class="blank" style="--blank-width:7ch"></span>.</li>' +
-    '<li>המספרים על ציר <span class="math-ltr" dir="ltr">y</span> גדלים כשזזים <span class="blank" style="--blank-width:7ch"></span>.</li>' +
-    '<li>בראשית הצירים שיעור <span class="math-ltr" dir="ltr">x</span> הוא <span class="blank" style="--blank-width:4ch"></span> ושיעור <span class="math-ltr" dir="ltr">y</span> הוא <span class="blank" style="--blank-width:4ch"></span>.</li>' +
-    '</ul></section>' +
-    '<section class="q-card"><h3>ג. מדוע דרושים שני צירים כדי לתאר מקום של נקודה במישור?</h3>' +
-    '<div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div></section>' +
-    '</main>' + FOOTER + '</section>',
-};
-
 export const PLOT_A: WorkbookPageContent = {
   n: 101,
   id: 'page-101',
