@@ -85,11 +85,21 @@ describe('completions ask for something different each time', () => {
     expect(tagged, 'untagged blanks on page 1').toBe(blanks);
   });
 
-  it('a two-word answer gets two boxes', () => {
-    // „ראשית הצירים” is two words, so it is never one long line.
+  it('a two-word answer gets two boxes — in the text AND on the drawing', () => {
+    // „ראשית הצירים” is two words, so it is never one long line, and never a
+    // single box on the drawing either.
     const first = pageByNumber(1)!.html;
     const concept = (first.match(/data-missing="concept"/g) ?? []).length;
-    expect(concept, 'ראשית הצירים needs two boxes').toBeGreaterThanOrEqual(2);
+    expect(concept, 'ראשית הצירים needs two boxes in the sentence').toBeGreaterThanOrEqual(2);
+    expect(first, 'ראשית הצירים needs two boxes on the drawing').toContain('data-originname="true"');
+  });
+
+  it('a fill-in task offers a word bank instead of a paragraph of directions', () => {
+    const first = pageByNumber(1)!.html;
+    expect(first, 'no מחסן מילים').toContain('word-bank');
+    for (const word of ['ציר x', 'ציר y', 'ראשית', 'הצירים']) {
+      expect(first, `word bank missing "${word}"`).toContain(`word-bank__item">${word}<`);
+    }
   });
 });
 

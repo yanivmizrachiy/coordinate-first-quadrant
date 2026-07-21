@@ -50,6 +50,9 @@ export interface GridSpec {
   ylabels?: (number | string)[];
   /** Set false to hide the "ציר x" / "ציר y" names (tasks that ask for them). */
   axisNames?: boolean;
+  /** With axisNames:false — ask for the origin's NAME (two words, two boxes)
+      instead of just the letter O. */
+  originName?: boolean;
   /** Override the axis names, e.g. a real-life graph: "משקל" / "מחיר". */
   axisXName?: string;
   axisYName?: string;
@@ -189,9 +192,15 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
     // Placed clear of the arrowheads: the horizontal name goes under the far
     // end of its axis, the vertical name just above the top arrow.
     svg.append(
-      answerBox(X(0) - 40, Y(0) + 6, 26),      // the origin letter
       answerBox(X(XM) + 6, Y(0) + 8, 60),      // the horizontal axis name
       answerBox(X(0) - 28, Y(YM) - 48, 56),    // the vertical axis name
+    );
+    // „ראשית הצירים” is two words, so it gets two boxes — one word each.
+    // Stacked in the corner below the origin, the only free space there.
+    svg.append(
+      ...(spec.originName
+        ? [answerBox(X(0) - 54, Y(0) + 6, 52), answerBox(X(0) - 54, Y(0) + 32, 52)]
+        : [answerBox(X(0) - 40, Y(0) + 6, 26)]),
     );
   }
 
@@ -289,6 +298,7 @@ export function hydrateGrids(root: ParentNode = document): void {
     if (xl) spec.xlabels = xl;
     if (yl) spec.ylabels = yl;
     if (elm.dataset['axisnames'] === 'false') spec.axisNames = false;
+    if (elm.dataset['originname'] === 'true') spec.originName = true;
     if (elm.dataset['axisx']) spec.axisXName = elm.dataset['axisx'];
     if (elm.dataset['axisy']) spec.axisYName = elm.dataset['axisy'];
     elm.replaceChildren(renderCoordinateGrid(spec));

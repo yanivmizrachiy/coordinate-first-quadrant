@@ -57,6 +57,16 @@
   padding: 9px 11px; margin: 5px 0 8px;
 }
 .note-box { border-right-color: #8a5a00; background: #fff8e7; }
+/* מחסן מילים — the words to choose from, so the task needs no explaining. */
+.word-bank {
+  border: 1.5px dashed var(--blue); border-radius: 8px; background: #fbfcff;
+  padding: 6px 10px; margin: 5px 0 7px; display: flex; flex-wrap: wrap;
+  align-items: center; gap: 5px 8px;
+}
+.word-bank__item {
+  border: 1px solid #c3d0e8; border-radius: 6px; background: #fff;
+  padding: 1px 8px; font-weight: 700;
+}
 .math-ltr { direction: ltr; unicode-bidi: isolate; font-family: var(--font-math); font-weight: 700; }
 .blank {
   display: inline-block;

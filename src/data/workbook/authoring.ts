@@ -80,6 +80,12 @@ export const pair = (name = ''): string =>
 export const ltr = (math: string): string =>
   `<span class="math-ltr" dir="ltr">${math}</span>`;
 
+/** „מחסן מילים” — the words to choose from, so the task needs no explaining. */
+export const wordBank = (words: string[]): string =>
+  '<div class="word-bank"><b>מחסן מילים:</b> ' +
+  words.map((w) => `<span class="word-bank__item">${w}</span>`).join(' ') +
+  '</div>';
+
 export interface GridOptions {
   size?: 'hero' | 'lg' | 'md' | 'sm' | 'xs';
   label?: string;
@@ -91,6 +97,9 @@ export interface GridOptions {
   /** false when naming the axes IS the task — printing them gives it away,
       so the drawing shows empty boxes to write the names in instead. */
   axisNames?: boolean;
+  /** With axisNames:false — two boxes at the origin for „ראשית הצירים”
+      (two words) instead of one box for the letter O. */
+  originName?: boolean;
   axisX?: string;
   axisY?: string;
   /** Numbers along an axis; `''` leaves an empty box for the learner to fill.
@@ -112,6 +121,7 @@ export function grid(o: GridOptions = {}): string {
     data('arrows', o.arrows) +
     data('labelboxes', o.labelboxes) +
     (o.axisNames === false ? ' data-axisnames="false"' : '') +
+    (o.originName ? ' data-originname="true"' : '') +
     (o.axisX ? ` data-axisx="${o.axisX}"` : '') +
     (o.axisY ? ` data-axisy="${o.axisY}"` : '') +
     (o.xlabels ? ` data-xlabels='${JSON.stringify(o.xlabels)}'` : '') +

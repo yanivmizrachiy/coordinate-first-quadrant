@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, blank, wordBlank, grid, ltr } from '../authoring';
+import { sheet, blank, wordBlank, wordBank, grid, ltr } from '../authoring';
 
 /* The opening sheet. Identification only: which axis is which, where they
    meet, and which way the numbers grow. No ordered pair, no (x,y) notation
@@ -19,17 +19,13 @@ export const AXES_IDENTIFY: WorkbookPageContent = sheet({
 <div class="completion-sentence">הנקודה שבה נפגשים שני הצירים נקראת ${wordBlank('medium', 'concept', 'מקום להשלמת המילה ראשית')} ה${wordBlank('medium', 'concept', 'מקום להשלמת המילה צירים')}.</div>
 </div>
 <section class="q-card">
-<h3>א. השלימו את התיבות הריקות שעל הסרטוט.</h3>
-<ul class="tasks">
-<li>בתיבה שבקצה הציר האופקי — כתבו את שמו.</li>
-<li>בתיבה שמעל הציר האנכי — כתבו את שמו.</li>
-<li>בתיבה שליד נקודת המפגש — כתבו את האות ${ltr('O')}.</li>
-<li>בתיבות שעל הצירים — כתבו את המספרים החסרים.</li>
-</ul>
+<h3>א. השלימו את החסר.</h3>
+${wordBank(['ציר x', 'ציר y', 'ראשית', 'הצירים', '2', '3', '5', '6'])}
 ${grid({
   size: 'hero',
   axisNames: false,
-  label: 'מערכת צירים גדולה ובה תיבות ריקות לשמות הצירים ולמספרים החסרים',
+  originName: true,
+  label: 'מערכת צירים גדולה ובה תיבות ריקות לשמות הצירים, לראשית הצירים ולמספרים החסרים',
   xlabels: [0, 1, 2, '', 4, 5, '', 7, 8],
   ylabels: [0, 1, '', 3, 4, '', 6],
 })}
