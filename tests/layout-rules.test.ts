@@ -151,6 +151,28 @@ describe('Hebrew and punctuation hold up to proofreading', () => {
   });
 });
 
+describe('a calculation gets units and room to work', () => {
+  /* USER_MEMORY §10. Both rules were written down and neither was checked, so
+     five sheets asked for a perimeter with nowhere to work it out and no unit
+     on the answer. */
+  const readable = (h: string): string => h.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  const computes = (h: string): boolean => /(היקף|שטח)\s*[=:]/.test(readable(h));
+
+  it('an area or perimeter answer ends in its unit', () => {
+    for (const p of WORKBOOK) {
+      if (!computes(p.html)) continue;
+      expect(readable(p.html), `page ${p.n} has no יח' / יח"ר`).toMatch(/יח'|יח"ר/);
+    }
+  });
+
+  it('a sheet that asks for a calculation leaves space to do it', () => {
+    for (const p of WORKBOOK) {
+      if (!computes(p.html)) continue;
+      expect(p.html, `page ${p.n} has no calc-box`).toContain('calc-box');
+    }
+  });
+});
+
 describe('pages stay easy to edit', () => {
   const dir = new URL('../src/data/workbook/pages/', import.meta.url);
   const files = readdirSync(dir).filter((f) => f !== 'index.ts');

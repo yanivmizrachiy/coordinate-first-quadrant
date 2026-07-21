@@ -10,22 +10,22 @@ export const DISTANCE_PRACTICE: WorkbookPageContent = sheet({
 <section class="q-card">
 <h3>מרחק מן הצירים</h3>
 <div class="rule-box">
-    המרחק של <span class="math-ltr" dir="ltr">(x,y)</span> מציר <span class="math-ltr" dir="ltr">y</span> הוא <span class="math-ltr" dir="ltr">x</span> יחידות.<br>
-    המרחק של <span class="math-ltr" dir="ltr">(x,y)</span> מציר <span class="math-ltr" dir="ltr">x</span> הוא <span class="math-ltr" dir="ltr">y</span> יחידות.
+    המרחק של <span class="math-ltr" dir="ltr">(x,y)</span> מציר <span class="math-ltr" dir="ltr">y</span> הוא <span class="math-ltr" dir="ltr">x</span> יח'.<br>
+    המרחק של <span class="math-ltr" dir="ltr">(x,y)</span> מציר <span class="math-ltr" dir="ltr">x</span> הוא <span class="math-ltr" dir="ltr">y</span> יח'.
   
 </div>
 <ul class="tasks">
-<li>המרחק של <span class="math-ltr" dir="ltr">(5,2)</span> מציר <span class="math-ltr" dir="ltr">y</span>: <span class="blank" style="--blank-width:5ch"></span> יחידות.</li>
-<li>המרחק של <span class="math-ltr" dir="ltr">(5,2)</span> מציר <span class="math-ltr" dir="ltr">x</span>: <span class="blank" style="--blank-width:5ch"></span> יחידות.</li>
-<li>המרחק של <span class="math-ltr" dir="ltr">(0,6)</span> מציר <span class="math-ltr" dir="ltr">y</span>: <span class="blank" style="--blank-width:5ch"></span> יחידות.</li>
+<li>המרחק של <span class="math-ltr" dir="ltr">(5,2)</span> מציר <span class="math-ltr" dir="ltr">y</span>: <span class="blank" style="--blank-width:5ch"></span> יח'.</li>
+<li>המרחק של <span class="math-ltr" dir="ltr">(5,2)</span> מציר <span class="math-ltr" dir="ltr">x</span>: <span class="blank" style="--blank-width:5ch"></span> יח'.</li>
+<li>המרחק של <span class="math-ltr" dir="ltr">(0,6)</span> מציר <span class="math-ltr" dir="ltr">y</span>: <span class="blank" style="--blank-width:5ch"></span> יח'.</li>
 </ul>
 </section>
 <section class="q-card">
 <h3>אל הצירים</h3>
 <p>כדי להגיע מציר כלשהו, משנים רק שיעור אחד.</p>
 <ul class="tasks">
-<li>מ־<span class="math-ltr" dir="ltr">(7,3)</span> אל ציר <span class="math-ltr" dir="ltr">y</span>: הזזה של <span class="blank" style="--blank-width:4ch"></span> יחידות <span class="blank" style="--blank-width:8ch"></span>.</li>
-<li>מ־<span class="math-ltr" dir="ltr">(4,5)</span> אל ציר <span class="math-ltr" dir="ltr">x</span>: הזזה של <span class="blank" style="--blank-width:4ch"></span> יחידות <span class="blank" style="--blank-width:8ch"></span>.</li>
+<li>מ־<span class="math-ltr" dir="ltr">(7,3)</span> אל ציר <span class="math-ltr" dir="ltr">y</span>: הזזה של <span class="blank" style="--blank-width:4ch"></span> יח' <span class="blank" style="--blank-width:8ch"></span>.</li>
+<li>מ־<span class="math-ltr" dir="ltr">(4,5)</span> אל ציר <span class="math-ltr" dir="ltr">x</span>: הזזה של <span class="blank" style="--blank-width:4ch"></span> יח' <span class="blank" style="--blank-width:8ch"></span>.</li>
 <li>הנקודה המתקבלת מ־<span class="math-ltr" dir="ltr">(3,6)</span> לאחר ירידה לציר <span class="math-ltr" dir="ltr">x</span>: <span class="blank" style="--blank-width:10ch"></span></li>
 </ul>
 </section>
