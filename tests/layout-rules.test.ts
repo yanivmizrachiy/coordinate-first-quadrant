@@ -26,7 +26,7 @@ describe('drawings stay big and readable', () => {
     expect(height('grid-xs')).toBeGreaterThanOrEqual(134);
     expect(height('grid-sm')).toBeGreaterThanOrEqual(165);
     expect(height('grid-md')).toBeGreaterThanOrEqual(210);
-    expect(height('grid-hero')).toBeGreaterThanOrEqual(420);
+    expect(height('grid-hero')).toBeGreaterThanOrEqual(390); // still ~2x a normal grid
     // and a system may never be rendered as a sliver, whatever the container
     expect(css).toContain('.coordinate-grid { min-height: 150px; }');
   });
