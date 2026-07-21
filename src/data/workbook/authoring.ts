@@ -64,7 +64,9 @@ export function posterSheet(spec: { file: string; title: string; alt: string }):
     subtitle: 'שעשועון',
     html:
       `<section aria-label="${spec.alt}" class="sheet poster-sheet" id="page-${n}">` +
-      `<main class="sheet-content"><img alt="${spec.alt}" class="poster" src="${src}" decoding="async"></main>` +
+      `<main class="sheet-content"><div class="poster-frame">` +
+      `<img alt="${spec.alt}" class="poster" src="${src}" decoding="async">` +
+      `</div></main>` +
       FOOTER +
       '</section>',
   };
