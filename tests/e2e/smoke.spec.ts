@@ -112,6 +112,36 @@ test('every label in a drawing reads Hebrew-word first, left to right', async ({
   expect(reversed, `reversed labels: ${reversed.join(' | ')}`).toHaveLength(0);
 });
 
+/* Sheet text is 13px — including anything a game draws. The exceptions are
+   deliberate and listed here; anything else is a regression. */
+test('every sheet keeps its body text at 13px', async ({ page }) => {
+  await page.goto('/#/book');
+  await page.waitForTimeout(4000);
+  const offenders = await page.evaluate(() => {
+    const out: string[] = [];
+    for (const s of document.querySelectorAll('.sheet')) {
+      const n = s.querySelector('.sheet-number')?.textContent?.trim() ?? 'cover';
+      for (const el of s.querySelectorAll('*')) {
+        if (el.closest('svg')) continue; // drawings scale as a unit
+        const ownText = [...el.childNodes].some((c) => c.nodeType === 3 && c.textContent!.trim());
+        if (!ownText) continue;
+        const px = Math.round(parseFloat(getComputedStyle(el).fontSize) * 10) / 10;
+        if (px === 13) continue;
+        const allowed =
+          el.tagName === 'H1' ||                    // page title
+          el.tagName === 'H2' ||                    // game title
+          el.classList.contains('sheet-number') ||  // the numbered circle
+          el.classList.contains('reveal') ||        // a game's result display
+          el.classList.contains('frac__n') ||       // fraction — two digits in one line
+          el.classList.contains('frac__d');
+        if (!allowed) out.push(`page ${n}: ${el.tagName.toLowerCase()} at ${px}px`);
+      }
+    }
+    return [...new Set(out)];
+  });
+  expect(offenders, offenders.join(', ')).toHaveLength(0);
+});
+
 test('a game sheet reveals its answer when solved correctly', async ({ page }) => {
   // The safe game is a numbered worksheet page now, not a separate area.
   await page.goto('/#/workbook/37');
