@@ -57,6 +57,16 @@
   padding: 9px 11px; margin: 5px 0 8px;
 }
 .note-box { border-right-color: #8a5a00; background: #fff8e7; }
+/* Fractions are set like a textbook: numerator over a rule over denominator. */
+.frac {
+  display: inline-flex; flex-direction: column; align-items: center;
+  vertical-align: -0.42em; line-height: 1; margin-inline-start: 2px;
+  font-family: var(--font-math); font-weight: 700;
+}
+.frac__n { font-size: 0.62em; padding: 0 2px; }
+.frac__d { font-size: 0.62em; padding: 0 2px; border-top: 1.4px solid currentColor; }
+.mixed { font-family: var(--font-math); font-weight: 700; white-space: nowrap; }
+
 /* מחסן מילים — the words to choose from, so the task needs no explaining. */
 .word-bank {
   border: 1.5px dashed var(--blue); border-radius: 8px; background: #fbfcff;

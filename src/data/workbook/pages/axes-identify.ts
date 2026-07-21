@@ -1,9 +1,9 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, blank, wordBlank, wordBank, grid, ltr } from '../authoring';
+import { sheet, blank, wordBlank, wordBank, grid, ltr, mixed } from '../authoring';
 
 /* The opening sheet. Identification only: which axis is which, where they
-   meet, and which way the numbers grow. No ordered pair, no (x,y) notation
-   and no שיעורים — those start once these names are secure.
+   meet, where a number sits relative to its neighbours, and halves. No ordered
+   pair, no (x,y) notation and no שיעורים — those start once these are secure.
 
    Every completion asks for a DIFFERENT kind of answer (letter, property,
    concept, direction, relation, number) — never the same one twice in a row.
@@ -25,7 +25,8 @@ ${grid({
   size: 'hero',
   axisNames: false,
   originName: true,
-  label: 'מערכת צירים גדולה ובה תיבות ריקות לשמות הצירים, לראשית הצירים ולמספרים החסרים',
+  label: 'מערכת צירים גדולה ובה נקודה A, תיבות ריקות לשמות הצירים, לראשית הצירים ולמספרים החסרים',
+  points: [{ x: 4, y: 3, label: 'A' }],
   xlabels: [0, 1, 2, '', 4, 5, '', 7, 8],
   ylabels: [0, 1, '', 3, 4, '', 6],
 })}
@@ -42,28 +43,32 @@ ${grid({
 </ul>
 </section>
 <section class="q-card">
-<h3>ג. איפה נפגשים שני הצירים?</h3>
+<h3>ג. השלימו על מקומם של המספרים.</h3>
 <ul class="tasks">
 <li>שני הצירים נפגשים במספר ${blank(3, 'number')}.</li>
-<li>הנקודה הזאת מסומנת על הסרטוט באות ${blank(3, 'letter')}.</li>
+<li>המספר 7 שעל ציר ${ltr('x')} ממוקם ${blank(6, 'direction')} למספר 6.</li>
+<li>המספר 4 שעל ציר ${ltr('y')} ממוקם מתחת למספר ${blank(3, 'number')}.</li>
 </ul>
 </section>
 </div>
-<section class="q-card">
-<h3>ד. חצאים על הצירים.</h3>
-<p>בין כל שני מספרים שכנים על הציר יש עוד מספר: <b>חצי</b>. המספר שלוש וחצי נמצא בדיוק באמצע, בין המספר 3 למספר 4.</p>
 <div class="cols-2">
+<section class="q-card">
+<h3>ד. השלימו.</h3>
+<p>בין כל שני מספרים שכנים ממוקם עוד מספר: ${mixed(3, 1, 2)} ממוקם באמצע, בין 3 ל־4.</p>
 <ul class="tasks">
-<li>המספר חמש וחצי נמצא בין המספר 5 למספר ${blank(3, 'number')}.</li>
-<li>כדי לסמן אותו מסמנים ב${blank(5, 'concept')} שבין שני המספרים האלה.</li>
-<li>המספר שנמצא בדיוק בין המספר 6 למספר 7 הוא ${blank(6, 'number')} וחצי.</li>
+<li>המספר ${mixed(5, 1, 2)} ממוקם בין המספר 5 למספר ${blank(3, 'number')}.</li>
+<li>כדי לסמן אותו מסמנים ב${blank(5, 'concept')} שבין שני המספרים.</li>
+<li>סמנו על ציר ${ltr('x')} את ${mixed(3, 1, 2)} ואת ${mixed(5, 1, 2)}, ועל ציר ${ltr('y')} את ${mixed(2, 1, 2)}.</li>
 </ul>
-<ul class="tasks">
-<li>סמנו על ציר ${ltr('x')} שבסרטוט את המספר <b>שלוש וחצי</b>.</li>
-<li>סמנו על ציר ${ltr('x')} שבסרטוט את המספר <b>חמש וחצי</b>.</li>
-<li>סמנו על ציר ${ltr('y')} שבסרטוט את המספר <b>שתיים וחצי</b>.</li>
-</ul>
-</div>
 </section>
+<section class="q-card">
+<h3>ה. השלימו על נקודה ${ltr('A')} שבסרטוט.</h3>
+<ul class="tasks">
+<li>נקודה ${ltr('A')} ממוקמת מעל ציר ${blank(3, 'letter')}.</li>
+<li>נקודה ${ltr('A')} ממוקמת ${blank(6, 'direction')} לציר ${ltr('y')}.</li>
+<li>על ציר ${ltr('x')}, מתחת לנקודה ${ltr('A')}, ממוקם המספר ${blank(3, 'number')}.</li>
+</ul>
+</section>
+</div>
 `,
 });

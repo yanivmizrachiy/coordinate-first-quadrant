@@ -122,10 +122,13 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
     svg.append(el('line', { x1: X(0), y1: Y(y), x2: X(XM), y2: Y(y), stroke: GRIDLINE, 'stroke-width': 1, 'vector-effect': 'non-scaling-stroke' }));
   }
 
-  // Axes with arrowheads
+  /* When the learner has to WRITE the axis name, its box goes to the right of
+     the arrow (Yaniv's rule), so the arrow is drawn a little shorter to leave
+     that room inside the margin. */
+  const over = spec.axisNames === false ? 6 : 22;
   svg.append(
-    el('line', { x1: X(0), y1: Y(0), x2: X(XM) + 22, y2: Y(0), stroke: AXIS, 'stroke-width': 2.2, 'vector-effect': 'non-scaling-stroke' }),
-    el('path', { d: `M ${X(XM) + 28} ${Y(0)} l-10-5v10z`, fill: AXIS }),
+    el('line', { x1: X(0), y1: Y(0), x2: X(XM) + over, y2: Y(0), stroke: AXIS, 'stroke-width': 2.2, 'vector-effect': 'non-scaling-stroke' }),
+    el('path', { d: `M ${X(XM) + over + 6} ${Y(0)} l-10-5v10z`, fill: AXIS }),
     el('line', { x1: X(0), y1: Y(0), x2: X(0), y2: Y(YM) - 18, stroke: AXIS, 'stroke-width': 2.2, 'vector-effect': 'non-scaling-stroke' }),
     el('path', { d: `M ${X(0)} ${Y(YM) - 25} l-5 10h10z`, fill: AXIS }),
   );
@@ -189,11 +192,9 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
       el('text', { x: X(0), y: Y(YM) - 32, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, spec.axisYName ?? 'ציר y'),
     );
   } else {
-    // Placed clear of the arrowheads: the horizontal name goes under the far
-    // end of its axis, the vertical name just above the top arrow.
     svg.append(
-      answerBox(X(XM) + 6, Y(0) + 8, 60),      // the horizontal axis name
-      answerBox(X(0) - 28, Y(YM) - 48, 56),    // the vertical axis name
+      answerBox(X(XM) + 16, Y(0) - 11, 52),     // to the RIGHT of the x arrow
+      answerBox(X(0) - 28, Y(YM) - 48, 56),     // just above the y arrow
     );
     // „ראשית הצירים” is two words, so it gets two boxes — one word each.
     // Stacked in the corner below the origin, the only free space there.
