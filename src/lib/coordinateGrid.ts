@@ -121,9 +121,18 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
     el('path', { d: `M ${X(0)} ${Y(YM) - 25} l-5 10h10z`, fill: AXIS }),
   );
 
-  // Ticks + numbers
+  // Ticks + numbers.
+  // A point that sits ON an axis lands right next to that tick's number. The
+  // learner is asked to READ that number, so it must never be crowded by the
+  // dot: the clashing number is pushed further into the margin and gets a white
+  // halo. (Never move it to the other side — the numbers must stay in one line.)
   const xl = spec.xlabels ?? [0, 1, 2, 3, 4, 5, 6, 7, 8];
   const yl = spec.ylabels ?? [0, 1, 2, 3, 4, 5, 6];
+  const pts = spec.points ?? [];
+  const onXAxis = new Set(pts.filter((p) => p.y === 0).map((p) => p.x));
+  const onYAxis = new Set(pts.filter((p) => p.x === 0).map((p) => p.y));
+  const CLEAR = { 'paint-order': 'stroke', stroke: '#fff', 'stroke-width': 4.5 };
+
   for (let x = 1; x <= XM; x++) {
     svg.append(el('line', { x1: X(x), y1: Y(0) - 4, x2: X(x), y2: Y(0) + 4, stroke: AXIS, 'stroke-width': 1.4, 'vector-effect': 'non-scaling-stroke' }));
     const lab = xl[x];
@@ -131,7 +140,11 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
       // missing number — draw an empty answer box for the student to fill in
       svg.append(el('rect', { x: X(x) - 14, y: Y(0) + 8, width: 28, height: 22, rx: 4, fill: '#fff', stroke: BLUE, 'stroke-width': 1.8, 'vector-effect': 'non-scaling-stroke' }));
     } else if (lab !== null && lab !== undefined) {
-      svg.append(el('text', { x: X(x), y: Y(0) + 21, 'text-anchor': 'middle', fill: AXIS, 'font-size': 17, 'font-weight': 700 }, String(lab)));
+      const clash = onXAxis.has(x);
+      svg.append(el('text', {
+        x: X(x), y: Y(0) + (clash ? 27 : 21), 'text-anchor': 'middle', direction: 'ltr',
+        fill: AXIS, 'font-size': 17, 'font-weight': 700, ...(clash ? CLEAR : {}),
+      }, String(lab)));
     }
   }
   for (let y = 1; y <= YM; y++) {
@@ -141,7 +154,11 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
       // missing number — draw an empty answer box for the student to fill in
       svg.append(el('rect', { x: X(0) - 42, y: Y(y) - 11, width: 28, height: 22, rx: 4, fill: '#fff', stroke: BLUE, 'stroke-width': 1.8, 'vector-effect': 'non-scaling-stroke' }));
     } else if (lab !== null && lab !== undefined) {
-      svg.append(el('text', { x: X(0) - 12, y: Y(y) + 5, 'text-anchor': 'end', fill: AXIS, 'font-size': 17, 'font-weight': 700 }, String(lab)));
+      const clash = onYAxis.has(y);
+      svg.append(el('text', {
+        x: X(0) - (clash ? 18 : 12), y: Y(y) + 5, 'text-anchor': 'end', direction: 'ltr',
+        fill: AXIS, 'font-size': 17, 'font-weight': 700, ...(clash ? CLEAR : {}),
+      }, String(lab)));
     }
   }
 
@@ -196,9 +213,12 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
   for (const p of spec.points ?? []) {
     svg.append(el('circle', { cx: X(p.x), cy: Y(p.y), r: 5.1, fill: p.color || BLUE, stroke: '#fff', 'stroke-width': 1.7, 'vector-effect': 'non-scaling-stroke' }));
     if (p.label !== undefined && p.label !== '') {
+      // The sheet is RTL, and in RTL `text-anchor: start` anchors the RIGHT edge —
+      // the label would grow leftwards, back across the dot and onto the axis
+      // numbers. Pin the direction so "start" really means "to the right of dx".
       svg.append(el('text', {
         x: X(p.x) + (p.dx ?? 10), y: Y(p.y) + (p.dy ?? -10),
-        'text-anchor': p.anchor || 'start', fill: p.color || BLUE,
+        'text-anchor': p.anchor || 'start', direction: 'ltr', fill: p.color || BLUE,
         'font-size': 13, 'font-weight': 900, 'paint-order': 'stroke', stroke: '#fff', 'stroke-width': 4,
       }, p.label || `(${p.x},${p.y})`));
     }

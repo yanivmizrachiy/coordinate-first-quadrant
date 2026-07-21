@@ -78,7 +78,8 @@ const isGame = (s: Slot): s is GameDefinition => typeof (s as GameDefinition).mo
 
 /* The canonical order — worksheets and games interleaved by topic. */
 const ORDER: Slot[] = [
-  legacy(1), HERO_INTRO, legacy(2),
+  // The half-page coordinate system opens the booklet (Yaniv's rule).
+  HERO_INTRO, legacy(1), legacy(2),
   legacy(3), legacy(4), cont(35), legacy(5), legacy(6),
   PLOT_A, PLOT_B, legacy(8), PLOT_SHAPE, game('hidden-drawing'),
   legacy(9), legacy(10), legacy(11), legacy(12), GRAPH_REAL, game('secret-word'),
