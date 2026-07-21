@@ -46,5 +46,15 @@ export const RELATIONS_PRACTICE: WorkbookPageContent = sheet({
 <p>האם הנקודה החדשה מקיימת <span class="math-ltr" dir="ltr">x=y</span>? <span class="blank" style="--blank-width:8ch"></span></p>
 </section>
 </div>
+<section class="q-card">
+<h3>ד. סמנו על הסרטוט, וכתבו כל נקודה כזוג סדור.</h3>
+<ul class="tasks">
+<li>נקודה <span class="math-ltr" dir="ltr">A</span> כבר מסומנת. סמנו נקודה <span class="math-ltr" dir="ltr">B</span> שבה שיעור <span class="math-ltr" dir="ltr">x</span> גדול ב־4 משל <span class="math-ltr" dir="ltr">A</span>, ושיעור <span class="math-ltr" dir="ltr">y</span> זהה: <span class="pair math-ltr" dir="ltr">B(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>סמנו נקודה <span class="math-ltr" dir="ltr">C</span> שבה שיעור <span class="math-ltr" dir="ltr">y</span> גדול פי 2 משל <span class="math-ltr" dir="ltr">A</span>, ושיעור <span class="math-ltr" dir="ltr">x</span> זהה: <span class="pair math-ltr" dir="ltr">C(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>נקודה <span class="math-ltr" dir="ltr">B</span> ממוקמת <span class="blank" data-missing="direction" style="--blank-width:6ch"></span> לנקודה <span class="math-ltr" dir="ltr">A</span>.</li>
+<li>נקודה <span class="math-ltr" dir="ltr">C</span> ממוקמת מעל <span class="math-ltr" dir="ltr">A</span>, כי גדל רק שיעור <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>.</li>
+</ul>
+<div class="coordinate-grid grid-sm" role="img" aria-label="מערכת צירים ובה נקודה A שתיים שלוש" data-points='[{"x":2,"y":3,"label":"A"}]' data-segments='[]' data-polygons='[]' data-arrows='[]' data-labelboxes='[]'></div>
+</section>
 `,
 });

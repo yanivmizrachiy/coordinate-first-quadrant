@@ -51,5 +51,16 @@ export const ERRORS_PRACTICE: WorkbookPageContent = sheet({
 <p><span class="blank" style="--blank-width:32ch"></span></p>
 </section>
 </div>
+<section class="q-card">
+<h3>טעות בנקודה שעל ציר</h3>
+<p>אורי אמר: „הנקודה <span class="math-ltr" dir="ltr">(0,7)</span> ממוקמת על ציר <span class="math-ltr" dir="ltr">x</span>”.</p>
+<p>תקנו את המשפט:</p>
+<div class="answer-line"></div>
+<ul class="tasks">
+<li>הנקודה <span class="math-ltr" dir="ltr">(0,7)</span> ממוקמת על ציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>.</li>
+<li>אצל כל נקודה שעל ציר <span class="math-ltr" dir="ltr">y</span>, שיעור <span class="math-ltr" dir="ltr">x</span> שווה ל־<span class="blank" data-missing="number" style="--blank-width:3ch"></span>.</li>
+<li>נקודה שממוקמת על שני הצירים יחד היא <span class="blank" data-missing="concept" style="--blank-width:7ch"></span> הצירים.</li>
+</ul>
+</section>
 `,
 });
