@@ -13,9 +13,9 @@
 ```
 index.html
   └─ src/main.ts            אתחול: סרגל עליון, outlet, ניתוב, מצב שחור־לבן
-       ├─ router.ts         נתב מבוסס hash: #/  #/workbook/:n  #/games/:id …
+       ├─ router.ts         נתב מבוסס hash: #/  #/workbook/:n  #/book
        ├─ views/            כל מסך בונה DOM ומחזיר פונקציית ניקוי
-       ├─ data/workbook/    34 עמודים (WorkbookPageContent[]) + TOPICS
+       ├─ data/workbook/    46 עמודים ממוספרים (דפי עבודה + שעשועונים) + TOPICS
        ├─ games/            8 משחקים (GameDefinition) + revealEngine משותף
        ├─ lib/coordinateGrid.ts   מרנדר SVG של מערכת צירים ברביע הראשון
        ├─ lib/coordinateMath.ts   פונקציות טהורות (נבדקות) לכל האינוריאנטות

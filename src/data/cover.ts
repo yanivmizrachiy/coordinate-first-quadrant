@@ -24,10 +24,3 @@ export const APPROVED_COVER: CoverImage = {
   alt: 'כריכת החוברת: מערכת צירים — הרביע הראשון',
 };
 
-/** Alternatives only — never used as the main cover. */
-export const COVER_ALTERNATE_FILES: readonly string[] = [
-  '01-workbook-cover.png',
-  '02-workbook-cover.png',
-  '03-workbook-cover.png',
-  '04-workbook-cover.png',
-];
