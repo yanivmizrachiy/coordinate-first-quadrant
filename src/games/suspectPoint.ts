@@ -22,7 +22,7 @@ export const suspectRounds: SuspectRound[] = [
     token: 'מ',
     candidates: [ { label: 'P', x: 1, y: 4 }, { label: 'Q', x: 4, y: 4 }, { label: 'R', x: 4, y: 2 }, { label: 'S', x: 6, y: 5 } ],
     clues: [
-      { text: 'הנקודה נמצאת על אותו קו אנכי כמו (4,0) — כלומר שיעור x שווה 4', test: (p) => p.x === 4 },
+      { text: 'הנקודה ממוקמת על אותו קו אנכי כמו (4,0) — כלומר שיעור x שווה 4', test: (p) => p.x === 4 },
       { text: 'שיעור y קטן מ־3', test: (p) => p.y < 3 },
     ],
   },

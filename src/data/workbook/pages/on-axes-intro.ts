@@ -42,7 +42,7 @@ export const ON_AXES_INTRO: WorkbookPageContent = sheet({
 </div>
 </section>
 <section class="q-card">
-<h3>ד. האם O נמצאת על ציר x, על ציר y או על שניהם?</h3>
+<h3>ד. האם O ממוקמת על ציר x, על ציר y או על שניהם?</h3>
 <div class="answer-line">
 </div>
 <div class="answer-line">

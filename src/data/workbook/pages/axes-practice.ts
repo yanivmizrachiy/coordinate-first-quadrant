@@ -45,7 +45,7 @@ export const AXES_PRACTICE: WorkbookPageContent = sheet({
 <tr data-answer="true"><td>ברביע הראשון זזים מהראשית ימינה ולמעלה בלבד.</td><td>
 <div class="tf-options" role="group" aria-label="סמנו נכון או לא נכון"><label class="tf-option"><input type="radio" name="tf-2-3" value="true"><span>נכון</span></label><label class="tf-option"><input type="radio" name="tf-2-3" value="false"><span>לא נכון</span></label>
 </div></td></tr>
-<tr data-answer="false"><td>הנקודה (3,0) נמצאת על ציר y.</td><td>
+<tr data-answer="false"><td>הנקודה (3,0) ממוקמת על ציר y.</td><td>
 <div class="tf-options" role="group" aria-label="סמנו נכון או לא נכון"><label class="tf-option"><input type="radio" name="tf-2-4" value="true"><span>נכון</span></label><label class="tf-option"><input type="radio" name="tf-2-4" value="false"><span>לא נכון</span></label>
 </div></td></tr>
 </tbody>

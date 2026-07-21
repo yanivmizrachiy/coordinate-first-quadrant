@@ -103,10 +103,12 @@ describe('completions ask for something different each time', () => {
     expect(pageByNumber(1)!.html, 'no stacked fraction').toContain('frac__d');
   });
 
-  it('a position is "ממוקם", never "נמצא"', () => {
-    const text = pageByNumber(1)!.html.replace(/<[^>]+>/g, ' ');
-    expect(text, 'page 1 still says נמצא').not.toContain('נמצא');
-    expect(text).toContain('ממוקם');
+  it('a position is "ממוקם", never "נמצא" — on every page, not just page 1', () => {
+    for (const p of WORKBOOK) {
+      const text = p.html.replace(/<[^>]+>/g, ' ');
+      expect(text, `page ${p.n} says נמצא`).not.toMatch(/נמצא/);
+    }
+    expect(pageByNumber(1)!.html).toContain('ממוקם');
   });
 
   it('a fill-in task offers a word bank instead of a paragraph of directions', () => {

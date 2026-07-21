@@ -25,7 +25,7 @@ export const RIGHT_ANGLE_INTRO: WorkbookPageContent = sheet({
 <div>
 <p>הקטע AB מקביל לציר <span class="blank" style="--blank-width:4ch"></span>.</p>
 <p>הקטע BC מקביל לציר <span class="blank" style="--blank-width:4ch"></span>.</p>
-<p class="axis-answer-box">הזווית הישרה נמצאת בנקודה <span class="blank" style="--blank-width:4ch"></span></p>
+<p class="axis-answer-box">הזווית הישרה ממוקמת בנקודה <span class="blank" style="--blank-width:4ch"></span></p>
 </div>
 </div>
 </section>

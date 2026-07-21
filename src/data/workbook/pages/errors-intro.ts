@@ -23,7 +23,7 @@ export const ERRORS_INTRO: WorkbookPageContent = sheet({
 <div class="tf-options" role="group" aria-label="סמנו נכון או לא נכון"><label class="tf-option"><input type="radio" name="tf-error-2" value="true"><span>נכון</span></label><label class="tf-option"><input type="radio" name="tf-error-2" value="false"><span>לא נכון</span></label>
 </div>
 </div>
-<p>הנקודה (5,0) נמצאת על ציר x.</p><small>תיקון והסבר:</small>
+<p>הנקודה (5,0) ממוקמת על ציר x.</p><small>תיקון והסבר:</small>
 <div class="answer-line">
 </div>
 <div class="answer-line">
@@ -34,7 +34,7 @@ export const ERRORS_INTRO: WorkbookPageContent = sheet({
 <div class="tf-options" role="group" aria-label="סמנו נכון או לא נכון"><label class="tf-option"><input type="radio" name="tf-error-3" value="true"><span>נכון</span></label><label class="tf-option"><input type="radio" name="tf-error-3" value="false"><span>לא נכון</span></label>
 </div>
 </div>
-<p>הנקודה (0,4) נמצאת מימין לציר y.</p><small>תיקון והסבר:</small>
+<p>הנקודה (0,4) ממוקמת מימין לציר y.</p><small>תיקון והסבר:</small>
 <div class="answer-line">
 </div>
 <div class="answer-line">
@@ -45,7 +45,7 @@ export const ERRORS_INTRO: WorkbookPageContent = sheet({
 <div class="tf-options" role="group" aria-label="סמנו נכון או לא נכון"><label class="tf-option"><input type="radio" name="tf-error-4" value="true"><span>נכון</span></label><label class="tf-option"><input type="radio" name="tf-error-4" value="false"><span>לא נכון</span></label>
 </div>
 </div>
-<p>אותו שיעור x פירושו שהנקודות נמצאות על אותו קו אנכי.</p><small>תיקון והסבר:</small>
+<p>אותו שיעור x פירושו שהנקודות ממוקמות על אותו קו אנכי.</p><small>תיקון והסבר:</small>
 <div class="answer-line">
 </div>
 <div class="answer-line">

@@ -17,7 +17,7 @@ export const AXES_INTRO: WorkbookPageContent = sheet({
 </div>
 <div class="completion-sentence">כל הנקודות שעל ציר <span class="math-ltr" dir="ltr">x</span> הן בעלות שיעור <span class="math-ltr" dir="ltr">y</span> ששווה ל־<span class="word-blank word-short" aria-label="מקום להשלמת המספר אפס"></span>.
 </div>
-<div class="completion-sentence">הנקודה <span class="math-ltr" dir="ltr">(0,4)</span> נמצאת על ציר <span class="word-blank word-short" aria-label="מקום להשלמת האות y"></span>.
+<div class="completion-sentence">הנקודה <span class="math-ltr" dir="ltr">(0,4)</span> ממוקמת על ציר <span class="word-blank word-short" aria-label="מקום להשלמת האות y"></span>.
 </div>
 <div class="completion-sentence">בנקודה <span class="math-ltr" dir="ltr">(5,0)</span> ערך <span class="math-ltr" dir="ltr">x</span> הוא <span class="word-blank word-short" aria-label="מקום להשלמת המספר חמש"></span> ושיעור <span class="math-ltr" dir="ltr">y</span> הוא <span class="word-blank word-short" aria-label="מקום להשלמת המספר אפס"></span>.
 </div>

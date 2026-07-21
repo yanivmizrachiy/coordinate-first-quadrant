@@ -27,19 +27,19 @@ export const POSITION_LANGUAGE_INTRO: WorkbookPageContent = sheet({
 <h3>ב. נכון / לא נכון.</h3>
 <table class="tf-table" data-balanced="true">
 <tbody>
-<tr data-answer="true"><td>B נמצאת על ציר x.</td><td>
+<tr data-answer="true"><td>B ממוקמת על ציר x.</td><td>
 <div class="tf-options" role="group" aria-label="סמנו נכון או לא נכון"><label class="tf-option"><input type="radio" name="tf-3-1" value="true"><span>נכון</span></label><label class="tf-option"><input type="radio" name="tf-3-1" value="false"><span>לא נכון</span></label>
 </div></td></tr>
-<tr data-answer="false"><td>C נמצאת מימין לציר y.</td><td>
+<tr data-answer="false"><td>C ממוקמת מימין לציר y.</td><td>
 <div class="tf-options" role="group" aria-label="סמנו נכון או לא נכון"><label class="tf-option"><input type="radio" name="tf-3-2" value="true"><span>נכון</span></label><label class="tf-option"><input type="radio" name="tf-3-2" value="false"><span>לא נכון</span></label>
 </div></td></tr>
-<tr data-answer="true"><td>A נמצאת מעל ציר x.</td><td>
+<tr data-answer="true"><td>A ממוקמת מעל ציר x.</td><td>
 <div class="tf-options" role="group" aria-label="סמנו נכון או לא נכון"><label class="tf-option"><input type="radio" name="tf-3-3" value="true"><span>נכון</span></label><label class="tf-option"><input type="radio" name="tf-3-3" value="false"><span>לא נכון</span></label>
 </div></td></tr>
-<tr data-answer="false"><td>E נמצאת מימין לציר y.</td><td>
+<tr data-answer="false"><td>E ממוקמת מימין לציר y.</td><td>
 <div class="tf-options" role="group" aria-label="סמנו נכון או לא נכון"><label class="tf-option"><input type="radio" name="tf-3-4" value="true"><span>נכון</span></label><label class="tf-option"><input type="radio" name="tf-3-4" value="false"><span>לא נכון</span></label>
 </div></td></tr>
-<tr data-answer="true"><td>D נמצאת מימין לציר y.</td><td>
+<tr data-answer="true"><td>D ממוקמת מימין לציר y.</td><td>
 <div class="tf-options" role="group" aria-label="סמנו נכון או לא נכון"><label class="tf-option"><input type="radio" name="tf-3-5" value="true"><span>נכון</span></label><label class="tf-option"><input type="radio" name="tf-3-5" value="false"><span>לא נכון</span></label>
 </div></td></tr>
 </tbody>

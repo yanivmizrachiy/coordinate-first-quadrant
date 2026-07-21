@@ -10,8 +10,8 @@ export const ON_AXES_PRACTICE: WorkbookPageContent = sheet({
 <section class="q-card">
 <h3>הכללים</h3>
 <div class="rule-box">
-    נקודה נמצאת על ציר <span class="math-ltr" dir="ltr">x</span> אם ורק אם <span class="math-ltr" dir="ltr">y=0</span>.<br>
-    נקודה נמצאת על ציר <span class="math-ltr" dir="ltr">y</span> אם ורק אם <span class="math-ltr" dir="ltr">x=0</span>.<br>
+    נקודה ממוקמת על ציר <span class="math-ltr" dir="ltr">x</span> אם ורק אם <span class="math-ltr" dir="ltr">y=0</span>.<br>
+    נקודה ממוקמת על ציר <span class="math-ltr" dir="ltr">y</span> אם ורק אם <span class="math-ltr" dir="ltr">x=0</span>.<br>
     ראשית הצירים היא <span class="math-ltr" dir="ltr">O(0,0)</span>.
   
 </div>
@@ -39,7 +39,7 @@ export const ON_AXES_PRACTICE: WorkbookPageContent = sheet({
 </section>
 <section class="q-card span-2">
 <h3>נקודה מיוחדת</h3>
-<p>איזו נקודה נמצאת גם על ציר <span class="math-ltr" dir="ltr">x</span> וגם על ציר <span class="math-ltr" dir="ltr">y</span>?</p>
+<p>איזו נקודה ממוקמת גם על ציר <span class="math-ltr" dir="ltr">x</span> וגם על ציר <span class="math-ltr" dir="ltr">y</span>?</p>
 <p><span class="blank" style="--blank-width:12ch"></span></p>
 <p>הסבירו מדוע אין נקודה אחרת כזאת.</p>
 <div class="answer-line">

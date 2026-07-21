@@ -35,7 +35,7 @@ export const RECTANGLES_PRACTICE: WorkbookPageContent = sheet({
 <p>כתבו את שני הקודקודים האחרים כזוגות סדורים:</p>
 <p><span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp;&nbsp; <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
 <p>אורך המלבן: <span class="blank" style="--blank-width:4ch"></span> יחידות &nbsp; רוחב המלבן: <span class="blank" style="--blank-width:4ch"></span> יחידות</p>
-<p>איזו מהנקודות הבאות נמצאת על <b>היקף</b> המלבן? הקיפו.</p>
+<p>איזו מהנקודות הבאות ממוקמת על <b>היקף</b> המלבן? הקיפו.</p>
 <div class="choice-row"><span class="choice"><span class="math-ltr" dir="ltr">(4,2)</span></span><span class="choice"><span class="math-ltr" dir="ltr">(3,3)</span></span><span class="choice"><span class="math-ltr" dir="ltr">(8,5)</span></span><span class="choice"><span class="math-ltr" dir="ltr">(2,6)</span></span>
 </div>
 </section>

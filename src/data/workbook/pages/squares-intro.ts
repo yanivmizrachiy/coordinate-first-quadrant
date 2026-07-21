@@ -59,11 +59,11 @@ export const SQUARES_INTRO: WorkbookPageContent = sheet({
 <div class="choice-row"><span class="choice">תמיד</span><span class="choice">לפעמים</span><span class="choice">לעולם לא</span>
 </div><span class="reason-line"></span>
 </div>
-<div class="always-row"><span>2. אם לשתי נקודות אותו שיעור y, הן נמצאות באותו גובה.</span>
+<div class="always-row"><span>2. אם לשתי נקודות אותו שיעור y, הן ממוקמות באותו גובה.</span>
 <div class="choice-row"><span class="choice">תמיד</span><span class="choice">לפעמים</span><span class="choice">לעולם לא</span>
 </div><span class="reason-line"></span>
 </div>
-<div class="always-row"><span>3. אם שני שיעורי נקודה זהים, היא נמצאת על ציר.</span>
+<div class="always-row"><span>3. אם שני שיעורי נקודה זהים, היא ממוקמת על ציר.</span>
 <div class="choice-row"><span class="choice">תמיד</span><span class="choice">לפעמים</span><span class="choice">לעולם לא</span>
 </div><span class="reason-line"></span>
 </div>
