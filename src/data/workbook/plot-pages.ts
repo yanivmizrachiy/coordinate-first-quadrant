@@ -12,6 +12,48 @@ const FOOTER =
 
 const pair = '<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>';
 
+/* Opening sheet: ONE giant (half-page) coordinate system that many questions
+   refer to, plus the ordered-pair rule — ערך x on the left, שיעור y on the right. */
+export const HERO_INTRO: WorkbookPageContent = {
+  n: 100,
+  id: 'page-100',
+  sectionClass: 'sheet guided dense',
+  title: 'מערכת הצירים והזוג הסדור',
+  subtitle: 'ערך x משמאל, שיעור y מימין',
+  html:
+    '<section aria-labelledby="title-100" class="sheet guided dense" id="page-100">' +
+    '<header class="sheet-header"><div><h1 id="title-100">מערכת הצירים והזוג הסדור</h1><p>ערך x משמאל, שיעור y מימין</p></div><div aria-label="עמוד 100" class="sheet-number">100</div></header>' +
+    '<main class="sheet-content">' +
+    '<div class="rule-box">כל נקודה נכתבת כ<b>זוג סדור</b> בתוך סוגריים: <span class="math-ltr" dir="ltr">(x,y)</span>. ' +
+    '<b>ערך <span class="math-ltr" dir="ltr">x</span> נכתב משמאל</b> ו<b>שיעור <span class="math-ltr" dir="ltr">y</span> נכתב מימין</b>. יש סֵדֶר — ולכן קוראים לזה זוג <b>סדור</b>.</div>' +
+    '<section class="q-card"><h3>לפניכם מערכת הצירים. ענו עליה בסעיפים שמתחת.</h3>' +
+    '<div aria-label="מערכת צירים גדולה ובה הנקודות A B C D" class="coordinate-grid grid-hero" data-arrows="[]" data-labelboxes="[]" data-points=\'[{"x": 2, "y": 5, "label": "A"}, {"x": 6, "y": 3, "label": "B"}, {"x": 4, "y": 0, "label": "C"}, {"x": 0, "y": 4, "label": "D"}]\' data-polygons="[]" data-segments="[]" role="img"></div></section>' +
+    '<div class="cols-2">' +
+    '<section class="q-card"><h3>א. כתבו את שיעורי הנקודות כזוג סדור.</h3><div class="cols-2 task-grid">' +
+    '<div><span class="pair math-ltr" dir="ltr">A(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></div>' +
+    '<div><span class="pair math-ltr" dir="ltr">B(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></div>' +
+    '<div><span class="pair math-ltr" dir="ltr">C(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></div>' +
+    '<div><span class="pair math-ltr" dir="ltr">D(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></div>' +
+    '</div></section>' +
+    '<section class="q-card"><h3>ב. בנקודה <span class="math-ltr" dir="ltr">A</span>.</h3><ul class="tasks compact">' +
+    '<li>ערך <span class="math-ltr" dir="ltr">x</span> (משמאל) הוא <span class="blank" style="--blank-width:4ch"></span>.</li>' +
+    '<li>שיעור <span class="math-ltr" dir="ltr">y</span> (מימין) הוא <span class="blank" style="--blank-width:4ch"></span>.</li>' +
+    '</ul></section>' +
+    '</div>' +
+    '<div class="cols-2">' +
+    '<section class="q-card"><h3>ג. נקודות שעל הצירים.</h3><ul class="tasks compact">' +
+    '<li>איזו נקודה נמצאת על ציר <span class="math-ltr" dir="ltr">x</span>? <span class="blank" style="--blank-width:4ch"></span></li>' +
+    '<li>איזו נקודה נמצאת על ציר <span class="math-ltr" dir="ltr">y</span>? <span class="blank" style="--blank-width:4ch"></span></li>' +
+    '</ul></section>' +
+    '<section class="q-card"><h3>ד. סמנו על הסרטוט שתי נקודות נוספות.</h3><ul class="tasks compact">' +
+    '<li>נקודה <span class="math-ltr" dir="ltr">E</span> שבה ערך <span class="math-ltr" dir="ltr">x</span> הוא 7 ושיעור <span class="math-ltr" dir="ltr">y</span> הוא 2.</li>' +
+    '<li>נקודה <span class="math-ltr" dir="ltr">F(1,1)</span>.</li>' +
+    '</ul></section>' +
+    '</div>' +
+    '<section class="q-card"><h3>ה. הסדר קובע.</h3><p>נקודה <span class="math-ltr" dir="ltr">(2,6)</span> ונקודה <span class="math-ltr" dir="ltr">(6,2)</span> — האם הן אותה נקודה? <span class="blank" style="--blank-width:6ch"></span> &nbsp; כי בזוג הסדור ערך <span class="math-ltr" dir="ltr">x</span> נכתב <span class="blank" style="--blank-width:7ch"></span> ושיעור <span class="math-ltr" dir="ltr">y</span> נכתב <span class="blank" style="--blank-width:7ch"></span>.</p></section>' +
+    '</main>' + FOOTER + '</section>',
+};
+
 export const PLOT_A: WorkbookPageContent = {
   n: 101,
   id: 'page-101',
