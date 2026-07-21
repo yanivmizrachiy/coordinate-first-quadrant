@@ -60,7 +60,7 @@ export const sameAxisGame: GameDefinition = {
     const wrap = elem('div', { class: 'game' });
     wrap.append(elem('div', { class: 'game__intro' },
       elem('h2', { text: 'אותו x או אותו y' }),
-      elem('p', { text: 'בכל שרטוט בחרו את כל הנקודות שנמצאות על אותו קו כמו הנקודה המסומנת. אותו שיעור x — קו אנכי; אותו שיעור y — קו אופקי. כל תשובה נכונה חושפת אות.' }),
+      elem('p', { text: 'בכל שרטוט בחרו את כל הנקודות שממוקמות על אותו קו כמו הנקודה המסומנת. אותו שיעור x — קו אנכי; אותו שיעור y — קו אופקי. כל תשובה נכונה חושפת אות.' }),
     ));
 
     const slots = sameAxisRounds.map(() => elem('div', { class: 'word-slot' }, ''));
@@ -96,7 +96,7 @@ function renderRound(round: SameAxisRound, index: number, onResult: (ok: boolean
   const axisText = round.axis === 'x'
     ? `אותו שיעור x כמו הנקודה ${round.targetLabel} (קו אנכי)`
     : `אותו שיעור y כמו הנקודה ${round.targetLabel} (קו אופקי)`;
-  body.append(elem('p', { class: 'game__prompt', text: `${index + 1}. בחרו את הנקודות שנמצאות על ${axisText}.` }));
+  body.append(elem('p', { class: 'game__prompt', text: `${index + 1}. בחרו את הנקודות שממוקמות על ${axisText}.` }));
 
   const gridPoints: GridPoint[] = round.points.map((p) => ({
     x: p.x, y: p.y, label: p.label, color: p.label === round.targetLabel ? '#dc2626' : '#1d4ed8',

@@ -40,7 +40,7 @@ export const GRAPH_REAL: WorkbookPageContent = sheet({
 <ul class="tasks compact">
 <li>אילו שתי חבילות באותו <b>משקל</b> (שיעור <span class="math-ltr" dir="ltr">x</span> זהה)? <span class="blank" style="--blank-width:4ch"></span> ו־<span class="blank" style="--blank-width:4ch"></span> , וגם <span class="blank" style="--blank-width:4ch"></span> ו־<span class="blank" style="--blank-width:4ch"></span></li>
 <li>אילו שתי חבילות באותו <b>מחיר</b> (שיעור <span class="math-ltr" dir="ltr">y</span> זהה)? <span class="blank" style="--blank-width:4ch"></span> ו־<span class="blank" style="--blank-width:4ch"></span> , וגם <span class="blank" style="--blank-width:4ch"></span> ו־<span class="blank" style="--blank-width:4ch"></span></li>
-<li>שתי חבילות באותו משקל נמצאות על קו <span class="blank" style="--blank-width:6ch"></span> (אנכי או אופקי).</li>
+<li>שתי חבילות באותו משקל ממוקמות על קו <span class="blank" style="--blank-width:6ch"></span> (אנכי או אופקי).</li>
 </ul>
 </section>
 `,

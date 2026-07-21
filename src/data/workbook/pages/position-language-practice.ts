@@ -38,7 +38,7 @@ export const POSITION_LANGUAGE_PRACTICE: WorkbookPageContent = sheet({
 </section>
 <section class="q-card span-2">
 <h3>מתיאור לזוג סדור</h3>
-<p>נקודה נמצאת מימין לציר <span class="math-ltr" dir="ltr">y</span> במרחק 6 יחידות ומעל ציר <span class="math-ltr" dir="ltr">x</span> במרחק 3 יחידות.</p>
+<p>נקודה ממוקמת מימין לציר <span class="math-ltr" dir="ltr">y</span> במרחק 6 יחידות ומעל ציר <span class="math-ltr" dir="ltr">x</span> במרחק 3 יחידות.</p>
 <p>שיעוריה: <span class="blank" style="--blank-width:10ch"></span></p>
 </section>
 </div>

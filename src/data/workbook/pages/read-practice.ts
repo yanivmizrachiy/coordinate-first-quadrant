@@ -29,12 +29,12 @@ export const READ_PRACTICE: WorkbookPageContent = sheet({
 <li>כתבו את שיעורי נקודה <span class="math-ltr" dir="ltr">K</span>: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
 <li>כתבו את שיעורי נקודה <span class="math-ltr" dir="ltr">N</span>: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
 <li>לאילו נקודות שיעור <span class="math-ltr" dir="ltr">y</span> גדול מ־3? <span class="blank" style="--blank-width:10ch"></span></li>
-<li>איזו נקודה נמצאת על ציר <span class="math-ltr" dir="ltr">y</span>? <span class="blank" style="--blank-width:5ch"></span></li>
+<li>איזו נקודה ממוקמת על ציר <span class="math-ltr" dir="ltr">y</span>? <span class="blank" style="--blank-width:5ch"></span></li>
 </ul>
 </section>
 <section class="q-card span-2">
 <h3>שאלה נוספת</h3>
-<p>נקודה נמצאת בגובה של <span class="math-ltr" dir="ltr">L</span> ובאותו קו אנכי כמו <span class="math-ltr" dir="ltr">M</span>.</p>
+<p>נקודה ממוקמת בגובה של <span class="math-ltr" dir="ltr">L</span> ובאותו קו אנכי כמו <span class="math-ltr" dir="ltr">M</span>.</p>
 <p>מהם שיעוריה? <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
 <p>נמקו בעזרת הביטויים <b>שיעור <span class="math-ltr" dir="ltr">x</span> זהה</b> ו־<b>שיעור <span class="math-ltr" dir="ltr">y</span> זהה</b>.</p>
 <div class="answer-line">

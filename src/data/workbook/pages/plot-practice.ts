@@ -19,7 +19,7 @@ export const PLOT_PRACTICE: WorkbookPageContent = sheet({
 <p>סמנו: <span class="math-ltr" dir="ltr">E(0,5), F(6,0), G(0,2), H(3,0), O(0,0)</span>.</p>
 <div aria-label="מערכת צירים ריקה לסימון נקודות על הצירים" class="coordinate-grid grid-large" data-arrows="[]" data-points="[]" data-polygons="[]" data-segments="[]" role="img">
 </div>
-<p>הקיפו את הנקודה שנמצאת על שני הצירים.</p>
+<p>הקיפו את הנקודה שממוקמת על שני הצירים.</p>
 </section>
 <section class="q-card span-2">
 <h3>מסמנים ובודקים</h3>
