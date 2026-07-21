@@ -59,7 +59,7 @@ export const coordinateMazeGame: GameDefinition = {
   id: 'coordinate-maze',
   title: 'מבוך הקואורדינטות',
   icon: '🌀',
-  short: 'מתקדמים במבוך לפי פקודות תנועה עד ליעד.',
+  short: 'זזים במבוך לפי פקודות הזזה עד ליעד.',
   skill: 'הזזה מדויקת: ימינה/שמאלה משנות x, למעלה/למטה משנות y',
   mount(root) {
     const cfg = mazeConfig;

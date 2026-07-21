@@ -60,6 +60,11 @@
   height: 1.2em; border-bottom: 1.5px solid var(--ink); vertical-align: -.08em;
 }
 .answer-line { height: 1.5em; border-bottom: 1px solid #8994a5; margin-top: 4px; }
+/* A game sheet is a numbered worksheet page that hosts an interactive game. */
+.game-sheet .sheet-content { display: block; }
+.game-host { min-height: 150mm; }
+.game-host > * { max-width: 100%; }
+
 .calc-box { border: 1px dashed #9aa6b6; border-radius: 8px; padding: 7px 10px 5px; margin: 7px 0; background: #fbfcfe; }
 .calc-box > b { display: block; margin-bottom: 3px; color: #40506a; }
 .calc-box .answer-line { border-bottom-style: dashed; }

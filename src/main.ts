@@ -12,8 +12,6 @@ import { home } from './views/home';
 import { workbookToc } from './views/workbookToc';
 import { pageViewer } from './views/pageViewer';
 import { book } from './views/book';
-import { gamesHub } from './views/gamesHub';
-import { gameView } from './views/gameView';
 
 const app = document.getElementById('app');
 if (!app) throw new Error('#app root missing');
@@ -51,8 +49,6 @@ function resolve(match: RouteMatch): View {
     case 'workbook': return workbookToc;
     case 'page': return pageViewer(Number(match.params['n'] ?? '1'));
     case 'book': return book;
-    case 'games': return gamesHub;
-    case 'game': return gameView(match.params['id'] ?? '');
   }
 }
 

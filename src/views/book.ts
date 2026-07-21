@@ -2,10 +2,11 @@ import { elem, fromHTML } from '../lib/dom';
 import { navigate } from '../router';
 import { hydrateGrids } from '../lib/coordinateGrid';
 import { WORKBOOK, TOTAL_PAGES } from '../data/workbook';
+import { gameById } from '../games';
 import { renderCoverSheet } from './coverSheet';
 import type { ViewContext } from './context';
 
-export function book({ outlet, setTitle }: ViewContext): void {
+export function book({ outlet, setTitle }: ViewContext): (() => void) | void {
   setTitle('החוברת המלאה');
   const c = elem('div', { class: 'container' });
 
@@ -23,9 +24,20 @@ export function book({ outlet, setTitle }: ViewContext): void {
     bookEl.append(fromHTML(page.html));
   }
   hydrateGrids(bookEl);
+
+  // Game sheets host their interactive game inline, like any other page.
+  const cleanups: Array<() => void> = [];
+  for (const page of WORKBOOK) {
+    if (!page.gameId) continue;
+    const host = bookEl.querySelector<HTMLElement>(`#${page.id} [data-game-host]`);
+    const g = gameById(page.gameId);
+    if (host && g) cleanups.push(g.mount(host));
+  }
+
   c.append(bookEl);
   outlet.append(c);
   window.scrollTo({ top: 0 });
+  return () => { for (const fn of cleanups) fn(); };
 }
 
 function actionBtn(text: string, onClick: () => void): HTMLElement {

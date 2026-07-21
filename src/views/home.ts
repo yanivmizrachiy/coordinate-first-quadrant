@@ -27,8 +27,7 @@ export function home({ outlet, setTitle }: ViewContext): void {
   }
 
   const entries: Entry[] = [
-    { icon: '📄', title: 'דפי העבודה', desc: `${TOTAL_PAGES} דפי תרגול לפי נושאים, עם ניווט והדפסה`, href: '#/workbook' },
-    { icon: '🎮', title: 'משחקים ושעשועונים', desc: `${GAMES.length} שעשועונים אינטראקטיביים ומדויקים`, href: '#/games', accent: true },
+    { icon: '📄', title: 'דפי העבודה', desc: `${TOTAL_PAGES} דפים לפי נושאים — כולל ${GAMES.length} שעשועונים משולבים בהקשר`, href: '#/workbook', accent: true },
     { icon: '📖', title: 'החוברת המלאה', desc: 'צפייה רציפה והדפסת כל הדפים כ־A4', href: '#/book' },
   ];
 
