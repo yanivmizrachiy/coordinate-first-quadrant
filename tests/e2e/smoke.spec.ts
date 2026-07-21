@@ -88,10 +88,11 @@ test('every coordinate system renders large enough to write on', async ({ page }
   expect(tiny, tiny.join(', ')).toHaveLength(0);
 });
 
-/* „ציר x” can be perfectly correct in the source and still print backwards:
-   the sheet is RTL, so without an explicit direction the Latin letter lands on
-   the LEFT and the label reads „x ציר”. Only measuring the glyphs catches it. */
-test('every label in a drawing reads Hebrew-word first, left to right', async ({ page }) => {
+/* A Hebrew reader scans right-to-left, so in „ציר y” the word „ציר” has to be
+   the RIGHTMOST part — that is what makes it the first word read. Pinning such
+   a label to LTR moves the Hebrew left, and it then reads „y ציר”: backwards.
+   Only measuring the glyph positions tells the two apart. */
+test('a mixed label puts its Hebrew word on the right, where it is read first', async ({ page }) => {
   await page.goto('/#/book');
   await page.waitForTimeout(3500);
   const reversed = await page.evaluate(() =>
@@ -107,8 +108,8 @@ test('every label in a drawing reads Hebrew-word first, left to right', async ({
           if (/[֐-׿]/.test(s[i]!)) hebrew = Math.min(hebrew, x);
           if (/[A-Za-z]/.test(s[i]!)) latin = Math.min(latin, x);
         }
-        // the Hebrew word must start to the LEFT of the Latin part
-        return hebrew > latin ? s : null;
+        // the Hebrew word must sit to the RIGHT of the Latin part
+        return hebrew < latin ? s : null;
       })
       .filter(Boolean),
   );

@@ -23,7 +23,7 @@ npm run dev          # שרת פיתוח (Vite) עם רענון חם
 
 ```bash
 npm run build        # בדיקת טיפוסים + בנייה ל-dist/
-npm run preview      # תצוגה מקדימה של התוצר על http://localhost:4173
+npm run preview      # תצוגה מקדימה של התוצר על http://localhost:4319
 ```
 
 התוצר ב־`dist/` הוא אתר סטטי מלא — קובץ `index.html` אחד ונכסים, ללא שרת וללא תלות ברשת בזמן ריצה.

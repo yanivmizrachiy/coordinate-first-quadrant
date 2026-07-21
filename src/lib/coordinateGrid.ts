@@ -80,12 +80,19 @@ let markerCounter = 0;
 
 function el(tag: string, attrs: Attrs = {}, text = ''): SVGElement {
   const node = document.createElementNS(NS, tag) as SVGElement;
-  /* Every label in a drawing is written Hebrew-word-first, left to right:
-     „ציר x”, „שיעור y = 3”. The sheet around it is RTL, which would place the
-     Latin part on the LEFT — Yaniv reads that as „x ציר”, written backwards.
-     Pinning the direction here, once, is what keeps a new label from being
-     added later without it. */
-  if (tag === 'text') node.setAttribute('direction', 'ltr');
+  /* Direction, decided by what the label actually contains.
+
+     A label WITH Hebrew („ציר y”, „שיעור x = 4”) stays in the sheet's RTL
+     direction, which puts the Hebrew word on the RIGHT. A Hebrew reader scans
+     from the right, so „ציר” is the first word met — which is how it must
+     read. Forcing such a label to LTR moves the Hebrew to the left, and then
+     the reader meets „y” first and the label says „y ציר”: backwards.
+
+     A label WITHOUT Hebrew („A”, „(2,5)”, „7”) is pinned LTR, because RTL
+     mirrors brackets and can reorder a coordinate pair. */
+  if (tag === 'text' && text !== '' && !/[֐-׿]/.test(text)) {
+    node.setAttribute('direction', 'ltr');
+  }
   for (const [k, v] of Object.entries(attrs)) {
     if (v !== '' && v !== null && v !== undefined) node.setAttribute(k, String(v));
   }
@@ -188,7 +195,9 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
     svg.append(
       el('text', { x: X(0) - 11, y: Y(0) + 22, 'text-anchor': 'end', fill: AXIS, 'font-size': 17, 'font-weight': 800 }, 'O'),
       // Mixed Hebrew+Latin flips text-anchor, so pin direction explicitly.
-      el('text', { x: X(XM) + 34, y: Y(0) + 5, 'text-anchor': 'start', direction: 'ltr', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, spec.axisXName ?? 'ציר x'),
+      /* Centred rather than anchored to an edge: in RTL, `start` anchors the
+         RIGHT edge, so the name would grow back over the arrow. */
+      el('text', { x: X(XM) + 50, y: Y(0) + 5, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, spec.axisXName ?? 'ציר x'),
       el('text', { x: X(0), y: Y(YM) - 32, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, spec.axisYName ?? 'ציר y'),
     );
   } else {
@@ -248,7 +257,7 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
       // numbers. Pin the direction so "start" really means "to the right of dx".
       svg.append(el('text', {
         x: X(p.x) + (p.dx ?? 10), y: Y(p.y) + (p.dy ?? -10),
-        'text-anchor': p.anchor || 'start', direction: 'ltr', fill: p.color || BLUE,
+        'text-anchor': p.anchor || 'start', fill: p.color || BLUE,
         'font-size': 13, 'font-weight': 900, 'paint-order': 'stroke', stroke: '#fff', 'stroke-width': 4,
       }, p.label || `(${p.x},${p.y})`));
     }
