@@ -35,5 +35,13 @@ export const RIGHT_ANGLE_INTRO: WorkbookPageContent = sheet({
 </div>
 <p>הקטע הראשון מקביל לציר <span class="blank" style="--blank-width:4ch"></span>; הקטע השני מקביל לציר <span class="blank" style="--blank-width:4ch"></span>.</p>
 </section>
+<section class="q-card">
+<h3>ג. השלימו על שני הקטעים.</h3>
+<ul class="tasks">
+<li>קטע מנקודה <span class="math-ltr" dir="ltr">(2,1)</span> עד נקודה <span class="math-ltr" dir="ltr">(2,7)</span> מקביל לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>.</li>
+<li>קטע מנקודה <span class="math-ltr" dir="ltr">(2,7)</span> עד נקודה <span class="math-ltr" dir="ltr">(6,7)</span> הוא קטע <span class="blank" data-missing="property" style="--blank-width:6ch"></span>.</li>
+<li>שני הקטעים נפגשים בנקודה <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> ונוצרת ביניהם זווית ישרה.</li>
+</ul>
+</section>
 `,
 });

@@ -17,9 +17,11 @@
    airy, it may not look broken. */
 
 const BASE = 0;
-const MAX = 30;
+const MAX = 44;
 /** How much taller a single drawing may get, at most. */
 const GRID_GROWTH = 120;
+/** How much taller a single writing line may get, at most. */
+const LINE_GROWTH = 21;
 
 /** Are these children stacked one under the other, rather than side by side? */
 function stacked(box: Element): boolean {
@@ -49,6 +51,16 @@ export function fitSheet(sheet: HTMLElement): void {
 
   const kids = [...box.children] as HTMLElement[];
   for (const k of kids) k.style.paddingTop = '';
+
+  /* Safe to run twice: anything this function resized remembers the height it
+     started at, so a second pass measures the sheet as authored rather than
+     growing what the first pass already grew. */
+  const reset = (el: HTMLElement): void => {
+    const base = el.dataset['fitBase'];
+    if (base === undefined) el.dataset['fitBase'] = String(Math.round(el.getBoundingClientRect().height));
+    else el.style.height = `${base}px`;
+  };
+  content.querySelectorAll<HTMLElement>('.coordinate-grid, .answer-line').forEach(reset);
 
   const room = (): number => {
     let lowest = 0;
@@ -93,6 +105,36 @@ export function fitSheet(sheet: HTMLElement): void {
     if (!shrank) break;
   }
 
+  /* Still short? Then the writing lines get the room. A wider line to answer on
+     is worth more to a learner than a wider margin — and unlike a margin, it is
+     something the sheet actually asks them to use. */
+  const lines = [...content.querySelectorAll<HTMLElement>('.answer-line')];
+  const taller = new Map<HTMLElement, number>();
+  for (let pass = 0; pass < 4 && lines.length; pass++) {
+    if (room() < 90) break;
+    let changed = false;
+    for (const l of lines) {
+      const added = taller.get(l) ?? 0;
+      if (added >= LINE_GROWTH) continue;
+      const step = Math.min(7, LINE_GROWTH - added);
+      l.style.height = `${Math.round(l.getBoundingClientRect().height + step)}px`;
+      taller.set(l, added + step);
+      changed = true;
+    }
+    if (!changed) break;
+  }
+  for (let back = 0; back < 5 && room() < 0; back++) {
+    let shrank = false;
+    for (const l of lines) {
+      const added = taller.get(l) ?? 0;
+      if (added <= 0) continue;
+      l.style.height = `${Math.round(l.getBoundingClientRect().height - 7)}px`;
+      taller.set(l, added - 7);
+      shrank = true;
+    }
+    if (!shrank) break;
+  }
+
   const leftover = room();
   if (leftover <= 8) return;
 
@@ -103,9 +145,18 @@ export function fitSheet(sheet: HTMLElement): void {
 /** Measure only once the sheets are in the document and laid out — off-document
     elements report a height of zero, and every page would keep its own spacing. */
 export function fitSheets(root: ParentNode = document): void {
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      root.querySelectorAll<HTMLElement>('.sheet').forEach(fitSheet);
+  const run = (): void => {
+    root.querySelectorAll<HTMLElement>('.sheet').forEach((s) => {
+      // one bad sheet must not stop the rest
+      try {
+        fitSheet(s);
+      } catch {
+        /* leave that sheet as authored */
+      }
     });
-  });
+  };
+  requestAnimationFrame(() => requestAnimationFrame(run));
+  // A tab that is not visible never fires rAF, and the booklet would then print
+  // with every page at the height it happened to be authored at.
+  setTimeout(run, 300);
 }
