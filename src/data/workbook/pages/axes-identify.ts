@@ -55,6 +55,7 @@ ${grid({
 <li>שני הצירים נפגשים במספר ${blank(3, 'number')}.</li>
 <li>המספר 7 שעל ציר ${ltr('x')} ממוקם ${blank(6, 'direction')} למספר 6.</li>
 <li>המספר 4 שעל ציר ${ltr('y')} ממוקם מתחת למספר ${blank(3, 'number')}.</li>
+<li>המספר 2 שעל ציר ${ltr('x')} ממוקם ${blank(6, 'direction')} למספר 5.</li>
 </ul>
 </section>
 </div>
@@ -65,6 +66,7 @@ ${grid({
 <li>המספר ${mixed(3, 1, 2)} ממוקם מימין למספר ${blank(3, 'number')}.</li>
 <li>המספר ${mixed(3, 1, 2)} ממוקם ${blank(6, 'direction')} למספר 4.</li>
 <li>המספר ${blank(4, 'number')} ממוקם באמצע, בין 5 ל־6.</li>
+<li>המספר ${mixed(2, 1, 2)} ממוקם בין המספר ${blank(3, 'number')} למספר 3.</li>
 </ul>
 </section>
 <section class="q-card">
