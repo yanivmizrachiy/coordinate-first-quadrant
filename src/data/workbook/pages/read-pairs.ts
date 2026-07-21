@@ -27,5 +27,13 @@ export const READ_PAIRS: WorkbookPageContent = sheet({
 <div class="answer-line">
 </div>
 </section>
+<section class="q-card">
+<h3>ו. השלימו לפי הסרטוט שלמעלה.</h3>
+<ul class="tasks">
+<li>הנקודה שממוקמת הכי גבוה היא <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>.</li>
+<li>שיעור <span class="math-ltr" dir="ltr">y</span> של נקודה <span class="math-ltr" dir="ltr">C</span> הוא <span class="blank" data-missing="number" style="--blank-width:3ch"></span>.</li>
+<li>נקודה <span class="math-ltr" dir="ltr">D</span> ממוקמת <span class="blank" data-missing="direction" style="--blank-width:6ch"></span> לנקודה <span class="math-ltr" dir="ltr">B</span>.</li>
+</ul>
+</section>
 `,
 });

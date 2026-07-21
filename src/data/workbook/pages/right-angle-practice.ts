@@ -50,5 +50,13 @@ export const RIGHT_ANGLE_PRACTICE: WorkbookPageContent = sheet({
 </div>
 <p class="small">הסבירו: זווית ישרה נוצרת כאשר קטע אחד מקביל לציר x והשני מקביל לציר y.</p>
 </section>
+<section class="q-card">
+<h3>ג. השלימו את הכלל.</h3>
+<ul class="tasks">
+<li>זווית ישרה נוצרת רק כשקטע אחד <span class="blank" data-missing="property" style="--blank-width:6ch"></span> והשני אנכי.</li>
+<li>לשתי נקודות שעל קטע אנכי יש <span class="blank" data-missing="concept" style="--blank-width:5ch"></span> <span class="math-ltr" dir="ltr">x</span> זהה.</li>
+<li>קטע המקביל לציר <span class="math-ltr" dir="ltr">x</span> הוא מאונך לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>.</li>
+</ul>
+</section>
 `,
 });
