@@ -56,6 +56,43 @@ describe('SVG text survives the RTL sheet', () => {
   });
 });
 
+describe('completions ask for something different each time', () => {
+  /* Yaniv's rule (USER_MEMORY §8): "בכל השלמה חסר רכיב מסוג אחר".
+     It was written down for a long time and still got broken, because nothing
+     checked it — a sheet can pass every other test while asking the learner
+     the very same thing four times. Tagged blanks make it checkable. */
+  const cards = (html: string): string[] =>
+    html.split('<section class="q-card">').slice(1).concat(html.includes('rule-box') ? [html] : []);
+
+  it('no group of completions asks for the same kind three times running', () => {
+    for (const page of WORKBOOK) {
+      for (const card of cards(page.html)) {
+        const kinds = [...card.matchAll(/data-missing="(\w+)"/g)].map((m) => m[1]);
+        if (kinds.length < 3) continue;
+        const distinct = new Set(kinds);
+        expect(
+          distinct.size,
+          `page ${page.n}: ${kinds.length} completions all ask for "${kinds[0]}"`,
+        ).toBeGreaterThan(1);
+      }
+    }
+  });
+
+  it('the opening sheet tags every blank, so the variety rule can see them', () => {
+    const first = pageByNumber(1)!.html;
+    const blanks = (first.match(/class="(blank|word-blank[^"]*)"/g) ?? []).length;
+    const tagged = (first.match(/data-missing=/g) ?? []).length;
+    expect(tagged, 'untagged blanks on page 1').toBe(blanks);
+  });
+
+  it('a two-word answer gets two boxes', () => {
+    // „ראשית הצירים” is two words, so it is never one long line.
+    const first = pageByNumber(1)!.html;
+    const concept = (first.match(/data-missing="concept"/g) ?? []).length;
+    expect(concept, 'ראשית הצירים needs two boxes').toBeGreaterThanOrEqual(2);
+  });
+});
+
 describe('pages stay easy to edit', () => {
   const dir = new URL('../src/data/workbook/pages/', import.meta.url);
   const files = readdirSync(dir).filter((f) => f !== 'index.ts');

@@ -1,25 +1,29 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, blank, grid } from '../authoring';
+import { sheet, blank, wordBlank, grid, ltr } from '../authoring';
 
 /* The opening sheet. Identification only: which axis is which, where they
    meet, and which way the numbers grow. No ordered pair, no (x,y) notation
-   and no שיעורים — those start once these names are secure. */
+   and no שיעורים — those start once these names are secure.
+
+   Every completion asks for a DIFFERENT kind of answer (letter, property,
+   concept, direction, relation, number) — never the same one twice in a row.
+   The `data-missing` tags are what the variety test reads. */
 export const AXES_IDENTIFY: WorkbookPageContent = sheet({
   sectionClass: 'sheet guided',
   title: 'מכירים את הצירים',
   subtitle: 'הציר האופקי, הציר האנכי וראשית הצירים',
   content: `
 <div class="rule-box completion-intro">
-<div class="completion-sentence">במערכת הצירים יש שני צירים: אחד <b>אופקי</b> ואחד <b>אנכי</b>.</div>
-<div class="completion-sentence">הציר האופקי נקרא ציר <span class="word-blank word-short" aria-label="מקום להשלמת האות x"></span>, והציר האנכי נקרא ציר <span class="word-blank word-short" aria-label="מקום להשלמת האות y"></span>.</div>
-<div class="completion-sentence">הנקודה שבה נפגשים שני הצירים נקראת <span class="word-blank word-medium" aria-label="מקום להשלמת המילה ראשית"></span> ה<span class="word-blank word-medium" aria-label="מקום להשלמת המילה צירים"></span>.</div>
+<div class="completion-sentence">ציר ${wordBlank('short', 'letter', 'מקום להשלמת האות x')} הוא הציר האופקי.</div>
+<div class="completion-sentence">ציר ${ltr('y')} הוא הציר ה${wordBlank('medium', 'property', 'מקום להשלמת המילה אנכי')}.</div>
+<div class="completion-sentence">הנקודה שבה נפגשים שני הצירים נקראת ${wordBlank('medium', 'concept', 'מקום להשלמת המילה ראשית')} ה${wordBlank('medium', 'concept', 'מקום להשלמת המילה צירים')}.</div>
 </div>
 <section class="q-card">
 <h3>א. השלימו את התיבות הריקות שעל הסרטוט.</h3>
 <ul class="tasks">
 <li>בתיבה שבקצה הציר האופקי — כתבו את שמו.</li>
-<li>בתיבה שבקצה הציר האנכי — כתבו את שמו.</li>
-<li>בתיבה שליד נקודת המפגש — כתבו את האות <span class="math-ltr" dir="ltr">O</span>.</li>
+<li>בתיבה שמעל הציר האנכי — כתבו את שמו.</li>
+<li>בתיבה שליד נקודת המפגש — כתבו את האות ${ltr('O')}.</li>
 <li>בתיבות שעל הצירים — כתבו את המספרים החסרים.</li>
 </ul>
 ${grid({
@@ -32,19 +36,19 @@ ${grid({
 </section>
 <div class="cols-2">
 <section class="q-card">
-<h3>ב. כיווני הגדילה.</h3>
+<h3>ב. השלימו על כיוון וגודל.</h3>
 <ul class="tasks">
-<li>המספרים על הציר האופקי גדלים כשזזים ${blank(7)}.</li>
-<li>המספרים על הציר האנכי גדלים כשזזים ${blank(7)}.</li>
-<li>הכי קרוב לראשית הצירים נמצא המספר ${blank(3)}.</li>
+<li>ככל שזזים ימינה על ציר ${ltr('x')}, המספרים ${blank(6, 'relation')}.</li>
+<li>כדי שהמספרים על ציר ${ltr('y')} יגדלו, זזים ${blank(7, 'direction')}.</li>
+<li>בראשית הצירים המספר על שני הצירים הוא ${blank(3, 'number')}.</li>
 </ul>
 </section>
 <section class="q-card">
-<h3>ג. השלימו במילים <b>אופקי</b> או <b>אנכי</b>.</h3>
+<h3>ג. השלימו על כל ציר.</h3>
 <ul class="tasks">
-<li>הציר שהמספרים שלו כתובים מצד שמאל לצד ימין הוא הציר ה${blank(6)}.</li>
-<li>הציר שהמספרים שלו כתובים מלמטה למעלה הוא הציר ה${blank(6)}.</li>
-<li>ציר <span class="math-ltr" dir="ltr">x</span> הוא הציר ה${blank(6)}, וציר <span class="math-ltr" dir="ltr">y</span> הוא הציר ה${blank(6)}.</li>
+<li>הציר שהמספרים שלו כתובים מצד שמאל לצד ימין הוא הציר ה${blank(6, 'property')}.</li>
+<li>הציר שעולה מלמטה למעלה נקרא ציר ${blank(3, 'letter')}.</li>
+<li>המספרים על כל ציר כתובים בסדר ${blank(5, 'concept')}.</li>
 </ul>
 </section>
 </div>
