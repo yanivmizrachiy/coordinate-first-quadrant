@@ -116,6 +116,37 @@ test('a mixed label puts its Hebrew word on the right, where it is read first', 
   expect(reversed, `reversed labels: ${reversed.join(' | ')}`).toHaveLength(0);
 });
 
+/* Half-empty sheets waste the learner's writing space and look unfinished.
+   The spare height is handed to the drawings first and then to the gaps, so
+   the typical page should come out close to full. A median rather than a
+   per-page floor: a few sheets are genuinely short, and padding them out with
+   air would be worse than leaving them. */
+test('the typical sheet uses the paper it is printed on', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
+  await page.goto('/#/book');
+  await page.waitForTimeout(6000);
+  const used = await page.evaluate(() =>
+    [...document.querySelectorAll('.sheet')]
+      .map((s) => {
+        const main = s.querySelector('.sheet-content');
+        const foot = s.querySelector('.gz-footer');
+        if (!main || !foot) return null;
+        let bottom = 0;
+        for (const el of main.querySelectorAll('*')) {
+          const r = el.getBoundingClientRect();
+          if (r.height && r.bottom > bottom) bottom = r.bottom;
+        }
+        const top = main.getBoundingClientRect().top;
+        const footTop = foot.getBoundingClientRect().top;
+        return Math.round(((bottom - top) / (footTop - top)) * 100);
+      })
+      .filter((n): n is number => n !== null)
+      .sort((a, b) => a - b),
+  );
+  const median = used[Math.floor(used.length / 2)]!;
+  expect(median, `median fill ${median}%`).toBeGreaterThanOrEqual(80);
+});
+
 /* Sheet text is 13px — including anything a game draws. The exceptions are
    deliberate and listed here; anything else is a regression. */
 test('every sheet keeps its body text at 13px', async ({ page }) => {

@@ -1,6 +1,7 @@
 import { elem, fromHTML } from '../lib/dom';
 import { navigate } from '../router';
 import { hydrateGrids } from '../lib/coordinateGrid';
+import { fitSheets } from '../lib/fitSheet';
 import { WORKBOOK, TOTAL_PAGES } from '../data/workbook';
 import { gameById } from '../games';
 import { renderCoverSheet } from './coverSheet';
@@ -24,6 +25,7 @@ export function book({ outlet, setTitle }: ViewContext): (() => void) | void {
     bookEl.append(fromHTML(page.html));
   }
   hydrateGrids(bookEl);
+    fitSheets(bookEl);
 
   // Game sheets host their interactive game inline, like any other page.
   const cleanups: Array<() => void> = [];

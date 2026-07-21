@@ -1,6 +1,7 @@
 import { elem, fromHTML, clear } from '../lib/dom';
 import { navigate } from '../router';
 import { hydrateGrids } from '../lib/coordinateGrid';
+import { fitSheets } from '../lib/fitSheet';
 import { pageByNumber, TOTAL_PAGES, topicOfPage } from '../data/workbook';
 import { lastPage } from '../lib/storage';
 import { gameById } from '../games';
@@ -28,6 +29,7 @@ export function pageViewer(n: number): (ctx: ViewContext) => (() => void) | void
     if (data) {
       sheetWrap.append(fromHTML(data.html));
       hydrateGrids(sheetWrap);
+    fitSheets(sheetWrap);
       if (data.gameId) {
         const host = sheetWrap.querySelector<HTMLElement>('[data-game-host]');
         const g = gameById(data.gameId);
