@@ -86,15 +86,23 @@ describe('pages stay easy to edit', () => {
 });
 
 describe('the booklet opens the way Yaniv asked', () => {
-  it('page 1 is the half-page coordinate system', () => {
+  it('page 1 is the half-page coordinate system, and asks the learner to write', () => {
     const first = pageByNumber(1)!;
     expect(first.html).toContain('grid-hero');
-    expect(first.html).toMatch(/pair-blank|word-blank|class="blank"/);
+    expect(first.html).toMatch(/word-blank|class="blank"/);
   });
 
-  it('page 1 only asks the learner to READ the drawing, not to mark on it', () => {
-    // Marking points is taught later, on its own sheet.
-    expect(pageByNumber(1)!.html).not.toContain('סמנו');
+  it('page 1 asks about identification only — never the ordered pair', () => {
+    // You cannot write an ordered pair before you know what each axis is
+    // called, so page 1 names the axes and nothing else.
+    const first = pageByNumber(1)!;
+    const text = first.html.replace(/<[^>]+>/g, ' ');
+    expect(first.html, 'ordered-pair boxes').not.toContain('pair-blank');
+    expect(text, 'the words זוג סדור').not.toContain('זוג סדור');
+    expect(text, 'the word שיעור').not.toContain('שיעור');
+    expect(text, '(x,y) notation').not.toMatch(/\(\s*[\dxy]\s*,/);
+    // and the drawing must not hand over the answer
+    expect(first.html, 'axis names given away').toContain('data-axisnames="false"');
   });
 
   it('every sheet keeps the 13px body size', () => {
