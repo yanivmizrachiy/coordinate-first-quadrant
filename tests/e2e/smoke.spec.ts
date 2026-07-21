@@ -203,3 +203,45 @@ test('a game sheet reveals its answer when solved correctly', async ({ page }) =
   }
   await expect(page.locator('.reveal').last()).toContainText('4705');
 });
+
+/* Black and white is for the SHEETS. The application keeps its colour — the
+   point is a clean printed page, not a drained interface. */
+test('black-and-white print greys the sheets and leaves the app in colour', async ({ page }) => {
+  await page.goto('/#/book');
+  await page.waitForTimeout(2500);
+  const bar = page.locator('.printbar__toggle');
+  await expect(bar).toContainText(/הדפסה שחור|חזרה לצבע/);
+
+  const read = async (): Promise<{ sheet: string; app: string }> =>
+    page.evaluate(() => ({
+      sheet: getComputedStyle(document.querySelectorAll('.sheet')[1]!).getPropertyValue('--blue').trim(),
+      app: getComputedStyle(document.querySelector('.iconbtn--primary')!).backgroundColor,
+    }));
+
+  if (await page.evaluate(() => document.body.classList.contains('bw-print'))) await bar.click();
+  const colour = await read();
+  await bar.click();
+  const mono = await read();
+
+  expect(mono.sheet, 'the sheet did not go black and white').not.toBe(colour.sheet);
+  expect(mono.app, 'the application lost its colour too').toBe(colour.app);
+});
+
+test('the print bar prints only the pages asked for', async ({ page }) => {
+  await page.goto('/#/book');
+  await page.waitForTimeout(3000);
+  const kept = await page.evaluate(() => {
+    const bar = document.querySelector('.printbar')!;
+    const [from, to] = bar.querySelectorAll<HTMLInputElement>('.printbar__num');
+    from!.value = '3';
+    to!.value = '5';
+    const print = window.print;
+    window.print = (): void => {};
+    bar.querySelector<HTMLButtonElement>('.printbar__go')!.click();
+    window.print = print;
+    return [...document.querySelectorAll('.sheet')]
+      .filter((s) => !s.classList.contains('print-skip'))
+      .map((s) => s.querySelector('.sheet-number')?.textContent?.trim() ?? 'cover');
+  });
+  expect(kept).toEqual(['3', '4', '5']);
+});

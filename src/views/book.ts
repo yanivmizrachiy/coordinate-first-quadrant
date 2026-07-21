@@ -2,7 +2,8 @@ import { elem, fromHTML } from '../lib/dom';
 import { navigate } from '../router';
 import { hydrateGrids } from '../lib/coordinateGrid';
 import { fitSheets } from '../lib/fitSheet';
-import { WORKBOOK, TOTAL_PAGES } from '../data/workbook';
+import { printBar } from './printBar';
+import { WORKBOOK } from '../data/workbook';
 import { gameById } from '../games';
 import { renderCoverSheet } from './coverSheet';
 import type { ViewContext } from './context';
@@ -11,14 +12,15 @@ export function book({ outlet, setTitle }: ViewContext): (() => void) | void {
   setTitle('החוברת המלאה');
   const c = elem('div', { class: 'container' });
 
+  const bookEl = elem('div', { class: 'book' });
+
   c.append(
     elem('div', { class: 'toolbar-row no-print' },
       linkBtn('☰ תוכן העניינים', () => navigate('#/workbook')),
-      actionBtn(`🖨️ הדפסת כל ${TOTAL_PAGES} העמודים`, () => window.print()),
     ),
+    printBar({ scope: 'book', root: () => bookEl }),
   );
 
-  const bookEl = elem('div', { class: 'book' });
   // Approved cover first, then all worksheets — no math content is altered.
   bookEl.append(renderCoverSheet());
   for (const page of WORKBOOK) {
@@ -42,11 +44,6 @@ export function book({ outlet, setTitle }: ViewContext): (() => void) | void {
   return () => { for (const fn of cleanups) fn(); };
 }
 
-function actionBtn(text: string, onClick: () => void): HTMLElement {
-  const b = elem('button', { class: 'iconbtn', type: 'button', text });
-  b.addEventListener('click', onClick);
-  return b;
-}
 function linkBtn(text: string, onClick: () => void): HTMLElement {
   const b = elem('button', { class: 'iconbtn iconbtn--primary', type: 'button', text });
   b.addEventListener('click', onClick);

@@ -226,3 +226,40 @@
   .container { padding: 0; max-width: none; }
   .app-main { min-height: 0; }
 }
+
+/* ---- print bar -----------------------------------------------------------
+   Choosing pages and printing them, in one row that never leaves the booklet.
+   The controls keep their colour: black and white is for the SHEETS. */
+.printbar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  max-width: 210mm; margin: 0 auto 10px; padding: 8px 10px;
+  background: var(--paper); border: 1px solid var(--border); border-radius: 12px;
+  box-shadow: 0 2px 10px #1f2a4412;
+}
+.printbar__range {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 14px; font-weight: 700; color: var(--muted);
+}
+.printbar__num {
+  width: 4.5rem; padding: 6px 8px; font: inherit; font-weight: 800; text-align: center;
+  border: 1.5px solid var(--border); border-radius: 8px; background: #fff; color: var(--ink);
+}
+.printbar__num:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+.printbar__go, .printbar__toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px; font: inherit; font-weight: 800; cursor: pointer;
+  border: 1.5px solid var(--blue); border-radius: 10px;
+  background: var(--blue); color: #fff;
+}
+.printbar__toggle { background: #fff; color: var(--blue); }
+.printbar__toggle.is-on { background: #1f2a44; border-color: #1f2a44; color: #fff; }
+.printbar__go:hover, .printbar__toggle:hover { filter: brightness(1.08); }
+.printbar__go:active, .printbar__toggle:active { transform: translateY(1px); }
+/* the second print button is the quieter one */
+.printbar__go + .printbar__go { background: #fff; color: var(--blue); }
+
+@media (max-width: 620px) {
+  .printbar { gap: 6px; padding: 7px 8px; }
+  .printbar__go, .printbar__toggle { flex: 1 1 auto; justify-content: center; padding: 10px 10px; }
+  .printbar__range { width: 100%; justify-content: center; }
+}
