@@ -122,9 +122,9 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
     const lab = xl[x];
     if (lab === '') {
       // missing number — draw an empty answer box for the student to fill in
-      svg.append(el('rect', { x: X(x) - 11, y: Y(0) + 8, width: 22, height: 18, rx: 3, fill: '#fff', stroke: BLUE, 'stroke-width': 1.4, 'stroke-dasharray': '3 2', 'vector-effect': 'non-scaling-stroke' }));
+      svg.append(el('rect', { x: X(x) - 14, y: Y(0) + 8, width: 28, height: 22, rx: 4, fill: '#fff', stroke: BLUE, 'stroke-width': 1.8, 'vector-effect': 'non-scaling-stroke' }));
     } else if (lab !== null && lab !== undefined) {
-      svg.append(el('text', { x: X(x), y: Y(0) + 21, 'text-anchor': 'middle', fill: AXIS, 'font-size': 14, 'font-weight': 700 }, String(lab)));
+      svg.append(el('text', { x: X(x), y: Y(0) + 21, 'text-anchor': 'middle', fill: AXIS, 'font-size': 17, 'font-weight': 700 }, String(lab)));
     }
   }
   for (let y = 1; y <= YM; y++) {
@@ -132,17 +132,17 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
     const lab = yl[y];
     if (lab === '') {
       // missing number — draw an empty answer box for the student to fill in
-      svg.append(el('rect', { x: X(0) - 33, y: Y(y) - 9, width: 22, height: 18, rx: 3, fill: '#fff', stroke: BLUE, 'stroke-width': 1.4, 'stroke-dasharray': '3 2', 'vector-effect': 'non-scaling-stroke' }));
+      svg.append(el('rect', { x: X(0) - 42, y: Y(y) - 11, width: 28, height: 22, rx: 4, fill: '#fff', stroke: BLUE, 'stroke-width': 1.8, 'vector-effect': 'non-scaling-stroke' }));
     } else if (lab !== null && lab !== undefined) {
-      svg.append(el('text', { x: X(0) - 12, y: Y(y) + 5, 'text-anchor': 'end', fill: AXIS, 'font-size': 14, 'font-weight': 700 }, String(lab)));
+      svg.append(el('text', { x: X(0) - 12, y: Y(y) + 5, 'text-anchor': 'end', fill: AXIS, 'font-size': 17, 'font-weight': 700 }, String(lab)));
     }
   }
 
   // Origin + axis letters
   svg.append(
-    el('text', { x: X(0) - 11, y: Y(0) + 21, 'text-anchor': 'end', fill: AXIS, 'font-size': 14, 'font-weight': 800 }, 'O'),
-    el('text', { x: X(XM) + 23, y: Y(0) - 10, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, 'x'),
-    el('text', { x: X(0) + 13, y: Y(YM) - 17, 'text-anchor': 'start', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, 'y'),
+    el('text', { x: X(0) - 11, y: Y(0) + 22, 'text-anchor': 'end', fill: AXIS, 'font-size': 17, 'font-weight': 800 }, 'O'),
+    el('text', { x: X(XM) + 20, y: Y(0) - 13, 'text-anchor': 'end', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, 'ציר x'),
+    el('text', { x: X(0) + 14, y: Y(YM) - 16, 'text-anchor': 'start', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, 'ציר y'),
   );
 
   // Polygons
