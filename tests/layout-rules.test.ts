@@ -151,6 +151,30 @@ describe('Hebrew and punctuation hold up to proofreading', () => {
   });
 });
 
+describe('a poster sheet keeps the design and drops what the rules forbid', () => {
+  const posters = WORKBOOK.filter((p) => p.sectionClass.includes('poster'));
+
+  it('prints no page number and no heading of ours on the artwork', () => {
+    expect(posters.length).toBeGreaterThan(0);
+    for (const p of posters) {
+      expect(p.html, `page ${p.n} draws a number on the artwork`).not.toContain('sheet-number');
+      expect(p.html, `page ${p.n} draws our header over the artwork`).not.toContain('sheet-header');
+    }
+  });
+
+  it('still carries the canonical footer, like every other page', () => {
+    for (const p of posters) expect(p.html, `page ${p.n}`).toContain('gz-footer');
+  });
+
+  it('crops away the name/date strip the artwork came with', () => {
+    // USER_MEMORY §12 forbids name and date fields; the artwork has them along
+    // its top edge, so the frame cuts that strip off.
+    expect(css).toContain('.sheet.poster-sheet .poster-frame');
+    expect(css).toMatch(/\.sheet\.poster-sheet \.poster \{[^}]*margin-top: -7\.9%/);
+    for (const p of posters) expect(p.html, `page ${p.n} is not framed`).toContain('poster-frame');
+  });
+});
+
 describe("a point's name stays attached to its brackets", () => {
   /* USER_MEMORY §7: „האות באנגלית משמאל לסוגריים”. Splitting the name and the
      brackets across two table cells cannot satisfy it — the sheet is RTL, so

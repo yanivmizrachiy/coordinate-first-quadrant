@@ -104,7 +104,13 @@
    still appears. object-fit keeps the A4 artwork from ever being stretched. */
 .sheet.poster-sheet { padding: 6mm 6mm 0; }
 .sheet.poster-sheet .sheet-content { padding: 0; height: calc(297mm - 22mm); }
-.sheet.poster-sheet .poster { display: block; width: 100%; height: 100%; object-fit: contain; }
+/* The artwork carries a „שם / כיתה / תאריך” strip along its top, which the
+   rules forbid (ch. 12). The frame crops it away — measured on the artwork
+   itself: the strip ends at 4.2% of the height and the title starts at 7.2%,
+   so the cut falls in the clear gap between them. A negative top margin is a
+   share of the WIDTH, hence 7.9% for a 5.6% slice of the height. */
+.sheet.poster-sheet .poster-frame { overflow: hidden; height: 100%; }
+.sheet.poster-sheet .poster { display: block; width: 100%; height: auto; margin-top: -7.9%; }
 
 .sheet.game-sheet { height: auto; min-height: 297mm; overflow: visible; }
 .sheet.game-sheet .sheet-content { display: block; }
