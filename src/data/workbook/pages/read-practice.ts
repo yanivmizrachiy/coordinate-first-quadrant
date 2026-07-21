@@ -13,11 +13,11 @@ export const READ_PRACTICE: WorkbookPageContent = sheet({
 </div>
 <table class="work-table center">
 <tbody>
-<tr><th>נקודה</th><th>שיעורים <span class="math-ltr" dir="ltr">(x,y)</span></th></tr>
-<tr><td><span class="math-ltr" dir="ltr">A</span></td><td><span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></td></tr>
-<tr><td><span class="math-ltr" dir="ltr">B</span></td><td><span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></td></tr>
-<tr><td><span class="math-ltr" dir="ltr">C</span></td><td><span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></td></tr>
-<tr><td><span class="math-ltr" dir="ltr">D</span></td><td><span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></td></tr>
+<tr><th>כתבו כל נקודה כזוג סדור</th></tr>
+<tr><td><span class="pair math-ltr" dir="ltr">A(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></td></tr>
+<tr><td><span class="pair math-ltr" dir="ltr">B(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></td></tr>
+<tr><td><span class="pair math-ltr" dir="ltr">C(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></td></tr>
+<tr><td><span class="pair math-ltr" dir="ltr">D(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></td></tr>
 </tbody>
 </table>
 </section>

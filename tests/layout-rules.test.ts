@@ -151,6 +151,20 @@ describe('Hebrew and punctuation hold up to proofreading', () => {
   });
 });
 
+describe("a point's name stays attached to its brackets", () => {
+  /* USER_MEMORY §7: „האות באנגלית משמאל לסוגריים”. Splitting the name and the
+     brackets across two table cells cannot satisfy it — the sheet is RTL, so
+     the first column lands on the right and it reads „(_,_) A”. */
+  it('a name and its empty pair live in one element', () => {
+    for (const p of WORKBOOK) {
+      expect(
+        p.html,
+        `page ${p.n} puts a point's name in its own cell`,
+      ).not.toMatch(/<td><span class="math-ltr" dir="ltr">[A-Z]'?<\/span><\/td>\s*<td><span class="pair/);
+    }
+  });
+});
+
 describe('a calculation gets units and room to work', () => {
   /* USER_MEMORY §10. Both rules were written down and neither was checked, so
      five sheets asked for a perimeter with nowhere to work it out and no unit

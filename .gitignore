@@ -25,3 +25,6 @@ playwright-report/
 secrets.json
 standalone/
 test-results/
+
+# תיקיית קלט זמנית של יניב — תוצרים מפרויקט אחר, לא קוד של הריפו
+_CLAUDE_INPUT/
