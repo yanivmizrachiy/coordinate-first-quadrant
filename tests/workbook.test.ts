@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'node:fs';
 import { WORKBOOK, TOTAL_PAGES, TOPICS, pageByNumber } from '../src/data/workbook';
+import { GAMES } from '../src/games';
 
 const FOOTER_F1 = 'יניב רז - מדריך מחוזי חט"ב בעיר ירושלים';
 const FOOTER_F2 = 'הדרכה במחוז ירושלים והעיר ירושלים - מנח"י, בהובלת איילת קריספין';
@@ -44,7 +46,23 @@ describe('workbook integrity (CLAUDE.md mandatory checks)', () => {
     expect(pageByNumber(1)!.title).toContain('השלימו את המשפטים');
   });
 
-  it('topics cover all 34 pages exactly once', () => {
+  it('every game is a numbered page exactly once, in a topic', () => {
+    for (const g of GAMES) {
+      const hosts = WORKBOOK.filter((p) => p.gameId === g.id);
+      expect(hosts.length, `game ${g.id}`).toBe(1);
+      expect(hosts[0]!.html, `game ${g.id} host`).toContain(`data-game-host="${g.id}"`);
+    }
+  });
+
+  // Page numbers are positional (see index.ts `renumber`), so styling must never
+  // key off a #page-N id — it would silently attach to whichever page later
+  // lands in that slot.
+  it('no stylesheet targets a page by its number', () => {
+    const css = readFileSync(new URL('../src/styles/workbook.css', import.meta.url), 'utf8');
+    expect(css.match(/#page-\d+/g)).toBeNull();
+  });
+
+  it('topics cover all pages exactly once', () => {
     const covered = TOPICS.flatMap((t) => t.pages).sort((a, b) => a - b);
     expect(covered).toEqual(Array.from({ length: 45 }, (_, i) => i + 1));
   });
