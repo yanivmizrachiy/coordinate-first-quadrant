@@ -151,6 +151,38 @@ describe('Hebrew and punctuation hold up to proofreading', () => {
   });
 });
 
+describe('a group never asks the same question four times', () => {
+  /* USER_MEMORY §5. Four items reading "שיעור x הוא N ושיעור y הוא M" with
+     nothing but the numbers changing is not practice, it is filler. */
+  const shape = (li: string): string =>
+    li
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\d+/g, '#')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+  it('no list repeats one wording with only the numbers changed', () => {
+    for (const p of WORKBOOK) {
+      for (const list of p.html.split('<ul class="tasks').slice(1)) {
+        const items = [...list.split('</ul>')[0]!.matchAll(/<li>([\s\S]*?)<\/li>/g)].map((m) => shape(m[1]!));
+        if (items.length < 4) continue;
+        const counts = new Map<string, number>();
+        for (const s of items) counts.set(s, (counts.get(s) ?? 0) + 1);
+        const worst = [...counts.entries()].sort((a, b) => b[1] - a[1])[0]!;
+        expect(worst[1], `page ${p.n}: "${worst[0].slice(0, 46)}" appears ${worst[1]} times`).toBeLessThan(4);
+      }
+    }
+  });
+
+  it('a completion sentence reads like a textbook, not like an equation', () => {
+    // „ערך ה־x הוא ____”, never „שיעור x = ____”
+    for (const p of WORKBOOK) {
+      const text = p.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+      expect(text, `page ${p.n} uses "= ___" inside a sentence`).not.toMatch(/(שיעור|ערך)\s*[xy]?\s*=\s*(_|$)/);
+    }
+  });
+});
+
 describe('a poster sheet keeps the design and drops what the rules forbid', () => {
   const posters = WORKBOOK.filter((p) => p.sectionClass.includes('poster'));
 

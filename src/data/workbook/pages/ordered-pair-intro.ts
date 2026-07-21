@@ -45,17 +45,21 @@ export const ORDERED_PAIR_INTRO: WorkbookPageContent = sheet({
 </section>
 <section class="q-card">
 <h3>ד. מצאו ותקנו את הטעות.</h3>
-<p>נועם קיבל <span class="math-ltr" dir="ltr">x=3, y=5</span> וכתב <span class="math-ltr" dir="ltr">(5,3)</span>. מהי הטעות?</p>
-<div class="answer-line">
-</div>
-<p>הזוג הסדור הנכון: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
+<p>נועם התבקש לכתוב את הנקודה שבה ערך <span class="math-ltr" dir="ltr">x</span> הוא 3 ושיעור <span class="math-ltr" dir="ltr">y</span> הוא 5, והוא כתב <span class="math-ltr" dir="ltr">(5,3)</span>.</p>
+<ul class="tasks">
+<li>נועם החליף בין ערך <span class="math-ltr" dir="ltr">x</span> לבין <span class="blank" data-missing="concept" style="--blank-width:8ch"></span> <span class="math-ltr" dir="ltr">y</span>.</li>
+<li>הזוג הסדור הנכון הוא <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>הנקודה שנועם כתב ממוקמת <span class="blank" data-missing="direction" style="--blank-width:6ch"></span> לנקודה הנכונה.</li>
+</ul>
 </section>
 <section class="q-card">
-<h3>ה. מדוע חשוב לשמור על הסדר בזוג הסדור?</h3>
-<div class="answer-line">
-</div>
-<div class="answer-line">
-</div>
+<h3>ה. השלימו — למה הסדר קובע.</h3>
+<ul class="tasks">
+<li>אם מחליפים בין שני המספרים, מקבלים נקודה <span class="blank" data-missing="relation" style="--blank-width:5ch"></span>.</li>
+<li>המספר שנכתב ראשון, מצד שמאל, אומר כמה זזים <span class="blank" data-missing="direction" style="--blank-width:6ch"></span>.</li>
+<li>המספר שנכתב שני, מצד ימין, אומר כמה זזים <span class="blank" data-missing="direction" style="--blank-width:6ch"></span>.</li>
+<li>לכן שני מספרים באותו סדר מתארים תמיד <span class="blank" data-missing="number" style="--blank-width:5ch"></span> נקודה.</li>
+</ul>
 </section>
 `,
 });
