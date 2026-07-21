@@ -105,7 +105,9 @@ export const coordinateMazeGame: GameDefinition = {
         ...wallPoints,
         { x: cfg.start.x, y: cfg.start.y, label: 'התחלה', color: '#15803d' },
         { x: cfg.target.x, y: cfg.target.y, label: 'יעד', color: '#b45309' },
-        { x: pos.x, y: pos.y, label: `(${pos.x},${pos.y})`, color: '#1d4ed8' },
+        // Below the dot: at the start of the game this label sits on the same
+        // square as „התחלה”, and above the dot the two print on top of each other.
+        { x: pos.x, y: pos.y, label: `(${pos.x},${pos.y})`, color: '#1d4ed8', dy: 20 },
       ];
       const segments = trail.slice(1).map((p, i) => ({
         from: [trail[i]!.x, trail[i]!.y] as [number, number], to: [p.x, p.y] as [number, number], type: 'guide' as const,
