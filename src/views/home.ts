@@ -1,6 +1,5 @@
 import { elem } from '../lib/dom';
 import { navigate } from '../router';
-import { lastPage } from '../lib/storage';
 import { TOTAL_PAGES } from '../data/workbook';
 import { GAMES } from '../games';
 import { APPROVED_COVER } from '../data/cover';
@@ -39,13 +38,6 @@ export function home({ outlet, setTitle }: ViewContext): void {
 
   c.append(cover, elem('h1', { class: 'visually-hidden', text: 'מערכת צירים — הרביע הראשון' }));
 
-  const last = lastPage.get();
-  if (last > 1) {
-    const chip = elem('button', { class: 'resume-chip', type: 'button', text: `↩ המשיכו מעמוד ${last}` });
-    chip.addEventListener('click', () => navigate(`#/workbook/${last}`));
-    c.append(elem('div', { style: 'text-align:center' }, chip));
-  }
-
   const entries: Entry[] = [
     { icon: '📄', title: 'דפי העבודה', desc: `${TOTAL_PAGES} דפים לפי נושאים — כולל ${GAMES.length} שעשועונים משולבים בהקשר`, href: '#/workbook', accent: true },
     { icon: '📖', title: 'החוברת המלאה', desc: 'צפייה רציפה והדפסת כל הדפים כ־A4', href: '#/book' },
@@ -59,6 +51,7 @@ export function home({ outlet, setTitle }: ViewContext): void {
         elem('div', { class: 'entry-card__title', text: e.title }),
         elem('div', { class: 'entry-card__desc', text: e.desc }),
       ),
+      elem('div', { class: 'entry-card__go', 'aria-hidden': 'true', text: '‹' }),
     );
     card.addEventListener('click', () => navigate(e.href));
     grid.append(card);
