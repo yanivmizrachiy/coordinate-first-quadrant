@@ -8,6 +8,7 @@
    without hand-editing the number baked into every sheet.
    =========================================================================== */
 import {
+  AXES_IDENTIFY,
   HERO_INTRO,
   PLOT_A,
   PLOT_B,
@@ -112,10 +113,12 @@ const isGame = (s: Slot): s is GameDefinition => typeof (s as GameDefinition).mo
    hand, and a topic can never drift out of sync with the pages it names. */
 const BOOK: { id: string; title: string; slots: Slot[] }[] = [
   { id: 'intro', title: 'היכרות עם מערכת הצירים', slots: [
-    // The half-page coordinate system opens the booklet (Yaniv's rule).
-    HERO_INTRO, AXES_INTRO, AXES_PRACTICE,
+    // Identification first: names of the axes and the origin, nothing more.
+    // The ordered pair only starts in the next topic (Yaniv's rule).
+    AXES_IDENTIFY, AXES_INTRO, AXES_PRACTICE,
   ] },
   { id: 'coords', title: 'שיעור x, שיעור y והזוג הסדור', slots: [
+    HERO_INTRO,
     COORDS_INTRO, READ_PAIRS, COORDS_PRACTICE, ORDERED_PAIR_DRILL, ORDERED_PAIR_INTRO, ORDERED_PAIR_PRACTICE,
   ] },
   { id: 'plot', title: 'סימון נקודות', slots: [

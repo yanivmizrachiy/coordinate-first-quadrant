@@ -42,3 +42,4 @@ export { RIGHT_ANGLE_INTRO } from './right-angle-intro';
 export { RIGHT_ANGLE_PRACTICE } from './right-angle-practice';
 export { RIGHT_ANGLE_BUILD } from './right-angle-build';
 export { RIGHT_ANGLE_SUMMARY } from './right-angle-summary';
+export { AXES_IDENTIFY } from './axes-identify';
