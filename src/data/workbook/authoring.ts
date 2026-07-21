@@ -72,10 +72,15 @@ export interface GridOptions {
   polygons?: unknown[];
   arrows?: unknown[];
   labelboxes?: unknown[];
-  /** false when naming the axes IS the task — printing them gives it away. */
+  /** false when naming the axes IS the task — printing them gives it away,
+      so the drawing shows empty boxes to write the names in instead. */
   axisNames?: boolean;
   axisX?: string;
   axisY?: string;
+  /** Numbers along an axis; `''` leaves an empty box for the learner to fill.
+      Index = the value on that axis, so ['', 1, 2] blanks the first tick. */
+  xlabels?: (number | string)[];
+  ylabels?: (number | string)[];
 }
 
 /** A coordinate system. Keeps the JSON out of hand-escaped attributes. */
@@ -93,6 +98,8 @@ export function grid(o: GridOptions = {}): string {
     (o.axisNames === false ? ' data-axisnames="false"' : '') +
     (o.axisX ? ` data-axisx="${o.axisX}"` : '') +
     (o.axisY ? ` data-axisy="${o.axisY}"` : '') +
+    (o.xlabels ? ` data-xlabels='${JSON.stringify(o.xlabels)}'` : '') +
+    (o.ylabels ? ` data-ylabels='${JSON.stringify(o.ylabels)}'` : '') +
     '></div>'
   );
 }

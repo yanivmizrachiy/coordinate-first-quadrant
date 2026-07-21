@@ -168,16 +168,30 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
     }
   }
 
-  // Origin marker.
-  svg.append(el('text', { x: X(0) - 11, y: Y(0) + 22, 'text-anchor': 'end', fill: AXIS, 'font-size': 17, 'font-weight': 800 }, 'O'));
+  /* Axis names and the origin letter sit in the margins. When the task IS to
+     name them (data-axisnames="false") printing them would give the answer
+     away — so the learner gets a box to write in, right where the name
+     belongs, exactly like a missing number on an axis. */
+  const answerBox = (x: number, y: number, w: number): SVGElement =>
+    el('rect', {
+      x, y, width: w, height: 22, rx: 4, fill: '#fff', stroke: BLUE,
+      'stroke-width': 1.8, 'vector-effect': 'non-scaling-stroke',
+    });
 
-  // Axis names sit in the margins. Omitted via data-axisnames="false" when the
-  // task itself is to NAME the axes — printing them would give the answer away.
   if (spec.axisNames !== false) {
     svg.append(
+      el('text', { x: X(0) - 11, y: Y(0) + 22, 'text-anchor': 'end', fill: AXIS, 'font-size': 17, 'font-weight': 800 }, 'O'),
       // Mixed Hebrew+Latin flips text-anchor, so pin direction explicitly.
       el('text', { x: X(XM) + 34, y: Y(0) + 5, 'text-anchor': 'start', direction: 'ltr', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, spec.axisXName ?? 'ציר x'),
       el('text', { x: X(0), y: Y(YM) - 32, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, spec.axisYName ?? 'ציר y'),
+    );
+  } else {
+    // Placed clear of the arrowheads: the horizontal name goes under the far
+    // end of its axis, the vertical name just above the top arrow.
+    svg.append(
+      answerBox(X(0) - 40, Y(0) + 6, 26),      // the origin letter
+      answerBox(X(XM) + 6, Y(0) + 8, 60),      // the horizontal axis name
+      answerBox(X(0) - 28, Y(YM) - 48, 56),    // the vertical axis name
     );
   }
 
