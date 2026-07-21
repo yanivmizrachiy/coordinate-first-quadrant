@@ -50,6 +50,9 @@ export interface GridSpec {
   ylabels?: (number | string)[];
   /** Set false to hide the "ציר x" / "ציר y" names (tasks that ask for them). */
   axisNames?: boolean;
+  /** Override the axis names, e.g. a real-life graph: "משקל" / "מחיר". */
+  axisXName?: string;
+  axisYName?: string;
   ariaLabel?: string;
 }
 
@@ -150,8 +153,8 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
   if (spec.axisNames !== false) {
     svg.append(
       // Mixed Hebrew+Latin flips text-anchor, so pin direction explicitly.
-      el('text', { x: X(XM) + 34, y: Y(0) + 5, 'text-anchor': 'start', direction: 'ltr', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, 'ציר x'),
-      el('text', { x: X(0), y: Y(YM) - 32, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, 'ציר y'),
+      el('text', { x: X(XM) + 34, y: Y(0) + 5, 'text-anchor': 'start', direction: 'ltr', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, spec.axisXName ?? 'ציר x'),
+      el('text', { x: X(0), y: Y(YM) - 32, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, spec.axisYName ?? 'ציר y'),
     );
   }
 
@@ -246,6 +249,8 @@ export function hydrateGrids(root: ParentNode = document): void {
     if (xl) spec.xlabels = xl;
     if (yl) spec.ylabels = yl;
     if (elm.dataset['axisnames'] === 'false') spec.axisNames = false;
+    if (elm.dataset['axisx']) spec.axisXName = elm.dataset['axisx'];
+    if (elm.dataset['axisy']) spec.axisYName = elm.dataset['axisy'];
     elm.replaceChildren(renderCoordinateGrid(spec));
     elm.dataset['hydrated'] = '1';
   });

@@ -32,8 +32,46 @@
 .home-cover__fallbacktitle { font-size: clamp(26px, 7vw, 40px); font-weight: 900; color: var(--brand-ink); line-height: 1.1; }
 .home-cover__fallbackhint { color: var(--muted); font-size: 16px; }
 
-/* Home navigation — premium, thumb-friendly cards.
-   Tall tap targets (>=76px), no tap-highlight flash, real press feedback. */
+/* Home actions — view / download / print / WhatsApp. Thumb-friendly. */
+.act-row {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+  width: min(94vw, 560px); margin: 0 auto 14px;
+}
+.act {
+  flex: 1 1 120px; min-width: 118px; min-height: 64px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  padding: 10px 12px; border-radius: 16px; text-decoration: none;
+  background: linear-gradient(145deg, #ffffff, #f5f9ff);
+  border: 1px solid #dbe5f5; color: var(--brand-ink);
+  box-shadow: 0 3px 10px #1f2a4414, 0 10px 24px #1f2a440d;
+  cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+  transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+}
+.act:hover { transform: translateY(-2px); box-shadow: 0 6px 16px #1f2a441f; border-color: #bcd0f0; }
+.act:active { transform: translateY(0) scale(.97); }
+.act:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
+.act__icon { font-size: 24px; line-height: 1; }
+.act__label { font-size: 14px; font-weight: 800; }
+.act--wa { background: linear-gradient(145deg, #25d366, #12b955); border-color: #0ea34a; color: #fff; }
+.act--wa:hover { border-color: #0b8f40; }
+
+/* Paging — jump straight to any page. */
+.jump {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px;
+  width: min(94vw, 560px); margin: 0 auto 28px;
+}
+.jump__select, .jump__go, .jump__first, .jump__toc {
+  min-height: 46px; padding: 0 14px; border-radius: 12px; font: inherit; font-weight: 800;
+  background: #fff; border: 1px solid #dbe5f5; color: var(--brand-ink);
+  cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
+.jump__select { flex: 1 1 130px; min-width: 120px; }
+.jump__go { background: var(--brand); border-color: var(--brand); color: #fff; }
+.jump__first, .jump__toc { flex: 1 1 130px; }
+.jump__select:focus-visible, .jump__go:focus-visible, .jump__first:focus-visible, .jump__toc:focus-visible {
+  outline: 3px solid var(--brand); outline-offset: 2px;
+}
+
 .home-grid {
   display: grid; gap: 12px; margin: 4px auto 28px;
   grid-template-columns: 1fr;
