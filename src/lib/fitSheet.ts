@@ -47,8 +47,10 @@ export function fitSheet(sheet: HTMLElement): void {
   while (box.childElementCount === 1 && box.firstElementChild instanceof HTMLElement) {
     box = box.firstElementChild;
   }
-  if (box.childElementCount < 2 || !stacked(box)) return;
-
+  /* Padding can only be shared between blocks that sit one under the other —
+     but a drawing and a writing line can grow on ANY sheet, including the ones
+     that lay their cards out side by side. Those were the pages left at 58%. */
+  const canSpace = box.childElementCount >= 2 && stacked(box);
   const kids = [...box.children] as HTMLElement[];
   for (const k of kids) k.style.paddingTop = '';
 
@@ -136,7 +138,7 @@ export function fitSheet(sheet: HTMLElement): void {
   }
 
   const leftover = room();
-  if (leftover <= 8) return;
+  if (!canSpace || leftover <= 8) return;
 
   const extra = Math.min(MAX, BASE + leftover / (kids.length - 1));
   for (let i = 1; i < kids.length; i++) kids[i]!.style.paddingTop = `${Math.round(extra)}px`;
