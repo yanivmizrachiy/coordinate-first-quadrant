@@ -24,8 +24,10 @@ export const HERO_INTRO: WorkbookPageContent = {
     '<section aria-labelledby="title-100" class="sheet guided dense" id="page-100">' +
     '<header class="sheet-header"><div><h1 id="title-100">מערכת הצירים והזוג הסדור</h1><p>ערך x משמאל, שיעור y מימין</p></div><div aria-label="עמוד 100" class="sheet-number">100</div></header>' +
     '<main class="sheet-content">' +
-    '<div class="rule-box">כל נקודה נכתבת כ<b>זוג סדור</b> בתוך סוגריים: <span class="math-ltr" dir="ltr">(x,y)</span>. ' +
-    '<b>ערך <span class="math-ltr" dir="ltr">x</span> נכתב משמאל</b> ו<b>שיעור <span class="math-ltr" dir="ltr">y</span> נכתב מימין</b>. יש סֵדֶר — ולכן קוראים לזה זוג <b>סדור</b>.</div>' +
+    '<div class="rule-box completion-intro">' +
+    '<div class="completion-sentence">כל נקודה נכתבת כ<b>זוג סדור</b> בתוך סוגריים: <span class="math-ltr" dir="ltr">(x,y)</span>.</div>' +
+    '<div class="completion-sentence">ערך <span class="word-blank word-short" aria-label="מקום להשלמת האות x"></span> נכתב משמאל, וערך <span class="math-ltr" dir="ltr">y</span> נכתב מ<span class="word-blank word-medium" aria-label="מקום להשלמת המילה ימין"></span>.</div>' +
+    '<div class="completion-sentence">מכיוון שיש סֵדֶר, קוראים לזה זוג <span class="word-blank word-medium" aria-label="מקום להשלמת המילה סדור"></span>.</div>' +
     '<section class="q-card"><h3>לפניכם מערכת הצירים. ענו עליה בסעיפים שמתחת.</h3>' +
     '<div aria-label="מערכת צירים גדולה ובה הנקודות A B C D" class="coordinate-grid grid-hero" data-arrows="[]" data-labelboxes="[]" data-points=\'[{"x": 2, "y": 5, "label": "A"}, {"x": 6, "y": 3, "label": "B"}, {"x": 4, "y": 0, "label": "C"}, {"x": 0, "y": 4, "label": "D"}]\' data-polygons="[]" data-segments="[]" role="img"></div></section>' +
     '<div class="cols-2">' +
@@ -50,7 +52,6 @@ export const HERO_INTRO: WorkbookPageContent = {
     '<li>נקודה <span class="math-ltr" dir="ltr">F(1,1)</span>.</li>' +
     '</ul></section>' +
     '</div>' +
-    '<section class="q-card"><h3>ה. הסדר קובע.</h3><p>נקודה <span class="math-ltr" dir="ltr">(2,6)</span> ונקודה <span class="math-ltr" dir="ltr">(6,2)</span> — האם הן אותה נקודה? <span class="blank" style="--blank-width:6ch"></span> &nbsp; כי בזוג הסדור ערך <span class="math-ltr" dir="ltr">x</span> נכתב <span class="blank" style="--blank-width:7ch"></span> ושיעור <span class="math-ltr" dir="ltr">y</span> נכתב <span class="blank" style="--blank-width:7ch"></span>.</p></section>' +
     '</main>' + FOOTER + '</section>',
 };
 
