@@ -11,4 +11,8 @@
 - הריפו המותר היחיד: `yanivmizrachiy/coordinate-first-quadrant`.
 - אסור כל כתיבה / commit / push / merge אל `yanivmizrachiy/parabula-next`.
 - אם `git remote get-url origin` אינו מצביע בדיוק אל `yanivmizrachiy/coordinate-first-quadrant` — לעצור ולא לכתוב.
-- אין push / merge / פרסום ל־`main` או ל־GitHub Pages ללא אישור מפורש של יניב.
+
+## אישור קבוע (21.07.2026) — מחליף את הכלל הקודם
+- ליניב יש **אישור עומד**: commit · push · PR · **merge ל־`main`** · **פרסום ל־Pages**
+  מתבצעים **בלי לשאול**, בריפו המותר בלבד. הפירוט המלא בפרק 1 של `USER_MEMORY.md`.
+- תנאי יחיד: typecheck · test · build עוברים. נכשלה בדיקה — מתקנים, לא מפרסמים.
