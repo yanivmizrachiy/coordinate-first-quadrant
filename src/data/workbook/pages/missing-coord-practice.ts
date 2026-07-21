@@ -10,10 +10,10 @@ export const MISSING_COORD_PRACTICE: WorkbookPageContent = sheet({
 <section class="q-card">
 <h3>שיעור חסר</h3>
 <ul class="tasks">
-<li><span class="math-ltr" dir="ltr">A(__,4)</span> ממוקמת על אותו קו אנכי כמו <span class="math-ltr" dir="ltr">B(6,1)</span>. לכן <span class="math-ltr" dir="ltr">A=</span> <span class="blank" style="--blank-width:10ch"></span></li>
-<li><span class="math-ltr" dir="ltr">C(3,__ )</span> ממוקמת על אותו קו אופקי כמו <span class="math-ltr" dir="ltr">D(7,5)</span>. לכן <span class="math-ltr" dir="ltr">C=</span> <span class="blank" style="--blank-width:10ch"></span></li>
-<li><span class="math-ltr" dir="ltr">E(__,__ )</span> ממוקמת על ציר <span class="math-ltr" dir="ltr">x</span> מתחת לנקודה <span class="math-ltr" dir="ltr">F(4,3)</span>. לכן <span class="math-ltr" dir="ltr">E=</span> <span class="blank" style="--blank-width:10ch"></span></li>
-<li><span class="math-ltr" dir="ltr">G(__,__ )</span> ממוקמת על ציר <span class="math-ltr" dir="ltr">y</span> משמאל לנקודה <span class="math-ltr" dir="ltr">H(5,2)</span>. לכן <span class="math-ltr" dir="ltr">G=</span> <span class="blank" style="--blank-width:10ch"></span></li>
+<li><span class="pair math-ltr" dir="ltr">A(<span class="pair-blank"></span>,4)</span> ממוקמת על אותו קו אנכי כמו <span class="math-ltr" dir="ltr">B(6,1)</span>. לכן <span class="math-ltr" dir="ltr">A=</span> <span class="blank" style="--blank-width:10ch"></span></li>
+<li><span class="pair math-ltr" dir="ltr">C(3,<span class="pair-blank"></span>)</span> ממוקמת על אותו קו אופקי כמו <span class="math-ltr" dir="ltr">D(7,5)</span>. לכן <span class="math-ltr" dir="ltr">C=</span> <span class="blank" style="--blank-width:10ch"></span></li>
+<li><span class="pair math-ltr" dir="ltr">E(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> ממוקמת על ציר <span class="math-ltr" dir="ltr">x</span> מתחת לנקודה <span class="math-ltr" dir="ltr">F(4,3)</span>. לכן <span class="math-ltr" dir="ltr">E=</span> <span class="blank" style="--blank-width:10ch"></span></li>
+<li><span class="pair math-ltr" dir="ltr">G(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> ממוקמת על ציר <span class="math-ltr" dir="ltr">y</span> משמאל לנקודה <span class="math-ltr" dir="ltr">H(5,2)</span>. לכן <span class="math-ltr" dir="ltr">G=</span> <span class="blank" style="--blank-width:10ch"></span></li>
 </ul>
 </section>
 <section class="q-card">

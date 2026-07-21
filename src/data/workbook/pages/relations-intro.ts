@@ -31,13 +31,13 @@ export const RELATIONS_INTRO: WorkbookPageContent = sheet({
 <section class="q-card">
 <h3>ה. השלימו.</h3>
 <div class="cols-2 task-grid">
-<div><span class="math-ltr" dir="ltr">A(3,__)</span> - y גדול ב־2 מ־x
+<div><span class="pair math-ltr" dir="ltr">A(3,<span class="pair-blank"></span>)</span> - y גדול ב־2 מ־x
 </div>
-<div><span class="math-ltr" dir="ltr">B(__,6)</span> - y גדול פי 2 מ־x
+<div><span class="pair math-ltr" dir="ltr">B(<span class="pair-blank"></span>,6)</span> - y גדול פי 2 מ־x
 </div>
-<div><span class="math-ltr" dir="ltr">C(7,__)</span> - x גדול ב־4 מ־y
+<div><span class="pair math-ltr" dir="ltr">C(7,<span class="pair-blank"></span>)</span> - x גדול ב־4 מ־y
 </div>
-<div><span class="math-ltr" dir="ltr">D(8,__)</span> - y הוא מחצית x
+<div><span class="pair math-ltr" dir="ltr">D(8,<span class="pair-blank"></span>)</span> - y הוא מחצית x
 </div>
 </div>
 </section>

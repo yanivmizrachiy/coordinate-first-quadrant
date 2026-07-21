@@ -20,10 +20,10 @@ export const ORDERED_PAIR_PRACTICE: WorkbookPageContent = sheet({
 <section class="q-card">
 <h3>משלימים זוגות</h3>
 <ul class="tasks">
-<li><span class="math-ltr" dir="ltr">( __ , 4 )</span> כאשר שיעור <span class="math-ltr" dir="ltr">x</span> הוא 7.</li>
-<li><span class="math-ltr" dir="ltr">( 3 , __ )</span> כאשר שיעור <span class="math-ltr" dir="ltr">y</span> הוא 6.</li>
-<li><span class="math-ltr" dir="ltr">( __ , __ )</span> כאשר הנקודה היא ראשית הצירים.</li>
-<li><span class="math-ltr" dir="ltr">( __ , 0 )</span> כאשר הנקודה על ציר <span class="math-ltr" dir="ltr">x</span> וערך <span class="math-ltr" dir="ltr">x</span> הוא 5.</li>
+<li><span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,4)</span> כאשר שיעור <span class="math-ltr" dir="ltr">x</span> הוא 7.</li>
+<li><span class="pair math-ltr" dir="ltr">(3,<span class="pair-blank"></span>)</span> כאשר שיעור <span class="math-ltr" dir="ltr">y</span> הוא 6.</li>
+<li><span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> כאשר הנקודה היא ראשית הצירים.</li>
+<li><span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,0)</span> כאשר הנקודה על ציר <span class="math-ltr" dir="ltr">x</span> וערך <span class="math-ltr" dir="ltr">x</span> הוא 5.</li>
 </ul>
 </section>
 <section class="q-card span-2">

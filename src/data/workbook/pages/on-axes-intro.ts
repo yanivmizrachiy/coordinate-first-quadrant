@@ -31,9 +31,9 @@ export const ON_AXES_INTRO: WorkbookPageContent = sheet({
 <section class="q-card">
 <h3>ג. השלימו.</h3>
 <div class="cols-2 task-grid">
-<div><span class="math-ltr" dir="ltr">P(6, __)</span> על ציר x.
+<div><span class="pair math-ltr" dir="ltr">P(6,<span class="pair-blank"></span>)</span> על ציר x.
 </div>
-<div><span class="math-ltr" dir="ltr">Q(__,4)</span> על ציר y.
+<div><span class="pair math-ltr" dir="ltr">Q(<span class="pair-blank"></span>,4)</span> על ציר y.
 </div>
 <div>נקודה על ציר x עם <span class="math-ltr" dir="ltr">x=2</span>: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,0)</span>
 </div>

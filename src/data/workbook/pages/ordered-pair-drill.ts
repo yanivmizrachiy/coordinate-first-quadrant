@@ -12,8 +12,8 @@ export const ORDERED_PAIR_DRILL: WorkbookPageContent = sheet({
 <section class="q-card">
 <h3>א. נתונה נקודה — כתבו את שיעוריה.</h3>
 <ul class="tasks">
-<li>נקודה <span class="math-ltr" dir="ltr">A(3,5)</span>: שיעור <span class="math-ltr" dir="ltr">x =</span> <span class="blank" style="--blank-width:3ch"></span> , שיעור <span class="math-ltr" dir="ltr">y =</span> <span class="blank" style="--blank-width:3ch"></span></li>
-<li>נקודה <span class="math-ltr" dir="ltr">B(6,2)</span>: שיעור <span class="math-ltr" dir="ltr">x =</span> <span class="blank" style="--blank-width:3ch"></span> , שיעור <span class="math-ltr" dir="ltr">y =</span> <span class="blank" style="--blank-width:3ch"></span></li>
+<li>נקודה <span class="math-ltr" dir="ltr">A(3,5)</span>: שיעור <span class="math-ltr" dir="ltr">x =</span> <span class="blank" style="--blank-width:3ch"></span>, שיעור <span class="math-ltr" dir="ltr">y =</span> <span class="blank" style="--blank-width:3ch"></span></li>
+<li>נקודה <span class="math-ltr" dir="ltr">B(6,2)</span>: שיעור <span class="math-ltr" dir="ltr">x =</span> <span class="blank" style="--blank-width:3ch"></span>, שיעור <span class="math-ltr" dir="ltr">y =</span> <span class="blank" style="--blank-width:3ch"></span></li>
 </ul>
 </section>
 <section class="q-card">
