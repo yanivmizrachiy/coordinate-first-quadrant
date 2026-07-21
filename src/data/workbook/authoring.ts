@@ -49,6 +49,27 @@ export function sheet(spec: SheetSpec): WorkbookPageContent {
   };
 }
 
+/* A ready-made poster sheet: the artwork fills the whole A4 and carries its own
+   heading, so this sheet prints NO header and NO page number — Yaniv's rule, so
+   the design is not damaged. It still counts as a numbered page and still
+   carries the canonical footer. */
+export function posterSheet(spec: { file: string; title: string; alt: string }): WorkbookPageContent {
+  const n = ++placeholder;
+  const src = `${import.meta.env.BASE_URL}assets/games/${spec.file}`;
+  return {
+    n,
+    id: `page-${n}`,
+    sectionClass: 'sheet poster-sheet',
+    title: spec.title,
+    subtitle: 'שעשועון',
+    html:
+      `<section aria-label="${spec.alt}" class="sheet poster-sheet" id="page-${n}">` +
+      `<main class="sheet-content"><img alt="${spec.alt}" class="poster" src="${src}" decoding="async"></main>` +
+      FOOTER +
+      '</section>',
+  };
+}
+
 /* ---- fragments used on nearly every sheet ---- */
 
 /* What the learner has to supply. Yaniv's rule: consecutive completions must
