@@ -142,10 +142,18 @@ export interface GridOptions {
   ylabels?: (number | string)[];
 }
 
-/** A coordinate system. Keeps the JSON out of hand-escaped attributes. */
+/** A coordinate system. Keeps the JSON out of hand-escaped attributes.
+
+    The JSON sits inside a single-quoted attribute, so an apostrophe in a label
+    („מרחק 4 יח'”) would close the attribute early and the browser would drop
+    every box on the drawing — silently, with nothing in the console. Escaping
+    here means no page has to remember. */
+const attrJson = (value: unknown): string =>
+  JSON.stringify(value).replace(/'/g, '&#39;');
+
 export function grid(o: GridOptions = {}): string {
   const data = (name: string, value: unknown[] | undefined): string =>
-    ` data-${name}='${JSON.stringify(value ?? [])}'`;
+    ` data-${name}='${attrJson(value ?? [])}'`;
   return (
     `<div class="coordinate-grid grid-${o.size ?? 'md'}" role="img"` +
     ` aria-label="${o.label ?? 'מערכת צירים ברביע הראשון'}"` +
@@ -158,8 +166,8 @@ export function grid(o: GridOptions = {}): string {
     (o.originName ? ' data-originname="true"' : '') +
     (o.axisX ? ` data-axisx="${o.axisX}"` : '') +
     (o.axisY ? ` data-axisy="${o.axisY}"` : '') +
-    (o.xlabels ? ` data-xlabels='${JSON.stringify(o.xlabels)}'` : '') +
-    (o.ylabels ? ` data-ylabels='${JSON.stringify(o.ylabels)}'` : '') +
+    (o.xlabels ? ` data-xlabels='${attrJson(o.xlabels)}'` : '') +
+    (o.ylabels ? ` data-ylabels='${attrJson(o.ylabels)}'` : '') +
     '></div>'
   );
 }

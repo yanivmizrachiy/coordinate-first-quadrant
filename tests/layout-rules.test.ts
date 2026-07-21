@@ -54,6 +54,20 @@ describe('SVG text survives the RTL sheet', () => {
     expect(axisName, 'the axis name is force-pinned again').not.toContain("direction: 'ltr'");
   });
 
+  /* The drawing's JSON rides inside a single-quoted attribute. An apostrophe in
+     a label — „מרחק 4 יח'” — closes it early and the browser drops every box on
+     that drawing, with nothing in the console to say so. */
+  it('a drawing survives an apostrophe in one of its labels', () => {
+    for (const p of WORKBOOK) {
+      for (const m of p.html.matchAll(/data-(?:labelboxes|points|xlabels|ylabels)='([^']*)'/g)) {
+        expect(() => JSON.parse(m[1]!.replace(/&#39;/g, "'")), `page ${p.n}: broken ${m[0]!.slice(0, 22)}`).not.toThrow();
+      }
+      // and nothing may end an attribute early
+      expect(p.html, `page ${p.n} has a raw apostrophe inside a data attribute`)
+        .not.toMatch(/data-[a-z]+='[^']*'[^ >=]/);
+    }
+  });
+
   it('an axis number is never left sitting under a point', () => {
     expect(grid).toContain('onXAxis');
     expect(grid).toContain('onYAxis');
@@ -274,6 +288,47 @@ describe('a calculation gets units and room to work', () => {
      on the answer. */
   const readable = (h: string): string => h.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
   const computes = (h: string): boolean => /(היקף|שטח)\s*[=:]/.test(readable(h));
+
+  /* USER_MEMORY §5. „מרחק” is not extra vocabulary — it is what a coordinate
+     MEANS, and Yaniv asked for it by name. The page that introduces שיעור x
+     and שיעור y has to say it, and its drawing needs a dashed line to EACH
+     axis: one line teaches half the idea. */
+  it('the coordinates page teaches the word מרחק, and measures to both axes', () => {
+    const page = WORKBOOK.find((p) => p.title.includes('שיעור x'));
+    expect(page, 'the page that introduces the coordinates is gone').toBeDefined();
+    const html = page!.html;
+    expect(html, 'the word מרחק never appears').toMatch(/מרחק|רחוק/);
+    const segs = JSON.parse(
+      /data-segments='([^']*)'/.exec(html)![1]!.replace(/&#39;/g, "'"),
+    ) as Array<{ from: number[]; to: number[] }>;
+    const toX = segs.some((s) => s.from[1] === 0 || s.to[1] === 0);
+    const toY = segs.some((s) => s.from[0] === 0 || s.to[0] === 0);
+    expect(toX, 'no dashed line down to ציר x').toBe(true);
+    expect(toY, 'no dashed line across to ציר y').toBe(true);
+  });
+
+  /* Marking a point does not prove the learner can write it. */
+  it('a "mark it on the drawing" task also asks for the ordered pair', () => {
+    for (const p of WORKBOOK) {
+      for (const card of p.html.split('<section class="q-card"').slice(1)) {
+        const body = card.split('</section>')[0]!;
+        // Marking a POINT — page 1 marks a number on an axis, which has no pair
+        // and must not have one (§8: identification only).
+        const head = (/<h3>([\s\S]*?)<\/h3>/.exec(body)?.[1] ?? '').replace(/<[^>]+>/g, '');
+        // „סמנו … נקודות” — placing points. Not „בנקודה … וסמנו אם היא ישרה”,
+        // which marks a checkbox and has no pair to write.
+        const mark = head.indexOf('סמנו');
+        const point = head.indexOf('נקוד');
+        if (mark < 0 || point < mark) continue;
+        if (body.includes('tf-options')) continue;
+        // …unless the task already hands the point over AS a pair, in which
+        // case copying it out again teaches nothing.
+        if (/[A-Z]\(\d+,\d+\)/.test(body.replace(/<[^>]+>/g, ''))) continue;
+        expect(body, `page ${p.n}: a marking task with no ordered pair to write`)
+          .toContain('pair-blank');
+      }
+    }
+  });
 
   it('an area or perimeter answer ends in its unit', () => {
     for (const p of WORKBOOK) {
