@@ -2,6 +2,7 @@ import { elem, fromHTML, clear } from '../lib/dom';
 import { navigate } from '../router';
 import { hydrateGrids } from '../lib/coordinateGrid';
 import { fitSheets } from '../lib/fitSheet';
+import { printBar } from './printBar';
 import { pageByNumber, TOTAL_PAGES, topicOfPage } from '../data/workbook';
 import { lastPage } from '../lib/storage';
 import { gameById } from '../games';
@@ -20,7 +21,6 @@ export function pageViewer(n: number): (ctx: ViewContext) => (() => void) | void
 
     const toolbar = elem('div', { class: 'toolbar-row no-print' },
       linkBtn('☰ תוכן העניינים', () => navigate('#/workbook')),
-      actionBtn('🖨️ הדפסת העמוד', () => window.print()),
       actionBtn('⛶ מסך מלא', () => toggleFullscreen(sheetWrap)),
     );
 
@@ -55,7 +55,7 @@ export function pageViewer(n: number): (ctx: ViewContext) => (() => void) | void
 
     nav.append(prev, elem('span', { class: 'pagenav__indicator', text: `${page} / ${TOTAL_PAGES}` }), select, next);
 
-    viewer.append(toolbar, sheetWrap, nav);
+    viewer.append(toolbar, printBar({ scope: 'page', current: page, root: () => sheetWrap }), sheetWrap, nav);
     c.append(viewer);
     outlet.append(c);
     window.scrollTo({ top: 0 });

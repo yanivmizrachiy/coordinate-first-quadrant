@@ -23,16 +23,8 @@ homeBtn.addEventListener('click', () => navigate('#/'));
 
 const titleEl = elem('div', { class: 'appbar__title', text: 'מערכת צירים — הרביע הראשון' });
 
-const grayscaleBtn = elem('button', { class: 'iconbtn', type: 'button', 'aria-pressed': 'false', text: 'תצוגת שחור־לבן' });
-const applyGrayscale = (on: boolean): void => {
-  document.body.classList.toggle('grayscale-mode', on);
-  grayscaleBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
-  grayscaleBtn.textContent = on ? 'חזרה לצבע' : 'תצוגת שחור־לבן';
-  grayscale.set(on);
-};
-grayscaleBtn.addEventListener('click', () => applyGrayscale(!document.body.classList.contains('grayscale-mode')));
 
-const appbar = elem('header', { class: 'appbar no-print' }, homeBtn, titleEl, grayscaleBtn);
+const appbar = elem('header', { class: 'appbar no-print' }, homeBtn, titleEl);
 const outlet = elem('main', { class: 'app-main', id: 'main', tabindex: '-1' });
 const skip = elem('a', { class: 'skip-link', href: '#main', text: 'דלגו לתוכן' });
 
@@ -64,7 +56,9 @@ function render(match: RouteMatch): void {
   cleanup = typeof result === 'function' ? result : undefined;
 }
 
-applyGrayscale(grayscale.get());
+// Black and white is a property of the SHEETS, not of the application, and the
+// switch for it lives in the print bar. Restore the last choice on load.
+document.body.classList.toggle('bw-print', grayscale.get());
 startRouter(render);
 
 // A device that opened the site earlier can be holding an old index.html;
