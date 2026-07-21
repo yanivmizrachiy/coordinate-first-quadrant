@@ -9,7 +9,7 @@
    =========================================================================== */
 import { LEGACY_PAGES } from './legacy-pages';
 import { CONTINUATION_PAGES } from './continuation';
-import { PLOT_A, PLOT_B } from './plot-pages';
+import { INTRO_CHECK, PLOT_A, PLOT_B } from './plot-pages';
 import { GAMES, type GameDefinition } from '../../games';
 import type { WorkbookPageContent, WorkbookTopic } from './types';
 
@@ -77,7 +77,7 @@ const isGame = (s: Slot): s is GameDefinition => typeof (s as GameDefinition).mo
 
 /* The canonical order — worksheets and games interleaved by topic. */
 const ORDER: Slot[] = [
-  legacy(1), legacy(2),
+  legacy(1), INTRO_CHECK, legacy(2),
   legacy(3), legacy(4), cont(35), legacy(5), legacy(6),
   PLOT_A, PLOT_B, legacy(8), game('hidden-drawing'),
   legacy(9), legacy(10), legacy(11), legacy(12), game('secret-word'),
@@ -98,18 +98,18 @@ export const WORKBOOK: WorkbookPageContent[] = ORDER.map((slot, i) =>
 export const TOTAL_PAGES = WORKBOOK.length;
 
 export const TOPICS: WorkbookTopic[] = [
-  { id: 'intro', title: 'היכרות עם מערכת הצירים', pages: [1, 2] },
-  { id: 'coords', title: 'שיעור x, שיעור y והזוג הסדור', pages: [3, 4, 5, 6, 7] },
-  { id: 'plot', title: 'סימון נקודות', pages: [8, 9, 10, 11] },
-  { id: 'read', title: 'קריאת נקודות ונקודות על הצירים', pages: [12, 13, 14, 15, 16] },
-  { id: 'language', title: 'שפה של מיקום', pages: [17, 18, 19] },
-  { id: 'same', title: 'שיעורים זהים וקטעים מקבילים', pages: [20, 21, 22] },
-  { id: 'relations', title: 'יחסים בין שיעורים', pages: [23, 24] },
-  { id: 'move', title: 'הזזה ומרחק במערכת הצירים', pages: [25, 26, 27, 28, 29, 30] },
-  { id: 'missing', title: 'שיעור חסר ודפוסים', pages: [31, 32, 33] },
-  { id: 'errors', title: 'זיהוי ותיקון טעויות', pages: [34, 35, 36] },
-  { id: 'rect', title: 'מלבנים, ריבועים, היקף ושטח', pages: [37, 38, 39, 40] },
-  { id: 'rightangle', title: 'מקביל, מאונך וזווית ישרה', pages: [41, 42, 43, 44, 45] },
+  { id: 'intro', title: 'היכרות עם מערכת הצירים', pages: [1, 2, 3] },
+  { id: 'coords', title: 'שיעור x, שיעור y והזוג הסדור', pages: [4, 5, 6, 7, 8] },
+  { id: 'plot', title: 'סימון נקודות', pages: [9, 10, 11, 12] },
+  { id: 'read', title: 'קריאת נקודות ונקודות על הצירים', pages: [13, 14, 15, 16, 17] },
+  { id: 'language', title: 'שפה של מיקום', pages: [18, 19, 20] },
+  { id: 'same', title: 'שיעורים זהים וקטעים מקבילים', pages: [21, 22, 23] },
+  { id: 'relations', title: 'יחסים בין שיעורים', pages: [24, 25] },
+  { id: 'move', title: 'הזזה ומרחק במערכת הצירים', pages: [26, 27, 28, 29, 30, 31] },
+  { id: 'missing', title: 'שיעור חסר ודפוסים', pages: [32, 33, 34] },
+  { id: 'errors', title: 'זיהוי ותיקון טעויות', pages: [35, 36, 37] },
+  { id: 'rect', title: 'מלבנים, ריבועים, היקף ושטח', pages: [38, 39, 40, 41] },
+  { id: 'rightangle', title: 'מקביל, מאונך וזווית ישרה', pages: [42, 43, 44, 45, 46] },
 ];
 
 const byNumber = new Map(WORKBOOK.map((p) => [p.n, p]));

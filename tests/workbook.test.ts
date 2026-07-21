@@ -7,10 +7,10 @@ const FOOTER_F1 = 'יניב רז - מדריך מחוזי חט"ב בעיר ירו
 const FOOTER_F2 = 'הדרכה במחוז ירושלים והעיר ירושלים - מנח"י, בהובלת איילת קריספין';
 
 describe('workbook integrity (CLAUDE.md mandatory checks)', () => {
-  it('has exactly 45 pages numbered 1..45 (worksheets + games interleaved)', () => {
-    expect(TOTAL_PAGES).toBe(45);
-    for (let n = 1; n <= 45; n++) expect(pageByNumber(n), `page ${n}`).toBeDefined();
-    expect(WORKBOOK.map((p) => p.n)).toEqual(Array.from({ length: 45 }, (_, i) => i + 1));
+  it('has exactly 46 pages numbered 1..46 (worksheets + games interleaved)', () => {
+    expect(TOTAL_PAGES).toBe(46);
+    for (let n = 1; n <= 46; n++) expect(pageByNumber(n), `page ${n}`).toBeDefined();
+    expect(WORKBOOK.map((p) => p.n)).toEqual(Array.from({ length: 46 }, (_, i) => i + 1));
   });
 
   it('every page carries the canonical footer', () => {
@@ -64,7 +64,7 @@ describe('workbook integrity (CLAUDE.md mandatory checks)', () => {
 
   it('topics cover all pages exactly once', () => {
     const covered = TOPICS.flatMap((t) => t.pages).sort((a, b) => a - b);
-    expect(covered).toEqual(Array.from({ length: 45 }, (_, i) => i + 1));
+    expect(covered).toEqual(Array.from({ length: 46 }, (_, i) => i + 1));
   });
 
   it('every true/false table row has two uniform checkboxes', () => {

@@ -54,7 +54,7 @@ export interface GridSpec {
 // Geometry — identical to the original booklet.
 /* Top/bottom margins are deliberately generous: the axis NAMES ("ציר x" /
    "ציר y") must sit in the margin, never inside the grid or on the arrow. */
-const W = 520, H = 380, L = 56, R = 30, T = 60, B = 62;
+const W = 560, H = 380, L = 56, R = 70, T = 60, B = 62;
 const XM = 8, YM = 6;
 const SX = (W - L - R) / XM;
 const SY = (H - T - B) / YM;
@@ -144,7 +144,8 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
   svg.append(
     el('text', { x: X(0) - 11, y: Y(0) + 22, 'text-anchor': 'end', fill: AXIS, 'font-size': 17, 'font-weight': 800 }, 'O'),
     // Axis names live in the margins — below the x numbers, above the y arrow.
-    el('text', { x: X(XM / 2), y: Y(0) + 50, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, 'ציר x'),
+    // Mixed Hebrew+Latin flips text-anchor, so pin direction explicitly.
+    el('text', { x: X(XM) + 34, y: Y(0) + 5, 'text-anchor': 'start', direction: 'ltr', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, 'ציר x'),
     el('text', { x: X(0), y: Y(YM) - 32, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, 'ציר y'),
   );
 
