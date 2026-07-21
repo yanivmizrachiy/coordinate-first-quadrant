@@ -9,7 +9,6 @@
    =========================================================================== */
 import {
   AXES_IDENTIFY,
-  POSTER_WORD_SEARCH,
   POSTER_SECRET_PICTURE,
   POSTER_SECRET_WORD,
   POSTER_TREASURE_MAZE,
@@ -84,7 +83,9 @@ function renumber(page: WorkbookPageContent, n: number): WorkbookPageContent {
   html = swap(html, `id="title-${o}"`, `id="title-${n}"`);
   html = swap(html, `aria-labelledby="title-${o}"`, `aria-labelledby="title-${n}"`);
   html = swap(html, `aria-label="עמוד ${o}"`, `aria-label="עמוד ${n}"`);
-  html = swap(html, `class="sheet-number">${o}<`, `class="sheet-number">${n}<`);
+  // Any class list containing sheet-number — a poster's circle also carries
+  // poster-number, and an exact-match swap left it showing its placeholder.
+  html = html.replace(new RegExp(`(class="[^"]*sheet-number[^"]*">)${o}<`), `$1${n}<`);
   html = swap(html, `name="tf-${o}-`, `name="tf-${n}-`);
   return { ...page, n, id: `page-${n}`, html };
 }
@@ -124,7 +125,7 @@ const BOOK: { id: string; title: string; slots: Slot[] }[] = [
   ] },
   { id: 'coords', title: 'שיעור x, שיעור y והזוג הסדור', slots: [
     HERO_INTRO,
-    COORDS_INTRO, READ_PAIRS, COORDS_PRACTICE, ORDERED_PAIR_DRILL, ORDERED_PAIR_INTRO, ORDERED_PAIR_PRACTICE, POSTER_WORD_SEARCH,
+    COORDS_INTRO, READ_PAIRS, COORDS_PRACTICE, ORDERED_PAIR_DRILL, ORDERED_PAIR_INTRO, ORDERED_PAIR_PRACTICE,
   ] },
   { id: 'plot', title: 'סימון נקודות', slots: [
     PLOT_A, PLOT_B, PLOT_PRACTICE, POSTER_SECRET_PICTURE, PLOT_SHAPE, game('hidden-drawing'),

@@ -5,13 +5,6 @@ import { posterSheet } from '../authoring';
    teaches the skill it needs. They are artwork: full A4, their own heading, no
    page number printed on them. Where each one sits is decided in index.ts. */
 
-/** Vocabulary of the coordinate system — after the axes have names. */
-export const POSTER_WORD_SEARCH: WorkbookPageContent = posterSheet({
-  file: 'word-search.png',
-  title: 'תפזורת הצירים',
-  alt: 'שעשועון תפזורת: מוצאים את מילות מערכת הצירים ומסמנים ארבע נקודות בבונוס',
-});
-
 /** Plot a list of ordered pairs, join them, a picture appears. */
 export const POSTER_SECRET_PICTURE: WorkbookPageContent = posterSheet({
   file: 'secret-picture.png',

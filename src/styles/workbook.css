@@ -102,15 +102,19 @@
 /* A ready-made puzzle sheet: the artwork IS the page. No header and no page
    number are drawn on it, so its own design stays intact; the canonical footer
    still appears. object-fit keeps the A4 artwork from ever being stretched. */
-.sheet.poster-sheet { padding: 6mm 6mm 0; }
-.sheet.poster-sheet .sheet-content { padding: 0; height: calc(297mm - 22mm); }
-/* The artwork carries a „שם / כיתה / תאריך” strip along its top, which the
-   rules forbid (ch. 12). The frame crops it away — measured on the artwork
-   itself: the strip ends at 4.2% of the height and the title starts at 7.2%,
-   so the cut falls in the clear gap between them. A negative top margin is a
-   share of the WIDTH, hence 7.9% for a 5.6% slice of the height. */
-.sheet.poster-sheet .poster-frame { overflow: hidden; height: 100%; }
-.sheet.poster-sheet .poster { display: block; width: 100%; height: auto; margin-top: -7.9%; }
+/* The sheet follows the artwork, instead of the artwork being squeezed into a
+   fixed A4 box. On a phone the sheet keeps its width but not its height, and a
+   fixed height left the poster as a narrow strip adrift in a tall white page —
+   which is why Yaniv could not find it on his phone. */
+.sheet.poster-sheet { padding: 6mm 6mm 0; height: auto; min-height: 0; }
+.sheet.poster-sheet .sheet-content { padding: 0; height: auto; }
+/* The artwork is shown exactly as Yaniv supplied it — no crop, no header,
+   nothing of ours over it. object-fit keeps it from ever being stretched.
+   Only the page number is added, in the corner, so the sheet can be found. */
+.sheet.poster-sheet .sheet-content { position: relative; }
+.sheet.poster-sheet .poster { display: block; width: 100%; height: auto; }
+.poster-number { position: absolute; left: 3mm; bottom: 3mm; }
+.sheet.poster-sheet .gz-footer { position: static; margin-top: 2mm; }
 
 .sheet.game-sheet { height: auto; min-height: 297mm; overflow: visible; }
 .sheet.game-sheet .sheet-content { display: block; }

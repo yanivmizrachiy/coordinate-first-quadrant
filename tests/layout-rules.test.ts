@@ -186,10 +186,11 @@ describe('a group never asks the same question four times', () => {
 describe('a poster sheet keeps the design and drops what the rules forbid', () => {
   const posters = WORKBOOK.filter((p) => p.sectionClass.includes('poster'));
 
-  it('prints no page number and no heading of ours on the artwork', () => {
+  it('carries its page number, and no heading of ours over the artwork', () => {
     expect(posters.length).toBeGreaterThan(0);
     for (const p of posters) {
-      expect(p.html, `page ${p.n} draws a number on the artwork`).not.toContain('sheet-number');
+      // The number is there so a sheet can be found and referred to.
+      expect(p.html, `page ${p.n} has no page number`).toContain('poster-number');
       expect(p.html, `page ${p.n} draws our header over the artwork`).not.toContain('sheet-header');
     }
   });
@@ -198,12 +199,14 @@ describe('a poster sheet keeps the design and drops what the rules forbid', () =
     for (const p of posters) expect(p.html, `page ${p.n}`).toContain('gz-footer');
   });
 
-  it('crops away the name/date strip the artwork came with', () => {
-    // USER_MEMORY §12 forbids name and date fields; the artwork has them along
-    // its top edge, so the frame cuts that strip off.
-    expect(css).toContain('.sheet.poster-sheet .poster-frame');
-    expect(css).toMatch(/\.sheet\.poster-sheet \.poster \{[^}]*margin-top: -7\.9%/);
-    for (const p of posters) expect(p.html, `page ${p.n} is not framed`).toContain('poster-frame');
+  it('shows the artwork whole — we do not redesign what Yaniv supplied', () => {
+    expect(css, 'the crop frame is back').not.toContain('poster-frame');
+    for (const p of posters) expect(p.html, `page ${p.n} is cropped`).not.toContain('poster-frame');
+  });
+
+  it('every poster is a coordinate task, not a word puzzle', () => {
+    // A word search is a Hebrew puzzle with no mathematical thinking in it.
+    for (const p of posters) expect(p.title, `page ${p.n}`).not.toContain('תפזורת');
   });
 });
 
