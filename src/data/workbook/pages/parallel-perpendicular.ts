@@ -15,8 +15,8 @@ export const PARALLEL_PERPENDICULAR: WorkbookPageContent = sheet({
 <div aria-label="קטע אופקי AB וקטע אנכי CD" class="coordinate-grid grid-md" data-arrows="[]" data-labelboxes="[]" data-points='[{"x": 1, "y": 2, "label": "A"}, {"x": 6, "y": 2, "label": "B"}, {"x": 3, "y": 3, "label": "C"}, {"x": 3, "y": 6, "label": "D"}]' data-polygons="[]" data-segments='[{"from": [1, 2], "to": [6, 2], "type": "shape"}, {"from": [3, 3], "to": [3, 6], "type": "shape"}]' role="img">
 </div>
 <ul class="tasks compact">
-<li>הקטע <span class="math-ltr" dir="ltr">AB</span> מקביל לציר <span class="blank" style="--blank-width:3ch"></span>, כי בשתי נקודותיו <b>שיעור <span class="math-ltr" dir="ltr">y</span> זהה</b>.</li>
-<li>בשתי נקודותיו של הקטע <span class="math-ltr" dir="ltr">CD</span> יש ערך <span class="blank" data-missing="letter" style="--blank-width:3ch"></span> זהה, ולכן הוא מקביל לציר <span class="math-ltr" dir="ltr">y</span>.</li>
+<li>הקטע <span class="math-ltr" dir="ltr">AB</span> מקביל לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>, כי בשתי הנקודות שעליו שיעור ה־<span class="math-ltr" dir="ltr">y</span> זהה.</li>
+<li>הקטע <span class="math-ltr" dir="ltr">CD</span> מקביל לציר <span class="math-ltr" dir="ltr">y</span>, כי בשתי הנקודות שעליו שיעור ה־<span class="blank" data-missing="letter" style="--blank-width:3ch"></span> זהה.</li>
 </ul>
 </section>
 <section class="q-card">

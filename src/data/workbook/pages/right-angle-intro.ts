@@ -24,8 +24,8 @@ export const RIGHT_ANGLE_INTRO: WorkbookPageContent = sheet({
 </div>
 <div>
 <ul class="tasks compact">
-<li>הקטע <span class="math-ltr" dir="ltr">AB</span> מקביל לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>, כי בשתי נקודותיו שיעור ה־<span class="math-ltr" dir="ltr">y</span> זהה.</li>
-<li>בשתי נקודותיו של הקטע <span class="math-ltr" dir="ltr">BC</span> יש ערך <span class="math-ltr" dir="ltr">x</span> זהה, ולכן הוא מקביל לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>.</li>
+<li>הקטע <span class="math-ltr" dir="ltr">AB</span> מקביל לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>, כי בשתי הנקודות שעליו שיעור ה־<span class="math-ltr" dir="ltr">y</span> זהה.</li>
+<li>הקטע <span class="math-ltr" dir="ltr">BC</span> מקביל לציר <span class="math-ltr" dir="ltr">y</span>, כי בשתי הנקודות שעליו שיעור ה־<span class="blank" data-missing="letter" style="--blank-width:3ch"></span> זהה.</li>
 </ul>
 <p class="axis-answer-box">הזווית הישרה ממוקמת בנקודה <span class="blank" style="--blank-width:4ch"></span></p>
 </div>
