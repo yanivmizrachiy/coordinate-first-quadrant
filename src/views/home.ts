@@ -112,7 +112,10 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
   const showSound = (muted: boolean): void => {
     sound.classList.toggle('soundbtn--on', !muted);
     (sound.querySelector('.soundbtn__icon') as HTMLElement).textContent = muted ? '🔇' : '🔊';
-    (sound.querySelector('.soundbtn__label') as HTMLElement).textContent = muted ? 'הפעלת קול' : 'קול פועל';
+    /* Only the invitation carries words. Once the sound is on there is nothing
+       left to say — the speaker says it — so the label goes and the pill
+       shrinks to the icon. */
+    (sound.querySelector('.soundbtn__label') as HTMLElement).textContent = muted ? 'הפעלת קול' : '';
     sound.setAttribute('aria-label', muted ? 'הפעלת הקול' : 'השתקת הקול');
   };
   sound.addEventListener('click', () => {

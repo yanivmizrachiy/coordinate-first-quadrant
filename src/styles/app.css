@@ -43,14 +43,14 @@ body.is-opening .app-main { padding: 0; }
   .opening__media { object-fit: contain; height: 100%; }
   .opening__scrim { display: none; }
   .opening__card {
-    position: relative; inset: auto; margin: 18px auto 0;
-    width: min(92vw, 560px); padding-bottom: 4px;
+    position: relative; inset: auto; max-width: none; margin: 18px auto 0;
+    width: min(92vw, 560px); padding-bottom: 60px;
     text-shadow: none; opacity: 0;
   }
   .opening__title, .opening__sub { text-align: start; }
   .opening__meta { color: #ffffffd9; }
-  .startbtn { position: relative; inset: auto; margin: 20px auto 0; bottom: auto; }
-  .replaybtn { top: auto; bottom: clamp(14px, 3vh, 24px); }
+  .startbtn { inset-inline-end: clamp(14px, 5vw, 26px); bottom: clamp(16px, 3.5vh, 28px); }
+  .replaybtn { inset-inline-end: clamp(14px, 5vw, 26px); top: calc(clamp(14px, 5vw, 26px) + 52px); }
 }
 
 .opening__scrim {
@@ -83,8 +83,12 @@ body.is-opening .app-main { padding: 0; }
 
 /* ---- the end card: it arrives when the tram has stopped ---- */
 .opening__card {
+  /* The axes and the four points end up in the inline-START half of the frame,
+     so the card takes the other half and stops at the middle — nothing it says
+     lands on a point the film has just plotted. */
   position: absolute; z-index: 2; pointer-events: none;
-  inset-inline: clamp(18px, 6vw, 44px); bottom: clamp(104px, 22vh, 168px);
+  inset-inline-end: clamp(18px, 6vw, 44px); max-width: min(46%, 420px);
+  bottom: clamp(96px, 20vh, 150px);
   color: #fff; text-align: start;
   text-shadow: 0 2px 22px #04122bCC;
   opacity: 0; transition: opacity .7s ease;
@@ -119,39 +123,58 @@ body.is-opening .app-main { padding: 0; }
   transition: opacity .34s ease var(--d), transform .44s cubic-bezier(.16,.84,.34,1) var(--d), filter .34s ease var(--d);
 }
 
-/* ---- the way in ---- */
+/* ---- התחל ----
+   The ring turns. A conic gradient painted on the border box, rotated by an
+   animated angle, with the button face laid over it — so the light travels
+   round the edge instead of the whole control spinning. @property is what makes
+   an angle animatable at all; without it the gradient would jump, not sweep.
+   Where @property is missing the button simply keeps a still gradient ring. */
+@property --spin {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
 .startbtn {
   position: absolute; z-index: 4;
-  /* Centred by margins, not by a 50% offset: inset-inline-start is the RIGHT
-     edge in Hebrew, and the offset threw the button clean off the screen. */
-  inset-inline: 0; margin-inline: auto; width: fit-content;
-  bottom: clamp(30px, 7vh, 56px);
-  min-width: clamp(190px, 52vw, 260px); min-height: 58px;
-  padding: 0 34px; border: 0; border-radius: 999px; cursor: pointer;
-  background: linear-gradient(135deg, #ffffff 0%, #eef4ff 100%);
-  color: #06214b; font: inherit; font-weight: 900; font-size: clamp(17px, 4.6vw, 21px);
-  letter-spacing: .4px;
-  box-shadow: 0 10px 34px #04122b8C, 0 0 0 1px #ffffff40 inset, 0 0 34px #ffd16633;
-  overflow: hidden;
+  /* Bottom LEFT, and below everything the card says. inset-inline-END is the
+     left edge in Hebrew. */
+  inset-inline-end: clamp(18px, 6vw, 44px);
+  bottom: clamp(24px, 6vh, 44px);
+  padding: 4px;                       /* this padding IS the ring */
+  border: 0; border-radius: 999px; cursor: pointer;
+  background: conic-gradient(from var(--spin),
+    #22e07a, #12b5ff, #7c4dff, #ffd166, #22e07a);
+  animation: spin-ring 3.4s linear infinite;
+  box-shadow: 0 10px 34px #04122b8C, 0 0 30px #22e07a4D;
   opacity: 0; transform: translateY(16px) scale(.96);
-  transition: opacity .5s ease .5s, transform .5s cubic-bezier(.16,.84,.34,1) .5s,
-              box-shadow .18s ease, background .18s ease;
+  transition: opacity .55s ease, transform .55s cubic-bezier(.16,.84,.34,1),
+              box-shadow .18s ease;
   -webkit-tap-highlight-color: transparent; touch-action: manipulation;
 }
-.opening--in .startbtn { opacity: 1; transform: translateY(0) scale(1); }
-.startbtn:hover { box-shadow: 0 14px 42px #04122b9E, 0 0 0 1px #ffffff59 inset, 0 0 44px #ffd16659; }
+@keyframes spin-ring { to { --spin: 360deg; } }
+
+/* It arrives last: only once every line of the card has been written on. */
+.opening--ended .startbtn { opacity: 1; transform: translateY(0) scale(1); transition-delay: 2.5s; }
+
+.startbtn__label {
+  position: relative; z-index: 1; display: block;
+  min-width: clamp(150px, 42vw, 200px); min-height: 52px;
+  padding: 0 30px; border-radius: 999px;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(150deg, #2fe08a 0%, #12b866 55%, #0e9b57 100%);
+  color: #ffffff; font: inherit; font-weight: 900;
+  font-size: clamp(17px, 4.6vw, 21px); letter-spacing: .6px;
+  text-shadow: 0 1px 2px #04331d59;
+  box-shadow: 0 1px 0 #ffffff59 inset, 0 -2px 6px #04331d33 inset;
+  transition: filter .18s ease;
+}
+.startbtn:hover { box-shadow: 0 14px 42px #04122b9E, 0 0 44px #22e07a73; }
+.startbtn:hover .startbtn__label { filter: brightness(1.08); }
 .startbtn:active { transform: scale(.965); transition-duration: .07s; }
 .startbtn:focus-visible { outline: 3px solid #ffd166; outline-offset: 4px; }
-.startbtn__label { position: relative; z-index: 1; }
-/* A slow sweep of light across the face: enough to invite a press, not enough
-   to compete with a film. */
-.startbtn__glow {
-  position: absolute; inset: 0;
-  background: linear-gradient(115deg, transparent 32%, #ffffffe6 48%, transparent 64%);
-  translate: -120% 0;
-  animation: start-sweep 3.6s ease-in-out 1.4s infinite;
-}
-@keyframes start-sweep { 0% { translate: -120% 0; } 42%, 100% { translate: 120% 0; } }
+/* The old sweep is gone: the ring is the animation now. */
+.startbtn__glow { display: none; }
 
 /* ---- sound and replay ---- */
 .soundbtn, .replaybtn {
@@ -168,12 +191,15 @@ body.is-opening .app-main { padding: 0; }
   min-height: 42px; padding: 0 15px; border-radius: 999px;
   font: inherit; font-weight: 800; font-size: 13.5px;
 }
-.soundbtn--on { background: #0f7a3fCC; }
+/* With the sound on the pill is just the speaker: no label, no gap, round. */
+.soundbtn--on { background: #0f7a3fCC; padding: 0; width: 42px; justify-content: center; gap: 0; }
+.soundbtn--on .soundbtn__label { display: none; }
 .soundbtn__icon { font-size: 16px; line-height: 1; }
+/* Beside the sound control, not above התחל — the two were sharing a corner. */
 .replaybtn {
-  inset-inline-end: clamp(14px, 4vw, 26px); top: auto; bottom: clamp(30px, 7vh, 56px);
-  width: 46px; height: 46px; border-radius: 50%; display: grid; place-content: center;
-  font-size: 21px; opacity: 0; pointer-events: none;
+  inset-inline-end: clamp(14px, 4vw, 26px); top: calc(clamp(14px, 4vw, 26px) + 52px);
+  width: 42px; height: 42px; border-radius: 50%; display: grid; place-content: center;
+  font-size: 20px; opacity: 0; pointer-events: none;
 }
 .opening--ended .replaybtn { opacity: 1; pointer-events: auto; }
 .soundbtn:hover, .replaybtn:hover { background: #04122bC4; }
@@ -185,8 +211,8 @@ body.is-opening .app-main { padding: 0; }
   .opening__card, .opening__scrim { opacity: 1; transition: none; }
   .opening__title span, .opening__sub span, .opening__meta span { transform: none; transition: none; }
   .ltr-ch { opacity: 1; transform: none; filter: none; transition: none; }
-  .startbtn { opacity: 1; transform: none; transition: none; }
-  .startbtn__glow { animation: none; display: none; }
+  .startbtn { opacity: 1; transform: none; transition: none; animation: none;
+              background: linear-gradient(120deg, #22e07a, #12b5ff, #7c4dff, #ffd166); }
 }
 /* The opening is a screen, never a page. */
 @media print { .opening { display: none; } }
