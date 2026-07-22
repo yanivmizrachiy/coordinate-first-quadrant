@@ -73,14 +73,14 @@ test('on a phone the whole film is visible and nothing runs off the screen', asy
     return {
       fit: getComputedStyle(v).objectFit,
       filmWidth: vb.width, viewport: window.innerWidth,
-      startCentred: Math.abs((sb.x + sb.width / 2) - window.innerWidth / 2) < 6,
+      startOnTheLeft: sb.x < window.innerWidth / 2,
       startInside: sb.x >= 0 && sb.right <= window.innerWidth,
       verticalOverflow: document.scrollingElement!.scrollHeight - window.innerHeight,
     };
   });
   expect(m.fit, 'the film is cropped on a phone').toBe('contain');
   expect(m.filmWidth, 'the film does not use the width it has').toBeGreaterThan(m.viewport * 0.9);
-  expect(m.startCentred, 'התחל is not centred').toBe(true);
+  expect(m.startOnTheLeft, 'התחל is not at the bottom left').toBe(true);
   expect(m.startInside, 'התחל runs off the screen').toBe(true);
   expect(m.verticalOverflow, 'the opening scrolls').toBeLessThanOrEqual(1);
 });
@@ -162,24 +162,21 @@ test('the contents sheet lists every chapter and each button reaches its page', 
   await page.waitForTimeout(4000);
   const buttons = page.locator('.toc-sheet .toc-btn');
   const topics = await page.evaluate(() => document.querySelectorAll('.toc-sheet .toc-btn').length);
-  expect(topics, 'the contents sheet lists no chapters').toBeGreaterThanOrEqual(10);
+  /* Five chapters, named by Yaniv, and no others: „כל השאר תמחק מהתוכן". */
+  expect(topics, 'the contents sheet does not list the five chapters').toBe(5);
 
   // every button carries a colour of its own from the palette
   const colours = await buttons.evaluateAll((els) =>
     els.map((e) => getComputedStyle(e).backgroundColor),
   );
-  expect(new Set(colours).size, 'the buttons are not colour-coded').toBeGreaterThan(5);
+  expect(new Set(colours).size, 'the buttons are not colour-coded').toBe(5);
 
   /* Each chip carries the page its chapter STARTS on, and nothing else. The
      chapters must run in order and start at page 1. */
   const starts = await buttons.evaluateAll((els) =>
     els.map((e) => Number((e.getAttribute('aria-label') ?? '').match(/בעמוד (\d+)/)?.[1] ?? 0)),
   );
-  expect(starts[0], 'the contents do not start at page 1').toBe(1);
-  for (const [i, n] of starts.entries()) {
-    if (i === 0) continue;
-    expect(n, `chapter ${i + 1} does not come after the one before it`).toBeGreaterThan(starts[i - 1]!);
-  }
+  expect(starts, 'the contents point at the wrong pages').toEqual([1, 12, 29, 50, 60]);
   const ranged = await buttons.evaluateAll((els) => els.filter((e) => /[–-]/.test(e.textContent ?? '')).length);
   expect(ranged, 'a chip still shows a page range instead of the starting page').toBe(0);
 
@@ -209,8 +206,13 @@ test('the contents sheet lists every chapter and each button reaches its page', 
   );
   expect(faint, `a page number is too faint to read: ${faint.join(', ')}`).toEqual([]);
 
-  await buttons.first().click();
-  await expect(page).toHaveURL(/#\/workbook\/1$/);
+  /* Every chip opens the page it names, straight away. */
+  for (const [i, n] of [1, 12, 29, 50, 60].entries()) {
+    await page.goto('/#/book');
+    await page.waitForTimeout(3500);
+    await page.locator('.toc-btn').nth(i).click();
+    await expect(page, `chip ${i + 1} does not open page ${n}`).toHaveURL(new RegExp(`#/workbook/${n}$`));
+  }
 });
 
 /* A sheet is a fixed-height A4 box with overflow:hidden, so anything past its

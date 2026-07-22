@@ -8,7 +8,17 @@
    cycle is longer than any run of related work. */
 import { elem } from '../lib/dom';
 import { navigate } from '../router';
-import { TOPICS } from '../data/workbook';
+/* The contents Yaniv asked for: five chapters, named by him, each opening the
+   page he named. It is NOT derived from BOOK any more — he wants a reader's
+   map, not an index of every section, and „כל השאר תמחק מהתוכן".
+   A test checks that every page number here exists. */
+const CONTENTS: ReadonlyArray<{ title: string; page: number }> = [
+  { title: 'הרביע הראשון — מושגים בסיסיים', page: 1 },
+  { title: 'נקודות במערכת הצירים', page: 12 },
+  { title: 'קטעים מקבילים לצירים', page: 29 },
+  { title: 'שטחים והיקפים במערכת הצירים', page: 50 },
+  { title: 'קריאת גרפים ברביע הראשון', page: 60 },
+];
 import { DISTRICT_BADGE } from '../data/cover';
 
 /* Yaniv's ten colours, in the order he gave them — „אלה הצבעים של תוכן העניינים
@@ -53,9 +63,9 @@ export function renderTocSheet(): HTMLElement {
   );
 
   const list = elem('div', { class: 'toc-buttons' });
-  for (const [i, topic] of TOPICS.entries()) {
+  for (const [i, topic] of CONTENTS.entries()) {
     const colour = PALETTE[i % PALETTE.length]!;
-    const first = topic.pages[0] ?? 1;
+    const first = topic.page;
     const btn = elem('button', {
       class: 'toc-btn' + (PALE.has(colour) ? ' toc-btn--dark' : ''),
       type: 'button',
