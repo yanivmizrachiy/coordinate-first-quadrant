@@ -3,10 +3,15 @@ import { navigate } from '../router';
 import { TOTAL_PAGES } from '../data/workbook';
 import { APPROVED_COVER, OPENING_FILM, DISTRICT_BADGE } from '../data/cover';
 import type { ViewContext } from './context';
-import { goToContents } from './tocSheet';
 
-/** Public address of this build — used for the WhatsApp share text. */
-const shareUrl = (): string => location.href.split('#')[0]!;
+/* ===========================================================================
+   The opening — and nothing else.
+
+   Ten seconds of a Jerusalem tram at golden hour, over which the first quadrant
+   draws itself. It fills the screen, it carries its own sound, and the only
+   thing on top of it is the way in. Everything you can DO lives one press away,
+   on #/menu, so this screen has one job and does it.
+   =========================================================================== */
 
 /** Has this device asked for less motion, or for less data? */
 const wantsStillness = (): boolean => {
@@ -18,187 +23,163 @@ const wantsStillness = (): boolean => {
   );
 };
 
+/* The credit line, set letter by letter so it can be typed on by animation.
+   Hebrew has no contextual shaping, so one span per character is safe; the
+   spans are inline-block and the RTL container lays them out right to left. */
+function letters(text: string, cls: string, from: number, step: number): HTMLElement {
+  const line = elem('div', { class: cls, 'aria-label': text });
+  let i = from;
+  for (const ch of text) {
+    if (ch === ' ') {
+      line.append(elem('span', { class: 'ltr-sp', 'aria-hidden': 'true', html: '&nbsp;' }));
+      i += step;
+      continue;
+    }
+    line.append(elem('span', {
+      class: 'ltr-ch', 'aria-hidden': 'true', text: ch,
+      style: `--d:${i.toFixed(3)}s`,
+    }));
+    i += step;
+  }
+  return line;
+}
+
 export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
   setTitle('מערכת צירים — הרביע הראשון');
-  const c = elem('div', { class: 'container home' });
+  document.body.classList.add('is-opening');
 
-  /* ---------------------------------------------------------------------
-     The opening. The film IS the cover of the app: the first quadrant draws
-     itself over Jerusalem, and it comes to rest on the finished system. The
-     whole panel is one button, because the one thing to do here is go in.
-     --------------------------------------------------------------------- */
-  const hero = elem('section', { class: 'hero' });
-  const stage = elem('div', { class: 'hero__stage' });
-  const stillness = wantsStillness();
+  const screen = elem('div', { class: 'opening' });
+  const stage = elem('div', { class: 'opening__stage' });
+  const still = wantsStillness();
 
   let film: HTMLVideoElement | null = null;
-  if (stillness) {
-    /* No film at all — not a paused one. Asking for less motion or less data
-       should not cost a megabyte of video that then sits still. */
-    stage.append(picture(OPENING_FILM.still, OPENING_FILM.stillFallback, OPENING_FILM.alt, 'hero__media'));
+  if (still) {
+    const pic = elem('picture', { class: 'opening__pic' });
+    pic.append(
+      elem('source', { srcset: OPENING_FILM.still, type: 'image/webp' }),
+      elem('img', { class: 'opening__media', src: OPENING_FILM.stillFallback, alt: OPENING_FILM.alt, decoding: 'async' }),
+    );
+    stage.append(pic);
   } else {
     film = elem('video', {
-      class: 'hero__media hero__film',
+      class: 'opening__media opening__film',
       poster: OPENING_FILM.poster,
-      preload: 'none',
+      preload: 'auto',
       playsinline: '',
-      muted: '',
       autoplay: '',
       'aria-label': OPENING_FILM.alt,
-      width: 1280, height: 720,
     }) as HTMLVideoElement;
-    film.muted = true;                       // the attribute alone is not enough on iOS
+    film.playsInline = true;
     film.append(
       elem('source', { src: OPENING_FILM.webm, type: 'video/webm' }),
-      elem('source', { src: OPENING_FILM.mp4Small, type: 'video/mp4', media: '(max-width: 560px)' }),
+      elem('source', { src: OPENING_FILM.mp4Small, type: 'video/mp4', media: '(max-width: 620px)' }),
       elem('source', { src: OPENING_FILM.mp4, type: 'video/mp4' }),
     );
     stage.append(film);
   }
 
-  /* The district's badge sits in the corner from the first frame — it is whose
-     material this is, and it should be there before the title arrives. */
-  const badge = elem('picture', { class: 'hero__badge' });
+  /* The district's badge, turning slowly and lit. */
+  const badge = elem('picture', { class: 'opening__badge' });
   badge.append(
     elem('source', { srcset: DISTRICT_BADGE.webp, type: 'image/webp' }),
-    elem('img', { src: DISTRICT_BADGE.png, alt: DISTRICT_BADGE.alt, width: 56, height: 56, decoding: 'async' }),
+    elem('img', { src: DISTRICT_BADGE.png, alt: DISTRICT_BADGE.alt, decoding: 'async' }),
   );
 
-  const title = elem('div', { class: 'hero__text' },
-    elem('h1', { class: 'hero__title' }, elem('span', { text: 'מערכת צירים' })),
-    elem('p', { class: 'hero__sub' }, elem('span', { text: 'הרביע הראשון' })),
-    elem('p', { class: 'hero__meta' }, elem('span', { text: `חוברת מלאה · ${TOTAL_PAGES} עמודים` })),
+  /* Everything below arrives only when the tram has stopped and the axes are
+     drawn — the film is the title sequence, and this is its end card. */
+  const card = elem('div', { class: 'opening__card' },
+    elem('h1', { class: 'opening__title' }, elem('span', { text: 'מערכת צירים' })),
+    elem('p', { class: 'opening__sub' }, elem('span', { text: 'הרביע הראשון' })),
+    elem('p', { class: 'opening__meta' }, elem('span', { text: `חוברת עבודה · ${TOTAL_PAGES} עמודים` })),
+    letters('יניב רז - מדריך מחוזי חט"ב בעיר ירושלים', 'opening__credit', 0.10, 0.028),
+    letters('הדרכה במחוז ירושלים והעיר ירושלים - מנח"י, בהובלת איילת קריספין', 'opening__credit opening__credit--2', 0.60, 0.021),
   );
 
-  const open = elem('button', { class: 'hero__open', type: 'button' },
-    elem('span', { class: 'hero__open-label', text: 'פתיחת החוברת' }),
-    elem('span', { class: 'hero__open-arrow', 'aria-hidden': 'true', text: '←' }),
+  const start = elem('button', { class: 'startbtn', type: 'button' },
+    elem('span', { class: 'startbtn__glow', 'aria-hidden': 'true' }),
+    elem('span', { class: 'startbtn__label', text: 'התחל' }),
   );
-  open.addEventListener('click', () => navigate('#/book'));
+  start.addEventListener('click', () => navigate('#/menu'));
 
-  const replay = elem('button', {
-    class: 'hero__replay', type: 'button', 'aria-label': 'הצגת הפתיחה מחדש', title: 'הפתיחה מחדש',
-  }, elem('span', { 'aria-hidden': 'true', text: '↻' }));
-  replay.addEventListener('click', () => {
+  /* Sound. Browsers refuse to start a film with sound before the reader has
+     touched the page — a policy, not a setting. So: try with sound, and if the
+     browser says no, fall back to a silent start and offer one tap to turn it
+     on. The control says which of the two happened. */
+  const sound = elem('button', { class: 'soundbtn', type: 'button', 'aria-label': 'הפעלת הקול' },
+    elem('span', { class: 'soundbtn__icon', 'aria-hidden': 'true', text: '🔇' }),
+    elem('span', { class: 'soundbtn__label', text: 'הפעלת קול' }),
+  );
+  const showSound = (muted: boolean): void => {
+    sound.classList.toggle('soundbtn--on', !muted);
+    (sound.querySelector('.soundbtn__icon') as HTMLElement).textContent = muted ? '🔇' : '🔊';
+    (sound.querySelector('.soundbtn__label') as HTMLElement).textContent = muted ? 'הפעלת קול' : 'קול פועל';
+    sound.setAttribute('aria-label', muted ? 'הפעלת הקול' : 'השתקת הקול');
+  };
+  sound.addEventListener('click', () => {
     if (!film) return;
-    film.currentTime = 0;
-    void film.play();
-    hero.classList.remove('hero--rested');
+    film.muted = !film.muted;
+    if (!film.muted) void film.play();
+    showSound(film.muted);
   });
 
-  hero.append(stage, elem('div', { class: 'hero__scrim', 'aria-hidden': 'true' }), badge, title, open);
-  if (film) hero.append(replay);
-  /* Without a film there is nothing to wait for: the panel is at rest already. */
-  if (!film) hero.classList.add('hero--rested');
-  c.append(hero);
+  const replay = elem('button', { class: 'replaybtn', type: 'button', 'aria-label': 'הצגת הפתיחה מחדש' },
+    elem('span', { 'aria-hidden': 'true', text: '↻' }));
+  replay.addEventListener('click', () => {
+    if (!film) return;
+    screen.classList.remove('opening--ended');
+    film.currentTime = 0;
+    void film.play();
+  });
 
-  /* ---- action buttons ---- */
-  const actions = elem('div', { class: 'act-row' });
+  screen.append(stage, elem('div', { class: 'opening__scrim', 'aria-hidden': 'true' }), badge, card, start);
+  if (film) screen.append(sound, replay);
+  else screen.classList.add('opening--ended');
 
-  const act = (cls: string, icon: string, label: string, onClick: () => void): HTMLElement => {
-    const b = elem('button', { class: `act ${cls}`, type: 'button' },
-      elem('span', { class: 'act__icon', 'aria-hidden': 'true', text: icon }),
-      elem('span', { class: 'act__label', text: label }),
-    );
-    b.addEventListener('click', onClick);
-    return b;
-  };
+  outlet.append(screen);
 
-  /* Print needs the booklet laid out first, so it waits for the sheets to be
-     measured rather than for a guessed number of milliseconds. */
-  const openThenPrint = (): void => {
-    navigate('#/book');
-    const ready = (): void => {
-      if (document.querySelectorAll('.book > .sheet').length > 1) {
-        requestAnimationFrame(() => window.print());
-      } else {
-        setTimeout(ready, 120);
-      }
-    };
-    setTimeout(ready, 200);
-  };
-
-  actions.append(
-    act('act--view', '📖', 'תצוגה', () => navigate('#/book')),
-    act('act--download', '⬇️', 'הורדה', openThenPrint),
-    act('act--print', '🖨️', 'הדפסה', openThenPrint),
-  );
-
-  /* WhatsApp — opens a ready-to-send message with the booklet link. */
-  const wa = elem('a', {
-    class: 'act act--wa',
-    href: `https://wa.me/?text=${encodeURIComponent('מערכת צירים — הרביע הראשון · חוברת לימוד מלאה\n' + shareUrl())}`,
-    target: '_blank',
-    rel: 'noopener',
-    'aria-label': 'שיתוף בוואטסאפ',
-  },
-    elem('span', { class: 'act__icon', 'aria-hidden': 'true', text: '💬' }),
-    elem('span', { class: 'act__label', text: 'וואטסאפ' }),
-  );
-  actions.append(wa);
-  c.append(actions);
-
-  /* ---- paging: jump straight to any page ---- */
-  const nav = elem('div', { class: 'jump' });
-  const select = elem('select', { class: 'jump__select', 'aria-label': 'בחירת עמוד' }) as HTMLSelectElement;
-  for (let i = 1; i <= TOTAL_PAGES; i++) {
-    select.append(elem('option', { value: String(i), text: `עמוד ${i}` }) as HTMLOptionElement);
-  }
-  const go = elem('button', { class: 'jump__go', type: 'button', text: 'מעבר' });
-  go.addEventListener('click', () => navigate(`#/workbook/${select.value}`));
-  select.addEventListener('change', () => navigate(`#/workbook/${select.value}`));
-
-  nav.append(
-    elem('button', { class: 'jump__first', type: 'button', text: '⏮ עמוד 1' }),
-    select,
-    go,
-    elem('button', { class: 'jump__toc', type: 'button', text: '☰ תוכן העניינים' }),
-  );
-  (nav.querySelector('.jump__first') as HTMLElement).addEventListener('click', () => navigate('#/workbook/1'));
-  (nav.querySelector('.jump__toc') as HTMLElement).addEventListener('click', goToContents);
-  c.append(nav);
-
-  /* The approved artwork, kept warm in the background: by the time the film has
-     played the booklet's first page is already decoded and opens instantly. */
+  /* Warm the booklet's first page while the film plays, so „התחל" is instant. */
   const warm = new Image();
   warm.decoding = 'async';
   warm.src = APPROVED_COVER.webp;
 
-  outlet.append(c);
-
-  /* --------------------------------------------------------------------
-     Playback is started AFTER the first paint, never before it. A video that
-     begins downloading during layout delays the text it sits behind.
-     -------------------------------------------------------------------- */
   let cleanup: (() => void) | undefined;
   if (film) {
     const f = film;
-    const start = (): void => {
-      f.preload = 'auto';
-      f.load();
-      void f.play().catch(() => { /* a browser may refuse; the poster stands in */ });
-    };
-    const idle = window.requestIdleCallback ?? ((fn: () => void) => window.setTimeout(fn, 200));
-    const handle = idle(start);
-    const rested = (): void => hero.classList.add('hero--rested');
-    f.addEventListener('ended', rested);
-    cleanup = () => {
-      f.removeEventListener('ended', rested);
-      if (window.cancelIdleCallback && typeof handle === 'number') window.cancelIdleCallback(handle);
-      f.pause();
-      f.removeAttribute('src');
-    };
-  }
-  requestAnimationFrame(() => c.classList.add('home--in'));
-  return cleanup;
-}
+    const ended = (): void => screen.classList.add('opening--ended');
+    f.addEventListener('ended', ended);
 
-/** A picture that prefers WebP and keeps the original behind it. */
-function picture(webp: string, fallback: string, alt: string, cls: string): HTMLElement {
-  const p = elem('picture', {});
-  p.append(
-    elem('source', { srcset: webp, type: 'image/webp' }),
-    elem('img', { class: cls, src: fallback, alt, decoding: 'async', width: 1280, height: 720 }),
-  );
-  return p;
+    /* Sound first. If the browser refuses, start silent — a silent opening is
+       far better than a still frame and a play button. */
+    f.muted = false;
+    void f.play().then(
+      () => showSound(false),
+      () => {
+        f.muted = true;
+        showSound(true);
+        void f.play().catch(() => { /* the poster stands in */ });
+      },
+    );
+
+    /* One tap anywhere turns the sound on, which is what a reader expects after
+       a silent start. It runs once, and never fights the buttons. */
+    const firstTouch = (e: Event): void => {
+      if ((e.target as HTMLElement).closest('button')) return;
+      if (!f.muted) return;
+      f.muted = false;
+      showSound(false);
+      void f.play();
+    };
+    screen.addEventListener('pointerdown', firstTouch, { once: true });
+
+    cleanup = () => {
+      f.removeEventListener('ended', ended);
+      f.pause();
+      document.body.classList.remove('is-opening');
+    };
+  } else {
+    cleanup = () => document.body.classList.remove('is-opening');
+  }
+
+  requestAnimationFrame(() => screen.classList.add('opening--in'));
+  return cleanup;
 }

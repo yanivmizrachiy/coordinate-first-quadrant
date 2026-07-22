@@ -9,157 +9,296 @@
 @media (prefers-reduced-motion: reduce) { .app-main { opacity: 1; translate: none; } }
 @media print { .app-main { opacity: 1 !important; translate: none !important; } }
 
-/* ---------- Home: the opening ----------
-   The film is the cover of the app. The first quadrant draws itself over
-   Jerusalem for ten seconds and comes to rest on the finished system — so the
-   panel holds a 16:9 stage, the title and the way in, and nothing else.
+/* ===========================================================================
+   The opening — the film, full screen, and nothing else.
+   =========================================================================== */
+.appbar--hidden { display: none; }
+body.is-opening { overflow: hidden; background: #04122b; }
+body.is-opening .app-main { padding: 0; }
 
-   The stage carries its ratio in CSS, so the box is the right size before a
-   single byte of video has arrived and nothing on the page jumps when it does. */
-.hero {
+.opening {
   position: relative;
-  width: min(94vw, 720px);
-  margin: 14px auto 18px;
-  border-radius: 22px;
-  overflow: hidden;
-  background: #0b1a34;
-  box-shadow: 0 18px 50px #0b1a3440, 0 2px 8px #0b1a341f;
-  isolation: isolate;
+  /* dvh, not vh: on a phone the browser chrome slides away and vh lies. */
+  height: 100dvh; min-height: 100dvh; width: 100%;
+  overflow: hidden; background: #04122b; isolation: isolate;
 }
-.hero__stage { aspect-ratio: 16 / 9; }
-.hero__media {
+.opening__stage, .opening__pic { position: absolute; inset: 0; }
+.opening__media {
   display: block; width: 100%; height: 100%;
-  object-fit: cover; background: #0b1a34;
+  object-fit: cover; background: #04122b;
 }
-/* A wash from the bottom, so Hebrew set over a bright sky still reads. */
-.hero__scrim {
+/* The film is 16:9 and a phone held upright is not. Rather than crop the
+   drawing away, the frame is anchored so the axes stay on screen whatever
+   shape the viewport happens to be. */
+/* A tall screen: show the film whole and put the card under it. Cropping a
+   16:9 frame into a 9:19.5 phone would cut away the axes and the points, which
+   is the one thing the film is for. */
+@media (max-aspect-ratio: 13 / 10) {
+  /* Centred, then nudged up: the sound and badge sit along the top edge and
+     carry weight of their own, so a mathematically centred block reads low. */
+  .opening { display: flex; flex-direction: column; justify-content: center; align-items: center;
+             padding-block-end: clamp(24px, 9vh, 86px); }
+  .opening__stage, .opening__pic { position: relative; inset: auto; width: 100%; }
+  .opening__stage { flex: none; aspect-ratio: 16 / 9; max-height: 46dvh; }
+  .opening__media { object-fit: contain; height: 100%; }
+  .opening__scrim { display: none; }
+  .opening__card {
+    position: relative; inset: auto; margin: 18px auto 0;
+    width: min(92vw, 560px); padding-bottom: 4px;
+    text-shadow: none; opacity: 0;
+  }
+  .opening__title, .opening__sub { text-align: start; }
+  .opening__meta { color: #ffffffd9; }
+  .startbtn { position: relative; inset: auto; margin: 20px auto 0; bottom: auto; }
+  .replaybtn { top: auto; bottom: clamp(14px, 3vh, 24px); }
+}
+
+.opening__scrim {
   position: absolute; inset: 0; pointer-events: none;
   background:
-    linear-gradient(to top, #04122bE6 0%, #04122b8C 34%, #04122b1A 62%, transparent 82%),
-    linear-gradient(to left, #04122b40, transparent 55%);
-  opacity: .55; transition: opacity .6s ease;
+    linear-gradient(to top, #04122bF2 0%, #04122bB3 26%, #04122b33 52%, #04122b0D 74%),
+    radial-gradient(120% 80% at 50% 100%, #04122b73, transparent 62%);
+  opacity: .5; transition: opacity .8s ease;
 }
-.hero--rested .hero__scrim { opacity: 1; }
+.opening--ended .opening__scrim { opacity: 1; }
 
-/* The badge — whose material this is, present from the first frame. */
-.hero__badge { position: absolute; inset-inline-start: clamp(14px, 3.4vw, 22px); top: clamp(14px, 3.4vw, 22px); }
-.hero__badge img {
-  display: block; width: clamp(44px, 8vw, 58px); height: auto; border-radius: 50%;
-  box-shadow: 0 4px 14px #04122b66; background: #fff;
-  opacity: 0; transform: scale(.82);
-  transition: opacity .5s ease .12s, transform .5s cubic-bezier(.16,.84,.34,1) .12s;
+/* ---- the badge: lit, and turning slowly around itself ---- */
+.opening__badge {
+  position: absolute; inset-inline-start: clamp(14px, 4vw, 26px); top: clamp(14px, 4vw, 26px);
+  display: block; z-index: 3;
 }
-.home--in .hero__badge img { opacity: 1; transform: none; }
-/* The film IS the title sequence: the first quadrant draws itself over the city
-   for ten seconds, and the title lands when it comes to rest. Nothing is written
-   over the drawing while it is being drawn — that was the whole point of it. */
-.hero__text {
-  /* The drawing owns the inline-start half of the frame — that is where the axes
-     and the four points end up. So the title takes the other half and stops at
-     the middle, and nothing it says lands on a point the film just plotted. */
-  position: absolute; inset-inline-end: clamp(16px, 4vw, 30px);
-  max-width: min(48%, 330px); bottom: clamp(62px, 11vw, 80px);
-  pointer-events: none; color: #fff; text-align: start;
-  opacity: 0; transition: opacity .5s ease;
-  text-shadow: 0 2px 18px #04122bB3;
+.opening__badge img {
+  display: block; width: clamp(56px, 13vw, 84px); height: auto; border-radius: 50%;
+  background: #fff;
+  /* Lit: a warm rim and a lift in brightness, so it reads as a badge rather
+     than as a sticker laid on the picture. */
+  filter: brightness(1.14) saturate(1.12) drop-shadow(0 0 14px #ffd16659);
+  box-shadow: 0 0 0 3px #ffffff33, 0 0 26px #ffd16640, 0 8px 22px #04122b80;
+  animation: badge-turn 14s linear infinite;
+  opacity: 0; scale: .84;
+  transition: opacity .6s ease .15s, scale .6s cubic-bezier(.16,.84,.34,1) .15s;
 }
-.hero--rested .hero__text { opacity: 1; }
-.hero__title, .hero__sub, .hero__meta { margin: 0; overflow: hidden; }
-.hero__title { font-size: clamp(30px, 7.2vw, 52px); font-weight: 900; line-height: 1.02; letter-spacing: -.5px; }
-.hero__sub { font-size: clamp(19px, 4.4vw, 30px); font-weight: 800; color: #ffd166; line-height: 1.15; margin-top: 2px; }
-.hero__meta { font-size: clamp(12px, 2.6vw, 14px); font-weight: 700; color: #ffffffcc; margin-top: 7px; }
-/* Each line rides up from behind the one above it — the mask is the overflow
-   on its own parent, so there is no extra element to animate. */
-.hero__title span, .hero__sub span, .hero__meta span {
+.opening--in .opening__badge img { opacity: 1; scale: 1; }
+@keyframes badge-turn { to { rotate: 360deg; } }
+
+/* ---- the end card: it arrives when the tram has stopped ---- */
+.opening__card {
+  position: absolute; z-index: 2; pointer-events: none;
+  inset-inline: clamp(18px, 6vw, 44px); bottom: clamp(104px, 22vh, 168px);
+  color: #fff; text-align: start;
+  text-shadow: 0 2px 22px #04122bCC;
+  opacity: 0; transition: opacity .7s ease;
+}
+.opening--ended .opening__card { opacity: 1; }
+.opening__title, .opening__sub, .opening__meta { margin: 0; overflow: hidden; }
+.opening__title { font-size: clamp(34px, 10vw, 68px); font-weight: 900; line-height: 1.02; letter-spacing: -.6px; }
+.opening__sub { font-size: clamp(21px, 6vw, 38px); font-weight: 800; color: #ffd166; line-height: 1.14; margin-top: 2px; }
+.opening__meta { font-size: clamp(13px, 3.4vw, 17px); font-weight: 700; color: #ffffffd9; margin-top: 8px; }
+.opening__title span, .opening__sub span, .opening__meta span {
   display: block; transform: translateY(115%);
-  transition: transform .62s cubic-bezier(.16, .84, .34, 1);
+  transition: transform .72s cubic-bezier(.16,.84,.34,1);
 }
-.hero--rested .hero__title span { transform: none; transition-delay: .06s; }
-.hero--rested .hero__sub span   { transform: none; transition-delay: .15s; }
-.hero--rested .hero__meta span  { transform: none; transition-delay: .24s; }
+.opening--ended .opening__title span { transform: none; transition-delay: .05s; }
+.opening--ended .opening__sub span   { transform: none; transition-delay: .16s; }
+.opening--ended .opening__meta span  { transform: none; transition-delay: .27s; }
 
-.hero__open {
-  position: absolute; inset-inline-end: clamp(16px, 4vw, 30px); bottom: clamp(16px, 4vw, 26px);
-  display: inline-flex; align-items: center; gap: 9px;
-  min-height: 46px; padding: 0 20px;
-  border: 0; border-radius: 999px; cursor: pointer;
-  background: #fff; color: #0b1a34; font: inherit; font-weight: 900; font-size: 15px;
-  box-shadow: 0 6px 20px #04122b59;
-  opacity: 0; transform: translateY(14px);
-  transition: opacity .4s ease .36s, transform .4s cubic-bezier(.16,.84,.34,1) .36s,
-              box-shadow .16s ease, background-color .16s ease;
+/* ---- the credit, written on letter by letter ---- */
+.opening__credit {
+  margin-top: 12px; font-size: clamp(12px, 3vw, 15px); font-weight: 700;
+  color: #fff; letter-spacing: .1px; line-height: 1.5;
+}
+.opening__credit--2 { margin-top: 3px; font-weight: 600; color: #ffffffcc; font-size: clamp(11px, 2.7vw, 13.5px); }
+.ltr-ch {
+  display: inline-block; white-space: pre;
+  opacity: 0; transform: translateY(.42em) rotateX(-70deg); transform-origin: 50% 100%;
+  filter: blur(3px);
+}
+.ltr-sp { display: inline-block; }
+.opening--ended .ltr-ch {
+  opacity: 1; transform: none; filter: none;
+  transition: opacity .34s ease var(--d), transform .44s cubic-bezier(.16,.84,.34,1) var(--d), filter .34s ease var(--d);
+}
+
+/* ---- the way in ---- */
+.startbtn {
+  position: absolute; z-index: 4;
+  /* Centred by margins, not by a 50% offset: inset-inline-start is the RIGHT
+     edge in Hebrew, and the offset threw the button clean off the screen. */
+  inset-inline: 0; margin-inline: auto; width: fit-content;
+  bottom: clamp(30px, 7vh, 56px);
+  min-width: clamp(190px, 52vw, 260px); min-height: 58px;
+  padding: 0 34px; border: 0; border-radius: 999px; cursor: pointer;
+  background: linear-gradient(135deg, #ffffff 0%, #eef4ff 100%);
+  color: #06214b; font: inherit; font-weight: 900; font-size: clamp(17px, 4.6vw, 21px);
+  letter-spacing: .4px;
+  box-shadow: 0 10px 34px #04122b8C, 0 0 0 1px #ffffff40 inset, 0 0 34px #ffd16633;
+  overflow: hidden;
+  opacity: 0; transform: translateY(16px) scale(.96);
+  transition: opacity .5s ease .5s, transform .5s cubic-bezier(.16,.84,.34,1) .5s,
+              box-shadow .18s ease, background .18s ease;
   -webkit-tap-highlight-color: transparent; touch-action: manipulation;
 }
-.home--in .hero__open { opacity: 1; transform: none; }
-.hero__open:hover { background: #eaf2ff; box-shadow: 0 10px 26px #04122b6b; }
-.hero__open:active { transform: scale(.97); transition-duration: .06s; }
-.hero__open:focus-visible { outline: 3px solid #ffd166; outline-offset: 3px; }
-.hero__open-arrow { font-size: 18px; transition: transform .2s cubic-bezier(.16,.84,.34,1); }
-.hero__open:hover .hero__open-arrow { transform: translateX(-4px); }
+.opening--in .startbtn { opacity: 1; transform: translateY(0) scale(1); }
+.startbtn:hover { box-shadow: 0 14px 42px #04122b9E, 0 0 0 1px #ffffff59 inset, 0 0 44px #ffd16659; }
+.startbtn:active { transform: scale(.965); transition-duration: .07s; }
+.startbtn:focus-visible { outline: 3px solid #ffd166; outline-offset: 4px; }
+.startbtn__label { position: relative; z-index: 1; }
+/* A slow sweep of light across the face: enough to invite a press, not enough
+   to compete with a film. */
+.startbtn__glow {
+  position: absolute; inset: 0;
+  background: linear-gradient(115deg, transparent 32%, #ffffffe6 48%, transparent 64%);
+  translate: -120% 0;
+  animation: start-sweep 3.6s ease-in-out 1.4s infinite;
+}
+@keyframes start-sweep { 0% { translate: -120% 0; } 42%, 100% { translate: 120% 0; } }
 
-/* Replay sits quietly in the corner and steps forward once the film has ended. */
-.hero__replay {
-  position: absolute; inset-inline-end: 12px; top: 12px;
-  width: 40px; height: 40px; display: grid; place-content: center;
-  border: 0; border-radius: 50%; cursor: pointer;
-  background: #04122b73; color: #fff; font-size: 19px; line-height: 1;
-  backdrop-filter: blur(6px);
-  opacity: 0; transform: scale(.86); pointer-events: none;
-  transition: opacity .3s ease, transform .3s cubic-bezier(.16,.84,.34,1), background-color .16s ease;
+/* ---- sound and replay ---- */
+.soundbtn, .replaybtn {
+  position: absolute; z-index: 4; top: clamp(14px, 4vw, 26px);
+  border: 0; cursor: pointer; color: #fff;
+  background: #04122b8C; backdrop-filter: blur(8px);
+  box-shadow: 0 0 0 1px #ffffff2E inset;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+  transition: background-color .16s ease, transform .16s ease, opacity .3s ease;
 }
-.hero:hover .hero__replay, .hero--rested .hero__replay, .hero__replay:focus-visible {
-  opacity: 1; transform: none; pointer-events: auto;
+.soundbtn {
+  inset-inline-end: clamp(14px, 4vw, 26px);
+  display: inline-flex; align-items: center; gap: 7px;
+  min-height: 42px; padding: 0 15px; border-radius: 999px;
+  font: inherit; font-weight: 800; font-size: 13.5px;
 }
-.hero__replay:hover { background: #04122ba6; }
-.hero__replay:active { transform: scale(.92); transition-duration: .06s; }
-.hero__replay:focus-visible { outline: 3px solid #ffd166; outline-offset: 2px; }
+.soundbtn--on { background: #0f7a3fCC; }
+.soundbtn__icon { font-size: 16px; line-height: 1; }
+.replaybtn {
+  inset-inline-end: clamp(14px, 4vw, 26px); top: auto; bottom: clamp(30px, 7vh, 56px);
+  width: 46px; height: 46px; border-radius: 50%; display: grid; place-content: center;
+  font-size: 21px; opacity: 0; pointer-events: none;
+}
+.opening--ended .replaybtn { opacity: 1; pointer-events: auto; }
+.soundbtn:hover, .replaybtn:hover { background: #04122bC4; }
+.soundbtn:active, .replaybtn:active { transform: scale(.94); }
+.soundbtn:focus-visible, .replaybtn:focus-visible { outline: 3px solid #ffd166; outline-offset: 3px; }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero__title span, .hero__sub span, .hero__meta span { transform: none; transition: none; }
-  .hero__text, .hero__scrim { opacity: 1; transition: none; }
-  .hero__open { opacity: 1; transform: none; transition: none; }
-  .hero__badge img { opacity: 1; transform: none; transition: none; }
-  .hero__replay { transition: none; }
+  .opening__badge img { animation: none; opacity: 1; scale: 1; transition: none; }
+  .opening__card, .opening__scrim { opacity: 1; transition: none; }
+  .opening__title span, .opening__sub span, .opening__meta span { transform: none; transition: none; }
+  .ltr-ch { opacity: 1; transform: none; filter: none; transition: none; }
+  .startbtn { opacity: 1; transform: none; transition: none; }
+  .startbtn__glow { animation: none; display: none; }
 }
+/* The opening is a screen, never a page. */
+@media print { .opening { display: none; } }
 
-/* Home actions — view / download / print / WhatsApp.
-   One shape, one motion, four jobs: the icon lifts on hover and the whole tile
-   presses in on tap, so a thumb gets an answer before the next screen loads. */
+/* ---------- The menu ---------- */
+.menu { padding-top: 6px; }
+.menu__head {
+  display: flex; align-items: center; gap: 14px;
+  width: min(94vw, 720px); margin: 6px auto 16px;
+}
+.menu__badge img {
+  display: block; width: clamp(46px, 11vw, 60px); height: auto; border-radius: 50%;
+  background: #fff; filter: brightness(1.1) saturate(1.1);
+  box-shadow: 0 0 0 2px #ffffff, 0 4px 16px #1f2a4433;
+  animation: badge-turn 18s linear infinite;
+}
+.menu__title { margin: 0; font-size: clamp(18px, 4.6vw, 24px); font-weight: 900; color: var(--brand-ink); line-height: 1.15; }
+.menu__sub { margin: 3px 0 0; font-size: clamp(12.5px, 3vw, 14px); font-weight: 700; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .menu__badge img { animation: none; } }
+
+/* The four things you can do.
+   One shape, one motion, four jobs. The face is a soft white gradient with a
+   hairline of light along its top edge and a warm ring beneath it, so the tile
+   reads as a raised object rather than a painted rectangle; a sheen crosses it
+   on hover, and the whole thing presses in on tap. */
 .act-row {
-  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
-  width: min(94vw, 720px); margin: 0 auto 14px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(148px, 1fr)); gap: 12px;
+  width: min(94vw, 720px); margin: 0 auto 16px;
 }
 .act {
-  flex: 1 1 120px; min-width: 118px; min-height: 68px;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
-  padding: 10px 12px; border-radius: 18px; text-decoration: none;
-  background: #fff;
-  border: 1px solid #e2e9f6; color: var(--brand-ink);
-  box-shadow: 0 1px 2px #1f2a4414, 0 8px 20px #1f2a4410;
+  position: relative; overflow: hidden;
+  min-height: 96px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  padding: 14px 12px; border-radius: 20px; text-decoration: none;
+  background:
+    linear-gradient(180deg, #ffffff 0%, #f7faff 52%, #eef4fd 100%);
+  border: 1px solid #dbe6f7; color: var(--brand-ink);
+  box-shadow:
+    0 1px 0 #ffffff inset,
+    0 -1px 0 #ffffffB3 inset,
+    0 2px 5px #1f2a4414,
+    0 12px 28px #1f2a4414;
   cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
-  transition: transform .16s cubic-bezier(.16,.84,.34,1), box-shadow .16s ease, border-color .16s ease;
-  opacity: 0; translate: 0 12px;
+  transition: transform .2s cubic-bezier(.16,.84,.34,1), box-shadow .2s ease, border-color .2s ease;
+  opacity: 0; translate: 0 14px;
 }
-/* The row arrives just after the opening's last line, one tile at a time. */
-.home--in .act { opacity: 1; translate: none; transition: opacity .38s ease, translate .38s cubic-bezier(.16,.84,.34,1), transform .16s cubic-bezier(.16,.84,.34,1), box-shadow .16s ease, border-color .16s ease; }
-.home--in .act:nth-child(1) { transition-delay: .34s; }
-.home--in .act:nth-child(2) { transition-delay: .40s; }
-.home--in .act:nth-child(3) { transition-delay: .46s; }
-.home--in .act:nth-child(4) { transition-delay: .52s; }
-.act:hover { transform: translateY(-3px); box-shadow: 0 3px 8px #1f2a441a, 0 14px 30px #1f2a4418; border-color: #c6d7f4; }
-.act:active { transform: translateY(0) scale(.96); transition-duration: .07s; }
+.menu--in .act {
+  opacity: 1; translate: none;
+  transition: opacity .42s ease, translate .42s cubic-bezier(.16,.84,.34,1),
+              transform .2s cubic-bezier(.16,.84,.34,1), box-shadow .2s ease, border-color .2s ease;
+}
+.menu--in .act:nth-child(1) { transition-delay: .06s; }
+.menu--in .act:nth-child(2) { transition-delay: .12s; }
+.menu--in .act:nth-child(3) { transition-delay: .18s; }
+.menu--in .act:nth-child(4) { transition-delay: .24s; }
+
+.act:hover {
+  transform: translateY(-4px);
+  border-color: #bed3f2;
+  box-shadow:
+    0 1px 0 #ffffff inset,
+    0 -1px 0 #ffffffB3 inset,
+    0 4px 10px #1f2a441f,
+    0 22px 44px #1f2a4426;
+}
+.act:active { transform: translateY(-1px) scale(.975); transition-duration: .08s; }
 .act:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
-.act__icon { font-size: 25px; line-height: 1; transition: transform .2s cubic-bezier(.16,.84,.34,1); }
-.act:hover .act__icon { transform: translateY(-2px) scale(1.08); }
-.act__label { font-size: 14px; font-weight: 800; }
-.act--view { background: linear-gradient(160deg, #eaf2ff, #fff); border-color: #cfe0fb; }
-.act--wa { background: linear-gradient(150deg, #2fdd75, #12b955); border-color: #0ea34a; color: #fff; }
-.act--wa:hover { border-color: #0b8f40; }
+
+/* The sheen: a band of light that crosses the face once per hover. */
+.act__sheen {
+  position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+  background: linear-gradient(115deg, transparent 36%, #ffffffE6 50%, transparent 64%);
+  translate: -130% 0; opacity: 0;
+}
+.act:hover .act__sheen { animation: act-sheen .72s cubic-bezier(.3,.7,.4,1); }
+@keyframes act-sheen {
+  0% { translate: -130% 0; opacity: 0; }
+  18% { opacity: .85; }
+  100% { translate: 130% 0; opacity: 0; }
+}
+
+.act__icon {
+  font-size: 27px; line-height: 1;
+  filter: drop-shadow(0 3px 6px #1f2a4426);
+  transition: transform .24s cubic-bezier(.16,.84,.34,1);
+}
+.act:hover .act__icon { transform: translateY(-3px) scale(1.1); }
+.act__label { font-size: 15px; font-weight: 900; letter-spacing: .1px; }
+.act__note { font-size: 11.5px; font-weight: 700; color: var(--muted); }
+
+/* The one that opens the booklet leads, in the brand colour. */
+.act--view {
+  background: linear-gradient(180deg, #2f6bff 0%, #1d4ed8 100%);
+  border-color: #1a44bd; color: #fff;
+  box-shadow: 0 1px 0 #ffffff59 inset, 0 2px 6px #1d4ed83D, 0 14px 32px #1d4ed83D;
+}
+.act--view .act__note { color: #ffffffc7; }
+.act--view:hover { border-color: #163ba6; box-shadow: 0 1px 0 #ffffff73 inset, 0 4px 12px #1d4ed84D, 0 24px 48px #1d4ed84D; }
+
+.act--wa {
+  background: linear-gradient(180deg, #34e07d 0%, #10a94e 100%);
+  border-color: #0c8f42; color: #fff;
+  box-shadow: 0 1px 0 #ffffff59 inset, 0 2px 6px #10a94e3D, 0 14px 32px #10a94e3D;
+}
+.act--wa .act__note { color: #ffffffc7; }
+.act--wa:hover { border-color: #0a7a39; box-shadow: 0 1px 0 #ffffff73 inset, 0 4px 12px #10a94e4D, 0 24px 48px #10a94e4D; }
 
 @media (prefers-reduced-motion: reduce) {
   .act { opacity: 1; translate: none; transition: none; }
   .act:hover { transform: none; }
   .act:hover .act__icon { transform: none; }
+  .act:hover .act__sheen { animation: none; }
 }
 
 /* Paging — jump straight to any page. */
@@ -168,18 +307,30 @@
   width: min(94vw, 720px); margin: 0 auto 28px;
   opacity: 0; translate: 0 10px;
 }
-.home--in .jump {
+.menu--in .jump {
   opacity: 1; translate: none;
   transition: opacity .38s ease .58s, translate .38s cubic-bezier(.16,.84,.34,1) .58s;
 }
 @media (prefers-reduced-motion: reduce) { .jump { opacity: 1; translate: none; transition: none; } }
 .jump__select, .jump__go, .jump__first, .jump__toc {
-  min-height: 46px; padding: 0 14px; border-radius: 12px; font: inherit; font-weight: 800;
-  background: #fff; border: 1px solid #dbe5f5; color: var(--brand-ink);
+  min-height: 50px; padding: 0 16px; border-radius: 14px; font: inherit; font-weight: 800;
+  background: linear-gradient(180deg, #ffffff 0%, #f5f9ff 100%);
+  border: 1px solid #dde7f8; color: var(--brand-ink);
+  box-shadow: 0 1px 0 #ffffff inset, 0 2px 5px #1f2a440F, 0 8px 20px #1f2a440D;
   cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+  transition: transform .16s cubic-bezier(.16,.84,.34,1), box-shadow .16s ease, border-color .16s ease;
 }
+.jump__go:hover, .jump__first:hover, .jump__toc:hover {
+  transform: translateY(-2px); border-color: #c3d6f5;
+  box-shadow: 0 1px 0 #ffffff inset, 0 4px 9px #1f2a4417, 0 14px 30px #1f2a4417;
+}
+.jump__go:active, .jump__first:active, .jump__toc:active { transform: translateY(0) scale(.97); transition-duration: .07s; }
 .jump__select { flex: 1 1 130px; min-width: 120px; }
-.jump__go { background: var(--brand); border-color: var(--brand); color: #fff; }
+.jump__go {
+  background: linear-gradient(180deg, #2f6bff 0%, #1d4ed8 100%);
+  border-color: #1a44bd; color: #fff;
+  box-shadow: 0 1px 0 #ffffff59 inset, 0 2px 6px #1d4ed833, 0 8px 20px #1d4ed833;
+}
 .jump__first, .jump__toc { flex: 1 1 130px; }
 .jump__select:focus-visible, .jump__go:focus-visible, .jump__first:focus-visible, .jump__toc:focus-visible {
   outline: 3px solid var(--brand); outline-offset: 2px;

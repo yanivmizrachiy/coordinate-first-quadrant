@@ -1,41 +1,97 @@
 import { test, expect } from '@playwright/test';
 
-test('home shows the opening, the action buttons and the page picker', async ({ page }) => {
+test('the opening screen carries the film and the way in, and nothing else', async ({ page }) => {
   await page.goto('/#/');
-  await expect(page.locator('.hero')).toBeVisible();
-  // תצוגה · הורדה · הדפסה · וואטסאפ
+  await expect(page.locator('.opening')).toBeVisible();
+  await expect(page.locator('.startbtn')).toBeVisible();
+  // everything you can DO lives one press away, so none of it is on this screen
+  await expect(page.locator('.act')).toHaveCount(0);
+  await expect(page.locator('.jump')).toHaveCount(0);
+  await expect(page.locator('.appbar')).toHaveClass(/appbar--hidden/);
+});
+
+test('התחל leads to the menu, and the menu has the four actions and the picker', async ({ page }) => {
+  await page.goto('/#/');
+  await page.locator('.startbtn').click();
+  await expect(page).toHaveURL(/#\/menu$/);
   await expect(page.locator('.act')).toHaveCount(4);
   await expect(page.locator('.act--wa')).toHaveAttribute('href', /wa\.me/);
   expect(await page.locator('.jump__select option').count()).toBeGreaterThan(40);
 });
 
-/* The opening film is the app's front door, so it has to behave like one: hold
-   its own space before it loads, never bring sound, and never reach paper. */
-test('the opening film reserves its space, is silent, and never prints', async ({ page }) => {
+/* The film is the app's front door: it holds its own space, comes to rest
+   instead of looping, carries its sound, and never reaches paper. */
+test('the opening film is sized, sounded and kept off paper', async ({ page }) => {
   await page.goto('/#/');
-  const film = page.locator('.hero__film');
+  const film = page.locator('.opening__film');
   await expect(film).toHaveCount(1);
   const shape = await film.evaluate((el) => {
     const v = el as HTMLVideoElement;
-    const r = v.getBoundingClientRect();
-    return { ratio: r.width / r.height, muted: v.muted, poster: v.getAttribute('poster') ?? '', loops: v.loop };
+    return {
+      poster: v.getAttribute('poster') ?? '',
+      loops: v.loop,
+      inline: v.playsInline,
+      sources: [...v.querySelectorAll('source')].map((s) => s.getAttribute('src') ?? ''),
+    };
   });
-  expect(Math.abs(shape.ratio - 16 / 9), 'the stage is not 16:9').toBeLessThan(0.02);
-  expect(shape.muted, 'the film would make a sound').toBe(true);
-  expect(shape.poster, 'no poster, so the panel starts blank').not.toBe('');
+  expect(shape.poster, 'no poster, so the screen starts blank').not.toBe('');
   expect(shape.loops, 'the film loops instead of coming to rest').toBe(false);
+  expect(shape.inline, 'iOS would take the film full screen').toBe(true);
+  expect(shape.sources.length, 'only one encoding is offered').toBeGreaterThan(1);
 
   await page.emulateMedia({ media: 'print' });
-  const shown = await page.locator('.hero').evaluate((el) => getComputedStyle(el).display);
-  expect(shown, 'the film would be sent to the printer').toBe('none');
+  const shown = await page.locator('.opening').evaluate((el) => getComputedStyle(el).display);
+  expect(shown, 'the opening would be sent to the printer').toBe('none');
   await page.emulateMedia({ media: 'screen' });
 });
 
-/* The district's badge belongs on the material it comes from: the opening, and
-   every sheet of the booklet. */
+/* The credit is written on letter by letter, and only once the film has ended —
+   so every letter must be a separate element carrying its own delay. */
+test('the credit is set letter by letter and waits for the film', async ({ page }) => {
+  await page.goto('/#/');
+  const chars = page.locator('.opening__credit .ltr-ch');
+  expect(await chars.count(), 'the credit is not split into letters').toBeGreaterThan(40);
+  const before = await chars.first().evaluate((el) => getComputedStyle(el).opacity);
+  expect(Number(before), 'the letters are visible before the film ends').toBeLessThan(0.5);
+
+  await page.locator('.opening').evaluate((el) => el.classList.add('opening--ended'));
+  await page.waitForTimeout(1800);
+  const after = await chars.first().evaluate((el) => getComputedStyle(el).opacity);
+  expect(Number(after), 'the letters never arrive').toBeGreaterThan(0.9);
+});
+
+/* A phone held upright is nothing like 16:9: cropping the film to fill it would
+   cut away the axes, which is the one thing the film is for. */
+test('on a phone the whole film is visible and nothing runs off the screen', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/#/');
+  await page.waitForTimeout(600);
+  const m = await page.evaluate(() => {
+    const v = document.querySelector('.opening__media') as HTMLElement;
+    const s = document.querySelector('.startbtn') as HTMLElement;
+    const vb = v.getBoundingClientRect(), sb = s.getBoundingClientRect();
+    return {
+      fit: getComputedStyle(v).objectFit,
+      filmWidth: vb.width, viewport: window.innerWidth,
+      startCentred: Math.abs((sb.x + sb.width / 2) - window.innerWidth / 2) < 6,
+      startInside: sb.x >= 0 && sb.right <= window.innerWidth,
+      verticalOverflow: document.scrollingElement!.scrollHeight - window.innerHeight,
+    };
+  });
+  expect(m.fit, 'the film is cropped on a phone').toBe('contain');
+  expect(m.filmWidth, 'the film does not use the width it has').toBeGreaterThan(m.viewport * 0.9);
+  expect(m.startCentred, 'התחל is not centred').toBe(true);
+  expect(m.startInside, 'התחל runs off the screen').toBe(true);
+  expect(m.verticalOverflow, 'the opening scrolls').toBeLessThanOrEqual(1);
+});
+
+/* The district's badge belongs on the material it comes from: the opening, the
+   menu, and every sheet of the booklet. */
 test("the district's badge is on the opening and on every sheet", async ({ page }) => {
   await page.goto('/#/');
-  await expect(page.locator('.hero__badge img')).toHaveCount(1);
+  await expect(page.locator('.opening__badge img')).toHaveCount(1);
+  const spins = await page.locator('.opening__badge img').evaluate((el) => getComputedStyle(el).animationName);
+  expect(spins, 'the badge does not turn').toBe('badge-turn');
 
   await page.goto('/#/book');
   await page.waitForTimeout(9000);
@@ -81,7 +137,7 @@ test('the deleted chapter-list page cannot come back', async ({ page }) => {
 });
 
 test('no horizontal overflow on any core view', async ({ page }) => {
-  for (const hash of ['#/', '#/workbook', '#/workbook/1', '#/workbook/12', '#/book']) {
+  for (const hash of ['#/', '#/menu', '#/workbook', '#/workbook/1', '#/workbook/12', '#/book']) {
     await page.goto('/' + hash);
     await page.waitForTimeout(200);
     const overflow = await page.evaluate(
