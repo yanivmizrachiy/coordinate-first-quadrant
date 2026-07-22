@@ -6,17 +6,21 @@ import { sheet } from '../authoring';
    working matters more than saving a page. */
 export const SQUARES_SUMMARY: WorkbookPageContent = sheet({
   sectionClass: "sheet practice",
-  title: "מלבן חסר, ומה נכון בהכרח",
-  subtitle: "משלימים קודקוד, ואז מכריעים אם טענה נכונה בהכרח",
+  title: "מלבן ברביע הראשון",
+  subtitle: "משלימים קודקוד חסר, ומכריעים אם טענה נכונה בהכרח",
   content: `
 <section class="q-card">
-<h3>א. A(2,2), B(2,6), C(7,6). מצאו D למלבן.</h3>
-<p>D=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<p>קטעים מקבילים ל־x: <span class="blank" style="--blank-width:8ch"></span></p>
+<h3>א. משלימים את הקודקוד החסר.</h3>
+<p>נתונים שלושת הקודקודים <span class="math-ltr" dir="ltr">A(2,2)</span>, <span class="math-ltr" dir="ltr">B(2,6)</span> ו־<span class="math-ltr" dir="ltr">C(7,6)</span>.</p>
+<ul class="tasks compact">
+<li>הקודקוד הרביעי הוא הנקודה <span class="pair math-ltr" dir="ltr">D(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>.</li>
+<li>הצלעות המקבילות לציר <span class="math-ltr" dir="ltr">x</span> הן <span class="blank" data-missing="letter" style="--blank-width:8ch"></span>.</li>
+<li>ה<b>אורך</b> הוא הצלע <span class="blank" data-missing="letter" style="--blank-width:4ch"></span>, וה<b>רוחב</b> הוא הצלע <span class="math-ltr" dir="ltr">AB</span>.</li>
+</ul>
 <div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
-<p>הזיזו יחידה ימינה - קודקודים חדשים:</p>
-<div class="answer-line">
-</div>
+<ul class="tasks compact">
+<li>אם מזיזים את המלבן יחידה אחת ימינה, הקודקוד <span class="math-ltr" dir="ltr">A</span> מגיע אל <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>, וההיקף והשטח <span class="blank" data-missing="relation" style="--blank-width:5ch"></span>.</li>
+</ul>
 </section>
 </div>
 <section class="q-card">
@@ -30,15 +34,11 @@ export const SQUARES_SUMMARY: WorkbookPageContent = sheet({
 <div class="choice-row"><span class="choice">נכונה בהכרח</span><span class="choice">ייתכן שנכונה</span><span class="choice">לא ייתכן</span>
 </div><span class="reason-line"></span>
 </div>
-<div class="always-row"><span>3. אם שני שיעורי נקודה זהים, היא ממוקמת על ציר.</span>
+<div class="always-row"><span>3. הזזה של מלבן משנה את שטחו.</span>
 <div class="choice-row"><span class="choice">נכונה בהכרח</span><span class="choice">ייתכן שנכונה</span><span class="choice">לא ייתכן</span>
 </div><span class="reason-line"></span>
 </div>
-<div class="always-row"><span>4. הזזה של מלבן משנה את שטחו.</span>
-<div class="choice-row"><span class="choice">נכונה בהכרח</span><span class="choice">ייתכן שנכונה</span><span class="choice">לא ייתכן</span>
-</div><span class="reason-line"></span>
-</div>
-<div class="always-row"><span>5. שני מלבנים בעלי אותו שטח הם בעלי אותו היקף.</span>
+<div class="always-row"><span>4. שני מלבנים בעלי אותו שטח הם בעלי אותו היקף.</span>
 <div class="choice-row"><span class="choice">נכונה בהכרח</span><span class="choice">ייתכן שנכונה</span><span class="choice">לא ייתכן</span>
 </div><span class="reason-line"></span>
 </div>
