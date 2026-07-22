@@ -511,6 +511,38 @@ test('every calculation really is painted left to right', async ({ page }, testI
   expect(faults.length, faults.join(' | ')).toBe(0);
 });
 
+/* „הגרש לא נמצא במקום הנכון”. A geresh is a NEUTRAL character, so inside a
+   dir="ltr" line it takes the line's direction and lands to the RIGHT of the
+   Hebrew word it closes. Measured per character: a Hebrew run must march
+   leftwards, every next character further left than the one before it. */
+test('a Hebrew word never comes out in the wrong order', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
+  await page.goto('/#/book');
+  await page.waitForTimeout(9000);
+  const faults = await page.evaluate(() => {
+    const out: string[] = [];
+    const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    for (let n: Node | null; (n = walk.nextNode()); ) {
+      const s = n.textContent ?? '';
+      if (!/[֐-׿]/.test(s) || !/['"]/.test(s)) continue;
+      const host = (n as Text).parentElement;
+      if (!host?.closest('.sheet')) continue;
+      const at = (i: number) => { const r = document.createRange(); r.setStart(n!, i); r.setEnd(n!, i + 1); return r.getBoundingClientRect().x; };
+      const run = [...s].map((c, i) => ({ c, i })).filter((o) => /[֐-׿'"]/.test(o.c));
+      for (let k = 1; k < run.length; k++) {
+        if (run[k]!.i !== run[k - 1]!.i + 1) continue;
+        if (at(run[k]!.i) >= at(run[k - 1]!.i)) {
+          const p = host.closest('.sheet')?.querySelector('.sheet-number')?.textContent?.trim() ?? '?';
+          out.push(`page ${p}: „${s.trim().slice(0, 24)}” comes out in the wrong order`);
+          break;
+        }
+      }
+    }
+    return [...new Set(out)];
+  });
+  expect(faults, faults.join(' | ')).toHaveLength(0);
+});
+
 /* Two letter O on one corner — the grid's own origin plus a point the sheet
    marked at (0,0) — reads as a mistake in the drawing. */
 test('the origin is never labelled twice', async ({ page }, testInfo) => {

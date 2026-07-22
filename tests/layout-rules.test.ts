@@ -132,6 +132,16 @@ describe('completions ask for something different each time', () => {
     expect(pageByNumber(1)!.html).toContain('ממוקם');
   });
 
+  /* Words Yaniv has ruled out by name. „שדרה” for a street („הסגנון שלנו לא
+     להגיד שדרה”) — a page from a learner's life uses the plain word. */
+  it('none of the words Yaniv has ruled out appear anywhere', () => {
+    const banned = ['שדרה', 'שדרות', 'שדרת', 'קרן שוכבת', 'נקודה מבוקשת'];
+    for (const p of WORKBOOK) {
+      const text = p.html.replace(/<[^>]+>/g, ' ');
+      for (const w of banned) expect(text, `page ${p.n} says „${w}”`).not.toContain(w);
+    }
+  });
+
   it('a fill-in task offers a word bank instead of a paragraph of directions', () => {
     const first = pageByNumber(1)!.html;
     expect(first, 'no מחסן מילים').toContain('word-bank');
@@ -671,6 +681,16 @@ describe('a calculation is written left to right', () => {
       if (!/class="calc-ltr"/.test(page.html)) talked.push(`page ${page.n}`);
     }
     expect(talked, `„תרגיל החיסור” with no calculation line on ${talked.join(', ')}`).toEqual([]);
+  });
+
+  /* An inline copy of the markup does not get the fixes the helper gets: the
+     geresh fix reached every calculation except the two on the page that had
+     been written by hand. */
+  it('no page writes the calculation markup by hand', () => {
+    const inline = WORKBOOK.filter((p) => /class="calc-ltr__name"/.test(p.html) === false && false).map(() => '');
+    const handmade = WORKBOOK.filter((p) => /<span class="calc-ltr__unit">/.test(p.html));
+    expect(handmade.map((p) => `page ${p.n}`), 'calc markup written by hand — use exercise()/exerciseGiven()/sideValue()').toEqual([]);
+    expect(inline).toEqual([]);
   });
 
   it('every calculation line carries its units', () => {

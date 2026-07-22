@@ -136,7 +136,13 @@ export const exercise = (name: string, unit = "יח'"): string =>
   '<div class="calc-ltr" dir="ltr">' +
   `<span class="calc-ltr__name">${name}</span><span class="calc-ltr__eq">=</span>` +
   `${blank(10, 'number')}<span class="calc-ltr__eq">=</span>${blank(4, 'number')}` +
-  `<span class="calc-ltr__unit">${unit}</span></div>`;
+  `<span class="calc-ltr__unit" dir="rtl">${unit}</span></div>`;
+
+/* The unit („יח'”, „יח\"ר”) is a Hebrew word, and the geresh at its end is a
+   NEUTRAL character: inside the dir="ltr" calculation line it takes the line's
+   direction and lands to the RIGHT of the word — „the geresh is in the wrong
+   place”. Measured: י at 460, ח at 451, and the geresh at 464. So the unit keeps
+   its own Hebrew direction, and only the calculation around it runs LTR. */
 
 /** „AB = 7 − 2 = ____ יח'” — the subtraction is GIVEN and the learner writes the
     result. Same left-to-right line as exercise(); the name may be left out where
@@ -145,13 +151,13 @@ export const exerciseGiven = (name: string, calc: string, unit = "יח'"): strin
   '<div class="calc-ltr" dir="ltr">' +
   (name ? `<span class="calc-ltr__name">${name}</span><span class="calc-ltr__eq">=</span>` : '') +
   `<span>${calc}</span><span class="calc-ltr__eq">=</span>${blank(4, 'number')}` +
-  `<span class="calc-ltr__unit">${unit}</span></div>`;
+  `<span class="calc-ltr__unit" dir="rtl">${unit}</span></div>`;
 
 /** The value of that side, stated on its own line: „BC = ____ יח'”. */
 export const sideValue = (name: string, unit = "יח'"): string =>
   '<div class="calc-ltr" dir="ltr">' +
   `<span class="calc-ltr__name">${name}</span><span class="calc-ltr__eq">=</span>` +
-  `${blank(4, 'number')}<span class="calc-ltr__unit">${unit}</span></div>`;
+  `${blank(4, 'number')}<span class="calc-ltr__unit" dir="rtl">${unit}</span></div>`;
 
 /** „מחסן מילים” — the words to choose from, so the task needs no explaining. */
 export const wordBank = (words: string[]): string =>
