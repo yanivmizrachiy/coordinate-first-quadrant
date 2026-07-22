@@ -13,7 +13,7 @@ export const SQUARES_PRACTICE: WorkbookPageContent = sheet({
 <div aria-label="שלושה קודקודים של ריבוע" class="coordinate-grid grid-xs" data-arrows="[]" data-points='[{"x": 2, "y": 1, "label": "A", "dx": 10, "dy": -10}, {"x": 6, "y": 1, "label": "B", "dx": 10, "dy": -10}, {"x": 6, "y": 5, "label": "C", "dx": 10, "dy": -10}]' data-polygons="[]" data-segments='[{"from": [2, 1], "to": [6, 1], "type": "shape"}, {"from": [6, 1], "to": [6, 5], "type": "shape"}]' role="img">
 </div>
 <p class="axis-answer-box">הקודקוד הרביעי <span class="math-ltr" dir="ltr">D</span>: <span class="blank" style="--blank-width:10ch"></span></p>
-<p>אורך הצלע: <span class="blank" style="--blank-width:4ch"></span> יח'</p>
+<p>אורך הצלע — תרגיל החיסור: <span class="blank" data-missing="number" style="--blank-width:9ch"></span>, וההפרש הוא <span class="blank" data-missing="number" style="--blank-width:3ch"></span> יח'</p>
 <div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
 </section>
 <section class="q-card">

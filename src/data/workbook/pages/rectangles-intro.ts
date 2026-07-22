@@ -18,8 +18,11 @@ export const RECTANGLES_INTRO: WorkbookPageContent = sheet({
 <p>צלעות מקבילות ל־y: <span class="blank" style="--blank-width:8ch"></span></p>
 </section>
 <section class="q-card">
-<h3>ב. אורכים ושטח.</h3>
-<p>AB=<span class="blank" style="--blank-width:3ch"></span>, BC=<span class="blank" style="--blank-width:3ch"></span></p>
+<h3>ב. אורכי הצלעות — תרגיל חיסור.</h3>
+<ul class="tasks compact">
+<li>הצלע <span class="math-ltr" dir="ltr">AB</span> מקבילה לציר <span class="math-ltr" dir="ltr">x</span>: ה־<span class="math-ltr" dir="ltr">x</span> הימני פחות ה־<span class="math-ltr" dir="ltr">x</span> השמאלי, <span class="math-ltr" dir="ltr">6 − 1 =</span> <span class="blank" data-missing="number" style="--blank-width:3ch"></span> יח'.</li>
+<li>הצלע <span class="math-ltr" dir="ltr">BC</span> מקבילה לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>: ה־<span class="math-ltr" dir="ltr">y</span> הגבוה פחות ה־<span class="math-ltr" dir="ltr">y</span> הנמוך, <span class="math-ltr" dir="ltr">4 − 1 =</span> 3 יח'.</li>
+</ul>
 <div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
 </section>
 </div>

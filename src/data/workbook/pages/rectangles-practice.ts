@@ -22,6 +22,9 @@ export const RECTANGLES_PRACTICE: WorkbookPageContent = sheet({
 <li>אורך הצלע האופקית <span class="math-ltr" dir="ltr">PQ</span>: <span class="blank" style="--blank-width:4ch"></span> יח'.</li>
 <li>אורך הצלע האנכית <span class="math-ltr" dir="ltr">QR</span>: <span class="blank" style="--blank-width:4ch"></span> יח'.</li>
 </ul>
+<ul class="tasks compact">
+<li>אורך צלע הוא ה<span class="blank" data-missing="concept" style="--blank-width:6ch"></span> בין השיעורים המתאימים.</li>
+</ul>
 <div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
 </section>
 <section class="q-card span-2">

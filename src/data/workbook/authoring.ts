@@ -149,7 +149,8 @@ export interface GridOptions {
   /** With axisNames:false — two boxes at the origin for „ראשית הצירים”
       (two words) instead of one box for the letter O. */
   originName?: boolean;
-  /** Show the right-angle mark where the two axes meet. */
+  /** The right-angle mark where the axes meet is drawn by default; set false
+      only on a sheet that has a reason to hide it. */
   originAngle?: boolean;
   axisX?: string;
   axisY?: string;
@@ -181,7 +182,7 @@ export function grid(o: GridOptions = {}): string {
     data('labelboxes', o.labelboxes) +
     (o.axisNames === false ? ' data-axisnames="false"' : '') +
     (o.originName ? ' data-originname="true"' : '') +
-    (o.originAngle ? ' data-originangle="true"' : '') +
+    (o.originAngle === false ? ' data-originangle="false"' : '') +
     (o.axisX ? ` data-axisx="${o.axisX}"` : '') +
     (o.axisY ? ` data-axisy="${o.axisY}"` : '') +
     (o.xlabels ? ` data-xlabels='${attrJson(o.xlabels)}'` : '') +
