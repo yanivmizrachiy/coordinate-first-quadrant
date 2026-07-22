@@ -285,12 +285,19 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
       stroke: '#fff', 'stroke-width': 3.4,
     }));
     if (p.label !== undefined && p.label !== '') {
+      /* A point at the origin is the one place the default up-and-right offset
+         cannot go: that corner is occupied by the right-angle mark, and the
+         letter lands inside the little square. It goes where the grid's own „O”
+         goes — down and left of the corner, outside the quadrant, which is
+         where a textbook names the origin anyway. */
+      const atOrigin = p.x === 0 && p.y === 0;
       // The sheet is RTL, and in RTL `text-anchor: start` anchors the RIGHT edge —
       // the label would grow leftwards, back across the dot and onto the axis
       // numbers. Pin the direction so "start" really means "to the right of dx".
       svg.append(el('text', {
-        x: X(p.x) + (p.dx ?? 10), y: Y(p.y) + (p.dy ?? -10),
-        'text-anchor': p.anchor || 'start', fill: p.color || BLUE,
+        x: X(p.x) + (p.dx ?? (atOrigin ? -11 : 10)),
+        y: Y(p.y) + (p.dy ?? (atOrigin ? 22 : -10)),
+        'text-anchor': p.anchor || (atOrigin ? 'end' : 'start'), fill: p.color || BLUE,
         'font-size': 13, 'font-weight': 900, 'paint-order': 'stroke', stroke: '#fff', 'stroke-width': 4,
       }, p.label || `(${p.x},${p.y})`));
     }
@@ -366,14 +373,29 @@ export const gridGeometry = { W, H, L, R, T, B, XM, YM, X, Y };
 const TARGET_TEXT_PX = 12.5;
 /** How wide a vertex should read on screen, in radius. */
 const TARGET_DOT_PX = 4.6;
-const MAX_GROWTH = 1.9;
+/* Measured, not guessed: at 1.75 the y-axis numbers on the smallest drawing
+   collide with each other, and at 1.5 fourteen pages drop under 11px. 1.6 is
+   the most the type can grow and still fit the drawing it is drawn on. A page
+   that still reads too small at 1.6 needs a BIGGER DRAWING, not more growth —
+   and the axis-number test is what says so. */
+const MAX_GROWTH = 1.6;
+/* A vertex may grow further than a letter: dots do not collide with each other
+   the way a column of axis numbers does, and on a small drawing a dot has to
+   grow more than the type to stay visible at all. */
+const MAX_DOT_GROWTH = 2.2;
 
 export function normaliseGridText(root: ParentNode = document): void {
   for (const svg of root.querySelectorAll<SVGSVGElement>('.coordinate-grid svg')) {
     const box = svg.viewBox.baseVal;
-    const shown = svg.getBoundingClientRect().width;
-    if (!box?.width || !shown) continue;
-    const scale = shown / box.width;
+    const shown = svg.getBoundingClientRect();
+    if (!box?.width || !box?.height || !shown.width) continue;
+    /* An SVG with a viewBox is letterboxed inside its element: it takes the
+       SMALLER of the two ratios, and the other axis is left as empty air. Every
+       drawing in the booklet is in a box wider than it is tall, so the height
+       binds — and measuring the width alone said „scale 1.12, the type is fine”
+       while the drawing was really at 0.55 and its vertices were 2.8px dots.
+       That is why the same complaint kept coming back after it was „fixed”. */
+    const scale = Math.min(shown.width / box.width, shown.height / box.height);
     if (!(scale > 0)) continue;
     /* A point marker scales with the drawing exactly as the type does. At half
        size a vertex is a 5px dot — „הקודקודים לא רואים בכלל”. Yesterday's fix
@@ -381,7 +403,7 @@ export function normaliseGridText(root: ParentNode = document): void {
     for (const c of svg.querySelectorAll<SVGCircleElement>('circle')) {
       const baseR = Number(c.dataset['baseR'] ?? c.getAttribute('r') ?? 5);
       c.dataset['baseR'] = String(baseR);
-      const grow = Math.min(MAX_GROWTH, Math.max(1, TARGET_DOT_PX / (baseR * scale)));
+      const grow = Math.min(MAX_DOT_GROWTH, Math.max(1, TARGET_DOT_PX / (baseR * scale)));
       c.setAttribute('r', String(Math.round(baseR * grow * 10) / 10));
       const baseRing = Number(c.dataset['baseRing'] ?? c.getAttribute('stroke-width') ?? 3.4);
       c.dataset['baseRing'] = String(baseRing);
@@ -394,5 +416,88 @@ export function normaliseGridText(root: ParentNode = document): void {
       const grow = Math.min(MAX_GROWTH, Math.max(1, TARGET_TEXT_PX / (base * scale)));
       t.setAttribute('font-size', String(Math.round(base * grow * 10) / 10));
     }
+    clearTheArrows(svg);
+    clearTheMarks(svg);
+  }
+}
+
+/* A label that lands on a vertex hides the very thing it names. The renderer
+   places labels at a fixed offset and the axis numbers at a fixed distance, and
+   both were tuned before the pass above grows the type — so on a small drawing
+   they end up back on the dot. Measured here, after the letters are final.
+
+   The label is pushed the SHORTEST way out, so a number under an axis slides
+   further down and a letter beside a point slides further out, which is what a
+   person would do by hand. Two passes, so a label moved off one dot does not
+   settle on the next. */
+function clearTheMarks(svg: SVGSVGElement): void {
+  const texts = [...svg.querySelectorAll<SVGTextElement>('text')];
+  const marks = [...svg.querySelectorAll<SVGCircleElement>('circle')]
+    .filter((c) => !c.closest('defs'))
+    .map((c) => c.getBBox());
+  if (!marks.length) return;
+  const vb = svg.viewBox.baseVal;
+  const GAP = 2.5;
+  const hits = (a: DOMRect, b: DOMRect): boolean =>
+    a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height;
+
+  for (const t of texts) {
+    const b = t.getBBox();
+    const on = marks.find((m) => hits(b, m));
+    if (!on) continue;
+    /* Every OTHER label is an obstacle too. Without that, a number pushed off a
+       vertex lands on its neighbour, which is then pushed onto ITS neighbour —
+       a whole axis of numbers walking into each other. A move that would create
+       a new clash is rejected, and if no direction is clean the label stays put:
+       a label slightly on a dot beats a cascade down the axis. */
+    const others = texts.filter((o) => o !== t).map((o) => o.getBBox());
+    const outs = [
+      { dx: 0, dy: on.y + on.height - b.y + GAP },
+      { dx: 0, dy: on.y - (b.y + b.height) - GAP },
+      { dx: on.x + on.width - b.x + GAP, dy: 0 },
+      { dx: on.x - (b.x + b.width) - GAP, dy: 0 },
+    ].sort((p, q) => Math.abs(p.dx || p.dy) - Math.abs(q.dx || q.dy));
+
+    for (const o of outs) {
+      const moved = new DOMRect(b.x + o.dx, b.y + o.dy, b.width, b.height);
+      if (moved.x < 1 || moved.y < 1) continue;
+      if (moved.x + moved.width > vb.width - 1 || moved.y + moved.height > vb.height - 1) continue;
+      if (marks.some((m) => hits(moved, m))) continue;
+      if (others.some((o2) => hits(moved, o2))) continue;
+      t.setAttribute('x', String(Number(t.getAttribute('x') ?? 0) + o.dx));
+      t.setAttribute('y', String(Number(t.getAttribute('y') ?? 0) + o.dy));
+      break;
+    }
+  }
+}
+
+/* „לא רואים טוב את המילים ציר איקס”. The axis name is placed at a fixed x, and
+   then the pass above grows it — so on a small drawing it slides back over the
+   arrowhead it was meant to sit past. A constant cannot fix that, because the
+   width is only known after the type is sized. So measure it here, once the
+   letters are their final size, and push the name clear of the arrow.
+
+   Everything is in viewBox units: getBBox reports them directly, unscaled. */
+function clearTheArrows(svg: SVGSVGElement): void {
+  /* Both arrowheads are 10×10, so shape cannot tell them apart: the x arrow is
+     simply the one furthest to the right. */
+  const arrow = [...svg.querySelectorAll<SVGPathElement>('path')]
+    .filter((p) => p.getAttribute('fill') !== 'none' && !p.closest('defs') && !p.closest('marker'))
+    .map((p) => p.getBBox())
+    .sort((a, b) => b.x - a.x)[0];
+  if (!arrow) return;
+  const GAP = 6;
+  for (const t of svg.querySelectorAll<SVGTextElement>('text')) {
+    const base = Number(t.dataset['baseX'] ?? t.getAttribute('x') ?? 0);
+    t.dataset['baseX'] = String(base);
+    t.setAttribute('x', String(base));
+    const b = t.getBBox();
+    // only names that live out past the last gridline, and only ones that clash
+    if (b.x > arrow.x + arrow.width || b.x + b.width < arrow.x) continue;
+    if (b.y > arrow.y + arrow.height || b.y + b.height < arrow.y) continue;
+    const shift = arrow.x + arrow.width + GAP - b.x;
+    const moved = base + shift;
+    // never push a name off the drawing; if it will not fit, leave it be
+    if (moved + b.width / 2 <= svg.viewBox.baseVal.width - 2) t.setAttribute('x', String(Math.round(moved)));
   }
 }

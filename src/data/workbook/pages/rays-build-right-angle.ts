@@ -7,12 +7,12 @@ import { sheet, blank, ltr, pair, grid } from '../authoring';
 export const RAYS_BUILD_RIGHT_ANGLE: WorkbookPageContent = sheet({
   sectionClass: 'sheet practice',
   title: 'זוויות ברביע הראשון',
-  subtitle: 'בונים זווית ישרה, ואז משלימים עליה',
+  subtitle: 'בונים זווית ישרה בראשית הצירים, ואז משלימים עליה',
   content: `
 <section class="q-card">
 <h3>א. סמנו נקודה שיוצרת זווית ישרה, ואז השלימו את החסר.</h3>
 ${grid({
-  size: 'md',
+  size: 'lg',
   label: 'קרן מראשית הצירים דרך הנקודה (0,6), ומקום לסימון נקודות נוספות',
   points: [{ x: 0, y: 0, label: 'O' }, { x: 0, y: 6, label: 'A' }],
   segments: [{ from: [0, 0], to: [0, 6], type: 'shape' }],
@@ -26,7 +26,7 @@ ${grid({
 <section class="q-card">
 <h3>ב. המשולש ${ltr('OPQ')}.</h3>
 ${grid({
-  size: 'md',
+  size: 'lg',
   label: 'הנקודות O, P ו־Q, שאותן מחברים למשולש',
   points: [{ x: 0, y: 0, label: 'O' }, { x: 4, y: 0, label: 'P' }, { x: 0, y: 4, label: 'Q' }],
 })}
@@ -34,15 +34,6 @@ ${grid({
 <li>חברו את הנקודות ${ltr('O')}, ${ltr('P')} ו־${ltr('Q')} וסרטטו את המשולש.</li>
 <li>הזווית הישרה נוצרת ליד הקודקוד ${blank(3, 'letter')}, כי שם נפגשים ציר ${ltr('x')} וציר ${ltr('y')}.</li>
 <li>אורך הצלע ${ltr('OP')} הוא ${blank(3, 'number')} יח', ואורך הצלע ${ltr('OQ')} הוא 4 יח'.</li>
-</ul>
-</section>
-<section class="q-card">
-<h3>ג. כשקודקוד הזווית אינו בראשית הצירים.</h3>
-<p>נתונות הנקודה ${ltr('A(2,0)')} והנקודה ${ltr('B(2,4)')}.</p>
-<ul class="tasks compact">
-<li>הקטע ${ltr('AB')} מקביל לציר ${blank(3, 'letter')}, ולכן קטע שיוצר איתו זווית ישרה חייב להיות מקביל לציר ${ltr('x')}.</li>
-<li>שתי נקודות ${ltr('C')} שונות שבהן הזווית ${ltr('ABC')} ישרה: ${pair()} ו־${pair()}.</li>
-<li>בשתיהן שיעור ה־${ltr('y')} הוא ${blank(3, 'number')}, כמו שיעור ה־${ltr('y')} של הנקודה ${ltr('B')}.</li>
 </ul>
 </section>
 `,
