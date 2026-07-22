@@ -3,7 +3,7 @@ import { sheet } from '../authoring';
 
 export const ON_AXES_INTRO: WorkbookPageContent = sheet({
   sectionClass: "sheet guided dense",
-  title: "נקודות על הצירים",
+  title: "נקודות שעל הצירים",
   subtitle: "מתי x=0 ומתי y=0",
   content: `
 <div class="cols-3 rules">

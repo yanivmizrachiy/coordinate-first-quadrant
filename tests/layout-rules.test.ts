@@ -85,7 +85,10 @@ describe('completions ask for something different each time', () => {
   it('no group of completions asks for the same kind three times running', () => {
     for (const page of WORKBOOK) {
       for (const card of cards(page.html)) {
-        const kinds = [...card.matchAll(/data-missing="(\w+)"/g)].map((m) => m[1]);
+        /* The final answer of a calculation is a number because area is a
+           number — that is arithmetic, not a lack of variety. */
+        const body = card.replace(/<div class="calc-final">[\s\S]*?<\/div>\s*<\/div>/g, ' ');
+        const kinds = [...body.matchAll(/data-missing="(\w+)"/g)].map((m) => m[1]);
         if (kinds.length < 3) continue;
         const distinct = new Set(kinds);
         expect(
@@ -419,6 +422,27 @@ describe('a calculation gets units and room to work', () => {
     for (const p of WORKBOOK) {
       if (!computes(p.html)) continue;
       expect(readable(p.html), `page ${p.n} has no יח' / יח"ר`).toMatch(/יח'|יח"ר/);
+    }
+  });
+
+  /* USER_MEMORY §10. „הדרך חשובה מאוד מאוד” — a calculation gets room to work
+     in and then an answer that carries its unit, written with the letters an
+     Israeli textbook uses: S for area, P for perimeter. */
+  it('every area or perimeter answer is S or P, with its unit and room to work', () => {
+    for (const p of WORKBOOK) {
+      const text = p.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+      if (!/שטח|היקף/.test(text)) continue;
+      const finals = [...p.html.matchAll(/<div class="calc-final">([\s\S]*?)<\/div>\s*<\/div>/g)];
+      if (!finals.length) continue;
+      for (const f of finals) {
+        const plain = f[1]!.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+        expect(plain, `page ${p.n}: a final answer without S or P`).toMatch(/[SP] =/);
+        expect(plain, `page ${p.n}: a final answer without its unit`).toMatch(/יח/);
+      }
+      // and the working itself gets more than a single squeezed line
+      const rules = (p.html.match(/<div class="calc-box"><b>דרך החישוב:<\/b><div class="answer-line">/g) ?? []).length;
+      const boxes = (p.html.match(/<div class="calc-box">/g) ?? []).length;
+      expect(rules, `page ${p.n}: a calculation with no room to write the working`).toBe(boxes);
     }
   });
 

@@ -4,7 +4,7 @@ import { sheet } from '../authoring';
 export const RIGHT_ANGLE_INTRO: WorkbookPageContent = sheet({
   sectionClass: "sheet guided dense",
   title: "זווית ישרה במערכת הצירים",
-  subtitle: "קטע אופקי וקטע אנכי נפגשים בזווית ישרה",
+  subtitle: "הצירים מאונכים זה לזה, וכך גם קטע אופקי וקטע אנכי",
   contentTag: 'div',
   content: `
 <div class="completion-intro">

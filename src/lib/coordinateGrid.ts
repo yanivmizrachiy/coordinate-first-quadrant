@@ -53,6 +53,9 @@ export interface GridSpec {
   /** With axisNames:false — ask for the origin's NAME (two words, two boxes)
       instead of just the letter O. */
   originName?: boolean;
+  /** Draw the right-angle mark in the corner at the origin. The two axes ARE
+      perpendicular, and nothing on the drawing said so. */
+  originAngle?: boolean;
   /** Override the axis names, e.g. a real-life graph: "משקל" / "מחיר". */
   axisXName?: string;
   axisYName?: string;
@@ -191,6 +194,16 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
       'stroke-width': 1.8, 'vector-effect': 'non-scaling-stroke',
     });
 
+  /* The two axes meet at a RIGHT angle, and nothing on the drawing ever said
+     so. The little square in the corner is how a textbook says it. */
+  if (spec.originAngle) {
+    const side = 16;
+    svg.append(el('path', {
+      d: `M ${X(0) + side} ${Y(0)} L ${X(0) + side} ${Y(0) - side} L ${X(0)} ${Y(0) - side}`,
+      fill: 'none', stroke: AXIS, 'stroke-width': 1.8, 'vector-effect': 'non-scaling-stroke',
+    }));
+  }
+
   if (spec.axisNames !== false) {
     svg.append(
       el('text', { x: X(0) - 11, y: Y(0) + 22, 'text-anchor': 'end', fill: AXIS, 'font-size': 17, 'font-weight': 800 }, 'O'),
@@ -309,6 +322,7 @@ export function hydrateGrids(root: ParentNode = document): void {
     if (yl) spec.ylabels = yl;
     if (elm.dataset['axisnames'] === 'false') spec.axisNames = false;
     if (elm.dataset['originname'] === 'true') spec.originName = true;
+    if (elm.dataset['originangle'] === 'true') spec.originAngle = true;
     if (elm.dataset['axisx']) spec.axisXName = elm.dataset['axisx'];
     if (elm.dataset['axisy']) spec.axisYName = elm.dataset['axisy'];
     elm.replaceChildren(renderCoordinateGrid(spec));

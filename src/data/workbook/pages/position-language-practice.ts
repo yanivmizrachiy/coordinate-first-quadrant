@@ -4,7 +4,7 @@ import { sheet } from '../authoring';
 export const POSITION_LANGUAGE_PRACTICE: WorkbookPageContent = sheet({
   sectionClass: "sheet practice",
   title: "שפת מיקום",
-  subtitle: "ימין, שמאל, מעל, מתחת ושיעורים שווים",
+  subtitle: "ימין, שמאל, מעל, מתחת ושיעורים זהים",
   content: `
 <div class="two-col">
 <section class="q-card span-2">
@@ -26,9 +26,11 @@ export const POSITION_LANGUAGE_PRACTICE: WorkbookPageContent = sheet({
 </ul>
 </section>
 <section class="q-card">
-<h3>שיעורים שווים</h3>
-<p>אילו נקודות מקיימות <span class="math-ltr" dir="ltr">x=y</span>? <span class="blank" style="--blank-width:10ch"></span></p>
-<p>כתבו שתי נקודות נוספות ברביע הראשון ששיעוריהן שווים:</p>
+<h3>נקודות ששיעוריהן זהים</h3>
+<ul class="tasks compact">
+<li>הנקודות שבהן שיעור ה־<span class="math-ltr" dir="ltr">x</span> ושיעור ה־<span class="math-ltr" dir="ltr">y</span> <b>זהים</b> הן <span class="blank" data-missing="letter" style="--blank-width:10ch"></span>.</li>
+</ul>
+<p>כתבו שתי נקודות נוספות ברביע הראשון ששיעוריהן <b>שווים</b>:</p>
 <p><span class="blank" style="--blank-width:9ch"></span> &nbsp;&nbsp; <span class="blank" style="--blank-width:9ch"></span></p>
 <ul class="tasks compact">
 <li>גם בנקודה <span class="math-ltr" dir="ltr">(0,0)</span> ערך ה־<span class="math-ltr" dir="ltr">x</span> ושיעור ה־<span class="math-ltr" dir="ltr">y</span> שווים, ושניהם <span class="blank" data-missing="number" style="--blank-width:3ch"></span>.</li>

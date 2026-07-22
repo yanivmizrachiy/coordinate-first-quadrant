@@ -391,3 +391,9 @@
   .mist-head > .tf-options input { width: 3.7mm; height: 3.7mm; }
   .tf-option input:checked::after { font-size: 13px; }
 }
+
+/* The final answer of a calculation, with the letter and the unit the answer is
+   not an answer without. „האות S מסמנת שטח, האות P מסמנת היקף.” */
+.calc-final { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 5px; font-weight: 700; }
+.calc-final > span { display: inline-flex; align-items: baseline; gap: 4px; }
+.calc-box .answer-line { margin: 5px 0; }

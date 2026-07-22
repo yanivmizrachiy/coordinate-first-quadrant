@@ -11,6 +11,7 @@ export const AXES_INTRO: WorkbookPageContent = sheet({
 <div class="completion-sentence">הציר ה${wordBlank('medium', 'property', 'מקום להשלמת המילה אופקי')} הוא ציר ${ltr('x')}.</div>
 <div class="completion-sentence">נקודת המפגש בין שני הצירים נקראת ${wordBlank('medium', 'concept', 'מקום להשלמת המילה ראשית')} ה${wordBlank('medium', 'concept', 'מקום להשלמת המילה צירים')}.</div>
 <div class="completion-sentence">ראשית הצירים נכתבת כזוג סדור ${pair()}.</div>
+<div class="completion-sentence">שני הצירים מאונכים זה לזה, ולכן הזווית שביניהם היא זווית ${wordBlank('medium', 'property', 'מקום להשלמת המילה ישרה')}.</div>
 <div class="completion-sentence">כל הנקודות שעל ציר ${ltr('x')} הן בעלות שיעור ${ltr('y')} ששווה ל־${wordBlank('short', 'number', 'מקום להשלמת המספר אפס')}.</div>
 <div class="completion-sentence">הנקודה ${ltr('(0,4)')} ממוקמת על ציר ${wordBlank('short', 'letter', 'מקום להשלמת האות y')}.</div>
 <div class="completion-sentence">בנקודה ${ltr('(5,0)')} ערך ${ltr('x')} הוא ${wordBlank('short', 'number', 'מקום להשלמת המספר חמש')} ושיעור ${ltr('y')} הוא ${wordBlank('short', 'number', 'מקום להשלמת המספר אפס')}.</div>
@@ -25,6 +26,7 @@ ${grid({
   // „ראשית הצירים” is two words — two stacked boxes at the origin.
   axisNames: false,
   originName: true,
+  originAngle: true,
   label: 'מערכת צירים ובה תיבות ריקות לשם ציר x, לשם ציר y ולשתי מילות „ראשית הצירים”, ותיבות למספרים החסרים שעל הצירים',
   xlabels: [0, 1, '', 3, '', 5, '', '', 8],
   ylabels: [0, '', 2, '', '', 5, ''],

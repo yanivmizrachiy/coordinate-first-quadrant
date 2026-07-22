@@ -3,7 +3,7 @@ import { sheet } from '../authoring';
 
 export const DISTANCE_PRACTICE: WorkbookPageContent = sheet({
   sectionClass: "sheet practice",
-  title: "מרחק והזזה אל הצירים",
+  title: "מרחק נקודה מהצירים",
   subtitle: "המרחק לציר נקבע לפי השיעור המתאים",
   content: `
 <div class="two-col">

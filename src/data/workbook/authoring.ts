@@ -114,6 +114,21 @@ export const mixed = (whole: number, num: number, den: number): string =>
   `<span class="mixed math-ltr" dir="ltr" aria-label="${whole} ו-${num} חלקי ${den}">` +
   `${whole}${frac(num, den)}</span>`;
 
+/* Room to work, and then the answer — Yaniv's rule: „הדרך חשובה מאוד מאוד, לא
+   לוותר על הכתיבה של הדרך”, and the answer is not an answer without its unit.
+   `S` is area and `P` is perimeter, the letters an Israeli textbook uses. */
+export const calcBox = (o: { lines?: number; perimeter?: boolean; area?: boolean }): string => {
+  const rules = '<div class="answer-line"></div>'.repeat(o.lines ?? 2);
+  const finals: string[] = [];
+  if (o.perimeter) finals.push(`ההיקף: ${ltr('P')} = ${blank(4, 'number')} יח'`);
+  if (o.area) finals.push(`השטח: ${ltr('S')} = ${blank(4, 'number')} יח"ר`);
+  return (
+    '<div class="calc-box"><b>דרך החישוב:</b>' + rules +
+    (finals.length ? `<div class="calc-final">${finals.map((f) => `<span>${f}</span>`).join('')}</div>` : '') +
+    '</div>'
+  );
+};
+
 /** „מחסן מילים” — the words to choose from, so the task needs no explaining. */
 export const wordBank = (words: string[]): string =>
   '<div class="word-bank"><b>מחסן מילים:</b> ' +
@@ -134,6 +149,8 @@ export interface GridOptions {
   /** With axisNames:false — two boxes at the origin for „ראשית הצירים”
       (two words) instead of one box for the letter O. */
   originName?: boolean;
+  /** Show the right-angle mark where the two axes meet. */
+  originAngle?: boolean;
   axisX?: string;
   axisY?: string;
   /** Numbers along an axis; `''` leaves an empty box for the learner to fill.
@@ -164,6 +181,7 @@ export function grid(o: GridOptions = {}): string {
     data('labelboxes', o.labelboxes) +
     (o.axisNames === false ? ' data-axisnames="false"' : '') +
     (o.originName ? ' data-originname="true"' : '') +
+    (o.originAngle ? ' data-originangle="true"' : '') +
     (o.axisX ? ` data-axisx="${o.axisX}"` : '') +
     (o.axisY ? ` data-axisy="${o.axisY}"` : '') +
     (o.xlabels ? ` data-xlabels='${attrJson(o.xlabels)}'` : '') +

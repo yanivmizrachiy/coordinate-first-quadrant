@@ -17,13 +17,7 @@ export const RIGHT_ANGLE_SUMMARY: WorkbookPageContent = sheet({
 <p>צלעות מקבילות לציר y: <span class="blank" style="--blank-width:8ch"></span></p>
 <p>מספר הזוויות הישרות: <span class="blank" style="--blank-width:3ch"></span></p>
 <p><span class="math-ltr" dir="ltr">AB =</span> <span class="blank" style="--blank-width:3ch"></span> יח', &nbsp; <span class="math-ltr" dir="ltr">BC =</span> <span class="blank" style="--blank-width:3ch"></span> יח'</p>
-<p>היקף: <span class="blank" style="--blank-width:4ch"></span> יח', &nbsp; שטח: <span class="blank" style="--blank-width:4ch"></span> יח"ר</p>
-<div class="calc-box"><b>דרך החישוב (היקף ושטח):</b>
-<div class="answer-line">
-</div>
-<div class="answer-line">
-</div>
-</div>
+<div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
 </div>
 </div>
 </section>
@@ -35,11 +29,7 @@ export const RIGHT_ANGLE_SUMMARY: WorkbookPageContent = sheet({
 <div>
 <p class="axis-answer-box">S = <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
 <p>בקודקוד Q הזווית היא <span class="blank" style="--blank-width:5ch"></span>.</p>
-<p>היקף המלבן: <span class="blank" style="--blank-width:4ch"></span> יח', &nbsp; שטח: <span class="blank" style="--blank-width:4ch"></span> יח"ר</p>
-<div class="calc-box"><b>דרך החישוב:</b>
-<div class="answer-line">
-</div>
-</div>
+<div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
 </div>
 </div>
 </section>

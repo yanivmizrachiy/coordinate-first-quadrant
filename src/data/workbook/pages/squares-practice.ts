@@ -13,15 +13,15 @@ export const SQUARES_PRACTICE: WorkbookPageContent = sheet({
 <div aria-label="שלושה קודקודים של ריבוע" class="coordinate-grid grid-xs" data-arrows="[]" data-points='[{"x": 2, "y": 1, "label": "A", "dx": 10, "dy": -10}, {"x": 6, "y": 1, "label": "B", "dx": 10, "dy": -10}, {"x": 6, "y": 5, "label": "C", "dx": 10, "dy": -10}]' data-polygons="[]" data-segments='[{"from": [2, 1], "to": [6, 1], "type": "shape"}, {"from": [6, 1], "to": [6, 5], "type": "shape"}]' role="img">
 </div>
 <p class="axis-answer-box">הקודקוד הרביעי <span class="math-ltr" dir="ltr">D</span>: <span class="blank" style="--blank-width:10ch"></span></p>
-<p>אורך צלע: <span class="blank" style="--blank-width:4ch"></span> &nbsp; היקף: <span class="blank" style="--blank-width:5ch"></span> יח' &nbsp; שטח: <span class="blank" style="--blank-width:5ch"></span> יח"ר</p>
-<div class="calc-box calc-box--slim"><b>דרך החישוב:</b> <span class="blank" style="--blank-width:24ch"></span></div>
+<p>אורך הצלע: <span class="blank" style="--blank-width:4ch"></span> יח'</p>
+<div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
 </section>
 <section class="q-card">
 <h3>ריבוע מתיאור</h3>
 <p>קודקוד שמאלי־תחתון של ריבוע הוא <span class="math-ltr" dir="ltr">(1,2)</span>. אורך הצלע 3 יחידות והצלעות מקבילות לצירים.</p>
 <p>כתבו את שלושת הקודקודים האחרים:</p>
 <p><span class="blank" style="--blank-width:10ch"></span> &nbsp; <span class="blank" style="--blank-width:10ch"></span> &nbsp; <span class="blank" style="--blank-width:10ch"></span></p>
-<p>היקף: <span class="blank" style="--blank-width:5ch"></span> יח' &nbsp; שטח: <span class="blank" style="--blank-width:5ch"></span> יח"ר</p>
+<div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
 </section>
 <section class="q-card">
 <h3>סיכום קצר</h3>
@@ -43,15 +43,5 @@ export const SQUARES_PRACTICE: WorkbookPageContent = sheet({
 <p><span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> → <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> → <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> → <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
 <p>מהי נקודת הסיום? <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
 </section>
-<section class="q-card span-2">
-<h3>תרגיל מסכם</h3>
-<p>מלבן וריבוע חולקים את הקודקוד <span class="math-ltr" dir="ltr">(2,2)</span>. לריבוע צלע באורך 3. למלבן אורך 5 ורוחב 2. כל הצלעות מקבילות לצירים.</p>
-<p>ציירו אפשרות אחת לכל צורה וכתבו את קודקודיה.</p>
-<div aria-label="מערכת צירים ריקה לתרגיל מסכם" class="coordinate-grid grid-xs" data-arrows="[]" data-points="[]" data-polygons="[]" data-segments="[]" role="img">
-</div>
-<p class="axis-answer-box">קודקודי הריבוע: <span class="blank" style="--blank-width:34ch"></span></p>
-<p>קודקודי המלבן: <span class="blank" style="--blank-width:34ch"></span></p>
-</section>
-</div>
 `,
 });

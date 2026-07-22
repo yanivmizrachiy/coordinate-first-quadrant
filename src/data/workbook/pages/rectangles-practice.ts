@@ -21,13 +21,8 @@ export const RECTANGLES_PRACTICE: WorkbookPageContent = sheet({
 <ul class="tasks compact">
 <li>אורך הצלע האופקית <span class="math-ltr" dir="ltr">PQ</span>: <span class="blank" style="--blank-width:4ch"></span> יח'.</li>
 <li>אורך הצלע האנכית <span class="math-ltr" dir="ltr">QR</span>: <span class="blank" style="--blank-width:4ch"></span> יח'.</li>
-<li>היקף המלבן: <span class="blank" style="--blank-width:5ch"></span> יח'.</li>
-<li>שטח המלבן: <span class="blank" style="--blank-width:5ch"></span> יח"ר.</li>
 </ul>
-<div class="calc-box"><b>דרך החישוב (היקף ושטח):</b>
-<div class="answer-line">
-</div>
-</div>
+<div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
 </section>
 <section class="q-card span-2">
 <h3>מזהים קודקודים</h3>
@@ -45,7 +40,7 @@ export const RECTANGLES_PRACTICE: WorkbookPageContent = sheet({
 <div aria-label="מערכת צירים ריקה לבניית מלבן" class="coordinate-grid grid-xs" data-arrows="[]" data-points="[]" data-polygons="[]" data-segments="[]" role="img">
 </div>
 <p class="axis-answer-box">כתבו את ארבעת הקודקודים כזוגות סדורים: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<p>היקף: <span class="blank" style="--blank-width:4ch"></span> יח' &nbsp; שטח: <span class="blank" style="--blank-width:4ch"></span> יח"ר.</p>
+<div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
 </section>
 </div>
 `,
