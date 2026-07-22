@@ -528,6 +528,24 @@ describe('a calculation gets units and room to work', () => {
     }
   });
 
+  /* USER_MEMORY §5. „הנקודה של היום הראשון” is possession; the point does not
+     belong to the day, it CORRESPONDS to it. Yaniv's word is התאמה. */
+  it('a point corresponds to its datum — it does not belong to it', () => {
+    for (const p of WORKBOOK) {
+      const t = p.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+      expect(t, `page ${p.n}: „הנקודה של …” — say „הנקודה שמתאימה ל…”`)
+        .not.toMatch(/הנקוד(ה|ות) של ה?(יום|שנה|חודש|שעה|ריבוע|כיתה)/);
+    }
+  });
+
+  /* A chapter carries one blue title; the subtitle is what tells the sheets
+     apart. All six graph sheets are „קריאת גרפים ברביע הראשון”. */
+  it('the graph chapter shows one title across all of its sheets', () => {
+    const graphs = WORKBOOK.filter((p) => p.title.includes('קריאת גרפים'));
+    expect(graphs.length, 'the graph chapter is gone').toBe(6);
+    expect(new Set(graphs.map((p) => p.subtitle)).size, 'two sheets share a subtitle').toBe(6);
+  });
+
   it('a sheet that asks for a calculation leaves space to do it', () => {
     for (const p of WORKBOOK) {
       if (!computes(p.html)) continue;

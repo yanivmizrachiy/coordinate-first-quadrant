@@ -6,12 +6,13 @@ import { sheet, blank, ltr, pair, grid } from '../authoring';
    answered by reading one point off the drawing. */
 export const GRAPH_READING_INTRO: WorkbookPageContent = sheet({
   sectionClass: 'sheet guided',
-  title: 'קוראים תיאור גרפי של נקודות',
-  subtitle: 'כל נקודה בגרף היא זוג סדור, וכל שיעור אומר משהו',
+  title: 'קריאת גרפים ברביע הראשון',
+  subtitle: 'כל נקודה בגרף היא זוג סדור, ולכל שיעור יש משמעות',
   content: `
 <div class="rule-box completion-intro">
 <div class="completion-sentence">בגרף של נתונים, ערך ה־${ltr('x')} אומר <b>מתי</b> או <b>כמה</b>, ושיעור ה־${ltr('y')} אומר את ה${blank(6, 'concept')} שהתקבלה.</div>
 <div class="completion-sentence">כל נקודה בגרף נכתבת כזוג ${blank(5, 'concept')}, בדיוק כמו במערכת הצירים.</div>
+<div class="completion-sentence">ה<b>משמעות</b> של נקודה היא מה ששני השיעורים שלה אומרים <b>יחד</b>, ולא כל שיעור ${blank(5, 'property')}.</div>
 </div>
 <section class="q-card">
 <h3>א. שמונה תלמידים מדדו כמה דקות למדו וכמה שאלות פתרו.</h3>
@@ -37,7 +38,15 @@ ${grid({
 </ul>
 </section>
 <section class="q-card">
-<h3>ב. השלימו לפי הגרף.</h3>
+<h3>ב. משמעות הנקודה.</h3>
+<ul class="tasks compact">
+<li>משמעות הנקודה ${ltr('D(4,5)')}: התלמיד למד ${blank(3, 'number')} עשרות דקות, ופתר 5 שאלות.</li>
+<li>משמעות הנקודה ${ltr('A(1,2)')}: התלמיד למד 10 דקות, ופתר ${blank(3, 'number')} שאלות.</li>
+<li>שתי הנקודות ${ltr('B')} ו־${ltr('C')} שונות זו מזו, אבל המשמעות המשותפת שלהן היא שהתלמידים פתרו ${blank(5, 'relation')} שאלות.</li>
+</ul>
+</section>
+<section class="q-card">
+<h3>ג. השלימו לפי הגרף.</h3>
 <ul class="tasks compact">
 <li>ככל שערך ה־${ltr('x')} גדל, שיעור ה־${ltr('y')} בדרך כלל ${blank(5, 'relation')}.</li>
 <li>ההפרש בין שיעור ה־${ltr('y')} של ${ltr('F')} ובין שיעור ה־${ltr('y')} של ${ltr('A')} הוא ${ltr('6 − 2 =')} ${blank(3, 'number')} שאלות.</li>
