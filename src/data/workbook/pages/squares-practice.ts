@@ -3,7 +3,7 @@ import { sheet } from '../authoring';
 
 export const SQUARES_PRACTICE: WorkbookPageContent = sheet({
   sectionClass: "sheet practice",
-  title: "ריבועים, היקף ושטח - סיכום",
+  title: "ריבוע ברביע הראשון",
   subtitle: "יישום משולב של כל הכללים",
   content: `
 <div class="two-col">

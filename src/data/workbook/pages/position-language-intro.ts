@@ -45,28 +45,5 @@ export const POSITION_LANGUAGE_INTRO: WorkbookPageContent = sheet({
 </tbody>
 </table>
 </section>
-<section class="q-card">
-<h3>ג. כתבו זוג סדור אחד לכל תיאור. יש כמה תשובות אפשריות.</h3>
-<div class="cols-2 task-grid">
-<div>מעל ציר x: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>
-</div>
-<div>מימין לציר y: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>
-</div>
-<div>על ציר x: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>
-</div>
-<div>על ציר y: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>
-</div>
-<div>גם מעל וגם מימין: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>
-</div>
-</div>
-</section>
-<section class="q-card">
-<h3>ד. מה משותף לכל הנקודות שעל ציר?</h3>
-<ul class="tasks compact">
-<li>כל הנקודות שממוקמות על ציר <span class="math-ltr" dir="ltr">y</span> הן מהצורה <span class="pair math-ltr" dir="ltr">(0,<span class="pair-blank"></span>)</span>, כי ערך ה־<span class="math-ltr" dir="ltr">x</span> שלהן הוא <span class="blank" data-missing="number" style="--blank-width:3ch"></span>.</li>
-<li>כל הנקודות שממוקמות על ציר <span class="math-ltr" dir="ltr">x</span> הן מהצורה <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,0)</span>, כי שיעור ה־<span class="blank" data-missing="letter" style="--blank-width:3ch"></span> שלהן הוא 0.</li>
-<li>לכן הנקודה <span class="math-ltr" dir="ltr">(0,4)</span> ממוקמת מעל ציר <span class="math-ltr" dir="ltr">x</span>, אבל היא אינה מימין לציר <span class="math-ltr" dir="ltr">y</span> — היא <span class="blank" data-missing="property" style="--blank-width:6ch"></span> עליו.</li>
-</ul>
-</section>
 `,
 });

@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet } from '../authoring';
+import { sheet, grid } from '../authoring';
 
 /* Split off מלבנים במערכת הצירים: once each side got its own exercise line and
    the drawing grew to a size a learner can read, the sheet ran 170px over. */
@@ -12,7 +12,8 @@ export const RECTANGLES_VERTICES: WorkbookPageContent = sheet({
 <section class="q-card span-2">
 <h3>מזהים קודקודים</h3>
 <p>למלבן צלעות מקבילות לצירים. שני קודקודים נגדיים הם <span class="math-ltr" dir="ltr">(1,2)</span> ו־<span class="math-ltr" dir="ltr">(7,5)</span>.</p>
-<p>כתבו את שני הקודקודים האחרים כזוגות סדורים:</p>
+<p>סמנו את ארבעת הקודקודים על הסרטוט, חברו אותם למלבן, וכתבו את שני הקודקודים האחרים כזוגות סדורים:</p>
+${grid({ size: 'sm', label: 'מערכת צירים ריקה לסימון המלבן' })}
 <p><span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp;&nbsp; <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
 <p>אורך המלבן: <span class="blank" style="--blank-width:4ch"></span> יח' &nbsp; רוחב המלבן: <span class="blank" style="--blank-width:4ch"></span> יח'</p>
 <p>איזו מהנקודות הבאות ממוקמת על <b>היקף</b> המלבן? הקיפו.</p>

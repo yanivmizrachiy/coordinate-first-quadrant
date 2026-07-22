@@ -469,6 +469,28 @@ describe('a calculation gets units and room to work', () => {
     }
   });
 
+  /* USER_MEMORY §8. A claim is „נכונה בהכרח / ייתכן שנכונה / לא ייתכן”. The old
+     „תמיד / לפעמים / לעולם לא” describes frequency, not necessity. */
+  it('a claim is judged as necessary, possible or impossible', () => {
+    for (const p of WORKBOOK) {
+      const text = p.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+      expect(text, `page ${p.n}: „לעולם לא” — say „לא ייתכן”`).not.toContain('לעולם לא');
+      if (/נכונה בהכרח/.test(text)) {
+        expect(text, `page ${p.n}: the three options are not all offered`).toMatch(/ייתכן/);
+      }
+    }
+  });
+
+  /* A „find the mistake” task that states the mistake has already answered
+     itself. Show the task and what was drawn; the gap is the work. */
+  it('a find-the-mistake task does not give the mistake away', () => {
+    for (const p of WORKBOOK) {
+      const text = p.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+      expect(text, `page ${p.n}: „סימן … במקום …” hands the answer over`)
+        .not.toMatch(/סימן [^.]{0,30}במקום/);
+    }
+  });
+
   it('a sheet that asks for a calculation leaves space to do it', () => {
     for (const p of WORKBOOK) {
       if (!computes(p.html)) continue;

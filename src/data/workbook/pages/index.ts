@@ -12,6 +12,7 @@ export { READ_PRACTICE } from './read-practice';
 export { ON_AXES_INTRO } from './on-axes-intro';
 export { ON_AXES_PRACTICE } from './on-axes-practice';
 export { POSITION_LANGUAGE_INTRO } from './position-language-intro';
+export { POSITION_LANGUAGE_OWN } from './position-language-own';
 export { POSITION_LANGUAGE_PRACTICE } from './position-language-practice';
 export { SAME_COORD_INTRO } from './same-coord-intro';
 export { SAME_COORD_PRACTICE } from './same-coord-practice';

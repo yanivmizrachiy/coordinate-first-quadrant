@@ -6,8 +6,8 @@ import { sheet } from '../authoring';
    working matters more than saving a page. */
 export const SQUARES_SUMMARY: WorkbookPageContent = sheet({
   sectionClass: "sheet practice",
-  title: "מלבן חסר, ומה תמיד נכון",
-  subtitle: "משלימים קודקוד, ואז מכריעים בין תמיד, לפעמים ולעולם לא",
+  title: "מלבן חסר, ומה נכון בהכרח",
+  subtitle: "משלימים קודקוד, ואז מכריעים אם טענה נכונה בהכרח",
   content: `
 <section class="q-card">
 <h3>א. A(2,2), B(2,6), C(7,6). מצאו D למלבן.</h3>
@@ -20,25 +20,26 @@ export const SQUARES_SUMMARY: WorkbookPageContent = sheet({
 </section>
 </div>
 <section class="q-card">
-<h3>ב. תמיד / לפעמים / לעולם לא - הקיפו והסבירו.</h3>
+<h3>ב. הקיפו: מה נכון לגבי כל טענה?</h3>
+<p>הטענה <b>נכונה בהכרח</b> · <b>ייתכן</b> שהטענה נכונה · <b>לא ייתכן</b> שהטענה נכונה.</p>
 <div class="always-row"><span>1. אם לשתי נקודות אותו שיעור x, הקטע ביניהן מקביל לציר y.</span>
-<div class="choice-row"><span class="choice">תמיד</span><span class="choice">לפעמים</span><span class="choice">לעולם לא</span>
+<div class="choice-row"><span class="choice">נכונה בהכרח</span><span class="choice">ייתכן שנכונה</span><span class="choice">לא ייתכן</span>
 </div><span class="reason-line"></span>
 </div>
 <div class="always-row"><span>2. אם לשתי נקודות אותו שיעור y, הן ממוקמות באותו גובה.</span>
-<div class="choice-row"><span class="choice">תמיד</span><span class="choice">לפעמים</span><span class="choice">לעולם לא</span>
+<div class="choice-row"><span class="choice">נכונה בהכרח</span><span class="choice">ייתכן שנכונה</span><span class="choice">לא ייתכן</span>
 </div><span class="reason-line"></span>
 </div>
 <div class="always-row"><span>3. אם שני שיעורי נקודה זהים, היא ממוקמת על ציר.</span>
-<div class="choice-row"><span class="choice">תמיד</span><span class="choice">לפעמים</span><span class="choice">לעולם לא</span>
+<div class="choice-row"><span class="choice">נכונה בהכרח</span><span class="choice">ייתכן שנכונה</span><span class="choice">לא ייתכן</span>
 </div><span class="reason-line"></span>
 </div>
 <div class="always-row"><span>4. הזזה של מלבן משנה את שטחו.</span>
-<div class="choice-row"><span class="choice">תמיד</span><span class="choice">לפעמים</span><span class="choice">לעולם לא</span>
+<div class="choice-row"><span class="choice">נכונה בהכרח</span><span class="choice">ייתכן שנכונה</span><span class="choice">לא ייתכן</span>
 </div><span class="reason-line"></span>
 </div>
 <div class="always-row"><span>5. שני מלבנים בעלי אותו שטח הם בעלי אותו היקף.</span>
-<div class="choice-row"><span class="choice">תמיד</span><span class="choice">לפעמים</span><span class="choice">לעולם לא</span>
+<div class="choice-row"><span class="choice">נכונה בהכרח</span><span class="choice">ייתכן שנכונה</span><span class="choice">לא ייתכן</span>
 </div><span class="reason-line"></span>
 </div>
 </section>

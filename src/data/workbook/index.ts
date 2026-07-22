@@ -39,6 +39,7 @@ import {
   ON_AXES_INTRO,
   ON_AXES_PRACTICE,
   POSITION_LANGUAGE_INTRO,
+  POSITION_LANGUAGE_OWN,
   POSITION_LANGUAGE_PRACTICE,
   SAME_COORD_INTRO,
   SAME_COORD_PRACTICE,
@@ -142,7 +143,7 @@ const BOOK: { id: string; title: string; slots: Slot[] }[] = [
     PLOT_A, PLOT_B, PLOT_PRACTICE, POSTER_SECRET_PICTURE, PLOT_SHAPE, game('hidden-drawing'),
   ] },
   { id: 'language', title: 'שפה של מיקום', slots: [
-    POSITION_LANGUAGE_INTRO, POSITION_LANGUAGE_PRACTICE, game('color-decode'),
+    POSITION_LANGUAGE_INTRO, POSITION_LANGUAGE_OWN, POSITION_LANGUAGE_PRACTICE, game('color-decode'),
   ] },
   { id: 'same', title: 'שיעורים זהים וקטעים מקבילים', slots: [
     SAME_COORD_INTRO, SEGMENT_LENGTH, SAME_COORD_PRACTICE, game('same-axis'),
