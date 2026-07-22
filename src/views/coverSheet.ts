@@ -8,16 +8,21 @@ import { elem } from '../lib/dom';
 export function renderCoverSheet(): HTMLElement {
   const section = elem('section', { class: 'sheet cover-sheet', id: 'cover', 'aria-label': 'כריכת החוברת' });
 
+  /* The approved artwork, served as WebP — 202 KB instead of 2.3 MB — with the
+     original PNG behind it, so nothing is lost and nothing looks different. */
+  const shot = elem('picture', { class: 'cover-picture' });
   const img = elem('img', {
     class: 'cover-image',
     src: APPROVED_COVER.src,
     alt: APPROVED_COVER.alt,
     decoding: 'async',
+    fetchpriority: 'high',
   }) as HTMLImageElement;
+  shot.append(elem('source', { srcset: APPROVED_COVER.webp, type: 'image/webp' }), img);
 
   img.addEventListener('error', () => {
     if (section.querySelector('.cover-placeholder')) return;
-    img.remove();
+    shot.remove();
     section.classList.add('cover-sheet--placeholder');
     section.append(
       elem('div', { class: 'cover-placeholder' },
@@ -28,6 +33,6 @@ export function renderCoverSheet(): HTMLElement {
     );
   });
 
-  section.append(img);
+  section.append(shot);
   return section;
 }

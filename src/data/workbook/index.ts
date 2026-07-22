@@ -76,6 +76,7 @@ import {
   GRAPH_OWN_DATA,
 } from './pages';
 import { GAMES, type GameDefinition } from '../../games';
+import { FOOTER } from './authoring';
 import type { WorkbookPageContent, WorkbookTopic } from './types';
 
 export type { WorkbookPageContent, WorkbookTopic } from './types';
@@ -86,11 +87,10 @@ const game = (id: string): GameDefinition => {
   return g;
 };
 
-const FOOTER_HTML =
-  '<footer class="gz-footer">' +
-  '<div class="f1">יניב רז - מדריך מחוזי חט"ב בעיר ירושלים</div>' +
-  '<div class="f2">הדרכה במחוז ירושלים והעיר ירושלים - מנח"י, בהובלת איילת קריספין</div>' +
-  '</footer>';
+/* The one footer, from the one place that builds it. It used to be copied out
+   here, and the copy is exactly why the eight game sheets had no badge on them
+   when the badge was added to the original. */
+const FOOTER_HTML = FOOTER;
 
 /** Re-stamp a sheet with its final page number (id, aria, visible number, tf group names). */
 function renumber(page: WorkbookPageContent, n: number): WorkbookPageContent {

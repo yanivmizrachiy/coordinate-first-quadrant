@@ -2,64 +2,177 @@
    App views — home, tables of contents, games hub, game shell, page navigator.
    =========================================================================== */
 
-/* ---------- Home ----------
-   The approved cover IS the home screen: shown large and immediately, and it
-   opens the full booklet. width + height:auto keeps the artwork's own ratio. */
-.home-cover {
-  display: block;
-  width: min(94vw, 560px);
-  margin: 14px auto 20px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  border-radius: 16px;
-  overflow: hidden;
-  cursor: pointer;
-  box-shadow: 0 12px 36px #1f2a4438;
-  transition: transform .16s ease, box-shadow .16s ease;
-}
-.home-cover:hover, .home-cover:focus-visible { transform: translateY(-3px); box-shadow: 0 18px 46px #1f2a4447; }
-.home-cover__img { display: block; width: 100%; height: auto; }
-/* Fallback so the home screen is never blank if the artwork is missing. */
-.home-cover--fallback {
-  aspect-ratio: 210 / 297;
-  display: grid;
-  place-content: center;
-  gap: 10px;
-  background: linear-gradient(160deg, #eaf2ff, #fff);
-  border: 2px dashed #94a3b8;
-}
-.home-cover__fallbacktitle { font-size: clamp(26px, 7vw, 40px); font-weight: 900; color: var(--brand-ink); line-height: 1.1; }
-.home-cover__fallbackhint { color: var(--muted); font-size: 16px; }
+/* A screen arrives with one short fade and a hair of travel. Anything longer is
+   the app making the reader wait for a decoration. Never on paper. */
+.app-main { opacity: 0; translate: 0 6px; }
+.app-main--in { opacity: 1; translate: none; transition: opacity .15s ease, translate .15s cubic-bezier(.16,.84,.34,1); }
+@media (prefers-reduced-motion: reduce) { .app-main { opacity: 1; translate: none; } }
+@media print { .app-main { opacity: 1 !important; translate: none !important; } }
 
-/* Home actions — view / download / print / WhatsApp. Thumb-friendly. */
+/* ---------- Home: the opening ----------
+   The film is the cover of the app. The first quadrant draws itself over
+   Jerusalem for ten seconds and comes to rest on the finished system — so the
+   panel holds a 16:9 stage, the title and the way in, and nothing else.
+
+   The stage carries its ratio in CSS, so the box is the right size before a
+   single byte of video has arrived and nothing on the page jumps when it does. */
+.hero {
+  position: relative;
+  width: min(94vw, 720px);
+  margin: 14px auto 18px;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #0b1a34;
+  box-shadow: 0 18px 50px #0b1a3440, 0 2px 8px #0b1a341f;
+  isolation: isolate;
+}
+.hero__stage { aspect-ratio: 16 / 9; }
+.hero__media {
+  display: block; width: 100%; height: 100%;
+  object-fit: cover; background: #0b1a34;
+}
+/* A wash from the bottom, so Hebrew set over a bright sky still reads. */
+.hero__scrim {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(to top, #04122bE6 0%, #04122b8C 34%, #04122b1A 62%, transparent 82%),
+    linear-gradient(to left, #04122b40, transparent 55%);
+  opacity: .55; transition: opacity .6s ease;
+}
+.hero--rested .hero__scrim { opacity: 1; }
+
+/* The badge — whose material this is, present from the first frame. */
+.hero__badge { position: absolute; inset-inline-start: clamp(14px, 3.4vw, 22px); top: clamp(14px, 3.4vw, 22px); }
+.hero__badge img {
+  display: block; width: clamp(44px, 8vw, 58px); height: auto; border-radius: 50%;
+  box-shadow: 0 4px 14px #04122b66; background: #fff;
+  opacity: 0; transform: scale(.82);
+  transition: opacity .5s ease .12s, transform .5s cubic-bezier(.16,.84,.34,1) .12s;
+}
+.home--in .hero__badge img { opacity: 1; transform: none; }
+/* The film IS the title sequence: the first quadrant draws itself over the city
+   for ten seconds, and the title lands when it comes to rest. Nothing is written
+   over the drawing while it is being drawn — that was the whole point of it. */
+.hero__text {
+  /* The drawing owns the inline-start half of the frame — that is where the axes
+     and the four points end up. So the title takes the other half and stops at
+     the middle, and nothing it says lands on a point the film just plotted. */
+  position: absolute; inset-inline-end: clamp(16px, 4vw, 30px);
+  max-width: min(48%, 330px); bottom: clamp(62px, 11vw, 80px);
+  pointer-events: none; color: #fff; text-align: start;
+  opacity: 0; transition: opacity .5s ease;
+  text-shadow: 0 2px 18px #04122bB3;
+}
+.hero--rested .hero__text { opacity: 1; }
+.hero__title, .hero__sub, .hero__meta { margin: 0; overflow: hidden; }
+.hero__title { font-size: clamp(30px, 7.2vw, 52px); font-weight: 900; line-height: 1.02; letter-spacing: -.5px; }
+.hero__sub { font-size: clamp(19px, 4.4vw, 30px); font-weight: 800; color: #ffd166; line-height: 1.15; margin-top: 2px; }
+.hero__meta { font-size: clamp(12px, 2.6vw, 14px); font-weight: 700; color: #ffffffcc; margin-top: 7px; }
+/* Each line rides up from behind the one above it — the mask is the overflow
+   on its own parent, so there is no extra element to animate. */
+.hero__title span, .hero__sub span, .hero__meta span {
+  display: block; transform: translateY(115%);
+  transition: transform .62s cubic-bezier(.16, .84, .34, 1);
+}
+.hero--rested .hero__title span { transform: none; transition-delay: .06s; }
+.hero--rested .hero__sub span   { transform: none; transition-delay: .15s; }
+.hero--rested .hero__meta span  { transform: none; transition-delay: .24s; }
+
+.hero__open {
+  position: absolute; inset-inline-end: clamp(16px, 4vw, 30px); bottom: clamp(16px, 4vw, 26px);
+  display: inline-flex; align-items: center; gap: 9px;
+  min-height: 46px; padding: 0 20px;
+  border: 0; border-radius: 999px; cursor: pointer;
+  background: #fff; color: #0b1a34; font: inherit; font-weight: 900; font-size: 15px;
+  box-shadow: 0 6px 20px #04122b59;
+  opacity: 0; transform: translateY(14px);
+  transition: opacity .4s ease .36s, transform .4s cubic-bezier(.16,.84,.34,1) .36s,
+              box-shadow .16s ease, background-color .16s ease;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
+.home--in .hero__open { opacity: 1; transform: none; }
+.hero__open:hover { background: #eaf2ff; box-shadow: 0 10px 26px #04122b6b; }
+.hero__open:active { transform: scale(.97); transition-duration: .06s; }
+.hero__open:focus-visible { outline: 3px solid #ffd166; outline-offset: 3px; }
+.hero__open-arrow { font-size: 18px; transition: transform .2s cubic-bezier(.16,.84,.34,1); }
+.hero__open:hover .hero__open-arrow { transform: translateX(-4px); }
+
+/* Replay sits quietly in the corner and steps forward once the film has ended. */
+.hero__replay {
+  position: absolute; inset-inline-end: 12px; top: 12px;
+  width: 40px; height: 40px; display: grid; place-content: center;
+  border: 0; border-radius: 50%; cursor: pointer;
+  background: #04122b73; color: #fff; font-size: 19px; line-height: 1;
+  backdrop-filter: blur(6px);
+  opacity: 0; transform: scale(.86); pointer-events: none;
+  transition: opacity .3s ease, transform .3s cubic-bezier(.16,.84,.34,1), background-color .16s ease;
+}
+.hero:hover .hero__replay, .hero--rested .hero__replay, .hero__replay:focus-visible {
+  opacity: 1; transform: none; pointer-events: auto;
+}
+.hero__replay:hover { background: #04122ba6; }
+.hero__replay:active { transform: scale(.92); transition-duration: .06s; }
+.hero__replay:focus-visible { outline: 3px solid #ffd166; outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__title span, .hero__sub span, .hero__meta span { transform: none; transition: none; }
+  .hero__text, .hero__scrim { opacity: 1; transition: none; }
+  .hero__open { opacity: 1; transform: none; transition: none; }
+  .hero__badge img { opacity: 1; transform: none; transition: none; }
+  .hero__replay { transition: none; }
+}
+
+/* Home actions — view / download / print / WhatsApp.
+   One shape, one motion, four jobs: the icon lifts on hover and the whole tile
+   presses in on tap, so a thumb gets an answer before the next screen loads. */
 .act-row {
   display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
-  width: min(94vw, 560px); margin: 0 auto 14px;
+  width: min(94vw, 720px); margin: 0 auto 14px;
 }
 .act {
-  flex: 1 1 120px; min-width: 118px; min-height: 64px;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-  padding: 10px 12px; border-radius: 16px; text-decoration: none;
-  background: linear-gradient(145deg, #ffffff, #f5f9ff);
-  border: 1px solid #dbe5f5; color: var(--brand-ink);
-  box-shadow: 0 3px 10px #1f2a4414, 0 10px 24px #1f2a440d;
+  flex: 1 1 120px; min-width: 118px; min-height: 68px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+  padding: 10px 12px; border-radius: 18px; text-decoration: none;
+  background: #fff;
+  border: 1px solid #e2e9f6; color: var(--brand-ink);
+  box-shadow: 0 1px 2px #1f2a4414, 0 8px 20px #1f2a4410;
   cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
-  transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+  transition: transform .16s cubic-bezier(.16,.84,.34,1), box-shadow .16s ease, border-color .16s ease;
+  opacity: 0; translate: 0 12px;
 }
-.act:hover { transform: translateY(-2px); box-shadow: 0 6px 16px #1f2a441f; border-color: #bcd0f0; }
-.act:active { transform: translateY(0) scale(.97); }
+/* The row arrives just after the opening's last line, one tile at a time. */
+.home--in .act { opacity: 1; translate: none; transition: opacity .38s ease, translate .38s cubic-bezier(.16,.84,.34,1), transform .16s cubic-bezier(.16,.84,.34,1), box-shadow .16s ease, border-color .16s ease; }
+.home--in .act:nth-child(1) { transition-delay: .34s; }
+.home--in .act:nth-child(2) { transition-delay: .40s; }
+.home--in .act:nth-child(3) { transition-delay: .46s; }
+.home--in .act:nth-child(4) { transition-delay: .52s; }
+.act:hover { transform: translateY(-3px); box-shadow: 0 3px 8px #1f2a441a, 0 14px 30px #1f2a4418; border-color: #c6d7f4; }
+.act:active { transform: translateY(0) scale(.96); transition-duration: .07s; }
 .act:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
-.act__icon { font-size: 24px; line-height: 1; }
+.act__icon { font-size: 25px; line-height: 1; transition: transform .2s cubic-bezier(.16,.84,.34,1); }
+.act:hover .act__icon { transform: translateY(-2px) scale(1.08); }
 .act__label { font-size: 14px; font-weight: 800; }
-.act--wa { background: linear-gradient(145deg, #25d366, #12b955); border-color: #0ea34a; color: #fff; }
+.act--view { background: linear-gradient(160deg, #eaf2ff, #fff); border-color: #cfe0fb; }
+.act--wa { background: linear-gradient(150deg, #2fdd75, #12b955); border-color: #0ea34a; color: #fff; }
 .act--wa:hover { border-color: #0b8f40; }
+
+@media (prefers-reduced-motion: reduce) {
+  .act { opacity: 1; translate: none; transition: none; }
+  .act:hover { transform: none; }
+  .act:hover .act__icon { transform: none; }
+}
 
 /* Paging — jump straight to any page. */
 .jump {
   display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px;
-  width: min(94vw, 560px); margin: 0 auto 28px;
+  width: min(94vw, 720px); margin: 0 auto 28px;
+  opacity: 0; translate: 0 10px;
 }
+.home--in .jump {
+  opacity: 1; translate: none;
+  transition: opacity .38s ease .58s, translate .38s cubic-bezier(.16,.84,.34,1) .58s;
+}
+@media (prefers-reduced-motion: reduce) { .jump { opacity: 1; translate: none; transition: none; } }
 .jump__select, .jump__go, .jump__first, .jump__toc {
   min-height: 46px; padding: 0 14px; border-radius: 12px; font: inherit; font-weight: 800;
   background: #fff; border: 1px solid #dbe5f5; color: var(--brand-ink);
@@ -236,7 +349,7 @@
 
 /* ---------- Print: hide all app chrome ---------- */
 @media print {
-  .appbar, .pagenav, .toolbar-row, .section-title, .home-grid, .home-cover, .games-grid,
+  .hero, .appbar, .pagenav, .toolbar-row, .section-title, .home-grid, .games-grid,
   .toc-topic, .skip-link, .no-print { display: none !important; }
   .container { padding: 0; max-width: none; }
   .app-main { min-height: 0; }

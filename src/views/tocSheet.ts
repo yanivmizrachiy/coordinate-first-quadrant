@@ -9,6 +9,7 @@
 import { elem } from '../lib/dom';
 import { navigate } from '../router';
 import { TOPICS } from '../data/workbook';
+import { DISTRICT_BADGE } from '../data/cover';
 
 /* Yaniv's ten colours, in the order he gave them — „אלה הצבעים של תוכן העניינים
    המסודר שלנו". I had reordered them so no two neighbours shared a hue family;
@@ -71,9 +72,17 @@ export function renderTocSheet(): HTMLElement {
     list.append(btn);
   }
 
+  const badge = elem('picture', { class: 'gz-badge' });
+  badge.append(
+    elem('source', { srcset: DISTRICT_BADGE.webp, type: 'image/webp' }),
+    elem('img', { src: DISTRICT_BADGE.png, alt: DISTRICT_BADGE.alt, width: 34, height: 34, decoding: 'async' }),
+  );
   const foot = elem('footer', { class: 'gz-footer' },
-    elem('div', { class: 'f1', text: 'יניב רז - מדריך מחוזי חט"ב בעיר ירושלים' }),
-    elem('div', { class: 'f2', text: 'הדרכה במחוז ירושלים והעיר ירושלים - מנח"י, בהובלת איילת קריספין' }),
+    badge,
+    elem('div', { class: 'gz-lines' },
+      elem('div', { class: 'f1', text: 'יניב רז - מדריך מחוזי חט"ב בעיר ירושלים' }),
+      elem('div', { class: 'f2', text: 'הדרכה במחוז ירושלים והעיר ירושלים - מנח"י, בהובלת איילת קריספין' }),
+    ),
   );
 
   section.append(head, elem('main', { class: 'sheet-content' }, list), foot);
