@@ -208,7 +208,11 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
 
   if (spec.axisNames !== false) {
     svg.append(
-      el('text', { x: X(0) - 11, y: Y(0) + 22, 'text-anchor': 'end', fill: AXIS, 'font-size': 17, 'font-weight': 800 }, 'O'),
+      /* A sheet that marks the origin as one of ITS points already labels it.
+         Drawing our own O beside it puts two of them on one corner. */
+      ...((spec.points ?? []).some((p) => p.x === 0 && p.y === 0)
+        ? []
+        : [el('text', { x: X(0) - 11, y: Y(0) + 22, 'text-anchor': 'end', fill: AXIS, 'font-size': 17, 'font-weight': 800 }, 'O')]),
       // Mixed Hebrew+Latin flips text-anchor, so pin direction explicitly.
       /* Centred rather than anchored to an edge: in RTL, `start` anchors the
          RIGHT edge, so the name would grow back over the arrow. */
@@ -354,6 +358,8 @@ export const gridGeometry = { W, H, L, R, T, B, XM, YM, X, Y };
    So measure the scale each drawing actually got and put the type back. Capped,
    because doubling every label would push the axis names out of the margins. */
 const TARGET_TEXT_PX = 12.5;
+/** How wide a vertex should read on screen, in radius. */
+const TARGET_DOT_PX = 4.6;
 const MAX_GROWTH = 1.9;
 
 export function normaliseGridText(root: ParentNode = document): void {
@@ -363,6 +369,15 @@ export function normaliseGridText(root: ParentNode = document): void {
     if (!box?.width || !shown) continue;
     const scale = shown / box.width;
     if (!(scale > 0)) continue;
+    /* A point marker scales with the drawing exactly as the type does. At half
+       size a vertex is a 5px dot — „הקודקודים לא רואים בכלל”. Yesterday's fix
+       measured the letters and forgot the marks. */
+    for (const c of svg.querySelectorAll<SVGCircleElement>('circle')) {
+      const baseR = Number(c.dataset['baseR'] ?? c.getAttribute('r') ?? 5);
+      c.dataset['baseR'] = String(baseR);
+      const grow = Math.min(MAX_GROWTH, Math.max(1, TARGET_DOT_PX / (baseR * scale)));
+      c.setAttribute('r', String(Math.round(baseR * grow * 10) / 10));
+    }
     for (const t of svg.querySelectorAll<SVGTextElement>('text')) {
       const base = Number(t.dataset['baseSize'] ?? t.getAttribute('font-size') ?? 13);
       t.dataset['baseSize'] = String(base);

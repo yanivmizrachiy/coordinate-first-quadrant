@@ -361,3 +361,47 @@ test('no label spills out of its drawing or lands on another', async ({ page }, 
   });
   expect(faults, faults.join(' | ')).toHaveLength(0);
 });
+
+/* A vertex has to be visible. The marks scale with the drawing exactly as the
+   type does, so a point on a half-size grid was a 5px dot — „הקודקודים לא
+   רואים בכלל”. Yesterday's fix measured the letters and forgot the marks; this
+   measures the marks. */
+test('every point on a drawing is drawn large enough to see', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
+  await page.goto('/#/book');
+  await page.waitForTimeout(9000);
+  const faults = await page.evaluate(() =>
+    [...document.querySelectorAll('.sheet .coordinate-grid')]
+      .map((g) => {
+        const svg = g.querySelector('svg');
+        const c = svg?.querySelector('circle');
+        if (!svg || !c) return null;
+        const box = svg.viewBox.baseVal;
+        const shown = svg.getBoundingClientRect().width;
+        if (!box?.width || !shown) return null;
+        const px = Number(c.getAttribute('r')) * (shown / box.width);
+        const n = g.closest('.sheet')?.querySelector('.sheet-number')?.textContent?.trim() ?? '?';
+        return px < 4 ? `page ${n}: vertices at ${px.toFixed(1)}px radius` : null;
+      })
+      .filter(Boolean),
+  );
+  expect(faults, faults.join(', ')).toHaveLength(0);
+});
+
+/* Two letter O on one corner — the grid's own origin plus a point the sheet
+   marked at (0,0) — reads as a mistake in the drawing. */
+test('the origin is never labelled twice', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
+  await page.goto('/#/book');
+  await page.waitForTimeout(9000);
+  const doubled = await page.evaluate(() =>
+    [...document.querySelectorAll('.sheet .coordinate-grid svg')]
+      .map((svg) => {
+        const os = [...svg.querySelectorAll('text')].filter((t) => t.textContent!.trim() === 'O');
+        const n = svg.closest('.sheet')?.querySelector('.sheet-number')?.textContent?.trim() ?? '?';
+        return os.length > 1 ? `page ${n}` : null;
+      })
+      .filter(Boolean),
+  );
+  expect(doubled, doubled.join(', ')).toHaveLength(0);
+});

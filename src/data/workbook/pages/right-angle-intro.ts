@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet } from '../authoring';
+import { sheet, grid } from '../authoring';
 
 export const RIGHT_ANGLE_INTRO: WorkbookPageContent = sheet({
   sectionClass: "sheet guided dense",
@@ -40,11 +40,14 @@ export const RIGHT_ANGLE_INTRO: WorkbookPageContent = sheet({
 </ul>
 </section>
 <section class="q-card">
-<h3>ג. השלימו על שני הקטעים.</h3>
+<h3>ג. סמנו את הקטעים, ואז השלימו עליהם.</h3>
+<p>סמנו על הסרטוט את ארבע הנקודות, וציירו את שני הקטעים <span class="math-ltr" dir="ltr">AB</span> ו־<span class="math-ltr" dir="ltr">BC</span>.</p>
+${grid({ size: 'md', label: 'מערכת צירים ריקה לסימון הנקודות ולציור שני הקטעים' })}
 <ul class="tasks">
-<li>קטע מנקודה <span class="math-ltr" dir="ltr">(2,1)</span> עד נקודה <span class="math-ltr" dir="ltr">(2,7)</span> מקביל לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>.</li>
-<li>קטע מנקודה <span class="math-ltr" dir="ltr">(2,7)</span> עד נקודה <span class="math-ltr" dir="ltr">(6,7)</span> הוא קטע <span class="blank" data-missing="property" style="--blank-width:6ch"></span>.</li>
-<li>שני הקטעים נפגשים בנקודה <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> ונוצרת ביניהם זווית ישרה.</li>
+<li>לקטע <span class="math-ltr" dir="ltr">AB</span> קצה אחד בנקודה <span class="math-ltr" dir="ltr">A(2,1)</span> והקצה האחר בנקודה <span class="math-ltr" dir="ltr">B(2,5)</span>, ולכן הוא מקביל לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>.</li>
+<li>לקטע <span class="math-ltr" dir="ltr">BC</span> קצה אחד בנקודה <span class="math-ltr" dir="ltr">B(2,5)</span> והקצה האחר בנקודה <span class="blank" data-missing="letter" style="--blank-width:8ch"></span>, ולכן הוא מקביל לציר <span class="math-ltr" dir="ltr">x</span>.</li>
+<li>הנקודה <span class="math-ltr" dir="ltr">B</span> ממוקמת על שני הקטעים, ולכן היא <span class="blank" data-missing="concept" style="--blank-width:6ch"></span> הזווית שנוצרת ביניהם.</li>
+<li>הזווית שקודקודה הוא הנקודה <span class="math-ltr" dir="ltr">B</span> היא זווית <span class="blank" data-missing="property" style="--blank-width:5ch"></span>.</li>
 </ul>
 </section>
 `,
