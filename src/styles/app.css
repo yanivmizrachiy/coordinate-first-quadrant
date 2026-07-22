@@ -204,7 +204,22 @@
 
 /* ---------- Page navigator (single-sheet workbook viewer) ---------- */
 .pageviewer { max-width: 210mm; margin: 0 auto; }
-.pageviewer__sheetwrap { display: flex; justify-content: center; }
+
+/* The single-page view scales the sheet down to whatever room the screen has,
+   so a whole A4 is visible instead of two thirds of one. The booklet view is
+   deliberately NOT scaled — that is the one that goes to the printer. */
+.pageviewer__sheetwrap {
+  display: flex; justify-content: center;
+  --sheet-scale: 1;
+}
+.pageviewer__sheetwrap > .sheet {
+  transform: scale(var(--sheet-scale));
+  transform-origin: top center;
+}
+@media print {
+  .pageviewer__sheetwrap { height: auto !important; }
+  .pageviewer__sheetwrap > .sheet { transform: none !important; }
+}
 .pagenav {
   position: sticky; bottom: 0; z-index: 40;
   display: flex; align-items: center; justify-content: center; gap: 10px;
@@ -232,7 +247,7 @@
    The controls keep their colour: black and white is for the SHEETS. */
 .printbar {
   display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
-  max-width: 210mm; margin: 0 auto 10px; padding: 8px 10px;
+  max-width: 210mm; margin: 0 auto 8px; padding: 6px 8px;
   background: var(--paper); border: 1px solid var(--border); border-radius: 12px;
   box-shadow: 0 2px 10px #1f2a4412;
 }
@@ -247,7 +262,7 @@
 .printbar__num:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
 .printbar__go, .printbar__toggle {
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 14px; font: inherit; font-weight: 800; cursor: pointer;
+  padding: 7px 12px; font: inherit; font-weight: 800; cursor: pointer;
   border: 1.5px solid var(--blue); border-radius: 10px;
   background: var(--blue); color: #fff;
 }
@@ -257,9 +272,27 @@
 .printbar__go:active, .printbar__toggle:active { transform: translateY(1px); }
 /* the second print button is the quieter one */
 .printbar__go + .printbar__go { background: #fff; color: var(--blue); }
+/* pushes the print controls to the far end, away from the navigation */
+.printbar__gap { flex: 1 1 12px; }
+
+/* --- how big the sheet is drawn on screen --- */
+.zoomer { display: inline-flex; align-items: center; gap: 0; }
+.zoombtn {
+  padding: 7px 11px; font: inherit; font-weight: 800; line-height: 1; cursor: pointer;
+  border: 1.5px solid var(--border); background: #fff; color: var(--ink);
+}
+.zoombtn:first-child { border-radius: 0 10px 10px 0; }
+.zoombtn:last-child { border-radius: 10px 0 0 10px; }
+.zoombtn + .zoombtn { border-right: 0; }
+.zoombtn--label { min-width: 5.2rem; font-size: 13px; color: var(--muted); }
+.zoombtn:hover { background: var(--screen); }
 
 @media (max-width: 620px) {
   .printbar { gap: 6px; padding: 7px 8px; }
+  /* A phone already shows the sheet at the width it has, so there is nothing
+     for the zoom control to do — and four rows of buttons on an 812px screen
+     is a fifth of the page the reader came for. */
+  .zoomer, .printbar__gap { display: none; }
   .printbar__go, .printbar__toggle { flex: 1 1 auto; justify-content: center; padding: 10px 10px; }
   .printbar__range { width: 100%; justify-content: center; }
 }

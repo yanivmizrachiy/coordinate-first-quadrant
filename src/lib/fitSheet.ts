@@ -41,6 +41,14 @@ export function fitSheet(sheet: HTMLElement): void {
   // A game sheet grows with its board; there is no leftover to hand back.
   if (!content || !footer || sheet.classList.contains('game-sheet')) return;
 
+  /* The page viewer shrinks the sheet to fit the screen. getBoundingClientRect
+     reports those shrunken pixels, but `style.height` is written in unscaled
+     ones — so measuring 200px on a half-size sheet and writing it back would
+     halve the drawing every pass. offsetWidth ignores the transform, so the
+     ratio between the two IS the scale, and every measurement divides by it. */
+  const scale = sheet.getBoundingClientRect().width / (sheet.offsetWidth || 1) || 1;
+  const px = (measured: number): number => measured / scale;
+
   // Descend past wrappers that hold everything in one box, but never into a
   // row whose children sit next to each other.
   let box: HTMLElement = content;
@@ -59,7 +67,7 @@ export function fitSheet(sheet: HTMLElement): void {
      growing what the first pass already grew. */
   const reset = (el: HTMLElement): void => {
     const base = el.dataset['fitBase'];
-    if (base === undefined) el.dataset['fitBase'] = String(Math.round(el.getBoundingClientRect().height));
+    if (base === undefined) el.dataset['fitBase'] = String(Math.round(px(el.getBoundingClientRect().height)));
     else el.style.height = `${base}px`;
   };
   content.querySelectorAll<HTMLElement>('.coordinate-grid, .answer-line').forEach(reset);
@@ -70,7 +78,7 @@ export function fitSheet(sheet: HTMLElement): void {
       const r = el.getBoundingClientRect();
       if (r.height && r.bottom > lowest) lowest = r.bottom;
     }
-    return footer.getBoundingClientRect().top - lowest;
+    return px(footer.getBoundingClientRect().top - lowest);
   };
 
   /* Spare height goes to the drawings first — a bigger system is worth more to
@@ -85,7 +93,7 @@ export function fitSheet(sheet: HTMLElement): void {
       const added = grown.get(g) ?? 0;
       if (added >= GRID_GROWTH) continue;
       const step = Math.min(26, GRID_GROWTH - added);
-      g.style.height = `${Math.round(g.getBoundingClientRect().height + step)}px`;
+      g.style.height = `${Math.round(px(g.getBoundingClientRect().height) + step)}px`;
       grown.set(g, added + step);
       changed = true;
     }
@@ -100,7 +108,7 @@ export function fitSheet(sheet: HTMLElement): void {
       const added = grown.get(g) ?? 0;
       if (added <= 0) continue;
       const step = Math.min(14, added);
-      g.style.height = `${Math.round(g.getBoundingClientRect().height - step)}px`;
+      g.style.height = `${Math.round(px(g.getBoundingClientRect().height) - step)}px`;
       grown.set(g, added - step);
       shrank = true;
     }
@@ -119,7 +127,7 @@ export function fitSheet(sheet: HTMLElement): void {
       const added = taller.get(l) ?? 0;
       if (added >= LINE_GROWTH) continue;
       const step = Math.min(7, LINE_GROWTH - added);
-      l.style.height = `${Math.round(l.getBoundingClientRect().height + step)}px`;
+      l.style.height = `${Math.round(px(l.getBoundingClientRect().height) + step)}px`;
       taller.set(l, added + step);
       changed = true;
     }
@@ -130,7 +138,7 @@ export function fitSheet(sheet: HTMLElement): void {
     for (const l of lines) {
       const added = taller.get(l) ?? 0;
       if (added <= 0) continue;
-      l.style.height = `${Math.round(l.getBoundingClientRect().height - 7)}px`;
+      l.style.height = `${Math.round(px(l.getBoundingClientRect().height) - 7)}px`;
       taller.set(l, added - 7);
       shrank = true;
     }

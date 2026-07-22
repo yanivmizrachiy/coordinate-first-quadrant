@@ -31,3 +31,11 @@ export const grayscale = {
   get: (): boolean => readValue<boolean>('grayscale', false),
   set: (on: boolean): void => writeValue('grayscale', on),
 };
+
+/* How big the reader wants a sheet on screen: 'fit' shrinks it to the room the
+   window has, a number is a fixed scale they chose. Remembered, because having
+   to set it again on every page is exactly the discomfort it fixes. */
+export const sheetZoom = {
+  get: (): 'fit' | number => readValue<'fit' | number>('sheetZoom', 1),
+  set: (z: 'fit' | number): void => writeValue('sheetZoom', z),
+};

@@ -245,3 +245,48 @@ test('the print bar prints only the pages asked for', async ({ page }) => {
   });
   expect(kept).toEqual(['3', '4', '5']);
 });
+
+/* The single-page view is what the reader spends their time in. Stacking a
+   second toolbar above it cost 78px of screen and it stopped being comfortable
+   to read — this holds the controls to one row and the sheet to full size. */
+test('the page viewer keeps its controls to one row and the sheet readable', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'the phone stacks the bar on purpose');
+  await page.goto('/#/workbook/5');
+  await page.waitForTimeout(2500);
+
+  const bar = page.locator('.printbar');
+  await expect(bar).toHaveCount(1);
+  await expect(page.locator('.toolbar-row')).toHaveCount(0); // the second row is gone
+
+  const rows = await bar.evaluate(
+    (b) => new Set([...b.children].map((c) => Math.round(c.getBoundingClientRect().top + c.getBoundingClientRect().height / 2))).size,
+  );
+  expect(rows, 'the control bar wrapped onto more than one row').toBe(1);
+
+  // full size by default: a whole A4 on a laptop screen means 8px text
+  const scale = await page.locator('.pageviewer__sheetwrap').evaluate(
+    (w) => getComputedStyle(w).getPropertyValue('--sheet-scale').trim(),
+  );
+  expect(Number(scale)).toBe(1);
+});
+
+/* Shrinking the sheet must not shrink what is on it. fitSheet writes heights in
+   unscaled pixels but reads them through the transform, so without dividing by
+   the scale every drawing loses 40% on each pass. */
+test('zooming the page out leaves the drawings the size they were', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'no zoom control on a phone');
+  await page.goto('/#/workbook/5');
+  await page.waitForTimeout(2500);
+  const sizes = async (): Promise<string[]> =>
+    page.locator('.sheet .coordinate-grid').evaluateAll((gs) =>
+      gs.map((g) => `${(g as HTMLElement).offsetWidth}x${(g as HTMLElement).offsetHeight}`),
+    );
+
+  const before = await sizes();
+  await page.locator('.zoombtn--label').click();         // → fit to screen
+  await page.evaluate(() => window.dispatchEvent(new Event('resize')));
+  await page.waitForTimeout(1200);
+  const after = await sizes();
+
+  expect(after, 'the drawings shrank when the page was scaled').toEqual(before);
+});

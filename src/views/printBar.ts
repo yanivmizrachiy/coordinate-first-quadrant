@@ -16,12 +16,17 @@ export interface PrintBarOptions {
   current?: number;
   /** Where the sheets live, so the range can be applied to them. */
   root: () => ParentNode;
+  /** Buttons that belong at the head of the same row. A second toolbar above
+      this one costs 78px of screen — on a laptop that is a tenth of the page
+      the reader came to look at. */
+  lead?: HTMLElement[];
 }
 
 const BW = 'bw-print';
 
 export function printBar(opts: PrintBarOptions): HTMLElement {
   const bar = elem('div', { class: 'printbar no-print' });
+  if (opts.lead?.length) bar.append(...opts.lead, elem('span', { class: 'printbar__gap' }));
 
   /* ---- black and white ---- */
   const bw = elem('button', {
@@ -71,7 +76,7 @@ export function printBar(opts: PrintBarOptions): HTMLElement {
     rangeBtn.addEventListener('click', () => { applyRange(false); window.print(); });
     bar.append(range, rangeBtn, allBtn);
   } else {
-    const one = elem('button', { class: 'printbar__go', type: 'button', text: '🖨️ הדפסת העמוד' });
+    const one = elem('button', { class: 'printbar__go', type: 'button', text: '🖨️ הדפסה' });
     one.addEventListener('click', () => window.print());
     bar.append(one);
   }
