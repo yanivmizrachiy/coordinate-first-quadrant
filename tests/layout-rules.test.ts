@@ -830,3 +830,44 @@ describe('the rules page still matches the code', () => {
     }
   });
 });
+
+/* One vocabulary for motion. Every curve and every duration in the app is a
+   named token, so a control added tomorrow inherits the feel instead of
+   inventing a slightly different one — which is how an interface starts to feel
+   assembled rather than designed. Delays are exempt: a stagger is the rhythm of
+   one particular sequence, not a value to share. */
+describe('the app moves in one vocabulary', () => {
+  const tokens = readFileSync(new URL('../src/styles/tokens.css', import.meta.url), 'utf8');
+  const appCss = readFileSync(new URL('../src/styles/app.css', import.meta.url), 'utf8');
+
+  it('defines the curves and the durations in one place', () => {
+    for (const t of ['--ease:', '--ease-pop:', '--ease-sweep:']) {
+      expect(tokens, `${t} is not defined`).toContain(t);
+    }
+    for (const t of ['--dur-press:', '--dur-quick:', '--dur-move:', '--dur-enter:', '--dur-slow:']) {
+      expect(tokens, `${t} is not defined`).toContain(t);
+    }
+  });
+
+  it('no screen writes its own easing curve', () => {
+    const raw = appCss.match(/cubic-bezier\([^)]*\)/g) ?? [];
+    expect(raw, `raw curves in app.css: ${raw.join(', ')}`).toEqual([]);
+  });
+
+  /* Transitions are the app answering a person, and they all come off the same
+     four-rung ladder. Keyframe animations are exempt: a badge turning for 14
+     seconds is ambient, not a reply, and a shared duration would say nothing
+     useful about it. */
+  it('no transition writes its own duration', () => {
+    const loose = (appCss.match(/transition:[^;]*;/g) ?? [])
+      .flatMap((block) => block.split(','))
+      .filter((part) => /(?<![\w-])(\.\d+|\d+(?:\.\d+)?)s(?![\w-])/.test(part) && !/var\(--dur-/.test(part))
+      .map((part) => part.trim().slice(0, 60));
+    expect(loose, `hand-written durations: ${loose.join(' | ')}`).toEqual([]);
+  });
+
+  it('turns motion off at the root for anyone who asked', () => {
+    expect(tokens, 'reduced motion is not handled where the tokens live')
+      .toMatch(/prefers-reduced-motion[\s\S]*--dur-slow:\s*0s/);
+  });
+});

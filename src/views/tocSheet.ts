@@ -72,11 +72,15 @@ export function renderTocSheet(): HTMLElement {
       style: `--toc-colour:${colour};--toc-ink:${inkOn(colour)}`,
       'aria-label': `${topic.title}, מתחיל בעמוד ${first}`,
     },
-      /* The page number leads, in a disc of its own — a Hebrew reader meets the
-         right-hand side first, so the number is the first thing read and the
-         chapter name follows it. Only the page the chapter STARTS on. */
+      /* A rule of colour at the leading edge, the chapter's name, and the page
+         set large and quiet at the other end. Colour identifies the chapter; it
+         does not have to shout it. */
+      elem('span', { class: 'toc-btn__rule', 'aria-hidden': 'true' }),
+      elem('span', { class: 'toc-btn__body' },
+        elem('span', { class: 'toc-btn__kicker', text: `פרק ${i + 1}` }),
+        elem('span', { class: 'toc-btn__name', text: topic.title }),
+      ),
       elem('span', { class: 'toc-btn__no', dir: 'ltr', text: String(first) }),
-      elem('span', { class: 'toc-btn__name', text: topic.title }),
     );
     btn.addEventListener('click', () => navigate(`#/workbook/${first}`));
     list.append(btn);

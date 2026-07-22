@@ -424,35 +424,62 @@ td > .calc-pair, td .calc-pair { margin: 2px 0; }
    Yaniv chose. Two columns on paper, one on a phone. The type stays at the
    sheet's 13px so the page reads as part of the booklet, not as a web menu. */
 .toc-sheet .sheet-content { display: block; }
-/* One chapter per row, each in its own colour. The page number rides in a white
-   disc at the leading edge — in RTL that is the right, so it is the first thing
-   read, and the chapter name follows it. One column, because two would leave
-   half the paper empty and this sheet earns its page like every other. */
-/* Five chapters on an A4 sheet: the chips take the height they are given, so
-   the page is filled by the contents rather than by air under them. */
-.toc-buttons { display: grid; grid-template-columns: 1fr; gap: 18px; margin-top: 8px; }
-.toc-btn {
-  display: flex; align-items: center; gap: 14px;
-  padding: 62px 22px; border: 0; border-radius: 20px; cursor: pointer;
-  background: var(--toc-colour); color: #fff; font: inherit; text-align: start;
-  box-shadow: 0 2px 6px #1f2a4426;
-  -webkit-print-color-adjust: exact; print-color-adjust: exact;
-}
-.toc-btn__no {
-  flex: none; width: 34px; height: 34px; border-radius: 50%;
-  background: #fff; color: var(--toc-ink, var(--toc-colour));
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: 13px;
-  -webkit-print-color-adjust: exact; print-color-adjust: exact;
-}
-.toc-btn--dark { color: #10233d; }
-.toc-btn__name { font-weight: 800; font-size: 13px; line-height: 1.25; }
-/* The disc grows, the type does not: 13px is the rule for every sheet. */
-.toc-btn__no { width: 50px; height: 50px; }
-.toc-btn:hover { filter: brightness(1.06); }
-.toc-btn:active { transform: translateY(1px); }
-.toc-btn:focus-visible { outline: 2.5px solid #10233d; outline-offset: 2px; }
 
-@media (max-width: 620px) { .toc-btn { padding: 11px 10px; gap: 10px; } }
+/* The contents page, redesigned.
+   Five slabs of saturated colour read as a web menu dropped onto paper. A
+   contents page in a well-made book is quiet: white, generous, set in a clear
+   hierarchy, with colour used to IDENTIFY a chapter rather than to shout it. So
+   each row is a card on the page's own white, carrying a rule of its chapter's
+   colour at the leading edge, the chapter name, and the page number set large
+   and light at the far end. It also prints on a tenth of the ink. */
+.toc-buttons { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px; }
+
+.toc-btn {
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; gap: 18px;
+  width: 100%; padding: 52px 26px 52px 0;
+  border: 1px solid #e4e9f2; border-radius: 16px; cursor: pointer;
+  background: #fff; color: var(--ink); font: inherit; text-align: start;
+  box-shadow: 0 1px 2px #1f2a440A, 0 10px 24px #1f2a4408;
+  transition: border-color var(--dur-quick) ease, box-shadow var(--dur-quick) ease,
+              transform var(--dur-quick) var(--ease);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+
+/* The chapter's colour, as a rule rather than a field. */
+.toc-btn__rule {
+  flex: none; align-self: stretch; width: 7px; border-radius: 7px;
+  background: var(--toc-colour);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+
+.toc-btn__body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.toc-btn__kicker {
+  font-size: 13px; font-weight: 700; letter-spacing: .04em;
+  color: var(--toc-ink, var(--muted));
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.toc-btn__name { font-weight: 800; font-size: 13px; line-height: 1.3; color: var(--ink); }
+
+/* The page number: large, light, and the last thing the eye lands on. */
+.toc-btn__no {
+  flex: none; font-size: 13px; font-weight: 800; line-height: 1;
+  color: var(--toc-ink, var(--toc-colour));
+  padding-inline-start: 6px;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+
+.toc-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--toc-colour);
+  box-shadow: 0 2px 4px #1f2a4414, 0 16px 34px #1f2a4414;
+}
+.toc-btn:active { transform: translateY(0); transition-duration: var(--dur-press); }
+.toc-btn:focus-visible { outline: 3px solid var(--toc-colour); outline-offset: 3px; }
+
+@media (max-width: 620px) { .toc-btn { padding: 16px 16px 16px 0; gap: 12px; } }
+
 /* Black-and-white printing drains the sheets, and this sheet is a sheet. */
-body.bw-print .sheet .toc-btn { background: #f0f0f0 !important; color: #111 !important; border: 1.4px solid #555; box-shadow: none; }
+body.bw-print .sheet .toc-btn { background: #fff !important; border-color: #999; box-shadow: none; }
+body.bw-print .sheet .toc-btn__rule { background: #555 !important; }
+body.bw-print .sheet .toc-btn__kicker, body.bw-print .sheet .toc-btn__no { color: #333 !important; }

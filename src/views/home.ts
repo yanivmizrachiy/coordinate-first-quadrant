@@ -131,7 +131,11 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
   const start = elem('button', { class: 'startbtn', type: 'button' },
     elem('span', { class: 'startbtn__label', text: 'התחל' }),
   );
-  start.addEventListener('click', () => navigate('#/menu'));
+  /* Straight to the booklet, which opens on the cover — „חובה שייפתח מייד עמוד
+     השער מהיר ואוטומט". The cover artwork was decoded while the film played, so
+     it is already in memory and the first paint is immediate; the booklet's own
+     print bar carries the actions that used to need a menu stop. */
+  start.addEventListener('click', () => navigate('#/book'));
 
   /* Sound. Browsers refuse to start a film with sound before the reader has
      touched the page — a policy, not a setting. So: try with sound, and if the

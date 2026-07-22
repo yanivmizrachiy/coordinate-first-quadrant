@@ -10,10 +10,19 @@ test('the opening screen carries the film and the way in, and nothing else', asy
   await expect(page.locator('.appbar')).toHaveClass(/appbar--hidden/);
 });
 
-test('התחל leads to the menu, and the menu has the four actions and the picker', async ({ page }) => {
+/* התחל opens the booklet at its cover, with no stop on the way — the cover
+   artwork is decoded while the film plays, so it is there the moment it is
+   asked for. */
+test('התחל opens the cover straight away', async ({ page }) => {
   await page.goto('/#/');
   await page.locator('.startbtn').click();
-  await expect(page).toHaveURL(/#\/menu$/);
+  await expect(page).toHaveURL(/#\/book$/);
+  await expect(page.locator('.book > .sheet').first()).toHaveClass(/cover-sheet/);
+});
+
+/* The menu still holds everything you can do, and is reachable in its own right. */
+test('the menu has the four actions and the page picker', async ({ page }) => {
+  await page.goto('/#/menu');
   await expect(page.locator('.act')).toHaveCount(4);
   await expect(page.locator('.act--wa')).toHaveAttribute('href', /wa\.me/);
   expect(await page.locator('.jump__select option').count()).toBeGreaterThan(40);
@@ -205,11 +214,13 @@ test('the contents sheet lists every chapter and each button reaches its page', 
   /* Five chapters, named by Yaniv, and no others: „כל השאר תמחק מהתוכן". */
   expect(topics, 'the contents sheet does not list the five chapters').toBe(5);
 
-  // every button carries a colour of its own from the palette
+  /* Each chapter carries a colour of its own — now as a rule at the leading
+     edge rather than a slab of fill, so the page reads as a contents page and
+     prints on a fraction of the ink. */
   const colours = await buttons.evaluateAll((els) =>
-    els.map((e) => getComputedStyle(e).backgroundColor),
+    els.map((e) => getComputedStyle(e.querySelector('.toc-btn__rule')!).backgroundColor),
   );
-  expect(new Set(colours).size, 'the buttons are not colour-coded').toBe(5);
+  expect(new Set(colours).size, 'the chapters are not colour-coded').toBe(5);
 
   /* Each chip carries the page its chapter STARTS on, and nothing else. The
      chapters must run in order and start at page 1. */
@@ -220,16 +231,18 @@ test('the contents sheet lists every chapter and each button reaches its page', 
   const ranged = await buttons.evaluateAll((els) => els.filter((e) => /[–-]/.test(e.textContent ?? '')).length);
   expect(ranged, 'a chip still shows a page range instead of the starting page').toBe(0);
 
-  /* In RTL the leading edge is the RIGHT one, so the page number in its disc is
-     the first thing read and the chapter name follows it. */
+  /* The chapter leads and the page number closes the line — the reader is
+     looking for a chapter, not for a number. In RTL that puts the name at the
+     right and the number at the left. */
   const wrongWayRound = await buttons.evaluateAll((els) =>
     els.filter((e) => {
       const no = e.querySelector('.toc-btn__no')?.getBoundingClientRect();
       const name = e.querySelector('.toc-btn__name')?.getBoundingClientRect();
-      return !no || !name || no.left < name.left;
+      const rule = e.querySelector('.toc-btn__rule')?.getBoundingClientRect();
+      return !no || !name || !rule || no.left > name.left || rule.left < name.left;
     }).length,
   );
-  expect(wrongWayRound, 'the page number is not on the side it is read from first').toBe(0);
+  expect(wrongWayRound, 'the contents row does not read name-then-page').toBe(0);
 
   /* The number is inked in its chapter's colour on a white disc, and three of
      the ten colours are pale enough to vanish there. Measured, not eyeballed. */

@@ -5,7 +5,7 @@
 /* A screen arrives with one short fade and a hair of travel. Anything longer is
    the app making the reader wait for a decoration. Never on paper. */
 .app-main { opacity: 0; translate: 0 6px; }
-.app-main--in { opacity: 1; translate: none; transition: opacity .15s ease, translate .15s cubic-bezier(.16,.84,.34,1); }
+.app-main--in { opacity: 1; translate: none; transition: opacity var(--dur-quick) ease, translate var(--dur-quick) var(--ease); }
 @media (prefers-reduced-motion: reduce) { .app-main { opacity: 1; translate: none; } }
 @media print { .app-main { opacity: 1 !important; translate: none !important; } }
 
@@ -36,13 +36,15 @@ body.is-opening .app-main { padding: 0; }
   background:
     linear-gradient(to top, #04122bF2 0%, #04122bB3 26%, #04122b33 52%, #04122b0D 74%),
     radial-gradient(120% 80% at 50% 100%, #04122b73, transparent 62%);
-  opacity: .5; transition: opacity .8s ease;
+  opacity: .5; transition: opacity var(--dur-slow) ease;
 }
 .opening--ended .opening__scrim { opacity: 1; }
 
 /* ---- the badge: lit, and turning slowly around itself ---- */
+/* Clear of the film, not resting on its edge — on a tall screen the frame has a
+   hard top edge and a badge touching it reads as a mistake. */
 .opening__badge {
-  position: absolute; inset-inline-start: clamp(14px, 4vw, 26px); top: clamp(14px, 4vw, 26px);
+  position: absolute; inset-inline-start: clamp(20px, 5vw, 34px); top: clamp(20px, 5vw, 34px);
   display: block; z-index: 3;
 }
 .opening__badge img {
@@ -54,7 +56,7 @@ body.is-opening .app-main { padding: 0; }
   box-shadow: 0 0 0 3px #ffffff33, 0 0 26px #ffd16640, 0 8px 22px #04122b80;
   animation: badge-turn 14s linear infinite;
   opacity: 0; scale: .84;
-  transition: opacity .6s ease .15s, scale .6s cubic-bezier(.16,.84,.34,1) .15s;
+  transition: opacity var(--dur-slow) ease .15s, scale var(--dur-slow) var(--ease) .15s;
 }
 .opening--in .opening__badge img { opacity: 1; scale: 1; }
 @keyframes badge-turn { to { rotate: 360deg; } }
@@ -69,7 +71,7 @@ body.is-opening .app-main { padding: 0; }
   bottom: clamp(96px, 20vh, 150px);
   color: #fff; text-align: start;
   text-shadow: 0 2px 22px #04122bCC;
-  opacity: 0; transition: opacity .7s ease;
+  opacity: 0; transition: opacity var(--dur-slow) ease;
 }
 .opening--ended .opening__card { opacity: 1; }
 .opening__title, .opening__sub, .opening__meta { margin: 0; overflow: hidden; }
@@ -91,12 +93,12 @@ body.is-opening .app-main { padding: 0; }
   letter-spacing: -1px; font-variant-numeric: tabular-nums;
   text-shadow: 0 0 22px #77F1F673, 0 2px 10px #04122b8C;
   display: inline-block; transform: scale(.7); opacity: 0;
-  transition: transform .55s cubic-bezier(.2,1.5,.5,1) .3s, opacity .4s ease .3s;
+  transition: transform var(--dur-slow) var(--ease-pop) .3s, opacity var(--dur-enter) ease .3s;
 }
 .opening--ended .opening__count { transform: scale(1); opacity: 1; }
 .opening__title span, .opening__sub span, .opening__meta span {
   display: block; transform: translateY(115%);
-  transition: transform .72s cubic-bezier(.16,.84,.34,1);
+  transition: transform var(--dur-slow) var(--ease);
 }
 .opening--ended .opening__title span { transform: none; transition-delay: .05s; }
 .opening--ended .opening__sub span   { transform: none; transition-delay: .16s; }
@@ -116,7 +118,7 @@ body.is-opening .app-main { padding: 0; }
 .ltr-sp { display: inline-block; }
 .opening--ended .ltr-ch {
   opacity: 1; transform: none; filter: none;
-  transition: opacity .34s ease var(--d), transform .44s cubic-bezier(.16,.84,.34,1) var(--d), filter .34s ease var(--d);
+  transition: opacity var(--dur-move) ease var(--d), transform var(--dur-enter) var(--ease) var(--d), filter var(--dur-move) ease var(--d);
 }
 
 /* ---- התחל ----
@@ -146,8 +148,8 @@ body.is-opening .app-main { padding: 0; }
   animation: spin-ring 3.4s linear infinite;
   box-shadow: 0 10px 34px #04122b8C, 0 0 34px #77F1F659;
   opacity: 0; transform: translateY(16px) scale(.96);
-  transition: opacity .55s ease, transform .55s cubic-bezier(.16,.84,.34,1),
-              box-shadow .18s ease;
+  transition: opacity var(--dur-slow) ease, transform var(--dur-slow) var(--ease),
+              box-shadow var(--dur-quick) ease;
   -webkit-tap-highlight-color: transparent; touch-action: manipulation;
 }
 @keyframes spin-ring { to { --spin: 360deg; } }
@@ -169,11 +171,11 @@ body.is-opening .app-main { padding: 0; }
   font-size: clamp(17px, 4.6vw, 21px); letter-spacing: .6px;
   text-shadow: 0 1px 0 #ffffff59;
   box-shadow: 0 1px 0 #ffffff8C inset, 0 -2px 6px #043a4433 inset;
-  transition: filter .18s ease;
+  transition: filter var(--dur-quick) ease;
 }
 .startbtn:hover { box-shadow: 0 14px 42px #04122b9E, 0 0 48px #77F1F68C; }
 .startbtn:hover .startbtn__label { filter: brightness(1.08); }
-.startbtn:active { transform: scale(.965); transition-duration: .07s; }
+.startbtn:active { transform: scale(.965); transition-duration: var(--dur-press); }
 .startbtn:focus-visible { outline: 3px solid #ffd166; outline-offset: 4px; }
 
 /* ---- sound and replay ---- */
@@ -183,7 +185,7 @@ body.is-opening .app-main { padding: 0; }
   background: #04122b8C; backdrop-filter: blur(8px);
   box-shadow: 0 0 0 1px #ffffff2E inset;
   -webkit-tap-highlight-color: transparent; touch-action: manipulation;
-  transition: background-color .16s ease, transform .16s ease, opacity .3s ease;
+  transition: background-color var(--dur-quick) ease, transform var(--dur-quick) ease, opacity var(--dur-move) ease;
 }
 .soundbtn {
   inset-inline-end: clamp(14px, 4vw, 26px);
@@ -280,13 +282,13 @@ body.is-opening .app-main { padding: 0; }
     0 2px 5px #1f2a4414,
     0 12px 28px #1f2a4414;
   cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
-  transition: transform .2s cubic-bezier(.16,.84,.34,1), box-shadow .2s ease, border-color .2s ease;
+  transition: transform var(--dur-move) var(--ease), box-shadow var(--dur-move) ease, border-color var(--dur-move) ease;
   opacity: 0; translate: 0 14px;
 }
 .menu--in .act {
   opacity: 1; translate: none;
-  transition: opacity .42s ease, translate .42s cubic-bezier(.16,.84,.34,1),
-              transform .2s cubic-bezier(.16,.84,.34,1), box-shadow .2s ease, border-color .2s ease;
+  transition: opacity var(--dur-enter) ease, translate var(--dur-enter) var(--ease),
+              transform var(--dur-move) var(--ease), box-shadow var(--dur-move) ease, border-color var(--dur-move) ease;
 }
 .menu--in .act:nth-child(1) { transition-delay: .06s; }
 .menu--in .act:nth-child(2) { transition-delay: .12s; }
@@ -302,7 +304,7 @@ body.is-opening .app-main { padding: 0; }
     0 4px 10px #1f2a441f,
     0 22px 44px #1f2a4426;
 }
-.act:active { transform: translateY(-1px) scale(.975); transition-duration: .08s; }
+.act:active { transform: translateY(-1px) scale(.975); transition-duration: var(--dur-press); }
 .act:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
 
 /* The sheen: a band of light that crosses the face once per hover. */
@@ -311,7 +313,7 @@ body.is-opening .app-main { padding: 0; }
   background: linear-gradient(115deg, transparent 36%, #ffffffE6 50%, transparent 64%);
   translate: -130% 0; opacity: 0;
 }
-.act:hover .act__sheen { animation: act-sheen .72s cubic-bezier(.3,.7,.4,1); }
+.act:hover .act__sheen { animation: act-sheen var(--dur-slow) var(--ease-sweep); }
 @keyframes act-sheen {
   0% { translate: -130% 0; opacity: 0; }
   18% { opacity: .85; }
@@ -321,7 +323,7 @@ body.is-opening .app-main { padding: 0; }
 .act__icon {
   font-size: 27px; line-height: 1;
   filter: drop-shadow(0 3px 6px #1f2a4426);
-  transition: transform .24s cubic-bezier(.16,.84,.34,1);
+  transition: transform var(--dur-move) var(--ease);
 }
 .act:hover .act__icon { transform: translateY(-3px) scale(1.1); }
 .act__label { font-size: 15px; font-weight: 900; letter-spacing: .1px; }
@@ -359,7 +361,7 @@ body.is-opening .app-main { padding: 0; }
 }
 .menu--in .jump {
   opacity: 1; translate: none;
-  transition: opacity .38s ease .58s, translate .38s cubic-bezier(.16,.84,.34,1) .58s;
+  transition: opacity var(--dur-enter) ease .58s, translate var(--dur-enter) var(--ease) .58s;
 }
 @media (prefers-reduced-motion: reduce) { .jump { opacity: 1; translate: none; transition: none; } }
 .jump__select, .jump__go, .jump__first, .jump__toc {
@@ -368,13 +370,13 @@ body.is-opening .app-main { padding: 0; }
   border: 1px solid #dde7f8; color: var(--brand-ink);
   box-shadow: 0 1px 0 #ffffff inset, 0 2px 5px #1f2a440F, 0 8px 20px #1f2a440D;
   cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
-  transition: transform .16s cubic-bezier(.16,.84,.34,1), box-shadow .16s ease, border-color .16s ease;
+  transition: transform var(--dur-quick) var(--ease), box-shadow var(--dur-quick) ease, border-color var(--dur-quick) ease;
 }
 .jump__go:hover, .jump__first:hover, .jump__toc:hover {
   transform: translateY(-2px); border-color: #c3d6f5;
   box-shadow: 0 1px 0 #ffffff inset, 0 4px 9px #1f2a4417, 0 14px 30px #1f2a4417;
 }
-.jump__go:active, .jump__first:active, .jump__toc:active { transform: translateY(0) scale(.97); transition-duration: .07s; }
+.jump__go:active, .jump__first:active, .jump__toc:active { transform: translateY(0) scale(.97); transition-duration: var(--dur-press); }
 .jump__select { flex: 1 1 130px; min-width: 120px; }
 .jump__go {
   background: linear-gradient(180deg, #2f6bff 0%, #1d4ed8 100%);

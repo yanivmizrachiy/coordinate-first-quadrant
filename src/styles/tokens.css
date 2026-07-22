@@ -55,4 +55,39 @@
   --tapsize: 44px; /* minimum comfortable touch target */
   --header-h: 58px;
   --maxw: 1040px;
+
+  /* ---- Motion -------------------------------------------------------------
+     One vocabulary, so the whole app moves the same way and a new control
+     inherits the feel instead of inventing it.
+
+     --ease is the signature curve: it leaves fast and lands softly, which is
+     what makes a press feel answered rather than animated. --ease-pop
+     overshoots slightly and is for something ARRIVING that should be noticed
+     once (the page count). --ease-sweep is flat in the middle and belongs to a
+     band of light crossing a surface.
+
+     The four durations are the only ones the app uses. Anything longer than
+     --dur-slow is a film, not an interaction.
+     ------------------------------------------------------------------------ */
+  --ease: cubic-bezier(.16, .84, .34, 1);
+  --ease-pop: cubic-bezier(.2, 1.5, .5, 1);
+  --ease-sweep: cubic-bezier(.3, .7, .4, 1);
+
+  --dur-press: .08s;   /* the answer to a finger — must beat the eye */
+  --dur-quick: .16s;   /* hover, colour, small movement */
+  --dur-move: .3s;     /* something changing place or size */
+  --dur-enter: .45s;   /* something arriving on screen */
+  --dur-slow: .7s;     /* a title landing, a scrim deepening */
+}
+
+/* Nobody gets motion they asked not to have. One rule, at the root, so a new
+   component cannot forget it. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-press: 0s;
+    --dur-quick: 0s;
+    --dur-move: 0s;
+    --dur-enter: 0s;
+    --dur-slow: 0s;
+  }
 }
