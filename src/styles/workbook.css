@@ -131,7 +131,6 @@
 .calc-box--slim > b { display: inline; margin: 0; }
 .calc-box .answer-line { border-bottom-style: dashed; }
 .calc-answer { display: inline-block; min-width: 6ch; border: 1.4px solid #1d4ed8; border-radius: 6px; padding: 1px 8px; margin-inline-start: 4px; background: #fff; font-weight: 700; }
-.mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; margin-top: 6px; }
 .work-table, .tf-table { width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 13px; }
 .work-table th, .work-table td, .tf-table td {
   border: 1px solid #adb7c6; padding: 6px 7px; vertical-align: middle;

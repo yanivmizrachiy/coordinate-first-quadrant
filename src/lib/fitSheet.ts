@@ -20,6 +20,8 @@ const BASE = 0;
 const MAX = 44;
 /** How much taller a single drawing may get, at most. */
 const GRID_GROWTH = 120;
+/** How much air a task item the learner writes in may gain, top and bottom. */
+const ANSWER_AIR = 12;
 /** How much taller a single writing line may get, at most. */
 const LINE_GROWTH = 21;
 
@@ -143,6 +145,27 @@ export function fitSheet(sheet: HTMLElement): void {
       shrank = true;
     }
     if (!shrank) break;
+  }
+
+  /* Room still going spare? Then it belongs to the lines the learner writes ON.
+     A task list packed at its natural line height leaves a child nowhere to put
+     an answer, however much white space sits at the foot of the page — which is
+     exactly what Yaniv reported: „יש מקום, אז למה הכל צפוף?”. Only items that
+     actually contain a box get the air; a list of instructions stays tight. */
+  const writable = [...content.querySelectorAll<HTMLElement>('.tasks li')].filter(
+    (li) => li.querySelector('.blank, .word-blank, .pair-blank'),
+  );
+  for (const li of writable) li.style.paddingBlock = '';
+  let air = 0;
+  for (let pass = 0; pass < 4 && writable.length; pass++) {
+    if (room() < 34) break;
+    if (air >= ANSWER_AIR) break;
+    air += 3;
+    for (const li of writable) li.style.paddingBlock = `${air}px`;
+  }
+  while (air > 0 && room() < 0) {
+    air -= 3;
+    for (const li of writable) li.style.paddingBlock = air > 0 ? `${air}px` : '';
   }
 
   const leftover = room();

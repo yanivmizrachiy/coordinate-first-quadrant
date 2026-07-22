@@ -258,10 +258,19 @@ test('the page viewer keeps its controls to one row and the sheet readable', asy
   await expect(bar).toHaveCount(1);
   await expect(page.locator('.toolbar-row')).toHaveCount(0); // the second row is gone
 
-  const rows = await bar.evaluate(
-    (b) => new Set([...b.children].map((c) => Math.round(c.getBoundingClientRect().top + c.getBoundingClientRect().height / 2))).size,
-  );
-  expect(rows, 'the control bar wrapped onto more than one row').toBe(1);
+  const rows = async (): Promise<number> =>
+    bar.evaluate(
+      (b) => new Set([...b.children].map((c) => Math.round(c.getBoundingClientRect().top + c.getBoundingClientRect().height / 2))).size,
+    );
+  expect(await rows(), 'the control bar wrapped onto more than one row').toBe(1);
+
+  // the booklet carries more controls — range pickers too — and must still fit
+  await page.goto('/#/book');
+  await page.waitForTimeout(4000);
+  await expect(page.locator('.toolbar-row')).toHaveCount(0);
+  expect(await rows(), 'the booklet control bar wrapped').toBe(1);
+  await page.goto('/#/workbook/5');
+  await page.waitForTimeout(2500);
 
   // full size by default: a whole A4 on a laptop screen means 8px text
   const scale = await page.locator('.pageviewer__sheetwrap').evaluate(
