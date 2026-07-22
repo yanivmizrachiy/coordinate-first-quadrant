@@ -3,7 +3,7 @@ import { sheet, calcBox, exercise } from '../authoring';
 
 export const RIGHT_ANGLE_SUMMARY: WorkbookPageContent = sheet({
   sectionClass: "sheet practice",
-  title: "זווית ישרה — תרגול מסכם",
+  title: "זווית ישרה במערכת הצירים",
   subtitle: "מלבנים, זוויות ישרות, היקף ושטח ברביע הראשון",
   contentTag: 'div',
   content: `

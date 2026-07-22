@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, calcBox } from '../authoring';
+import { sheet, calcBox, exercise, sideValue } from '../authoring';
 
 export const SQUARES_INTRO: WorkbookPageContent = sheet({
   sectionClass: "sheet guided ultra-dense",
@@ -15,7 +15,7 @@ export const SQUARES_INTRO: WorkbookPageContent = sheet({
 <li>הצלעות המקבילות לציר <span class="math-ltr" dir="ltr">x</span> הן <span class="blank" data-missing="letter" style="--blank-width:8ch"></span>.</li>
 <li>המלבן הזה הוא <b>ריבוע</b>, כי כל הצלעות שלו <span class="blank" data-missing="relation" style="--blank-width:5ch"></span>.</li>
 </ul>
-<div class="calc-ltr" dir="ltr"><span class="calc-ltr__name">AB</span><span class="calc-ltr__eq">=</span><span class="blank" data-missing="number" style="--blank-width:10ch"></span><span class="calc-ltr__eq">=</span><span class="blank" data-missing="number" style="--blank-width:4ch"></span><span class="calc-ltr__unit">יח'</span></div><div class="calc-ltr" dir="ltr"><span class="calc-ltr__name">AB</span><span class="calc-ltr__eq">=</span><span class="blank" data-missing="number" style="--blank-width:4ch"></span><span class="calc-ltr__unit">יח'</span></div>
+${exercise('AB')}${sideValue('AB')}
 ${calcBox({ perimeter: true, area: true })}
 <ul class="tasks compact">
 <li>באורך <span class="blank" data-missing="number" style="--blank-width:3ch"></span> יח' וברוחב <span class="blank" data-missing="number" style="--blank-width:3ch"></span> יח' — ולכן האורך והרוחב <b>זהים</b>.</li>
