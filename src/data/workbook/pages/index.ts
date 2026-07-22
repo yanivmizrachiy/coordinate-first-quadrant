@@ -46,3 +46,8 @@ export { RIGHT_ANGLE_BUILD } from './right-angle-build';
 export { RIGHT_ANGLE_SUMMARY } from './right-angle-summary';
 export { AXES_IDENTIFY } from './axes-identify';
 export { POSTER_SECRET_PICTURE, POSTER_SECRET_WORD, POSTER_TREASURE_MAZE, POSTER_ROUTE_RACE } from './poster-games';
+export { SEGMENT_LENGTH } from './segment-length';
+export { LIFE_PHONE_SCREEN } from './life-phone-screen';
+export { LIFE_HALL_SEATS } from './life-hall-seats';
+export { LIFE_PIXEL_ART } from './life-pixel-art';
+export { LIFE_DELIVERY_ROUTE } from './life-delivery-route';

@@ -57,6 +57,11 @@ import {
   SQUARES_INTRO,
   SQUARES_SUMMARY,
   SQUARES_PRACTICE,
+  SEGMENT_LENGTH,
+  LIFE_PHONE_SCREEN,
+  LIFE_HALL_SEATS,
+  LIFE_PIXEL_ART,
+  LIFE_DELIVERY_ROUTE,
 } from './pages';
 import { GAMES, type GameDefinition } from '../../games';
 import type { WorkbookPageContent, WorkbookTopic } from './types';
@@ -139,7 +144,7 @@ const BOOK: { id: string; title: string; slots: Slot[] }[] = [
     POSITION_LANGUAGE_INTRO, POSITION_LANGUAGE_PRACTICE, game('color-decode'),
   ] },
   { id: 'same', title: 'שיעורים זהים וקטעים מקבילים', slots: [
-    SAME_COORD_INTRO, SAME_COORD_PRACTICE, game('same-axis'),
+    SAME_COORD_INTRO, SEGMENT_LENGTH, SAME_COORD_PRACTICE, game('same-axis'),
   ] },
   { id: 'relations', title: 'יחסים בין שיעורים', slots: [
     RELATIONS_INTRO, RELATIONS_PRACTICE,
@@ -156,6 +161,9 @@ const BOOK: { id: string; title: string; slots: Slot[] }[] = [
   ] },
   { id: 'rect', title: 'מלבנים, ריבועים, היקף ושטח', slots: [
     RECTANGLES_INTRO, RECTANGLES_PRACTICE, SQUARES_INTRO, SQUARES_SUMMARY, SQUARES_PRACTICE,
+  ] },
+  { id: 'life', title: 'מערכת צירים בחיים שלנו', slots: [
+    LIFE_PHONE_SCREEN, LIFE_HALL_SEATS, LIFE_PIXEL_ART, LIFE_DELIVERY_ROUTE,
   ] },
   { id: 'rightangle', title: 'מקביל, מאונך וזווית ישרה', slots: [
     PARALLEL_PERPENDICULAR, RIGHT_ANGLE_INTRO, RIGHT_ANGLE_PRACTICE, RIGHT_ANGLE_BUILD, RIGHT_ANGLE_SUMMARY,
