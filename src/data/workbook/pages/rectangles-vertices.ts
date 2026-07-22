@@ -31,6 +31,5 @@ ${grid({ size: 'sm', label: 'מערכת צירים ריקה לסימון המל�
 ${calcBox({ perimeter: true, area: true })}
 </section>
 </div>
-</div>
 `,
 });

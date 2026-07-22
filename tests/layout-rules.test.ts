@@ -136,6 +136,15 @@ describe('completions ask for something different each time', () => {
     expect(pageByNumber(1)!.html).toContain('ממוקם');
   });
 
+  /* „האות משמאל לסוגריים בלי סימן שווה בכלל." A point is written S(2,5) —
+     the letter against the parentheses. „S = (2,5)" is not our notation. */
+  it('a point is never written with an equals sign before its parentheses', () => {
+    for (const p of WORKBOOK) {
+      expect(p.html, `page ${p.n} writes a point as „X = (…)"`)
+        .not.toMatch(/[A-Z]′?\s*=\s*(<span[^>]*>)?\s*\(/);
+    }
+  });
+
   /* Words Yaniv has ruled out by name. „שדרה” for a street („הסגנון שלנו לא
      להגיד שדרה”) — a page from a learner's life uses the plain word. */
   it('none of the words Yaniv has ruled out appear anywhere', () => {
@@ -741,5 +750,22 @@ describe('a calculation is written left to right', () => {
       }
     }
     expect([...new Set(bare)], `a calculation has no units on ${bare.join(', ')}`).toEqual([]);
+  });
+});
+
+/* An unbalanced tag does not fail loudly — the browser silently reparents what
+   comes after it. One stray „</div>” on page 69 closed the SHEET, so that page's
+   footer escaped and was painted across the contents page: „למה הוספת בטעות
+   כיתובים באמצע עמוד השער". Nothing in the build or the tests noticed. */
+describe('every page is valid markup', () => {
+  const TAGS = ['div', 'section', 'ul', 'li', 'table', 'tbody', 'tr', 'td', 'p'];
+  it('no page opens or closes a tag it does not balance', () => {
+    for (const page of WORKBOOK) {
+      for (const tag of TAGS) {
+        const open = (page.html.match(new RegExp(`<${tag}[ >]`, 'g')) ?? []).length;
+        const close = (page.html.match(new RegExp(`</${tag}>`, 'g')) ?? []).length;
+        expect(open, `page ${page.n}: ${open} <${tag}> against ${close} </${tag}>`).toBe(close);
+      }
+    }
   });
 });

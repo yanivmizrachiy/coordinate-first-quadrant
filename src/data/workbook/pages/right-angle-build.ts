@@ -43,7 +43,6 @@ export const RIGHT_ANGLE_BUILD: WorkbookPageContent = sheet({
 <li>אורך הצלע <span class="math-ltr" dir="ltr">AB</span> והרוחב <span class="math-ltr" dir="ltr">BC</span> הם ההפרשים בין השיעורים המתאימים.</li>
 </ul>
 ${calcBox({ perimeter: true, area: true })}
-</div>
 </section>
 `,
 });

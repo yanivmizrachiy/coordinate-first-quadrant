@@ -50,5 +50,6 @@ ${calcBox({ perimeter: true, area: true })}
 <li>מהי נקודת הסיום? <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
 </ul>
 </section>
+</div>
 `,
 });

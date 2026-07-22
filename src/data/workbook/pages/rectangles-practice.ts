@@ -51,5 +51,6 @@ ${exercise('P')}
 ${exercise('S', 'יח"ר')}
 </div>
 </section>
+</div>
 `,
 });
