@@ -546,6 +546,17 @@ describe('a calculation gets units and room to work', () => {
     expect(new Set(graphs.map((p) => p.subtitle)).size, 'two sheets share a subtitle').toBe(6);
   });
 
+  /* USER_MEMORY §8. Varying by rewriting the sentence is the opposite of the
+     rule: the sentence is written once and the GAP moves inside it. „בשתי
+     נקודותיו” is the shape that came from rewriting instead of moving. */
+  it('a parallel-segment item keeps the one sentence and moves the gap', () => {
+    for (const p of WORKBOOK) {
+      const t = p.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+      expect(t, `page ${p.n}: „בשתי נקודותיו” — say „בשתי הנקודות שעליו”`)
+        .not.toContain('בשתי נקודותיו');
+    }
+  });
+
   it('a sheet that asks for a calculation leaves space to do it', () => {
     for (const p of WORKBOOK) {
       if (!computes(p.html)) continue;

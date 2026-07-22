@@ -34,7 +34,7 @@ export const SAME_COORD_INTRO: WorkbookPageContent = sheet({
 <h3>ג. השלימו.</h3>
 <ul class="tasks compact">
 <li>לשתי הנקודות <span class="math-ltr" dir="ltr">P(4,1)</span> ו־<span class="math-ltr" dir="ltr">Q(4,6)</span> יש שיעור <span class="blank" data-missing="letter" style="--blank-width:3ch"></span> זהה, ולכן הקטע <span class="math-ltr" dir="ltr">PQ</span> מקביל לציר <span class="math-ltr" dir="ltr">y</span>.</li>
-<li>הקטע <span class="math-ltr" dir="ltr">RS</span> שבין <span class="math-ltr" dir="ltr">R(2,3)</span> ובין <span class="math-ltr" dir="ltr">S(7,3)</span> מקביל לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>, כי שיעור ה־<span class="math-ltr" dir="ltr">y</span> שלהן זהה.</li>
+<li>הקטע <span class="math-ltr" dir="ltr">RS</span> מקביל לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>, כי בשתי הנקודות שעליו שיעור ה־<span class="math-ltr" dir="ltr">y</span> זהה.</li>
 </ul>
 </section>
 <section class="q-card">
