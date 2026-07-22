@@ -11,16 +11,18 @@ export const SAME_COORD_INTRO: WorkbookPageContent = sheet({
 </div>
 <div>
 <section class="q-card">
-<h3>א. הנקודות A ו־B.</h3>
-<p>שיעורי x: <span class="blank" style="--blank-width:3ch"></span> ו־<span class="blank" style="--blank-width:3ch"></span></p>
-<p>השיעור הזהה: <span class="blank" style="--blank-width:4ch"></span></p>
-<p>AB מקביל לציר: <span class="blank" style="--blank-width:4ch"></span></p>
+<h3>א. הנקודות <span class="math-ltr" dir="ltr">A</span> ו־<span class="math-ltr" dir="ltr">B</span>.</h3>
+<ul class="tasks compact">
+<li>לשתי הנקודות <span class="math-ltr" dir="ltr">A</span> ו־<span class="math-ltr" dir="ltr">B</span> יש שיעור <span class="blank" data-missing="letter" style="--blank-width:3ch"></span> <b>זהה</b>, והוא <span class="blank" data-missing="number" style="--blank-width:3ch"></span>.</li>
+<li>לכן הקטע <span class="math-ltr" dir="ltr">AB</span> מקביל לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>.</li>
+</ul>
 </section>
 <section class="q-card">
-<h3>ב. הנקודות B ו־C.</h3>
-<p>שיעורי y: <span class="blank" style="--blank-width:3ch"></span> ו־<span class="blank" style="--blank-width:3ch"></span></p>
-<p>השיעור הזהה: <span class="blank" style="--blank-width:4ch"></span></p>
-<p>BC מקביל לציר: <span class="blank" style="--blank-width:4ch"></span></p>
+<h3>ב. הנקודות <span class="math-ltr" dir="ltr">B</span> ו־<span class="math-ltr" dir="ltr">C</span>.</h3>
+<ul class="tasks compact">
+<li>לשתי הנקודות <span class="math-ltr" dir="ltr">B</span> ו־<span class="math-ltr" dir="ltr">C</span> יש שיעור <span class="math-ltr" dir="ltr">y</span> זהה, והוא <span class="blank" data-missing="number" style="--blank-width:3ch"></span>.</li>
+<li>כתבו שתי נקודות משלכם שיש להן שיעור <span class="math-ltr" dir="ltr">x</span> זהה: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> ו־<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>.</li>
+</ul>
 </section>
 </div>
 </div>

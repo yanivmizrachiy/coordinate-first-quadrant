@@ -45,14 +45,20 @@ export const DISTANCE_INTRO: WorkbookPageContent = sheet({
 </section>
 <div class="cols-2">
 <section class="q-card">
-<h3>ג. מרחק אופקי: A(2,5), B(7,5).</h3>
-<p>השיעור הזהה: <span class="blank" style="--blank-width:4ch"></span></p>
-<p>המרחק: <span class="blank" style="--blank-width:4ch"></span></p>
+<h3>ג. מרחק אופקי בין שתי נקודות.</h3>
+<ul class="tasks compact">
+<li>לשתי הנקודות <span class="math-ltr" dir="ltr">A(2,5)</span> ו־<span class="math-ltr" dir="ltr">B(7,5)</span> יש שיעור <span class="blank" data-missing="letter" style="--blank-width:3ch"></span> <b>זהה</b>.</li>
+<li>תרגיל החיסור הוא <span class="math-ltr" dir="ltr">7 − 2 =</span> <span class="blank" data-missing="number" style="--blank-width:3ch"></span>, ולכן המרחק ביניהן <span class="blank" data-missing="number" style="--blank-width:3ch"></span> יח'.</li>
+<li>כתבו שתי נקודות משלכם שיש להן שיעור <span class="math-ltr" dir="ltr">y</span> זהה: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> ו־<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>.</li>
+</ul>
 </section>
 <section class="q-card">
-<h3>ד. מרחק אנכי: C(4,1), D(4,6).</h3>
-<p>השיעור הזהה: <span class="blank" style="--blank-width:4ch"></span></p>
-<p>המרחק: <span class="blank" style="--blank-width:4ch"></span></p>
+<h3>ד. מרחק אנכי בין שתי נקודות.</h3>
+<ul class="tasks compact">
+<li>לשתי הנקודות <span class="math-ltr" dir="ltr">C(4,1)</span> ו־<span class="math-ltr" dir="ltr">D(4,6)</span> יש שיעור <span class="blank" data-missing="letter" style="--blank-width:3ch"></span> זהה, ולכן הקטע <span class="math-ltr" dir="ltr">CD</span> מקביל לציר <span class="math-ltr" dir="ltr">y</span>.</li>
+<li>ה־<span class="math-ltr" dir="ltr">y</span> הגבוה פחות ה־<span class="math-ltr" dir="ltr">y</span> הנמוך, <span class="math-ltr" dir="ltr">6 − 1 =</span> <span class="blank" data-missing="number" style="--blank-width:3ch"></span> יח'.</li>
+<li>כתבו שתי נקודות משלכם שיש להן שיעור <span class="math-ltr" dir="ltr">x</span> זהה: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> ו־<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>.</li>
+</ul>
 </section>
 </div>
 <section class="q-card">
