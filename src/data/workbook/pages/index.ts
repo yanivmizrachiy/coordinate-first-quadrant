@@ -53,3 +53,6 @@ export { LIFE_PHONE_SCREEN } from './life-phone-screen';
 export { LIFE_HALL_SEATS } from './life-hall-seats';
 export { LIFE_PIXEL_ART } from './life-pixel-art';
 export { LIFE_DELIVERY_ROUTE } from './life-delivery-route';
+export { RAYS_RIGHT_ANGLE } from './rays-right-angle';
+export { RAYS_BUILD_RIGHT_ANGLE } from './rays-build-right-angle';
+export { RAYS_CLAIMS } from './rays-claims';
