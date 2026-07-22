@@ -432,17 +432,40 @@ describe('a calculation gets units and room to work', () => {
     for (const p of WORKBOOK) {
       const text = p.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
       if (!/שטח|היקף/.test(text)) continue;
-      const finals = [...p.html.matchAll(/<div class="calc-final">([\s\S]*?)<\/div>\s*<\/div>/g)];
-      if (!finals.length) continue;
-      for (const f of finals) {
+      for (const f of p.html.matchAll(/<div class="calc-final">([\s\S]*?)<\/div>\s*<\/div>/g)) {
         const plain = f[1]!.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
         expect(plain, `page ${p.n}: a final answer without S or P`).toMatch(/[SP] =/);
         expect(plain, `page ${p.n}: a final answer without its unit`).toMatch(/יח/);
       }
-      // and the working itself gets more than a single squeezed line
-      const rules = (p.html.match(/<div class="calc-box"><b>דרך החישוב:<\/b><div class="answer-line">/g) ?? []).length;
-      const boxes = (p.html.match(/<div class="calc-box">/g) ?? []).length;
-      expect(rules, `page ${p.n}: a calculation with no room to write the working`).toBe(boxes);
+      /* Room to work means ruled lines OR the named exercise lines that replaced
+         them — „PQ = ____ = ____ יח'”, written left to right. Either is room; a
+         box with neither is a calculation with nowhere to do it. */
+      for (const box of p.html.split('<div class="calc-box">').slice(1)) {
+        const head = box.slice(0, 400);
+        expect(
+          /answer-line|calc-ltr/.test(head),
+          `page ${p.n}: a calculation with no room to write the working`,
+        ).toBe(true);
+      }
+    }
+  });
+
+  /* USER_MEMORY §10. A rectangle has an אורך and a רוחב — the longer side and
+     the shorter one. „הצלע האופקית” describes the picture, not the shape. */
+  it('a rectangle is described by its אורך and רוחב, not by which way it points', () => {
+    for (const p of WORKBOOK) {
+      const text = p.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+      expect(text, `page ${p.n}: „הצלע האופקית/האנכית” — say אורך and רוחב`)
+        .not.toMatch(/הצלע ה(אופקית|אנכית)/);
+    }
+  });
+
+  /* An exercise is worked left to right, whatever direction the sheet runs. */
+  it('an exercise line is pinned left to right', () => {
+    for (const p of WORKBOOK) {
+      for (const m of p.html.matchAll(/<div class="calc-ltr"([^>]*)>/g)) {
+        expect(m[1], `page ${p.n}: an exercise line that is not pinned LTR`).toContain('dir="ltr"');
+      }
     }
   });
 

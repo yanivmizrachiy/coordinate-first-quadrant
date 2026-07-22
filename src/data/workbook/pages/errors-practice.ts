@@ -41,7 +41,7 @@ export const ERRORS_PRACTICE: WorkbookPageContent = sheet({
 <h3>טעות במלבן</h3>
 <p>שלושה קודקודים של מלבן הם <span class="math-ltr" dir="ltr">(1,1), (6,1), (6,4)</span>. איתי הציע את <span class="math-ltr" dir="ltr">(2,4)</span> כקודקוד הרביעי.</p>
 <p>הקודקוד הנכון: <span class="blank" style="--blank-width:10ch"></span></p>
-<p>הסבירו באמצעות צלע אופקית וצלע אנכית.</p>
+<p>הסבירו באמצעות האורך והרוחב של המלבן.</p>
 <div class="answer-line">
 </div>
 </section>

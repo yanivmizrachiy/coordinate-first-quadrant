@@ -34,7 +34,7 @@ export const RIGHT_ANGLE_BUILD: WorkbookPageContent = sheet({
 </section>
 <section class="q-card span-2">
 <h3>ג. חשבו את היקף ושטח המלבן ABCD מסעיף ב.</h3>
-<p>אורך הצלע האופקית <span class="math-ltr" dir="ltr">AB</span>: <span class="blank" style="--blank-width:4ch"></span> יח'. &nbsp; אורך הצלע האנכית <span class="math-ltr" dir="ltr">BC</span>: <span class="blank" style="--blank-width:4ch"></span> יח'.</p>
+<p>האורך <span class="math-ltr" dir="ltr">AB</span>: <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'. &nbsp; הרוחב <span class="math-ltr" dir="ltr">BC</span>: <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'.</p>
 <p>היקף המלבן: <span class="blank" style="--blank-width:4ch"></span> יח'. &nbsp; שטח המלבן: <span class="blank" style="--blank-width:4ch"></span> יח"ר.</p>
 <div class="calc-box"><b>דרך החישוב:</b>
 <div class="answer-line">

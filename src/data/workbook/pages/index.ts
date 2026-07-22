@@ -27,6 +27,7 @@ export { ERRORS_INTRO } from './errors-intro';
 export { ERRORS_PRACTICE } from './errors-practice';
 export { RECTANGLES_INTRO } from './rectangles-intro';
 export { RECTANGLES_PRACTICE } from './rectangles-practice';
+export { RECTANGLES_VERTICES } from './rectangles-vertices';
 export { SQUARES_INTRO } from './squares-intro';
 export { SQUARES_SUMMARY } from './squares-summary';
 export { SQUARES_PRACTICE } from './squares-practice';

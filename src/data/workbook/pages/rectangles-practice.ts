@@ -1,50 +1,58 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet } from '../authoring';
+import { sheet, blank, ltr, pair, exercise, sideValue, grid } from '../authoring';
 
 export const RECTANGLES_PRACTICE: WorkbookPageContent = sheet({
   sectionClass: "sheet practice",
   title: "מלבנים במערכת הצירים",
-  subtitle: "קודקודים, צלעות אופקיות ואנכיות, היקף ושטח",
+  subtitle: "מוצאים קודקוד חסר, ומחשבים אורך ורוחב",
   content: `
 <div class="two-col">
 <section class="q-card">
 <h3>משלימים מלבן</h3>
 <p>נתונים שלושה קודקודים: <span class="math-ltr" dir="ltr">A(1,1), B(6,1), C(6,4)</span>.</p>
-<div aria-label="שלושה קודקודים של מלבן" class="coordinate-grid grid-xs" data-arrows="[]" data-points='[{"x": 1, "y": 1, "label": "A", "dx": 10, "dy": -10}, {"x": 6, "y": 1, "label": "B", "dx": 10, "dy": -10}, {"x": 6, "y": 4, "label": "C", "dx": 10, "dy": -10}]' data-polygons="[]" data-segments='[{"from": [1, 1], "to": [6, 1], "type": "shape"}, {"from": [6, 1], "to": [6, 4], "type": "shape"}]' role="img">
+<div aria-label="שלושה קודקודים של מלבן" class="coordinate-grid grid-sm" data-arrows="[]" data-points='[{"x": 1, "y": 1, "label": "A", "dx": 10, "dy": -10}, {"x": 6, "y": 1, "label": "B", "dx": 10, "dy": -10}, {"x": 6, "y": 4, "label": "C", "dx": 10, "dy": -10}]' data-polygons="[]" data-segments='[{"from": [1, 1], "to": [6, 1], "type": "shape"}, {"from": [6, 1], "to": [6, 4], "type": "shape"}]' role="img">
 </div>
 <p class="axis-answer-box">סמנו את הקודקוד הרביעי <span class="math-ltr" dir="ltr">D</span> וכתבו את שיעוריו כזוג סדור: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
 </section>
 <section class="q-card">
-<h3>אורכי צלעות</h3>
-<div aria-label="מלבן PQRS במערכת צירים" class="coordinate-grid grid-xs" data-arrows="[]" data-points='[{"x": 2, "y": 2, "label": "P", "dx": 10, "dy": -10}, {"x": 7, "y": 2, "label": "Q", "dx": 10, "dy": -10}, {"x": 7, "y": 5, "label": "R", "dx": 10, "dy": -10}, {"x": 2, "y": 5, "label": "S", "dx": 10, "dy": -10}]' data-polygons='[{"points": [[2, 2], [7, 2], [7, 5], [2, 5]], "type": "shape"}]' data-segments="[]" role="img">
+<h3>אורך ורוחב של מלבן</h3>
+${grid({
+  size: 'md',
+  label: 'המלבן PQRS ובו ארבעה קודקודים מסומנים',
+  points: [
+    { x: 2, y: 2, label: 'P', dx: 12, dy: 14 },
+    { x: 7, y: 2, label: 'Q', dx: 12, dy: 14 },
+    { x: 7, y: 5, label: 'R', dx: 12, dy: -10 },
+    { x: 2, y: 5, label: 'S', dx: -14, dy: -10 },
+  ],
+  polygons: [{ points: [[2, 2], [7, 2], [7, 5], [2, 5]] }],
+})}
+<ul class="tasks compact">
+<li>ה<b>אורך</b> של מלבן הוא הצלע הארוכה, וה<b>רוחב</b> שלו הוא הצלע ה${blank(6, 'property')}.</li>
+<li>במלבן ${ltr('PQRS')} האורך הוא הצלע ${blank(4, 'letter')}, והרוחב הוא הצלע ${ltr('QR')}.</li>
+</ul>
+<div class="calc-box"><b>דרך החישוב:</b>
+${exercise('PQ')}
+${sideValue('PQ')}
+${exercise('QR')}
+${sideValue('QR')}
+${exercise('P')}
+${exercise('S', 'יח"ר')}
 </div>
-<ul class="tasks compact">
-<li>אורך הצלע האופקית <span class="math-ltr" dir="ltr">PQ</span>: <span class="blank" style="--blank-width:4ch"></span> יח'.</li>
-<li>אורך הצלע האנכית <span class="math-ltr" dir="ltr">QR</span>: <span class="blank" style="--blank-width:4ch"></span> יח'.</li>
-</ul>
-<ul class="tasks compact">
-<li>אורך צלע הוא ה<span class="blank" data-missing="concept" style="--blank-width:6ch"></span> בין השיעורים המתאימים.</li>
-</ul>
-<div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
 </section>
 <section class="q-card span-2">
-<h3>מזהים קודקודים</h3>
-<p>למלבן צלעות מקבילות לצירים. שני קודקודים נגדיים הם <span class="math-ltr" dir="ltr">(1,2)</span> ו־<span class="math-ltr" dir="ltr">(7,5)</span>.</p>
-<p>כתבו את שני הקודקודים האחרים כזוגות סדורים:</p>
-<p><span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp;&nbsp; <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<p>אורך המלבן: <span class="blank" style="--blank-width:4ch"></span> יח' &nbsp; רוחב המלבן: <span class="blank" style="--blank-width:4ch"></span> יח'</p>
-<p>איזו מהנקודות הבאות ממוקמת על <b>היקף</b> המלבן? הקיפו.</p>
-<div class="choice-row"><span class="choice"><span class="math-ltr" dir="ltr">(4,2)</span></span><span class="choice"><span class="math-ltr" dir="ltr">(3,3)</span></span><span class="choice"><span class="math-ltr" dir="ltr">(8,5)</span></span><span class="choice"><span class="math-ltr" dir="ltr">(2,6)</span></span>
+<h3>ג. סמנו מלבן משלכם, ואז השלימו את החסר.</h3>
+<ul class="tasks compact">
+<li>סמנו על הסרטוט שלמעלה מלבן ${ltr('ABCD')} שצלעותיו מקבילות לצירים, והאורך שלו גדול מהרוחב.</li>
+<li>הקודקודים שבחרתם: ${pair('A')} ${pair('B')} ${pair('C')} ${pair('D')}</li>
+</ul>
+<div class="calc-box"><b>דרך החישוב:</b>
+${exercise('AB')}
+${sideValue('AB')}
+${exercise('BC')}
+${exercise('P')}
+${exercise('S', 'יח"ר')}
 </div>
 </section>
-<section class="q-card span-2">
-<h3>בונים מלבן</h3>
-<p>ציירו מלבן שאחד מקודקודיו הוא <span class="math-ltr" dir="ltr">(2,1)</span>, אורכו 4 יחידות ורוחבו 3 יחידות. כל הקודקודים חייבים להיות ברביע הראשון.</p>
-<div aria-label="מערכת צירים ריקה לבניית מלבן" class="coordinate-grid grid-xs" data-arrows="[]" data-points="[]" data-polygons="[]" data-segments="[]" role="img">
-</div>
-<p class="axis-answer-box">כתבו את ארבעת הקודקודים כזוגות סדורים: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
-</section>
-</div>
 `,
 });

@@ -46,7 +46,7 @@ export const SQUARES_SUMMARY: WorkbookPageContent = sheet({
 <h3>ג. תרגיל מסכם.</h3>
 <p>מלבן וריבוע חולקים את הקודקוד <span class="math-ltr" dir="ltr">(2,2)</span>. לריבוע צלע באורך 3. למלבן אורך 5 ורוחב 2. כל הצלעות מקבילות לצירים.</p>
 <p>ציירו אפשרות אחת לכל צורה וכתבו את קודקודיה.</p>
-<div aria-label="מערכת צירים ריקה לתרגיל מסכם" class="coordinate-grid grid-xs" data-arrows="[]" data-points="[]" data-polygons="[]" data-segments="[]" role="img">
+<div aria-label="מערכת צירים ריקה לתרגיל מסכם" class="coordinate-grid grid-sm" data-arrows="[]" data-points="[]" data-polygons="[]" data-segments="[]" role="img">
 </div>
 <p class="axis-answer-box">קודקודי הריבוע: <span class="blank" style="--blank-width:34ch"></span></p>
 <p>קודקודי המלבן: <span class="blank" style="--blank-width:34ch"></span></p>
