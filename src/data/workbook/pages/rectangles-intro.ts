@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet } from '../authoring';
+import { sheet, calcBox } from '../authoring';
 
 export const RECTANGLES_INTRO: WorkbookPageContent = sheet({
   sectionClass: "sheet guided dense",
@@ -23,7 +23,7 @@ export const RECTANGLES_INTRO: WorkbookPageContent = sheet({
 <li>הצלע <span class="math-ltr" dir="ltr">AB</span> מקבילה לציר <span class="math-ltr" dir="ltr">x</span>: ה־<span class="math-ltr" dir="ltr">x</span> הימני פחות ה־<span class="math-ltr" dir="ltr">x</span> השמאלי, <span class="math-ltr" dir="ltr">6 − 1 =</span> <span class="blank" data-missing="number" style="--blank-width:3ch"></span> יח'.</li>
 <li>הצלע <span class="math-ltr" dir="ltr">BC</span> מקבילה לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>: ה־<span class="math-ltr" dir="ltr">y</span> הגבוה פחות ה־<span class="math-ltr" dir="ltr">y</span> הנמוך, <span class="math-ltr" dir="ltr">4 − 1 =</span> 3 יח'.</li>
 </ul>
-<div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
+${calcBox({ perimeter: true, area: true })}
 </section>
 </div>
 </div>
@@ -47,7 +47,7 @@ export const RECTANGLES_INTRO: WorkbookPageContent = sheet({
 <div aria-label="מערכת צירים ברביע הראשון" class="coordinate-grid grid-sm" data-arrows="[]" data-labelboxes="[]" data-points='[{"x": 2, "y": 2, "label": "P"}, {"x": 7, "y": 2, "label": "Q"}, {"x": 7, "y": 5, "label": "R"}]' data-polygons="[]" data-segments='[{"from": [2, 2], "to": [7, 2]}, {"from": [7, 2], "to": [7, 5]}]' role="img">
 </div>
 <p class="axis-answer-box">הקודקוד החסר: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
+${calcBox({ perimeter: true, area: true })}
 </section>
 <section class="q-card">
 <h3>ה. עבור A(2,2), B(7,2), C(7,5) - הקיפו את הקודקוד הרביעי והסבירו.</h3>
