@@ -55,6 +55,7 @@ import {
   RECTANGLES_INTRO,
   RECTANGLES_PRACTICE,
   SQUARES_INTRO,
+  SQUARES_SUMMARY,
   SQUARES_PRACTICE,
 } from './pages';
 import { GAMES, type GameDefinition } from '../../games';
@@ -154,7 +155,7 @@ const BOOK: { id: string; title: string; slots: Slot[] }[] = [
     ERRORS_INTRO, ERRORS_PRACTICE, game('suspect-point'),
   ] },
   { id: 'rect', title: 'מלבנים, ריבועים, היקף ושטח', slots: [
-    RECTANGLES_INTRO, RECTANGLES_PRACTICE, SQUARES_INTRO, SQUARES_PRACTICE,
+    RECTANGLES_INTRO, RECTANGLES_PRACTICE, SQUARES_INTRO, SQUARES_SUMMARY, SQUARES_PRACTICE,
   ] },
   { id: 'rightangle', title: 'מקביל, מאונך וזווית ישרה', slots: [
     PARALLEL_PERPENDICULAR, RIGHT_ANGLE_INTRO, RIGHT_ANGLE_PRACTICE, RIGHT_ANGLE_BUILD, RIGHT_ANGLE_SUMMARY,

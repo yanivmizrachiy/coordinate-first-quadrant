@@ -3,7 +3,7 @@ import { sheet } from '../authoring';
 
 export const ON_AXES_PRACTICE: WorkbookPageContent = sheet({
   sectionClass: "sheet practice",
-  title: "נקודות על הצירים",
+  title: "נקודות שעל הצירים",
   subtitle: "מזהים x=0, y=0 ואת ראשית הצירים",
   content: `
 <div class="two-col">

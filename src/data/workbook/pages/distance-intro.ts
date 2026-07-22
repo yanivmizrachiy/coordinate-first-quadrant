@@ -3,7 +3,7 @@ import { sheet } from '../authoring';
 
 export const DISTANCE_INTRO: WorkbookPageContent = sheet({
   sectionClass: "sheet guided ultra-dense",
-  title: "מרחק והזזה אל הצירים",
+  title: "מרחק נקודה מהצירים",
   subtitle: "מרחק לציר x, לציר y, אופקי ואנכי",
   content: `
 <div class="cols-2 compact-top">

@@ -17,7 +17,7 @@ export const MISSING_COORD_PRACTICE: WorkbookPageContent = sheet({
 </ul>
 </section>
 <section class="q-card">
-<h3>דפוס של שיעורים שווים</h3>
+<h3>דפוס של שיעורים זהים</h3>
 <div aria-label="הנקודות אחת אחת עד ארבע ארבע" class="coordinate-grid grid-large" data-arrows="[]" data-points='[{"x": 1, "y": 1, "label": "A", "dx": 10, "dy": -10}, {"x": 2, "y": 2, "label": "B", "dx": 10, "dy": -10}, {"x": 3, "y": 3, "label": "C", "dx": 10, "dy": -10}, {"x": 4, "y": 4, "label": "D", "dx": 10, "dy": -10}]' data-polygons="[]" data-segments='[{"from": [1, 1], "to": [4, 4], "type": "guide", "dashed": true}]' role="img">
 </div>
 <p>המשיכו את הדפוס בשתי נקודות נוספות:</p>

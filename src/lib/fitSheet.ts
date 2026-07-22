@@ -40,8 +40,11 @@ function stacked(box: Element): boolean {
 export function fitSheet(sheet: HTMLElement): void {
   const content = sheet.querySelector<HTMLElement>('.sheet-content');
   const footer = sheet.querySelector<HTMLElement>('.gz-footer');
-  // A game sheet grows with its board; there is no leftover to hand back.
-  if (!content || !footer || sheet.classList.contains('game-sheet')) return;
+  if (!content || !footer) return;
+  /* A game sheet grows with its board, so its DRAWINGS must not be stretched —
+     but it now carries printed questions under the grid, and those deserve the
+     same room to write in as anywhere else. */
+  const isGame = sheet.classList.contains('game-sheet');
 
   /* The page viewer shrinks the sheet to fit the screen. getBoundingClientRect
      reports those shrunken pixels, but `style.height` is written in unscaled
@@ -86,7 +89,7 @@ export function fitSheet(sheet: HTMLElement): void {
   /* Spare height goes to the drawings first — a bigger system is worth more to
      a learner than a wider margin. Grown a step at a time and re-measured,
      because two systems sharing a row grow the page once, not twice. */
-  const grids = [...content.querySelectorAll<HTMLElement>('.coordinate-grid')];
+  const grids = isGame ? [] : [...content.querySelectorAll<HTMLElement>('.coordinate-grid')];
   const grown = new Map<HTMLElement, number>();
   for (let pass = 0; pass < 5 && grids.length; pass++) {
     if (room() < 110) break;

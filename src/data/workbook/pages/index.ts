@@ -28,6 +28,7 @@ export { ERRORS_PRACTICE } from './errors-practice';
 export { RECTANGLES_INTRO } from './rectangles-intro';
 export { RECTANGLES_PRACTICE } from './rectangles-practice';
 export { SQUARES_INTRO } from './squares-intro';
+export { SQUARES_SUMMARY } from './squares-summary';
 export { SQUARES_PRACTICE } from './squares-practice';
 export { HERO_INTRO } from './hero-intro';
 export { PLOT_A } from './plot-marking';

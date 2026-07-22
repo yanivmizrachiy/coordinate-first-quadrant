@@ -33,13 +33,7 @@ export const PLOT_SHAPE: WorkbookPageContent = sheet({
 <section class="q-card">
 <h3>ד. חשבו את ההיקף והשטח.</h3>
 <p>אורך <span class="math-ltr" dir="ltr">AB</span>: <span class="blank" style="--blank-width:4ch"></span> יח'. &nbsp; אורך <span class="math-ltr" dir="ltr">BC</span>: <span class="blank" style="--blank-width:4ch"></span> יח'.</p>
-<p>היקף הצורה: <span class="blank" style="--blank-width:4ch"></span> יח'. &nbsp; שטח הצורה: <span class="blank" style="--blank-width:4ch"></span> יח"ר.</p>
-<div class="calc-box"><b>דרך החישוב:</b>
-<div class="answer-line">
-</div>
-<div class="answer-line">
-</div>
-</div>
+<div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
 </section>
 `,
 });
