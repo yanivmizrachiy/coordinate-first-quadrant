@@ -1,12 +1,11 @@
 import { elem, fromHTML } from '../lib/dom';
-import { navigate } from '../router';
 import { hydrateGrids } from '../lib/coordinateGrid';
 import { fitSheets } from '../lib/fitSheet';
 import { printBar } from './printBar';
 import { WORKBOOK } from '../data/workbook';
 import { gameById } from '../games';
 import { renderCoverSheet } from './coverSheet';
-import { renderTocSheet } from './tocSheet';
+import { renderTocSheet, goToContents } from './tocSheet';
 import type { ViewContext } from './context';
 
 export function book({ outlet, setTitle }: ViewContext): (() => void) | void {
@@ -20,7 +19,7 @@ export function book({ outlet, setTitle }: ViewContext): (() => void) | void {
     printBar({
       scope: 'book',
       root: () => bookEl,
-      lead: [linkBtn('☰ תוכן העניינים', () => navigate('#/workbook'))],
+      lead: [linkBtn('☰ תוכן העניינים', goToContents)],
     }),
   );
 

@@ -7,6 +7,7 @@ import { pageByNumber, TOTAL_PAGES, topicOfPage } from '../data/workbook';
 import { lastPage, sheetZoom } from '../lib/storage';
 import { gameById } from '../games';
 import type { ViewContext } from './context';
+import { goToContents } from './tocSheet';
 
 export function pageViewer(n: number): (ctx: ViewContext) => (() => void) | void {
   return ({ outlet, setTitle }) => {
@@ -62,7 +63,7 @@ export function pageViewer(n: number): (ctx: ViewContext) => (() => void) | void
         root: () => sheetWrap,
         // One row, not two: the page is what the reader came for.
         lead: [
-          linkBtn('☰ תוכן העניינים', () => navigate('#/workbook')),
+          linkBtn('☰ תוכן העניינים', goToContents),
           zoom,
           iconOnly('⛶', 'מסך מלא', () => toggleFullscreen(sheetWrap)),
         ],
