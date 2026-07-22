@@ -12,6 +12,7 @@
     margin: 0;
     margin-inline-start: clamp(14px, 5vw, 26px);
     margin-block-end: clamp(8px, 1.5dvh, 12px);
+    translate: 0 -8px;
   }
 
   .opening__stage { order: -1; }
