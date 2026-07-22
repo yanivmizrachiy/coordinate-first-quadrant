@@ -191,7 +191,9 @@ body.is-opening .app-main { padding: 0; }
   min-height: 42px; padding: 0 15px; border-radius: 999px;
   font: inherit; font-weight: 800; font-size: 13.5px;
 }
-.soundbtn--on { background: #0f7a3fCC; }
+/* With the sound on the pill is just the speaker: no label, no gap, round. */
+.soundbtn--on { background: #0f7a3fCC; padding: 0; width: 42px; justify-content: center; gap: 0; }
+.soundbtn--on .soundbtn__label { display: none; }
 .soundbtn__icon { font-size: 16px; line-height: 1; }
 /* Beside the sound control, not above התחל — the two were sharing a corner. */
 .replaybtn {
