@@ -65,7 +65,9 @@ export interface GridSpec {
 // Geometry — identical to the original booklet.
 /* Top/bottom margins are deliberately generous: the axis NAMES ("ציר x" /
    "ציר y") must sit in the margin, never inside the grid or on the arrow. */
-const W = 560, H = 380, L = 56, R = 70, T = 60, B = 62;
+/* R and T carry the axis NAMES, which are the largest type on the drawing and
+   grow further when a small grid has its text put back to size. */
+const W = 560, H = 380, L = 56, R = 104, T = 70, B = 62;
 const XM = 8, YM = 6;
 const SX = (W - L - R) / XM;
 const SY = (H - T - B) / YM;
@@ -210,7 +212,7 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
       // Mixed Hebrew+Latin flips text-anchor, so pin direction explicitly.
       /* Centred rather than anchored to an edge: in RTL, `start` anchors the
          RIGHT edge, so the name would grow back over the arrow. */
-      el('text', { x: X(XM) + 50, y: Y(0) + 5, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, spec.axisXName ?? 'ציר x'),
+      el('text', { x: X(XM) + 46, y: Y(0) + 5, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, spec.axisXName ?? 'ציר x'),
       el('text', { x: X(0), y: Y(YM) - 32, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, spec.axisYName ?? 'ציר y'),
     );
   } else {
@@ -328,6 +330,37 @@ export function hydrateGrids(root: ParentNode = document): void {
     elm.replaceChildren(renderCoordinateGrid(spec));
     elm.dataset['hydrated'] = '1';
   });
+  /* Type inside an SVG shrinks with the drawing; put it back once every grid on
+     this root is laid out. rAF, because a grid measured before layout is zero. */
+  requestAnimationFrame(() => normaliseGridText(root));
 }
 
 export const gridGeometry = { W, H, L, R, T, B, XM, YM, X, Y };
+
+/* An SVG scales everything inside it, type included. A drawing that renders at
+   half its viewBox turns 13px axis numbers into 7px ones — the body text beside
+   them stays 13px, and the drawing reads as blurred and cramped. Yaniv reported
+   exactly that twice, and measuring the CONTAINER is what let it through: the
+   box was the right size while the numbers inside it were not.
+
+   So measure the scale each drawing actually got and put the type back. Capped,
+   because doubling every label would push the axis names out of the margins. */
+const TARGET_TEXT_PX = 12.5;
+const MAX_GROWTH = 1.9;
+
+export function normaliseGridText(root: ParentNode = document): void {
+  for (const svg of root.querySelectorAll<SVGSVGElement>('.coordinate-grid svg')) {
+    const box = svg.viewBox.baseVal;
+    const shown = svg.getBoundingClientRect().width;
+    if (!box?.width || !shown) continue;
+    const scale = shown / box.width;
+    if (!(scale > 0)) continue;
+    for (const t of svg.querySelectorAll<SVGTextElement>('text')) {
+      const base = Number(t.dataset['baseSize'] ?? t.getAttribute('font-size') ?? 13);
+      t.dataset['baseSize'] = String(base);
+      // never shrink type, and never grow it past what the margins can hold
+      const grow = Math.min(MAX_GROWTH, Math.max(1, TARGET_TEXT_PX / (base * scale)));
+      t.setAttribute('font-size', String(Math.round(base * grow * 10) / 10));
+    }
+  }
+}
