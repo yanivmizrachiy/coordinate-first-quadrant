@@ -140,8 +140,15 @@
 .work-table td:empty { height: 30px; }
 .work-table .tall { height: 65px; }
 .tf-table td:last-child { width: 34%; text-align: center; font-weight: 700; }
+/* The drawing keeps its own proportions inside the box, so a box wider than
+   the drawing needs is empty air on both sides — the drawing then reads as a
+   small thing floating in a big frame, which is „הציור לא ברור” as much as the
+   type ever was. The box takes the drawing's shape instead, so the border is
+   drawn around the drawing and every pixel of it is the drawing. */
 .coordinate-grid {
-  width: 100%; margin: 4px auto 6px; border: 1px solid #d9e0ea; border-radius: 8px; background: #fff;
+  aspect-ratio: 560 / 380;
+  width: auto; max-width: 100%; margin: 4px auto 6px;
+  border: 1px solid #d9e0ea; border-radius: 8px; background: #fff;
   display: block;
 }
 .grid-large { max-width: 580px; height: 276px; }
@@ -182,7 +189,10 @@
 .grid-lg { height: 258px; }
 .grid-md { height: 210px; }
 .grid-sm { height: 165px; }
-.grid-xs { height: 134px; }
+/* The smallest size the booklet still uses (one page). Below ~154px the axis
+   numbers cannot reach 11px even at full growth, so this is a legibility floor,
+   not a taste. */
+.grid-xs { height: 176px; }
 /* A learner has to write inside the squares, so a drawing may never be squeezed
    into a narrow column: the SVG keeps its ratio, so a 1/3-width column collapses
    it to a thumbnail. Any column row that holds a system gets at most 2 columns. */

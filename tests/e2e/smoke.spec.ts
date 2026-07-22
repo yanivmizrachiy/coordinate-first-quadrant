@@ -357,8 +357,13 @@ test('every axis number renders at a size a learner can actually read', async ({
         const svg = g.querySelector('svg');
         if (!svg) return null;
         const box = svg.viewBox.baseVal;
-        const shown = svg.getBoundingClientRect().width;
-        if (!box?.width || !shown) return null;
+        /* Letterboxed: a viewBox drawing takes the SMALLER of the two ratios and
+           leaves the other axis as air. Measuring the width alone reports the
+           size of the BOX, not of the drawing inside it — which is how 2.8px
+           vertices passed a test that demanded 4px. */
+        const r = svg.getBoundingClientRect();
+        if (!box?.width || !box?.height || !r.width) return null;
+        const shown = Math.min(r.width, (r.height * box.width) / box.height);
         const tick = [...svg.querySelectorAll('text')].find((t) => /^\d+$/.test(t.textContent!.trim()));
         if (!tick) return null;
         const px = Number(tick.getAttribute('font-size')) * (shown / box.width);
@@ -420,8 +425,13 @@ test('every point on a drawing is drawn large enough to see', async ({ page }, t
         const c = svg?.querySelector('circle');
         if (!svg || !c) return null;
         const box = svg.viewBox.baseVal;
-        const shown = svg.getBoundingClientRect().width;
-        if (!box?.width || !shown) return null;
+        /* Letterboxed: a viewBox drawing takes the SMALLER of the two ratios and
+           leaves the other axis as air. Measuring the width alone reports the
+           size of the BOX, not of the drawing inside it — which is how 2.8px
+           vertices passed a test that demanded 4px. */
+        const r = svg.getBoundingClientRect();
+        if (!box?.width || !box?.height || !r.width) return null;
+        const shown = Math.min(r.width, (r.height * box.width) / box.height);
         const px = Number(c.getAttribute('r')) * (shown / box.width);
         const n = g.closest('.sheet')?.querySelector('.sheet-number')?.textContent?.trim() ?? '?';
         return px < 4 ? `page ${n}: vertices at ${px.toFixed(1)}px radius` : null;
@@ -429,6 +439,52 @@ test('every point on a drawing is drawn large enough to see', async ({ page }, t
       .filter(Boolean),
   );
   expect(faults, faults.join(', ')).toHaveLength(0);
+});
+
+/* „הציור לא ברור” on page 71 was a label crammed inside the right-angle mark at
+   the origin, and the guard above never saw it: it compared labels only with
+   OTHER LABELS, so a letter sitting on a drawn mark, on an arrowhead or on a
+   vertex was invisible to it. This sweeps every drawing in the booklet against
+   everything actually drawn on it. */
+test('no label sits on a mark, an arrowhead or a vertex', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
+  await page.goto('/#/book');
+  await page.waitForTimeout(9000);
+  const faults = await page.evaluate(() => {
+    const out: string[] = [];
+    const over = (a: DOMRect, b: DOMRect, pad: number) =>
+      a.width > 0 && b.width > 0 &&
+      a.left < b.right - pad && b.left < a.right - pad &&
+      a.top < b.bottom - pad && b.top < a.bottom - pad;
+
+    for (const g of document.querySelectorAll('.sheet .coordinate-grid')) {
+      const svg = g.querySelector('svg');
+      if (!svg) continue;
+      const n = g.closest('.sheet')?.querySelector('.sheet-number')?.textContent?.trim() ?? '?';
+      // an arrowhead inside <defs> is never painted where its box claims to be
+      const drawn = (sel: string) =>
+        [...svg.querySelectorAll<SVGElement>(sel)].filter((e) => !e.closest('defs') && !e.closest('marker'));
+      const paths = drawn('path');
+      const marks = drawn('circle');
+
+      for (const t of svg.querySelectorAll('text')) {
+        const tb = t.getBoundingClientRect();
+        const label = t.textContent!.trim().slice(0, 12);
+        for (const p of paths) {
+          if (!over(tb, p.getBoundingClientRect(), 2)) continue;
+          out.push(`page ${n}: „${label}” sits on ${p.getAttribute('fill') === 'none' ? 'the right-angle mark' : 'an axis arrowhead'}`);
+        }
+        for (const c of marks) {
+          // a label may sit on its OWN point by design — the maze centres „■” on
+          // every wall — so only another point's mark is a fault
+          if (c.getAttribute('data-pt') === t.getAttribute('data-pt')) continue;
+          if (over(tb, c.getBoundingClientRect(), 2)) out.push(`page ${n}: „${label}” sits on a vertex`);
+        }
+      }
+    }
+    return [...new Set(out)];
+  });
+  expect(faults, faults.join(' | ')).toHaveLength(0);
 });
 
 /* Two letter O on one corner — the grid's own origin plus a point the sheet

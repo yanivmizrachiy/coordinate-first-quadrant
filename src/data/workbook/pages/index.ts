@@ -55,6 +55,7 @@ export { LIFE_PIXEL_ART } from './life-pixel-art';
 export { LIFE_DELIVERY_ROUTE } from './life-delivery-route';
 export { RAYS_RIGHT_ANGLE } from './rays-right-angle';
 export { RAYS_BUILD_RIGHT_ANGLE } from './rays-build-right-angle';
+export { RAYS_VERTEX_OFF_ORIGIN } from './rays-vertex-off-origin';
 export { RAYS_CLAIMS } from './rays-claims';
 export { GRAPH_READING_INTRO } from './graph-reading-intro';
 export { GRAPH_YEARS } from './graph-years';
