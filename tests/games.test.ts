@@ -6,7 +6,7 @@ import { coordinateSafePuzzle } from '../src/games/coordinateSafe';
 import { encryptedRoutePuzzle } from '../src/games/encryptedRoute';
 import { sameAxisRounds, correctSelection, sameAxisSolution } from '../src/games/sameAxis';
 import { suspectRounds, suspectsOf, suspectSolution } from '../src/games/suspectPoint';
-import { drawingPlan, planIsClosedFirstQuadrant } from '../src/games/hiddenDrawing';
+import { drawingPlan, drawingStrokes, planIsWellFormed } from '../src/games/hiddenDrawing';
 import { mazeConfig, mazeIsSolvable, canStandOn } from '../src/games/coordinateMaze';
 import { decodeTargets, decodeSolved, targetsAreFirstQuadrant } from '../src/games/colorDecode';
 
@@ -75,7 +75,9 @@ describe('הנקודה החשודה', () => {
 
 describe('ציור נסתר', () => {
   it('is a closed loop inside the first quadrant', () => {
-    expect(planIsClosedFirstQuadrant()).toBe(true);
+    expect(planIsWellFormed()).toBe(true);
+    expect(drawingStrokes.length, 'a one-stroke plan can only draw an outline').toBeGreaterThan(1);
+    expect(drawingPlan.length, 'too few points to make a picture worth drawing').toBeGreaterThanOrEqual(9);
     for (const p of drawingPlan) expect(inRange(p)).toBe(true);
   });
 });

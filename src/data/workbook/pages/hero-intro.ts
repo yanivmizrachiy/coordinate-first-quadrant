@@ -9,13 +9,13 @@ export const HERO_INTRO: WorkbookPageContent = sheet({
 <div class="rule-box completion-intro">
 <div class="completion-sentence">כל נקודה נכתבת כ<b>זוג סדור</b> בתוך סוגריים: <span class="math-ltr" dir="ltr">(x,y)</span>.
 </div>
-<div class="completion-sentence">ערך <span class="word-blank word-short" aria-label="מקום להשלמת האות x"></span> נכתב מצד שמאל, וערך <span class="math-ltr" dir="ltr">y</span> נכתב מצד <span class="word-blank word-short" aria-label="מקום להשלמת המילה ימין"></span>.
+<div class="completion-sentence">ערך <span class="word-blank word-short" aria-label="מקום להשלמת האות x"></span> נכתב מצד שמאל, ושיעור <span class="math-ltr" dir="ltr">y</span> נכתב מצד <span class="word-blank word-short" aria-label="מקום להשלמת המילה ימין"></span>.
 </div>
 <div class="completion-sentence">מכיוון שיש סֵדֶר, קוראים לזה זוג <span class="word-blank word-medium" aria-label="מקום להשלמת המילה סדור"></span>.
 </div>
 </div>
 <section class="q-card">
-<h3>לפניכם מערכת הצירים. ענו עליה בסעיפים שמתחת.</h3>
+<h3>לפניכם מערכת הצירים. השלימו לפיה את הסעיפים שמתחת.</h3>
 <div aria-label="מערכת צירים גדולה ובה הנקודות A B C D" class="coordinate-grid grid-hero" data-arrows="[]" data-labelboxes="[]" data-points='[{"x": 2, "y": 5, "label": "A"}, {"x": 6, "y": 3, "label": "B"}, {"x": 4, "y": 0, "label": "C"}, {"x": 0, "y": 4, "label": "D"}]' data-polygons="[]" data-segments="[]" role="img">
 </div>
 </section>
