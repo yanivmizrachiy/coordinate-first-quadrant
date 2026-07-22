@@ -39,9 +39,11 @@ export const COORDS_PRACTICE: WorkbookPageContent = sheet({
 <div aria-label="מערכת צירים ובה הנקודות A B C D E" class="coordinate-grid grid-large" data-arrows="[]" data-points='[{"x": 1, "y": 4, "label": "A", "dx": 10, "dy": -10}, {"x": 6, "y": 2, "label": "B", "dx": 10, "dy": -10}, {"x": 3, "y": 5, "label": "C", "dx": 10, "dy": -10}, {"x": 7, "y": 1, "label": "D", "dx": 10, "dy": -10}, {"x": 2, "y": 6, "label": "E", "dx": 10, "dy": -10}]' data-polygons="[]" data-segments="[]" role="img">
 </div>
 <p class="axis-answer-box">איזו נקודה בעלת שיעור <span class="math-ltr" dir="ltr">x=6</span>? <span class="blank" style="--blank-width:5ch"></span></p>
-<p>איזו נקודה בעלת שיעור <span class="math-ltr" dir="ltr">y=6</span>? <span class="blank" style="--blank-width:5ch"></span></p>
-<p>איזו נקודה בעלת שיעור <span class="math-ltr" dir="ltr">y=5</span>? <span class="blank" style="--blank-width:5ch"></span></p>
-<p>איזו נקודה היא הימנית ביותר? <span class="blank" style="--blank-width:5ch"></span></p>
+<ul class="tasks compact">
+<li>לנקודה שבה שיעור ה־<span class="math-ltr" dir="ltr">y</span> הוא 6 קוראים <span class="blank" data-missing="letter" style="--blank-width:5ch"></span>.</li>
+<li>הנקודה ששיעור ה־<span class="math-ltr" dir="ltr">y</span> שלה <span class="blank" data-missing="number" style="--blank-width:3ch"></span> היא הנקודה <span class="math-ltr" dir="ltr">E</span>.</li>
+<li>איזו נקודה היא הימנית ביותר? <span class="blank" style="--blank-width:5ch"></span></li>
+</ul>
 </section>
 </div>
 `,

@@ -46,20 +46,27 @@ export const MISSING_COORD_INTRO: WorkbookPageContent = sheet({
 </div>
 </div>
 <p>כתבו כלל במילים:</p>
-<div class="answer-line">
-</div>
+<ul class="tasks compact">
+<li>ההסבר: <span class="blank" data-missing="relation" style="--blank-width:24ch"></span>.</li>
+</ul>
 </section>
 <section class="q-card">
 <h3>ד. דפוס: (1,3), (2,4), (3,5), (4,6).</h3>
-<p>שיעור y גדול ב־<span class="blank" style="--blank-width:3ch"></span> משיעור x.</p>
-<p>האם <span class="math-ltr" dir="ltr">(5,5)</span> מתאים? <span class="blank" style="--blank-width:5ch"></span></p>
+<ul class="tasks compact">
+<li>שיעור y גדול ב־<span class="blank" style="--blank-width:3ch"></span> משיעור x.</li>
+<li>האם <span class="math-ltr" dir="ltr">(5,5)</span> מתאים? <span class="blank" style="--blank-width:5ch"></span></li>
+</ul>
 </section>
 <section class="q-card">
-<h3>ה. שאלה פתוחה: האם “מעל ציר x ומימין לציר y” קובע נקודה אחת בלבד?</h3>
-<div class="answer-line">
-</div>
-<div class="answer-line">
-</div>
+<h3>ה. „מעל ציר <span class="math-ltr" dir="ltr">x</span> ומימין לציר <span class="math-ltr" dir="ltr">y</span>” — כמה נקודות מתאימות?</h3>
+<ul class="tasks compact">
+<li>התיאור הזה מתאים ל<span class="blank" data-missing="relation" style="--blank-width:6ch"></span> נקודות, ולא לנקודה אחת.</li>
+<li>שתי נקודות שמתאימות לו: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> ו־<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>.</li>
+<li>כדי לקבוע נקודה **אחת** צריך לדעת גם את ערך ה־<span class="math-ltr" dir="ltr">x</span> וגם את שיעור ה־<span class="blank" data-missing="letter" style="--blank-width:3ch"></span>.</li>
+</ul>
+<ul class="tasks compact">
+<li>ההסבר: <span class="blank" data-missing="relation" style="--blank-width:24ch"></span>.</li>
+</ul>
 </section>
 `,
 });

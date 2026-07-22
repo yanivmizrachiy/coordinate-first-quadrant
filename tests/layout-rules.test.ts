@@ -508,6 +508,26 @@ describe('a calculation gets units and room to work', () => {
       .toBeGreaterThan(0);
   });
 
+  /* USER_MEMORY §5, applied to the whole booklet rather than page by page: an
+     open line is where a child writes nothing. Every ruled line either carries
+     the working of a calculation or is a completion the sheet leads them into. */
+  it('no sheet leaves an open line that is not the working of a calculation', () => {
+    for (const p of WORKBOOK) {
+      const open = (p.html.match(/<div class="answer-line">/g) ?? []).length;
+      const inCalc = (p.html.match(/calc-box/g) ?? []).length * 2;
+      expect(open, `page ${p.n}: ${open - inCalc} open line(s) with no guidance`).toBeLessThanOrEqual(inCalc);
+    }
+  });
+
+  it('no sheet asks an open question instead of leading a completion', () => {
+    for (const p of WORKBOOK) {
+      const t = p.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+      for (const w of ['הסבירו', 'ונמקו', 'שאלה פתוחה', 'שווה ל־', 'השיעור הזהה']) {
+        expect(t, `page ${p.n}: „${w}”`).not.toContain(w);
+      }
+    }
+  });
+
   it('a sheet that asks for a calculation leaves space to do it', () => {
     for (const p of WORKBOOK) {
       if (!computes(p.html)) continue;

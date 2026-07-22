@@ -12,7 +12,7 @@ export const AXES_INTRO: WorkbookPageContent = sheet({
 <div class="completion-sentence">נקודת המפגש בין שני הצירים נקראת ${wordBlank('medium', 'concept', 'מקום להשלמת המילה ראשית')} ה${wordBlank('medium', 'concept', 'מקום להשלמת המילה צירים')}.</div>
 <div class="completion-sentence">ראשית הצירים נכתבת כזוג סדור ${pair()}.</div>
 <div class="completion-sentence">שני הצירים מאונכים זה לזה, ולכן הזווית שביניהם היא זווית ${wordBlank('medium', 'property', 'מקום להשלמת המילה ישרה')}.</div>
-<div class="completion-sentence">כל הנקודות שעל ציר ${ltr('x')} הן בעלות שיעור ${ltr('y')} ששווה ל־${wordBlank('short', 'number', 'מקום להשלמת המספר אפס')}.</div>
+<div class="completion-sentence">בכל נקודה שממוקמת על ציר ${ltr('x')} שיעור ה־${ltr('y')} הוא ${wordBlank('short', 'number', 'מקום להשלמת המספר אפס')}.</div>
 <div class="completion-sentence">הנקודה ${ltr('(0,4)')} ממוקמת על ציר ${wordBlank('short', 'letter', 'מקום להשלמת האות y')}.</div>
 <div class="completion-sentence">בנקודה ${ltr('(5,0)')} ערך ${ltr('x')} הוא ${wordBlank('short', 'number', 'מקום להשלמת המספר חמש')} ושיעור ${ltr('y')} הוא ${wordBlank('short', 'number', 'מקום להשלמת המספר אפס')}.</div>
 </div>

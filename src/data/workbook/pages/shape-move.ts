@@ -15,8 +15,10 @@ export const SHAPE_MOVE: WorkbookPageContent = sheet({
 </div>
 <div>
 <p><b>א. כתבו את שיעורי הקודקודים:</b></p>
-<p><span class="pair math-ltr" dir="ltr">A(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp; <span class="pair math-ltr" dir="ltr">B(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<p><span class="pair math-ltr" dir="ltr">C(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp; <span class="pair math-ltr" dir="ltr">D(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
+<ul class="tasks compact">
+<li>הנקודה <span class="pair math-ltr" dir="ltr">A(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp; <span class="pair math-ltr" dir="ltr">B(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>הנקודה <span class="pair math-ltr" dir="ltr">C(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp; <span class="pair math-ltr" dir="ltr">D(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+</ul>
 </div>
 </div>
 </section>
@@ -24,14 +26,18 @@ export const SHAPE_MOVE: WorkbookPageContent = sheet({
 <section class="q-card">
 <h3>ב. הזזה של 3 יחידות ימינה.</h3>
 <p>אם מזיזים את המלבן, אז מקבלים:</p>
-<p><span class="pair math-ltr" dir="ltr">A(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp; <span class="pair math-ltr" dir="ltr">B(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<p><span class="pair math-ltr" dir="ltr">C(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp; <span class="pair math-ltr" dir="ltr">D(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
+<ul class="tasks compact">
+<li>הנקודה <span class="pair math-ltr" dir="ltr">A(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp; <span class="pair math-ltr" dir="ltr">B(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>הנקודה <span class="pair math-ltr" dir="ltr">C(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp; <span class="pair math-ltr" dir="ltr">D(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+</ul>
 </section>
 <section class="q-card">
 <h3>ג. הזזה של 2 יחידות למעלה (מהמקור).</h3>
 <p>אם מזיזים את המלבן, אז מקבלים:</p>
-<p><span class="pair math-ltr" dir="ltr">A(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp; <span class="pair math-ltr" dir="ltr">B(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<p><span class="pair math-ltr" dir="ltr">C(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp; <span class="pair math-ltr" dir="ltr">D(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
+<ul class="tasks compact">
+<li>הנקודה <span class="pair math-ltr" dir="ltr">A(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp; <span class="pair math-ltr" dir="ltr">B(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>הנקודה <span class="pair math-ltr" dir="ltr">C(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp; <span class="pair math-ltr" dir="ltr">D(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+</ul>
 </section>
 </div>
 <section class="q-card">

@@ -14,8 +14,10 @@ export const RECTANGLES_VERTICES: WorkbookPageContent = sheet({
 <p>למלבן צלעות מקבילות לצירים. שני קודקודים נגדיים הם <span class="math-ltr" dir="ltr">(1,2)</span> ו־<span class="math-ltr" dir="ltr">(7,5)</span>.</p>
 <p>סמנו את ארבעת הקודקודים על הסרטוט, חברו אותם למלבן, וכתבו את שני הקודקודים האחרים כזוגות סדורים:</p>
 ${grid({ size: 'sm', label: 'מערכת צירים ריקה לסימון המלבן' })}
-<p><span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp;&nbsp; <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<p>אורך המלבן: <span class="blank" style="--blank-width:4ch"></span> יח' &nbsp; רוחב המלבן: <span class="blank" style="--blank-width:4ch"></span> יח'</p>
+<ul class="tasks compact">
+<li><span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp;&nbsp; <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>אורך המלבן: <span class="blank" style="--blank-width:4ch"></span> יח' &nbsp; רוחב המלבן: <span class="blank" style="--blank-width:4ch"></span> יח'</li>
+</ul>
 <p>איזו מהנקודות הבאות ממוקמת על <b>היקף</b> המלבן? הקיפו.</p>
 <div class="choice-row"><span class="choice"><span class="math-ltr" dir="ltr">(4,2)</span></span><span class="choice"><span class="math-ltr" dir="ltr">(3,3)</span></span><span class="choice"><span class="math-ltr" dir="ltr">(8,5)</span></span><span class="choice"><span class="math-ltr" dir="ltr">(2,6)</span></span>
 </div>

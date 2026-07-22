@@ -26,12 +26,16 @@ export const SAME_COORD_INTRO: WorkbookPageContent = sheet({
 </section>
 </div>
 </div>
-<div class="rule-box">אותו שיעור x ⇒ קטע מקביל לציר y. אותו שיעור y ⇒ קטע מקביל לציר x.
+<div class="rule-box completion-intro">
+<div class="completion-sentence">לשתי נקודות שיש להן שיעור <span class="math-ltr" dir="ltr">x</span> זהה, הקטע שביניהן מקביל לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>.</div>
+<div class="completion-sentence">לשתי נקודות שיש להן שיעור <span class="math-ltr" dir="ltr">y</span> זהה, הקטע שביניהן מקביל לציר <span class="math-ltr" dir="ltr">x</span>.</div>
 </div>
 <section class="q-card">
 <h3>ג. השלימו.</h3>
-<p><span class="math-ltr" dir="ltr">P(4,1)</span> ו־<span class="math-ltr" dir="ltr">Q(4,6)</span>: PQ מקביל לציר <span class="blank" style="--blank-width:3ch"></span></p>
-<p><span class="math-ltr" dir="ltr">R(2,3)</span> ו־<span class="math-ltr" dir="ltr">S(7,3)</span>: RS מקביל לציר <span class="blank" style="--blank-width:3ch"></span></p>
+<ul class="tasks compact">
+<li>לשתי הנקודות <span class="math-ltr" dir="ltr">P(4,1)</span> ו־<span class="math-ltr" dir="ltr">Q(4,6)</span> יש שיעור <span class="blank" data-missing="letter" style="--blank-width:3ch"></span> זהה, ולכן הקטע <span class="math-ltr" dir="ltr">PQ</span> מקביל לציר <span class="math-ltr" dir="ltr">y</span>.</li>
+<li>הקטע <span class="math-ltr" dir="ltr">RS</span> שבין <span class="math-ltr" dir="ltr">R(2,3)</span> ובין <span class="math-ltr" dir="ltr">S(7,3)</span> מקביל לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>, כי שיעור ה־<span class="math-ltr" dir="ltr">y</span> שלהן זהה.</li>
+</ul>
 </section>
 <section class="q-card">
 <h3>ד. כתבו נקודה נוספת כך שהקטע בינה לבין <span class="math-ltr" dir="ltr">(3,4)</span> יהיה מקביל לציר x: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>. ולציר y: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>.</h3>
@@ -43,10 +47,9 @@ export const SAME_COORD_INTRO: WorkbookPageContent = sheet({
 </section>
 <section class="q-card">
 <h3>ו. האם יכולות להיות שתי נקודות שונות בעלות אותו שיעור x וגם אותו שיעור y?</h3>
-<div class="answer-line">
-</div>
-<div class="answer-line">
-</div>
+<ul class="tasks compact">
+<li>ההסבר: <span class="blank" data-missing="relation" style="--blank-width:24ch"></span>.</li>
+</ul>
 </section>
 `,
 });

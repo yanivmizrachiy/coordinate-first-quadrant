@@ -35,12 +35,16 @@ export const READ_PRACTICE: WorkbookPageContent = sheet({
 <section class="q-card span-2">
 <h3>שאלה נוספת</h3>
 <p>נקודה ממוקמת בגובה של <span class="math-ltr" dir="ltr">L</span> ובאותו קו אנכי כמו <span class="math-ltr" dir="ltr">M</span>.</p>
-<p>מהם שיעוריה? <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
+<ul class="tasks compact">
+<li>מהם שיעוריה? <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+</ul>
 <p>נמקו בעזרת הביטויים <b>שיעור <span class="math-ltr" dir="ltr">x</span> זהה</b> ו־<b>שיעור <span class="math-ltr" dir="ltr">y</span> זהה</b>.</p>
-<div class="answer-line">
-</div>
-<div class="answer-line">
-</div>
+<ul class="tasks compact">
+<li>ההסבר: <span class="blank" data-missing="relation" style="--blank-width:24ch"></span>.</li>
+</ul>
+<ul class="tasks compact">
+<li>ההסבר: <span class="blank" data-missing="relation" style="--blank-width:24ch"></span>.</li>
+</ul>
 </section>
 </div>
 `,

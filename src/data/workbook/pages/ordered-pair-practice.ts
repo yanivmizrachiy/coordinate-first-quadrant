@@ -31,12 +31,19 @@ export const ORDERED_PAIR_PRACTICE: WorkbookPageContent = sheet({
 <div aria-label="הנקודות M שתיים חמש ו-N חמש שתיים" class="coordinate-grid grid-large" data-arrows="[]" data-points='[{"x": 2, "y": 5, "label": "M", "dx": 10, "dy": -10}, {"x": 5, "y": 2, "label": "N", "dx": 10, "dy": -10}]' data-polygons="[]" data-segments="[]" role="img">
 </div>
 <p class="axis-answer-box">כתבו את שיעורי נקודה <span class="math-ltr" dir="ltr">M</span>: <span class="pair math-ltr" dir="ltr">M(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<p>כתבו את שיעורי נקודה <span class="math-ltr" dir="ltr">N</span>: <span class="pair math-ltr" dir="ltr">N(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<p>הסבירו במשפט אחד מדוע <span class="math-ltr" dir="ltr">(2,5)</span> ו־<span class="math-ltr" dir="ltr">(5,2)</span> אינן אותה נקודה.</p>
-<div class="answer-line">
-</div>
-<div class="answer-line">
-</div>
+<ul class="tasks compact">
+<li>כתבו את שיעורי נקודה <span class="math-ltr" dir="ltr">N</span>: <span class="pair math-ltr" dir="ltr">N(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+</ul>
+<ul class="tasks compact">
+<li>בשני הזוגות אותם מספרים, אבל ה<span class="blank" data-missing="concept" style="--blank-width:5ch"></span> שלהם שונה.</li>
+<li>בנקודה <span class="math-ltr" dir="ltr">(2,5)</span> ערך ה־<span class="math-ltr" dir="ltr">x</span> הוא <span class="blank" data-missing="number" style="--blank-width:3ch"></span>, ובנקודה <span class="math-ltr" dir="ltr">(5,2)</span> הוא 5.</li>
+</ul>
+<ul class="tasks compact">
+<li>ההסבר: <span class="blank" data-missing="relation" style="--blank-width:24ch"></span>.</li>
+</ul>
+<ul class="tasks compact">
+<li>ההסבר: <span class="blank" data-missing="relation" style="--blank-width:24ch"></span>.</li>
+</ul>
 </section>
 </div>
 `,

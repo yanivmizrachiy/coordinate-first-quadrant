@@ -50,7 +50,9 @@ ${calcBox({ perimeter: true, area: true })}
 <div aria-label="מערכת צירים ריקה לתרגיל מסכם" class="coordinate-grid grid-sm" data-arrows="[]" data-points="[]" data-polygons="[]" data-segments="[]" role="img">
 </div>
 <p class="axis-answer-box">קודקודי הריבוע: <span class="blank" style="--blank-width:34ch"></span></p>
-<p>קודקודי המלבן: <span class="blank" style="--blank-width:34ch"></span></p>
+<ul class="tasks compact">
+<li>קודקודי המלבן: <span class="blank" style="--blank-width:34ch"></span></li>
+</ul>
 </section>
 </div>
 `,

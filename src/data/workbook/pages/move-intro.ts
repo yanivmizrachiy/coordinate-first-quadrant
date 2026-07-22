@@ -50,10 +50,12 @@ export const MOVE_INTRO: WorkbookPageContent = sheet({
 <div aria-label="מערכת צירים ברביע הראשון" class="coordinate-grid grid-md" data-arrows='[{"from": [2, 1], "to": [6, 1]}, {"from": [6, 1], "to": [6, 4]}]' data-labelboxes="[]" data-points='[{"x": 2, "y": 1, "label": "P"}, {"x": 6, "y": 1, "label": ""}, {"x": 6, "y": 4, "label": ""}]' data-polygons="[]" data-segments="[]" role="img">
 </div>
 <div>
-<p>נקודת ביניים: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<p>נקודה סופית: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<p>בשלב הראשון השתנה: <span class="blank" style="--blank-width:4ch"></span></p>
-<p>בשלב השני השתנה: <span class="blank" style="--blank-width:4ch"></span></p>
+<ul class="tasks compact">
+<li>נקודת ביניים: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>נקודה סופית: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>בשלב הראשון השתנה: <span class="blank" style="--blank-width:4ch"></span></li>
+<li>בשלב השני השתנה: <span class="blank" style="--blank-width:4ch"></span></li>
+</ul>
 </div>
 </div>
 </section>

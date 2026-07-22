@@ -13,10 +13,12 @@ export const RIGHT_ANGLE_SUMMARY: WorkbookPageContent = sheet({
 <div aria-label="מלבן ABCD ברביע הראשון" class="coordinate-grid grid-md" data-arrows="[]" data-labelboxes="[]" data-points='[{"x": 2, "y": 1, "label": "A"}, {"x": 7, "y": 1, "label": "B"}, {"x": 7, "y": 5, "label": "C"}, {"x": 2, "y": 5, "label": "D"}]' data-polygons='[{"points": [[2, 1], [7, 1], [7, 5], [2, 5]]}]' data-segments="[]" role="img">
 </div>
 <div>
-<p>צלעות מקבילות לציר x: <span class="blank" style="--blank-width:8ch"></span></p>
-<p>צלעות מקבילות לציר y: <span class="blank" style="--blank-width:8ch"></span></p>
-<p>מספר הזוויות הישרות: <span class="blank" style="--blank-width:3ch"></span></p>
-<p><span class="math-ltr" dir="ltr">AB =</span> <span class="blank" style="--blank-width:3ch"></span> יח', &nbsp; <span class="math-ltr" dir="ltr">BC =</span> <span class="blank" style="--blank-width:3ch"></span> יח'</p>
+<ul class="tasks compact">
+<li>הצלעות <span class="blank" data-missing="letter" style="--blank-width:8ch"></span> מקבילות לציר <span class="math-ltr" dir="ltr">x</span>.</li>
+<li>הצלעות שמקבילות לציר <span class="math-ltr" dir="ltr">y</span> מאונכות להן, כי הזווית ביניהן היא זווית <span class="blank" data-missing="property" style="--blank-width:5ch"></span>.</li>
+<li>מספר הזוויות הישרות: <span class="blank" style="--blank-width:3ch"></span></li>
+<li><span class="math-ltr" dir="ltr">AB =</span> <span class="blank" style="--blank-width:3ch"></span> יח', &nbsp; <span class="math-ltr" dir="ltr">BC =</span> <span class="blank" style="--blank-width:3ch"></span> יח'</li>
+</ul>
 <p>כתבו לכל צלע את תרגיל החיסור, ורק אחר כך את ההיקף ואת השטח.</p>
 ${calcBox({ perimeter: true, area: true })}
 </div>
@@ -29,7 +31,9 @@ ${calcBox({ perimeter: true, area: true })}
 </div>
 <div>
 <p class="axis-answer-box">S = <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<p>בקודקוד Q הזווית היא <span class="blank" style="--blank-width:5ch"></span>.</p>
+<ul class="tasks compact">
+<li>בקודקוד Q הזווית היא <span class="blank" style="--blank-width:5ch"></span>.</li>
+</ul>
 ${calcBox({ perimeter: true, area: true })}
 </div>
 </div>

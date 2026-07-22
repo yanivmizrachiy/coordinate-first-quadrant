@@ -62,18 +62,20 @@ export const DISTANCE_INTRO: WorkbookPageContent = sheet({
 </section>
 </div>
 <section class="q-card">
-<h3>ה. אורי חישב את המרחק בין (2,5) ל־(7,5) באמצעות 7+2. הסבירו ותקנו.</h3>
-<div class="answer-line">
-</div>
-<div class="answer-line">
-</div>
+<h3>ה. אורי חישב את המרחק בין <span class="math-ltr" dir="ltr">(2,5)</span> ובין <span class="math-ltr" dir="ltr">(7,5)</span> וקיבל 9.</h3>
+<ul class="tasks compact">
+<li>אורי <span class="blank" data-missing="relation" style="--blank-width:5ch"></span> את שני ערכי ה־<span class="math-ltr" dir="ltr">x</span> במקום לחסר אותם.</li>
+<li>תרגיל החיסור הנכון הוא <span class="math-ltr" dir="ltr">7 − 2 =</span> <span class="blank" data-missing="number" style="--blank-width:3ch"></span>, ולכן המרחק <span class="blank" data-missing="number" style="--blank-width:3ch"></span> יח'.</li>
+</ul>
+<ul class="tasks compact">
+<li>ההסבר: <span class="blank" data-missing="relation" style="--blank-width:24ch"></span>.</li>
+</ul>
 </section>
 <section class="q-card">
 <h3>ו. נקודה שמרחקה זהה משני הצירים - מה אפשר לומר על שיעוריה?</h3>
-<div class="answer-line">
-</div>
-<div class="answer-line">
-</div>
+<ul class="tasks compact">
+<li>ההסבר: <span class="blank" data-missing="relation" style="--blank-width:24ch"></span>.</li>
+</ul>
 </section>
 `,
 });

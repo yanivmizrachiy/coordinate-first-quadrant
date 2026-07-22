@@ -10,9 +10,9 @@ export const RELATIONS_PRACTICE: WorkbookPageContent = sheet({
 <section class="q-card">
 <h3>גדול ב־ וקטן ב־</h3>
 <ul class="tasks">
-<li><span class="math-ltr" dir="ltr">A(2,3)</span>. לנקודה <span class="math-ltr" dir="ltr">B</span> אותו שיעור <span class="math-ltr" dir="ltr">y</span>, ושיעור <span class="math-ltr" dir="ltr">x</span> גדול ב־4. כתבו <span class="math-ltr" dir="ltr">B</span>: <span class="blank" style="--blank-width:10ch"></span></li>
-<li><span class="math-ltr" dir="ltr">C(7,5)</span>. לנקודה <span class="math-ltr" dir="ltr">D</span> אותו שיעור <span class="math-ltr" dir="ltr">x</span>, ושיעור <span class="math-ltr" dir="ltr">y</span> קטן ב־3. כתבו <span class="math-ltr" dir="ltr">D</span>: <span class="blank" style="--blank-width:10ch"></span></li>
-<li><span class="math-ltr" dir="ltr">E(6,2)</span>. שיעור <span class="math-ltr" dir="ltr">x</span> של <span class="math-ltr" dir="ltr">F</span> קטן ב־5, ושיעור <span class="math-ltr" dir="ltr">y</span> זהה. <span class="blank" style="--blank-width:10ch"></span></li>
+<li>הנקודה <span class="math-ltr" dir="ltr">A(2,3)</span>. לנקודה <span class="math-ltr" dir="ltr">B</span> אותו שיעור <span class="math-ltr" dir="ltr">y</span>, ושיעור <span class="math-ltr" dir="ltr">x</span> גדול ב־4. כתבו <span class="math-ltr" dir="ltr">B</span>: <span class="blank" style="--blank-width:10ch"></span></li>
+<li>הנקודה <span class="math-ltr" dir="ltr">C(7,5)</span>. לנקודה <span class="math-ltr" dir="ltr">D</span> אותו שיעור <span class="math-ltr" dir="ltr">x</span>, ושיעור <span class="math-ltr" dir="ltr">y</span> קטן ב־3. כתבו <span class="math-ltr" dir="ltr">D</span>: <span class="blank" style="--blank-width:10ch"></span></li>
+<li>הנקודה <span class="math-ltr" dir="ltr">E(6,2)</span>. שיעור <span class="math-ltr" dir="ltr">x</span> של <span class="math-ltr" dir="ltr">F</span> קטן ב־5, ושיעור <span class="math-ltr" dir="ltr">y</span> זהה. <span class="blank" style="--blank-width:10ch"></span></li>
 </ul>
 </section>
 <section class="q-card">
@@ -20,9 +20,9 @@ export const RELATIONS_PRACTICE: WorkbookPageContent = sheet({
 <div class="note-box"><b>דיוק:</b> במקום “קטן פי 2” נכתוב “מחצית ממנו”.
 </div>
 <ul class="tasks">
-<li><span class="math-ltr" dir="ltr">P(2,3)</span>. שיעור <span class="math-ltr" dir="ltr">x</span> של <span class="math-ltr" dir="ltr">Q</span> גדול פי 3, ושיעור <span class="math-ltr" dir="ltr">y</span> זהה. <span class="blank" style="--blank-width:10ch"></span></li>
-<li><span class="math-ltr" dir="ltr">R(8,4)</span>. שיעור <span class="math-ltr" dir="ltr">x</span> של <span class="math-ltr" dir="ltr">S</span> הוא מחצית ממנו, ושיעור <span class="math-ltr" dir="ltr">y</span> זהה. <span class="blank" style="--blank-width:10ch"></span></li>
-<li><span class="math-ltr" dir="ltr">T(4,2)</span>. שיעור <span class="math-ltr" dir="ltr">y</span> של <span class="math-ltr" dir="ltr">U</span> גדול פי 3, ושיעור <span class="math-ltr" dir="ltr">x</span> זהה. <span class="blank" style="--blank-width:10ch"></span></li>
+<li>הנקודה <span class="math-ltr" dir="ltr">P(2,3)</span>. שיעור <span class="math-ltr" dir="ltr">x</span> של <span class="math-ltr" dir="ltr">Q</span> גדול פי 3, ושיעור <span class="math-ltr" dir="ltr">y</span> זהה. <span class="blank" style="--blank-width:10ch"></span></li>
+<li>הנקודה <span class="math-ltr" dir="ltr">R(8,4)</span>. שיעור <span class="math-ltr" dir="ltr">x</span> של <span class="math-ltr" dir="ltr">S</span> הוא מחצית ממנו, ושיעור <span class="math-ltr" dir="ltr">y</span> זהה. <span class="blank" style="--blank-width:10ch"></span></li>
+<li>הנקודה <span class="math-ltr" dir="ltr">T(4,2)</span>. שיעור <span class="math-ltr" dir="ltr">y</span> של <span class="math-ltr" dir="ltr">U</span> גדול פי 3, ושיעור <span class="math-ltr" dir="ltr">x</span> זהה. <span class="blank" style="--blank-width:10ch"></span></li>
 </ul>
 </section>
 <section class="q-card span-2">
@@ -42,8 +42,10 @@ export const RELATIONS_PRACTICE: WorkbookPageContent = sheet({
 <section class="q-card span-2">
 <h3>שאלה נוספת</h3>
 <p>נקודה חדשה מתקבלת מ־<span class="math-ltr" dir="ltr">(2,2)</span> כך ששיעור <span class="math-ltr" dir="ltr">x</span> גדול פי 3 ושיעור <span class="math-ltr" dir="ltr">y</span> גדול ב־3.</p>
-<p>מהם השיעורים החדשים? <span class="blank" style="--blank-width:10ch"></span></p>
-<p>האם הנקודה החדשה מקיימת <span class="math-ltr" dir="ltr">x=y</span>? <span class="blank" style="--blank-width:8ch"></span></p>
+<ul class="tasks compact">
+<li>מהם השיעורים החדשים? <span class="blank" style="--blank-width:10ch"></span></li>
+<li>האם הנקודה החדשה מקיימת <span class="math-ltr" dir="ltr">x=y</span>? <span class="blank" style="--blank-width:8ch"></span></li>
+</ul>
 </section>
 </div>
 <section class="q-card">
