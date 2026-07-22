@@ -30,28 +30,6 @@ body.is-opening .app-main { padding: 0; }
 /* The film is 16:9 and a phone held upright is not. Rather than crop the
    drawing away, the frame is anchored so the axes stay on screen whatever
    shape the viewport happens to be. */
-/* A tall screen: show the film whole and put the card under it. Cropping a
-   16:9 frame into a 9:19.5 phone would cut away the axes and the points, which
-   is the one thing the film is for. */
-@media (max-aspect-ratio: 13 / 10) {
-  /* Centred, then nudged up: the sound and badge sit along the top edge and
-     carry weight of their own, so a mathematically centred block reads low. */
-  .opening { display: flex; flex-direction: column; justify-content: center; align-items: center;
-             padding-block-end: clamp(24px, 9vh, 86px); }
-  .opening__stage, .opening__pic { position: relative; inset: auto; width: 100%; }
-  .opening__stage { flex: none; aspect-ratio: 16 / 9; max-height: 46dvh; }
-  .opening__media { object-fit: contain; height: 100%; }
-  .opening__scrim { display: none; }
-  .opening__card {
-    position: relative; inset: auto; max-width: none; margin: 18px auto 0;
-    width: min(92vw, 560px); padding-bottom: 60px;
-    text-shadow: none; opacity: 0;
-  }
-  .opening__title, .opening__sub { text-align: start; }
-  .opening__meta { color: #ffffffd9; }
-  .startbtn { inset-inline-end: clamp(14px, 5vw, 26px); bottom: clamp(16px, 3.5vh, 28px); }
-  .replaybtn { inset-inline-end: clamp(14px, 5vw, 26px); top: calc(clamp(14px, 5vw, 26px) + 52px); }
-}
 
 .opening__scrim {
   position: absolute; inset: 0; pointer-events: none;
@@ -97,7 +75,25 @@ body.is-opening .app-main { padding: 0; }
 .opening__title, .opening__sub, .opening__meta { margin: 0; overflow: hidden; }
 .opening__title { font-size: clamp(34px, 10vw, 68px); font-weight: 900; line-height: 1.02; letter-spacing: -.6px; }
 .opening__sub { font-size: clamp(21px, 6vw, 38px); font-weight: 800; color: #ffd166; line-height: 1.14; margin-top: 2px; }
-.opening__meta { font-size: clamp(13px, 3.4vw, 17px); font-weight: 700; color: #ffffffd9; margin-top: 8px; }
+/* „חוברת עבודה" sits over the count, so the number gets a line of its own and
+   the words beside it never wrap around it. */
+.opening__meta {
+  margin-top: 10px; display: flex; flex-direction: column; align-items: flex-start; gap: 1px;
+}
+.opening__kind { font-size: clamp(13px, 3.4vw, 17px); font-weight: 700; color: #ffffffd9; }
+.opening__pages { display: flex; align-items: baseline; gap: 8px; }
+.opening__unit { font-size: clamp(13px, 3.4vw, 17px); font-weight: 700; color: #ffffffd9; }
+/* The count is the promise the booklet makes, so it is the biggest thing on the
+   line and it runs up to itself when the card lands. */
+.opening__count {
+  font-size: clamp(30px, 7.4vw, 46px); font-weight: 900; line-height: .95;
+  color: #77F1F6;                      /* the exact turquoise of the drawn axes */
+  letter-spacing: -1px; font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 22px #77F1F673, 0 2px 10px #04122b8C;
+  display: inline-block; transform: scale(.7); opacity: 0;
+  transition: transform .55s cubic-bezier(.2,1.5,.5,1) .3s, opacity .4s ease .3s;
+}
+.opening--ended .opening__count { transform: scale(1); opacity: 1; }
 .opening__title span, .opening__sub span, .opening__meta span {
   display: block; transform: translateY(115%);
   transition: transform .72s cubic-bezier(.16,.84,.34,1);
@@ -143,10 +139,12 @@ body.is-opening .app-main { padding: 0; }
   bottom: clamp(24px, 6vh, 44px);
   padding: 4px;                       /* this padding IS the ring */
   border: 0; border-radius: 999px; cursor: pointer;
+  /* The ring is the turquoise the film draws its axes in — sampled from the
+     last frame (#77F1F6) — so the button belongs to the picture behind it. */
   background: conic-gradient(from var(--spin),
-    #22e07a, #12b5ff, #7c4dff, #ffd166, #22e07a);
+    #77F1F6, #22D3EE, #A6FFF4, #3FE0F0, #77F1F6);
   animation: spin-ring 3.4s linear infinite;
-  box-shadow: 0 10px 34px #04122b8C, 0 0 30px #22e07a4D;
+  box-shadow: 0 10px 34px #04122b8C, 0 0 34px #77F1F659;
   opacity: 0; transform: translateY(16px) scale(.96);
   transition: opacity .55s ease, transform .55s cubic-bezier(.16,.84,.34,1),
               box-shadow .18s ease;
@@ -155,21 +153,25 @@ body.is-opening .app-main { padding: 0; }
 @keyframes spin-ring { to { --spin: 360deg; } }
 
 /* It arrives last: only once every line of the card has been written on. */
-.opening--ended .startbtn { opacity: 1; transform: translateY(0) scale(1); transition-delay: 2.5s; }
+/* --after-text is measured from the credit itself in home.ts, so התחל cannot
+   arrive before the last letter has landed however the text is reworded. */
+.opening--ended .startbtn { opacity: 1; transform: translateY(0) scale(1); transition-delay: var(--after-text, 2.5s); }
 
 .startbtn__label {
   position: relative; z-index: 1; display: block;
   min-width: clamp(150px, 42vw, 200px); min-height: 52px;
   padding: 0 30px; border-radius: 999px;
   display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(150deg, #2fe08a 0%, #12b866 55%, #0e9b57 100%);
-  color: #ffffff; font: inherit; font-weight: 900;
+  background: linear-gradient(150deg, #8FF6FA 0%, #4FE3EE 52%, #22C6DC 100%);
+  /* Deep teal on bright turquoise: white on this face reads at 2:1 and would be
+     a smear. This is the same hue, taken dark enough to carry the word. */
+  color: #04333D; font: inherit; font-weight: 900;
   font-size: clamp(17px, 4.6vw, 21px); letter-spacing: .6px;
-  text-shadow: 0 1px 2px #04331d59;
-  box-shadow: 0 1px 0 #ffffff59 inset, 0 -2px 6px #04331d33 inset;
+  text-shadow: 0 1px 0 #ffffff59;
+  box-shadow: 0 1px 0 #ffffff8C inset, 0 -2px 6px #043a4433 inset;
   transition: filter .18s ease;
 }
-.startbtn:hover { box-shadow: 0 14px 42px #04122b9E, 0 0 44px #22e07a73; }
+.startbtn:hover { box-shadow: 0 14px 42px #04122b9E, 0 0 48px #77F1F68C; }
 .startbtn:hover .startbtn__label { filter: brightness(1.08); }
 .startbtn:active { transform: scale(.965); transition-duration: .07s; }
 .startbtn:focus-visible { outline: 3px solid #ffd166; outline-offset: 4px; }
@@ -207,13 +209,37 @@ body.is-opening .app-main { padding: 0; }
 .soundbtn:focus-visible, .replaybtn:focus-visible { outline: 3px solid #ffd166; outline-offset: 3px; }
 
 @media (prefers-reduced-motion: reduce) {
+  .opening__count { transform: none; opacity: 1; transition: none; }
   .opening__badge img { animation: none; opacity: 1; scale: 1; transition: none; }
   .opening__card, .opening__scrim { opacity: 1; transition: none; }
   .opening__title span, .opening__sub span, .opening__meta span { transform: none; transition: none; }
   .ltr-ch { opacity: 1; transform: none; filter: none; transition: none; }
   .startbtn { opacity: 1; transform: none; transition: none; animation: none;
-              background: linear-gradient(120deg, #22e07a, #12b5ff, #7c4dff, #ffd166); }
+              background: linear-gradient(120deg, #77F1F6, #22D3EE, #A6FFF4); }
 }
+/* A tall screen: show the film whole and put the card under it. Cropping a
+   16:9 frame into a 9:19.5 phone would cut away the axes and the points, which
+   is the one thing the film is for. */
+@media (max-aspect-ratio: 13 / 10) {
+  /* Centred, then nudged up: the sound and badge sit along the top edge and
+     carry weight of their own, so a mathematically centred block reads low. */
+  .opening { display: flex; flex-direction: column; justify-content: center; align-items: center;
+             padding-block-end: clamp(24px, 9vh, 86px); }
+  .opening__stage, .opening__pic { position: relative; inset: auto; width: 100%; }
+  .opening__stage { flex: none; aspect-ratio: 16 / 9; max-height: 46dvh; }
+  .opening__media { object-fit: contain; height: 100%; }
+  .opening__scrim { display: none; }
+  .opening__card {
+    position: relative; inset: auto; max-width: none; margin: 18px auto 0;
+    width: min(92vw, 560px); padding-bottom: 60px;
+    text-shadow: none; opacity: 0;
+  }
+  .opening__title, .opening__sub { text-align: start; }
+  .opening__meta { color: #ffffffd9; }
+  .startbtn { inset-inline-end: clamp(14px, 5vw, 26px); bottom: clamp(16px, 3.5vh, 28px); }
+  .replaybtn { inset-inline-end: clamp(14px, 5vw, 26px); top: calc(clamp(14px, 5vw, 26px) + 52px); }
+}
+
 /* The opening is a screen, never a page. */
 @media print { .opening { display: none; } }
 

@@ -85,6 +85,46 @@ test('on a phone the whole film is visible and nothing runs off the screen', asy
   expect(m.verticalOverflow, 'the opening scrolls').toBeLessThanOrEqual(1);
 });
 
+/* התחל must not arrive before the last letter of the credit has landed, and the
+   page count must be the biggest thing on its line and in the axes' turquoise.
+   Both were asked for by name, and both are easy to undo by accident. */
+test('התחל waits for the last letter, and the count leads in the axes colour', async ({ page }) => {
+  await page.goto('/#/');
+  await page.waitForFunction(
+    () => document.querySelector('.opening')?.classList.contains('opening--ended'),
+    null, { timeout: 25000 },
+  );
+
+  const shape = await page.evaluate(() => {
+    const scr = document.querySelector('.opening') as HTMLElement;
+    const wait = parseFloat(getComputedStyle(scr).getPropertyValue('--after-text'));
+    const last = [...document.querySelectorAll('.opening__credit--2 .ltr-ch')].pop() as HTMLElement;
+    const lastDelay = parseFloat(getComputedStyle(last).getPropertyValue('--d'));
+    const count = document.querySelector('.opening__count') as HTMLElement;
+    const unit = document.querySelector('.opening__unit') as HTMLElement;
+    return {
+      wait, lastDelay,
+      countSize: parseFloat(getComputedStyle(count).fontSize),
+      unitSize: parseFloat(getComputedStyle(unit).fontSize),
+      countColour: getComputedStyle(count).color,
+      startDelay: parseFloat(getComputedStyle(document.querySelector('.startbtn')!).transitionDelay),
+    };
+  });
+
+  expect(shape.wait, 'התחל does not wait for the credit').toBeGreaterThan(shape.lastDelay);
+  expect(shape.startDelay, 'התחל arrives before the text').toBeGreaterThanOrEqual(shape.wait - 0.01);
+  expect(shape.countSize, 'the page count is not the biggest thing on its line')
+    .toBeGreaterThan(shape.unitSize * 1.8);
+  // #77F1F6 — sampled from the axes the film draws
+  expect(shape.countColour, 'the count is not the axes turquoise').toBe('rgb(119, 241, 246)');
+
+  // and it counts UP: still 0 while the film runs, its full value once ended
+  await page.reload();
+  await page.waitForTimeout(1200);
+  const early = await page.locator('.opening__count').textContent();
+  expect(Number(early), 'the count does not start from zero').toBeLessThan(74);
+});
+
 /* The district's badge belongs on the material it comes from: the opening, the
    menu, and every sheet of the booklet. */
 test("the district's badge is on the opening and on every sheet", async ({ page }) => {

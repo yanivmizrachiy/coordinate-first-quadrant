@@ -26,7 +26,7 @@ const wantsStillness = (): boolean => {
 /* The credit line, set letter by letter so it can be typed on by animation.
    Hebrew has no contextual shaping, so one span per character is safe; the
    spans are inline-block and the RTL container lays them out right to left. */
-function letters(text: string, cls: string, from: number, step: number): HTMLElement {
+function letters(text: string, cls: string, from: number, step: number): { line: HTMLElement; done: number } {
   const line = elem('div', { class: cls, 'aria-label': text });
   let i = from;
   for (const ch of text) {
@@ -41,7 +41,10 @@ function letters(text: string, cls: string, from: number, step: number): HTMLEle
     }));
     i += step;
   }
-  return line;
+  /* When the last letter has finished — its own delay plus the .44s it takes to
+     travel. התחל waits for this, so the wait is derived from the text rather
+     than guessed at, and stays right if the credit is ever reworded. */
+  return { line, done: i + 0.44 };
 }
 
 export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
@@ -87,13 +90,43 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
 
   /* Everything below arrives only when the tram has stopped and the axes are
      drawn — the film is the title sequence, and this is its end card. */
+  /* The page count is the promise the booklet makes, so it is set large and
+     counts up to itself when the card arrives. */
+  const count = elem('span', { class: 'opening__count', text: '0' });
+  const line1 = letters('יניב רז - מדריך מחוזי חט"ב בעיר ירושלים', 'opening__credit', 0.10, 0.028);
+  const line2 = letters('הדרכה במחוז ירושלים והעיר ירושלים - מנח"י, בהובלת איילת קריספין', 'opening__credit opening__credit--2', 0.60, 0.021);
+
   const card = elem('div', { class: 'opening__card' },
     elem('h1', { class: 'opening__title' }, elem('span', { text: 'מערכת צירים' })),
     elem('p', { class: 'opening__sub' }, elem('span', { text: 'הרביע הראשון' })),
-    elem('p', { class: 'opening__meta' }, elem('span', { text: `חוברת עבודה · ${TOTAL_PAGES} עמודים` })),
-    letters('יניב רז - מדריך מחוזי חט"ב בעיר ירושלים', 'opening__credit', 0.10, 0.028),
-    letters('הדרכה במחוז ירושלים והעיר ירושלים - מנח"י, בהובלת איילת קריספין', 'opening__credit opening__credit--2', 0.60, 0.021),
+    elem('p', { class: 'opening__meta' },
+      elem('span', { class: 'opening__kind', text: 'חוברת עבודה' }),
+      elem('span', { class: 'opening__pages' }, count, elem('span', { class: 'opening__unit', text: 'עמודים' })),
+    ),
+    line1.line,
+    line2.line,
   );
+
+  /* התחל arrives only once the last letter has landed — measured from the text
+     itself, not from a number typed in the stylesheet. */
+  const afterAllText = Math.max(line1.done, line2.done) + 0.25;
+
+  /** The count runs up as soon as the card is on screen. */
+  const runCount = (): void => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      count.textContent = String(TOTAL_PAGES);
+      return;
+    }
+    const started = performance.now();
+    const dur = 1100;
+    const tick = (now: number): void => {
+      const t = Math.min(1, (now - started) / dur);
+      const eased = 1 - (1 - t) ** 3;
+      count.textContent = String(Math.round(eased * TOTAL_PAGES));
+      if (t < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
 
   const start = elem('button', { class: 'startbtn', type: 'button' },
     elem('span', { class: 'startbtn__glow', 'aria-hidden': 'true' }),
@@ -130,13 +163,15 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
   replay.addEventListener('click', () => {
     if (!film) return;
     screen.classList.remove('opening--ended');
+    count.textContent = '0';
     film.currentTime = 0;
     void film.play();
   });
 
+  screen.style.setProperty('--after-text', `${afterAllText.toFixed(2)}s`);
   screen.append(stage, elem('div', { class: 'opening__scrim', 'aria-hidden': 'true' }), badge, card, start);
   if (film) screen.append(sound, replay);
-  else screen.classList.add('opening--ended');
+  else { screen.classList.add('opening--ended'); requestAnimationFrame(runCount); }
 
   outlet.append(screen);
 
@@ -148,7 +183,7 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
   let cleanup: (() => void) | undefined;
   if (film) {
     const f = film;
-    const ended = (): void => screen.classList.add('opening--ended');
+    const ended = (): void => { screen.classList.add('opening--ended'); runCount(); };
     f.addEventListener('ended', ended);
 
     /* Sound first. If the browser refuses, start silent — a silent opening is
