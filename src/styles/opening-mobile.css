@@ -1,0 +1,20 @@
+/* Mobile opening: the complete 16:9 film is a picture, not a backdrop.
+   Keep the district badge in the dark control rail above that picture so it
+   never covers the axes, points or tram. The sound controls stay on the
+   opposite side of the same rail. */
+@media (max-aspect-ratio: 13 / 10) {
+  .opening__badge {
+    position: relative;
+    inset: auto;
+    order: -2;
+    align-self: flex-start;
+    flex: none;
+    margin: 0;
+    margin-inline-start: clamp(14px, 5vw, 26px);
+    margin-block-end: clamp(8px, 1.5dvh, 12px);
+    translate: 0 -8px;
+  }
+
+  .opening__stage { order: -1; }
+  .opening__card { order: 0; }
+}
