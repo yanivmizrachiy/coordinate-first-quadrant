@@ -276,13 +276,13 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
   }
 
   // Points with labels
-  for (const p of spec.points ?? []) {
+  for (const [pi, p] of (spec.points ?? []).entries()) {
     /* A point ON an axis sits on top of the axis line and the ray drawn along
        it, and all three are the same weight — „לא ברור בדיוק איפה נמצאת נקודה
        A”. The white ring cuts the line underneath so the mark reads as a mark. */
     svg.append(el('circle', {
       cx: X(p.x), cy: Y(p.y), r: 5.1, fill: p.color || BLUE,
-      stroke: '#fff', 'stroke-width': 3.4,
+      stroke: '#fff', 'stroke-width': 3.4, 'data-pt': pi,
     }));
     if (p.label !== undefined && p.label !== '') {
       /* A point at the origin is the one place the default up-and-right offset
@@ -290,15 +290,30 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
          letter lands inside the little square. It goes where the grid's own „O”
          goes — down and left of the corner, outside the quadrant, which is
          where a textbook names the origin anyway. */
-      const atOrigin = p.x === 0 && p.y === 0;
+      /* …but the corner slot holds a NAME, one or two letters. A whole word
+         („התחלה” on the maze) does not fit there — it runs off the left edge,
+         gets pulled back in, and lands on the first tick number. A word keeps
+         the normal offset and is moved off the corner mark by measurement. */
+      const atOrigin = p.x === 0 && p.y === 0 && p.label.length <= 2;
       // The sheet is RTL, and in RTL `text-anchor: start` anchors the RIGHT edge —
       // the label would grow leftwards, back across the dot and onto the axis
       // numbers. Pin the direction so "start" really means "to the right of dx".
       svg.append(el('text', {
         x: X(p.x) + (p.dx ?? (atOrigin ? -11 : 10)),
         y: Y(p.y) + (p.dy ?? (atOrigin ? 22 : -10)),
-        'text-anchor': p.anchor || (atOrigin ? 'end' : 'start'), fill: p.color || BLUE,
+        /* The anchor is mirrored in RTL: `start` anchors the RIGHT edge, so a
+           HEBREW label („התחלה”, „יעד”) placed at dx:+14 grew LEFTWARD, back
+           over its own dot and onto the axis numbers. A Latin label does not,
+           because el() pins those to LTR. So pick the anchor that makes the
+           label grow the way dx points, whichever direction it is in. */
+        'text-anchor': p.anchor ?? anchorFor(p.label, p.dx ?? (atOrigin ? -11 : 10), atOrigin),
+        fill: p.color || BLUE,
         'font-size': 13, 'font-weight': 900, 'paint-order': 'stroke', stroke: '#fff', 'stroke-width': 4,
+        /* Which mark this label belongs to. A label may legitimately sit ON its
+           own point — the maze draws „■” centred on every wall — and pushing it
+           off leaves a square beside a stray dot. It is moved off OTHER points
+           only. */
+        'data-pt': pi,
       }, p.label || `(${p.x},${p.y})`));
     }
   }
@@ -439,7 +454,7 @@ function clearTheMarks(svg: SVGSVGElement): void {
   const marks = [
     ...svg.querySelectorAll<SVGCircleElement>('circle'),
     ...[...svg.querySelectorAll<SVGPathElement>('path')].filter((p) => p.getAttribute('fill') === 'none'),
-  ].filter((e) => !e.closest('defs')).map((e) => e.getBBox());
+  ].filter((e) => !e.closest('defs')).map((e) => ({ box: e.getBBox(), pt: e.getAttribute('data-pt') }));
   if (!marks.length) return;
   const vb = svg.viewBox.baseVal;
   const GAP = 2.5;
@@ -448,7 +463,9 @@ function clearTheMarks(svg: SVGSVGElement): void {
 
   for (const t of texts) {
     const b = t.getBBox();
-    const on = marks.find((m) => hits(b, m));
+    const own = t.getAttribute('data-pt');
+    const mine = marks.filter((m) => m.pt === null || m.pt !== own).map((m) => m.box);
+    const on = mine.find((m) => hits(b, m));
     if (!on) continue;
     /* Every OTHER label is an obstacle too. Without that, a number pushed off a
        vertex lands on its neighbour, which is then pushed onto ITS neighbour —
@@ -467,7 +484,7 @@ function clearTheMarks(svg: SVGSVGElement): void {
       const moved = new DOMRect(b.x + o.dx, b.y + o.dy, b.width, b.height);
       if (moved.x < 1 || moved.y < 1) continue;
       if (moved.x + moved.width > vb.width - 1 || moved.y + moved.height > vb.height - 1) continue;
-      if (marks.some((m) => hits(moved, m))) continue;
+      if (mine.some((m) => hits(moved, m))) continue;
       if (others.some((o2) => hits(moved, o2))) continue;
       t.setAttribute('x', String(Number(t.getAttribute('x') ?? 0) + o.dx));
       t.setAttribute('y', String(Number(t.getAttribute('y') ?? 0) + o.dy));
@@ -521,4 +538,11 @@ function keepInside(svg: SVGSVGElement): void {
     if (dx) t.setAttribute('x', String(Number(t.getAttribute('x') ?? 0) + dx));
     if (dy) t.setAttribute('y', String(Number(t.getAttribute('y') ?? 0) + dy));
   }
+}
+
+/** Which anchor makes a label grow away from its dot, in whichever direction. */
+function anchorFor(label: string, dx: number, atOrigin: boolean): 'start' | 'end' {
+  const rtl = /[֐-׿]/.test(label);
+  if (atOrigin) return rtl ? 'start' : 'end';   // the corner slot grows leftward
+  return dx < 0 ? (rtl ? 'start' : 'end') : rtl ? 'end' : 'start';
 }

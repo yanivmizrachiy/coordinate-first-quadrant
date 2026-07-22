@@ -475,6 +475,9 @@ test('no label sits on a mark, an arrowhead or a vertex', async ({ page }, testI
           out.push(`page ${n}: „${label}” sits on ${p.getAttribute('fill') === 'none' ? 'the right-angle mark' : 'an axis arrowhead'}`);
         }
         for (const c of marks) {
+          // a label may sit on its OWN point by design — the maze centres „■” on
+          // every wall — so only another point's mark is a fault
+          if (c.getAttribute('data-pt') === t.getAttribute('data-pt')) continue;
           if (over(tb, c.getBoundingClientRect(), 2)) out.push(`page ${n}: „${label}” sits on a vertex`);
         }
       }

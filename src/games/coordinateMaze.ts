@@ -103,17 +103,24 @@ export const coordinateMazeGame: GameDefinition = {
       const wallPoints: GridPoint[] = cfg.walls.map((w) => ({ x: w.x, y: w.y, label: '■', color: '#94a3b8', anchor: 'middle', dx: 0, dy: 4 }));
       const points: GridPoint[] = [
         ...wallPoints,
-        { x: cfg.start.x, y: cfg.start.y, label: 'התחלה', color: '#15803d' },
+        { x: cfg.start.x, y: cfg.start.y, label: 'התחלה', color: '#15803d', dx: 14, dy: -14 },
         { x: cfg.target.x, y: cfg.target.y, label: 'יעד', color: '#b45309' },
-        // Below the dot: at the start of the game this label sits on the same
-        // square as „התחלה”, and above the dot the two print on top of each other.
-        { x: pos.x, y: pos.y, label: `(${pos.x},${pos.y})`, color: '#1d4ed8', dy: 20 },
+        /* The position is NOT written on the board. At the start it shares the
+           origin with „התחלה”, and below the dot it lands in the row where the
+           axis numbers live — so it was pushed around and printed on them. The
+           line under the board already says „מיקום נוכחי: (x,y)”, which is the
+           same information in a place where it can be read. */
+        { x: pos.x, y: pos.y, label: '', color: '#1d4ed8' },
       ];
       const segments = trail.slice(1).map((p, i) => ({
         from: [trail[i]!.x, trail[i]!.y] as [number, number], to: [p.x, p.y] as [number, number], type: 'guide' as const,
       }));
       clear(holder);
-      holder.append(renderCoordinateGrid({ points, segments, ariaLabel: 'מבוך הקואורדינטות' }));
+      /* The starting square IS the origin, so three labels („התחלה”, the current
+         position, and the corner mark) all want that one corner. This is a game
+         board, not the lesson about the axes being perpendicular, so the corner
+         mark gives way and the labels get the room. */
+      holder.append(renderCoordinateGrid({ points, segments, originAngle: false, ariaLabel: 'מבוך הקואורדינטות' }));
 
       clear(status);
       if (eqPoint(pos, cfg.target)) {
