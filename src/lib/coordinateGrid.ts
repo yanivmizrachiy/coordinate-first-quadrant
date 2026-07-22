@@ -418,6 +418,7 @@ export function normaliseGridText(root: ParentNode = document): void {
     }
     clearTheArrows(svg);
     clearTheMarks(svg);
+    keepInside(svg);
   }
 }
 
@@ -432,9 +433,13 @@ export function normaliseGridText(root: ParentNode = document): void {
    settle on the next. */
 function clearTheMarks(svg: SVGSVGElement): void {
   const texts = [...svg.querySelectorAll<SVGTextElement>('text')];
-  const marks = [...svg.querySelectorAll<SVGCircleElement>('circle')]
-    .filter((c) => !c.closest('defs'))
-    .map((c) => c.getBBox());
+  /* The vertices AND the right-angle mark in the corner: a label on either one
+     hides what it names. („התחלה” landed on the corner mark, but only where the
+     Hebrew font is wide enough — which is why it showed up on CI and not here.) */
+  const marks = [
+    ...svg.querySelectorAll<SVGCircleElement>('circle'),
+    ...[...svg.querySelectorAll<SVGPathElement>('path')].filter((p) => p.getAttribute('fill') === 'none'),
+  ].filter((e) => !e.closest('defs')).map((e) => e.getBBox());
   if (!marks.length) return;
   const vb = svg.viewBox.baseVal;
   const GAP = 2.5;
@@ -499,5 +504,21 @@ function clearTheArrows(svg: SVGSVGElement): void {
     const moved = base + shift;
     // never push a name off the drawing; if it will not fit, leave it be
     if (moved + b.width / 2 <= svg.viewBox.baseVal.width - 2) t.setAttribute('x', String(Math.round(moved)));
+  }
+}
+
+/* Last word: nothing may end up outside the drawing. A long axis name („נרשמים
+   (עשרות)”) is centred on the axis, so how far it reaches depends on how wide
+   the Hebrew font happens to be — it fits on one machine and hangs off the edge
+   on another. Measured and pulled back in, so the answer does not depend on
+   which font the reader has. */
+function keepInside(svg: SVGSVGElement): void {
+  const vb = svg.viewBox.baseVal;
+  for (const t of svg.querySelectorAll<SVGTextElement>('text')) {
+    const b = t.getBBox();
+    const dx = b.x < 1 ? 1 - b.x : b.x + b.width > vb.width - 1 ? vb.width - 1 - (b.x + b.width) : 0;
+    const dy = b.y < 1 ? 1 - b.y : b.y + b.height > vb.height - 1 ? vb.height - 1 - (b.y + b.height) : 0;
+    if (dx) t.setAttribute('x', String(Number(t.getAttribute('x') ?? 0) + dx));
+    if (dy) t.setAttribute('y', String(Number(t.getAttribute('y') ?? 0) + dy));
   }
 }
