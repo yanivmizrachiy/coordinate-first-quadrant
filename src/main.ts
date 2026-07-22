@@ -9,6 +9,7 @@ import { grayscale } from './lib/storage';
 import { elem, clear } from './lib/dom';
 import type { View, ViewContext } from './views/context';
 import { home } from './views/home';
+import { menu } from './views/menu';
 import { pageViewer } from './views/pageViewer';
 import { book } from './views/book';
 import { ensureFreshBuild } from './lib/freshBuild';
@@ -38,6 +39,7 @@ const setTitle = (t: string): void => {
 function resolve(match: RouteMatch): View {
   switch (match.name) {
     case 'home': return home;
+    case 'menu': return menu;
     case 'page': return pageViewer(Number(match.params['n'] ?? '1'));
     case 'book': return book;
   }
@@ -55,6 +57,8 @@ function render(match: RouteMatch): void {
   if (cleanup) { cleanup(); cleanup = undefined; }
   clear(outlet);
   homeBtn.style.visibility = match.name === 'home' ? 'hidden' : 'visible';
+  /* The opening is the whole screen — the bar would sit on the film. */
+  appbar.classList.toggle('appbar--hidden', match.name === 'home');
   const ctx: ViewContext = { outlet, setTitle };
   const result = resolve(match)(ctx);
   cleanup = typeof result === 'function' ? result : undefined;
