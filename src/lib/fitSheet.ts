@@ -1,3 +1,4 @@
+import { normaliseGridText } from './coordinateGrid';
 /* Fill the sheet, don't leave it half empty.
 
    A worksheet whose questions happen to be short used to end at 55% of the A4
@@ -190,6 +191,8 @@ export function fitSheets(root: ParentNode = document): void {
         /* leave that sheet as authored */
       }
     });
+    // growing a drawing changes its scale, so the type has to be re-measured
+    normaliseGridText(root);
   };
   requestAnimationFrame(() => requestAnimationFrame(run));
   // A tab that is not visible never fires rAF, and the booklet would then print

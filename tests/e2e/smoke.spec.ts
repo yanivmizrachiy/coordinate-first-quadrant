@@ -299,3 +299,65 @@ test('zooming the page out leaves the drawings the size they were', async ({ pag
 
   expect(after, 'the drawings shrank when the page was scaled').toEqual(before);
 });
+
+/* Measuring the CONTAINER is what let this through twice. An SVG scales its own
+   type, so a drawing can be the right size on paper while the numbers inside it
+   render at 8px next to 13px body text — which is what „הציורים לא ברורים”
+   means. This measures the type as the reader sees it, not the box around it. */
+test('every axis number renders at a size a learner can actually read', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
+  await page.goto('/#/book');
+  await page.waitForTimeout(9000);
+  const tiny = await page.evaluate(() =>
+    [...document.querySelectorAll('.sheet .coordinate-grid')]
+      .map((g) => {
+        const svg = g.querySelector('svg');
+        if (!svg) return null;
+        const box = svg.viewBox.baseVal;
+        const shown = svg.getBoundingClientRect().width;
+        if (!box?.width || !shown) return null;
+        const tick = [...svg.querySelectorAll('text')].find((t) => /^\d+$/.test(t.textContent!.trim()));
+        if (!tick) return null;
+        const px = Number(tick.getAttribute('font-size')) * (shown / box.width);
+        const n = g.closest('.sheet')?.querySelector('.sheet-number')?.textContent?.trim() ?? '?';
+        return px < 11 ? `page ${n}: axis numbers at ${px.toFixed(1)}px` : null;
+      })
+      .filter(Boolean),
+  );
+  expect(tiny, tiny.join(', ')).toHaveLength(0);
+});
+
+/* Putting the type back to size can push a label out of the drawing or on top
+   of its neighbour. Both are worse than small type, so both are measured. */
+test('no label spills out of its drawing or lands on another', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
+  await page.goto('/#/book');
+  await page.waitForTimeout(9000);
+  const faults = await page.evaluate(() => {
+    const out: string[] = [];
+    for (const g of document.querySelectorAll('.sheet .coordinate-grid')) {
+      const svg = g.querySelector('svg');
+      if (!svg) continue;
+      const n = g.closest('.sheet')?.querySelector('.sheet-number')?.textContent?.trim() ?? '?';
+      const r = svg.getBoundingClientRect();
+      const texts = [...svg.querySelectorAll('text')];
+      for (const t of texts) {
+        const b = t.getBoundingClientRect();
+        if (b.width && (b.left < r.left - 2 || b.right > r.right + 2 || b.top < r.top - 2 || b.bottom > r.bottom + 2)) {
+          out.push(`page ${n}: „${t.textContent!.trim().slice(0, 10)}” spills out`);
+        }
+      }
+      for (let i = 0; i < texts.length; i++) {
+        for (let j = i + 1; j < texts.length; j++) {
+          const a = texts[i]!.getBoundingClientRect();
+          const b = texts[j]!.getBoundingClientRect();
+          if (a.width && b.width && a.left < b.right - 1 && b.left < a.right - 1 && a.top < b.bottom - 1 && b.top < a.bottom - 1) {
+            out.push(`page ${n}: „${texts[i]!.textContent!.trim()}” over „${texts[j]!.textContent!.trim()}”`);
+          }
+        }
+      }
+    }
+    return [...new Set(out)];
+  });
+  expect(faults, faults.join(' | ')).toHaveLength(0);
+});
