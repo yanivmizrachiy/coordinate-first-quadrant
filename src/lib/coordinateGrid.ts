@@ -134,10 +134,11 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
     svg.append(el('line', { x1: X(0), y1: Y(y), x2: X(XM), y2: Y(y), stroke: GRIDLINE, 'stroke-width': 1, 'vector-effect': 'non-scaling-stroke' }));
   }
 
-  /* When the learner has to WRITE the axis name, its box goes to the right of
-     the arrow (Yaniv's rule), so the arrow is drawn a little shorter to leave
-     that room inside the margin. */
-  const over = spec.axisNames === false ? 6 : 22;
+  /* The axis always overhangs the last gridline by the same amount. It used to
+     be cut short when the learner writes the axis name, to leave room for the
+     answer box — but that put the arrowhead straight onto the „8”. The box goes
+     further out instead; the margin has the room. */
+  const over = 22;
   svg.append(
     el('line', { x1: X(0), y1: Y(0), x2: X(XM) + over, y2: Y(0), stroke: AXIS, 'stroke-width': 2.2, 'vector-effect': 'non-scaling-stroke' }),
     el('path', { d: `M ${X(XM) + over + 6} ${Y(0)} l-10-5v10z`, fill: AXIS }),
@@ -222,14 +223,14 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
       ((): SVGElement => {
         const name = spec.axisXName ?? 'ציר x';
         return name.length > 8
-          ? el('text', { x: X(XM / 2), y: Y(0) + 46, 'text-anchor': 'middle', fill: AXIS, 'font-size': 15, 'font-weight': 800 }, name)
-          : el('text', { x: X(XM) + 46, y: Y(0) + 5, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, name);
+          ? el('text', { x: X(XM / 2), y: Y(0) + 46, 'text-anchor': 'middle', fill: AXIS, 'font-size': 15, 'font-weight': 800, 'data-axisname': 'x' }, name)
+          : el('text', { x: X(XM) + 46, y: Y(0) + 5, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800, 'data-axisname': 'x' }, name);
       })(),
-      el('text', { x: X(0), y: Y(YM) - 32, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, spec.axisYName ?? 'ציר y'),
+      el('text', { x: X(0), y: Y(YM) - 32, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800, 'data-axisname': 'y' }, spec.axisYName ?? 'ציר y'),
     );
   } else {
     svg.append(
-      answerBox(X(XM) + 16, Y(0) - 11, 52),     // to the RIGHT of the x arrow
+      answerBox(X(XM) + 36, Y(0) - 11, 52),     // to the RIGHT of the x arrow
       answerBox(X(0) - 28, Y(YM) - 48, 56),     // just above the y arrow
     );
     // „ראשית הצירים” is two words, so it gets two boxes — one word each.
@@ -509,7 +510,11 @@ function clearTheArrows(svg: SVGSVGElement): void {
     .sort((a, b) => b.x - a.x)[0];
   if (!arrow) return;
   const GAP = 6;
-  for (const t of svg.querySelectorAll<SVGTextElement>('text')) {
+  /* Only the axis NAME. A tick number must never be pushed sideways — the „8”
+     on page 1 was shoved right, straight into the empty box where the learner
+     writes „ציר x”. A number that clashes is moved DOWN, by the renderer, and
+     that decision is not this pass's to make. */
+  for (const t of svg.querySelectorAll<SVGTextElement>('text[data-axisname]')) {
     const base = Number(t.dataset['baseX'] ?? t.getAttribute('x') ?? 0);
     t.dataset['baseX'] = String(base);
     t.setAttribute('x', String(base));
