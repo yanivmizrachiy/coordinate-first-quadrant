@@ -8,17 +8,15 @@ export const ON_AXES_PRACTICE: WorkbookPageContent = sheet({
   content: `
 <div class="two-col">
 <section class="q-card">
-<h3>הכללים</h3>
-<div class="rule-box">
-    נקודה ממוקמת על ציר <span class="math-ltr" dir="ltr">x</span> אם ורק אם <span class="math-ltr" dir="ltr">y=0</span>.<br>
-    נקודה ממוקמת על ציר <span class="math-ltr" dir="ltr">y</span> אם ורק אם <span class="math-ltr" dir="ltr">x=0</span>.<br>
-    ראשית הצירים היא <span class="math-ltr" dir="ltr">O(0,0)</span>.
-  
+<h3>מה משותף לכל הנקודות שממוקמות על ציר?</h3>
+<div class="rule-box completion-intro">
+<div class="completion-sentence">בכל נקודה שממוקמת על ציר <span class="math-ltr" dir="ltr">x</span> שיעור ה־<span class="math-ltr" dir="ltr">y</span> הוא <span class="blank" data-missing="number" style="--blank-width:3ch"></span>.</div>
+<div class="completion-sentence">בכל נקודה שממוקמת על ציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span> ערך ה־<span class="math-ltr" dir="ltr">x</span> הוא 0.</div>
 </div>
-<p>השלימו:</p>
 <ul class="tasks">
-<li>בכל נקודה על ציר <span class="math-ltr" dir="ltr">x</span>, שיעור <span class="math-ltr" dir="ltr">y</span> שווה ל־<span class="blank" data-missing="number" style="--blank-width:3ch"></span>.</li>
-<li>בכל נקודה על ציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>, ערך <span class="math-ltr" dir="ltr">x</span> שווה ל־0.</li>
+<li>לכן כל הנקודות שממוקמות על ציר <span class="math-ltr" dir="ltr">x</span> הן מהצורה <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,0)</span>.</li>
+<li>וכל הנקודות שממוקמות על ציר <span class="math-ltr" dir="ltr">y</span> הן מהצורה <span class="pair math-ltr" dir="ltr">(0,<span class="pair-blank"></span>)</span>.</li>
+<li>הנקודה שממוקמת על שני הצירים יחד היא ראשית הצירים, <span class="math-ltr" dir="ltr">O</span><span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>.</li>
 </ul>
 </section>
 <section class="q-card">

@@ -6,6 +6,7 @@ import { createRevealGame } from './revealEngine';
 export const secretWordPuzzle: RevealPuzzle = {
   id: 'secret-word',
   title: 'מילת הסוד',
+  question: 'איזו מילה מסתתרת בנקודות?',
   icon: '🔤',
   short: 'קוראים נקודות ומגלים מילה עברית נסתרת.',
   skill: 'קריאת זוג סדור (x, y)',

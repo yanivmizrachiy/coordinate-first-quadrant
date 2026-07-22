@@ -59,7 +59,7 @@ export const sameAxisGame: GameDefinition = {
     const solved = new Array<boolean>(sameAxisRounds.length).fill(false);
     const wrap = elem('div', { class: 'game' });
     wrap.append(elem('div', { class: 'game__intro' },
-      elem('h2', { text: 'אותו x או אותו y' }),
+      elem('h2', { text: 'אילו נקודות חולקות שיעור?' }),
       elem('p', { text: 'בכל שרטוט בחרו את כל הנקודות שממוקמות על אותו קו כמו הנקודה המסומנת. אותו שיעור x — קו אנכי; אותו שיעור y — קו אופקי. כל תשובה נכונה חושפת אות.' }),
     ));
 
@@ -118,7 +118,7 @@ function renderRound(round: SameAxisRound, index: number, onResult: (ok: boolean
   body.append(chipRow);
 
   const feedback = elem('span', { class: 'game__prompt' });
-  const check = elem('button', { class: 'iconbtn iconbtn--primary', type: 'button', text: 'בדיקה' });
+  const check = elem('button', { class: 'iconbtn iconbtn--primary', type: 'button', text: 'בדקו' });
   check.addEventListener('click', () => {
     const chosen = [...selected].sort();
     const ok = chosen.length === correct.length && chosen.every((l, i) => l === correct[i]);
