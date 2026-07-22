@@ -59,7 +59,10 @@ ${exerciseGiven('AB', '7 − 2')}
 <h3>ד. מרחק אנכי בין שתי נקודות.</h3>
 <ul class="tasks compact">
 <li>לשתי הנקודות <span class="math-ltr" dir="ltr">C(4,1)</span> ו־<span class="math-ltr" dir="ltr">D(4,6)</span> יש שיעור <span class="blank" data-missing="letter" style="--blank-width:3ch"></span> זהה, ולכן הקטע <span class="math-ltr" dir="ltr">CD</span> מקביל לציר <span class="math-ltr" dir="ltr">y</span>.</li>
-<li>ה־<span class="math-ltr" dir="ltr">y</span> הגבוה פחות ה־<span class="math-ltr" dir="ltr">y</span> הנמוך, <span class="math-ltr" dir="ltr">6 − 1 =</span> <span class="blank" data-missing="number" style="--blank-width:3ch"></span> יח'.</li>
+<li>ה־<span class="math-ltr" dir="ltr">y</span> הגבוה פחות ה־<span class="math-ltr" dir="ltr">y</span> הנמוך:</li>
+</ul>
+${exerciseGiven('CD', '6 − 1')}
+<ul class="tasks compact">
 <li>כתבו שתי נקודות משלכם שיש להן שיעור <span class="math-ltr" dir="ltr">x</span> זהה: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> ו־<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>.</li>
 </ul>
 </section>

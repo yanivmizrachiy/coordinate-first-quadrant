@@ -409,6 +409,14 @@
 .calc-box .answer-line { margin: 5px 0; }
 
 /* An exercise reads left to right, whatever the sheet's direction is. */
+/* The exercise and the value under it are one block: they are read together and
+   must never be split across a column or a page. */
+.calc-pair { margin: 3px 0 5px; }
+.calc-pair .calc-ltr { margin: 1px 0; }
+/* A given subtraction is one line, so it needs no block spacing around it. */
+.calc-pair:has(> .calc-ltr:only-child) { margin: 2px 0; }
+/* Inside a table cell the row already names the segment, so the block sits tight. */
+td > .calc-pair, td .calc-pair { margin: 2px 0; }
 .calc-ltr { display: flex; align-items: baseline; gap: 6px; margin: 3px 0; font-weight: 700; }
 .calc-ltr__name { min-width: 3.2ch; color: var(--blue); }
 .calc-ltr__eq { color: var(--muted); }

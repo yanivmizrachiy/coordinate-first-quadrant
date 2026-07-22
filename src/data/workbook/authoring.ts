@@ -132,11 +132,25 @@ export const calcBox = (o: { lines?: number; perimeter?: boolean; area?: boolean
 /* An exercise is written the way it is worked: LEFT to right. „BC = תרגיל =
    תוצאה”, on one pinned line, and then the value of that side on the line under
    it. Yaniv's format — a subtraction that reads backwards is not a subtraction. */
-export const exercise = (name: string, unit = "יח'"): string =>
+/** The value of that side, stated on its own line: „BC = ____ יח'”. */
+export const sideValue = (name: string, unit = "יח'"): string =>
   '<div class="calc-ltr" dir="ltr">' +
   `<span class="calc-ltr__name">${name}</span><span class="calc-ltr__eq">=</span>` +
-  `${blank(10, 'number')}<span class="calc-ltr__eq">=</span>${blank(4, 'number')}` +
-  `<span class="calc-ltr__unit" dir="rtl">${unit}</span></div>`;
+  `${blank(4, 'number')}<span class="calc-ltr__unit" dir="rtl">${unit}</span></div>`;
+
+/* Yaniv's format is TWO lines, and they may never come apart: „יש תרגיל ותשובה
+   מתחת… וצריך מספיק מקום לכל תרגיל ולכתוב תשובה בשורה מתחת." So one call emits
+   both — the working, with room to write it, and the value on the line below.
+   Splitting them into two calls is how page 74 ended up with exercises and no
+   answers under them. */
+export const exercise = (name: string, unit = "יח'"): string =>
+  '<div class="calc-pair">' +
+  '<div class="calc-ltr" dir="ltr">' +
+  `<span class="calc-ltr__name">${name}</span><span class="calc-ltr__eq">=</span>` +
+  `${blank(16, 'number')}<span class="calc-ltr__eq">=</span>${blank(5, 'number')}` +
+  `<span class="calc-ltr__unit" dir="rtl">${unit}</span></div>` +
+  sideValue(name, unit) +
+  '</div>';
 
 /* The unit („יח'”, „יח\"ר”) is a Hebrew word, and the geresh at its end is a
    NEUTRAL character: inside the dir="ltr" calculation line it takes the line's
@@ -148,16 +162,16 @@ export const exercise = (name: string, unit = "יח'"): string =>
     result. Same left-to-right line as exercise(); the name may be left out where
     the quantity has none (a difference in years, in centimetres, in seats). */
 export const exerciseGiven = (name: string, calc: string, unit = "יח'"): string =>
+  '<div class="calc-pair">' +
   '<div class="calc-ltr" dir="ltr">' +
   (name ? `<span class="calc-ltr__name">${name}</span><span class="calc-ltr__eq">=</span>` : '') +
-  `<span>${calc}</span><span class="calc-ltr__eq">=</span>${blank(4, 'number')}` +
-  `<span class="calc-ltr__unit" dir="rtl">${unit}</span></div>`;
-
-/** The value of that side, stated on its own line: „BC = ____ יח'”. */
-export const sideValue = (name: string, unit = "יח'"): string =>
-  '<div class="calc-ltr" dir="ltr">' +
-  `<span class="calc-ltr__name">${name}</span><span class="calc-ltr__eq">=</span>` +
-  `${blank(4, 'number')}<span class="calc-ltr__unit" dir="rtl">${unit}</span></div>`;
+  `<span>${calc}</span><span class="calc-ltr__eq">=</span>${blank(5, 'number')}` +
+  `<span class="calc-ltr__unit" dir="rtl">${unit}</span></div>` +
+  /* No value line here, and that is the point: the subtraction is printed, so
+     the blank on this line already IS the answer. Repeating it underneath asks
+     the same thing twice. The two-line block belongs to exercise(), where the
+     learner writes the working and then states what the side equals. */
+  '</div>';
 
 /** „מחסן מילים” — the words to choose from, so the task needs no explaining. */
 export const wordBank = (words: string[]): string =>

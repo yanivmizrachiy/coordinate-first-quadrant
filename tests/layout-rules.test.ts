@@ -85,9 +85,13 @@ describe('completions ask for something different each time', () => {
   it('no group of completions asks for the same kind three times running', () => {
     for (const page of WORKBOOK) {
       for (const card of cards(page.html)) {
-        /* The final answer of a calculation is a number because area is a
-           number — that is arithmetic, not a lack of variety. */
-        const body = card.replace(/<div class="calc-final">[\s\S]*?<\/div>\s*<\/div>/g, ' ');
+        /* Every blank in a calculation is a number because arithmetic is made of
+           numbers — the subtraction, its result, and the side's value. That is
+           not a lack of variety, so calculations are not counted here. */
+        const body = card
+          .replace(/<div class="calc-final">[\s\S]*?<\/div>\s*<\/div>/g, ' ')
+          .replace(/<div class="calc-pair">[\s\S]*?<\/div><\/div><\/div>/g, ' ')
+          .replace(/<div class="calc-ltr"[\s\S]*?<\/div>/g, ' ');
         const kinds = [...body.matchAll(/data-missing="(\w+)"/g)].map((m) => m[1]);
         if (kinds.length < 3) continue;
         const distinct = new Set(kinds);
@@ -663,8 +667,13 @@ describe('a calculation is written left to right', () => {
     const loose: string[] = [];
     for (const page of WORKBOOK) {
       // strip the LTR calculation lines, then look for a subtraction in what is left
-      const prose = page.html.replace(/<div class="calc-ltr"[^>]*>[\s\S]*?<\/div>/g, '');
-      if (/[֐-׿][^<>]{0,40}\d\s*−\s*\d/.test(prose) || /\d\s*−\s*\d[^<>]{0,40}[֐-׿]/.test(prose)) {
+      /* Strip the calculation lines, THEN the tags. „6 − 1 =” inside a math-ltr
+         span sat only tags away from the Hebrew around it, and the first version
+         of this check refused to look across „<” — so it walked right past it. */
+      const prose = page.html
+        .replace(/<div class="calc-ltr"[^>]*>[\s\S]*?<\/div>/g, ' ')
+        .replace(/<[^>]+>/g, ' ');
+      if (/[֐-׿][^־]{0,40}\d\s*−\s*\d/.test(prose) || /\d\s*−\s*\d.{0,40}[֐-׿]/.test(prose)) {
         loose.push(`page ${page.n}`);
       }
     }
@@ -691,6 +700,37 @@ describe('a calculation is written left to right', () => {
     const handmade = WORKBOOK.filter((p) => /<span class="calc-ltr__unit">/.test(p.html));
     expect(handmade.map((p) => `page ${p.n}`), 'calc markup written by hand — use exercise()/exerciseGiven()/sideValue()').toEqual([]);
     expect(inline).toEqual([]);
+  });
+
+  /* „יש תרגיל ותשובה מתחת… וצריך מספיק מקום לכל תרגיל ולכתוב תשובה בשורה
+     מתחת." Page 74 had the exercises and no answers under them, because the two
+     lines were two separate calls. exercise() emits both, and this makes sure
+     nobody splits them again. */
+  it('an exercise always has its answer on the line below', () => {
+    for (const page of WORKBOOK) {
+      /* An exercise the learner writes out („= ____ =”) must sit in a block
+         with its answer line. A difference with no side name is one line by
+         design, so it is exempt. */
+      for (const line of page.html.match(/<div class="calc-ltr"[\s\S]*?<\/div>/g) ?? []) {
+        if (!/calc-ltr__name/.test(line)) continue;
+        const twoBlanks = (line.match(/class="blank"/g) ?? []).length === 2;
+        if (!twoBlanks) continue;
+        const at = page.html.indexOf(line);
+        const before = page.html.slice(Math.max(0, at - 40), at);
+        expect(before, `page ${page.n}: an exercise with no answer line under it`).toContain('calc-pair');
+      }
+    }
+  });
+
+  /* „צריך מספיק מקום לכל תרגיל.” A subtraction written by hand needs a real
+     line to write it on, not a few characters. */
+  it('every exercise leaves room to write the subtraction', () => {
+    for (const page of WORKBOOK) {
+      for (const b of page.html.match(/<div class="calc-pair">[\s\S]*?<\/div><\/div><\/div>/g) ?? []) {
+        const first = b.match(/--blank-width:(\d+)ch/);
+        expect(Number(first?.[1] ?? 0), `page ${page.n}: no room to write the exercise`).toBeGreaterThanOrEqual(14);
+      }
+    }
   });
 
   it('every calculation line carries its units', () => {

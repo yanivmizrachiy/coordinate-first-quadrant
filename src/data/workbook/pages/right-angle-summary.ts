@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, calcBox, exercise } from '../authoring';
+import { sheet, calcBox, exercise, pair } from '../authoring';
 
 export const RIGHT_ANGLE_SUMMARY: WorkbookPageContent = sheet({
   sectionClass: "sheet practice",
@@ -18,7 +18,7 @@ export const RIGHT_ANGLE_SUMMARY: WorkbookPageContent = sheet({
 <li>הצלעות שמקבילות לציר <span class="math-ltr" dir="ltr">y</span> מאונכות להן, כי הזווית ביניהן היא זווית <span class="blank" data-missing="property" style="--blank-width:5ch"></span>.</li>
 <li>מספר הזוויות הישרות: <span class="blank" style="--blank-width:3ch"></span></li>
 </ul>
-<p>כתבו לכל צלע את תרגיל החיסור, ורק אחר כך את ההיקף ואת השטח.</p>
+<p>חשבו את מידות המלבן, ורק אחר כך את ההיקף ואת השטח.</p>
 ${exercise('AB')}
 ${exercise('BC')}
 ${calcBox({ perimeter: true, area: true })}
@@ -31,7 +31,7 @@ ${calcBox({ perimeter: true, area: true })}
 <div aria-label="שלושה קודקודים לבניית מלבן עם זוויות ישרות" class="coordinate-grid grid-md" data-arrows="[]" data-labelboxes="[]" data-points='[{"x": 2, "y": 2, "label": "P"}, {"x": 6, "y": 2, "label": "Q"}, {"x": 6, "y": 5, "label": "R"}]' data-polygons="[]" data-segments='[{"from": [2, 2], "to": [6, 2], "type": "shape"}, {"from": [6, 2], "to": [6, 5], "type": "shape"}]' role="img">
 </div>
 <div>
-<p class="axis-answer-box">S = <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
+<p class="axis-answer-box">${pair('S')}</p>
 <ul class="tasks compact">
 <li>בקודקוד Q הזווית היא <span class="blank" style="--blank-width:5ch"></span>.</li>
 </ul>
