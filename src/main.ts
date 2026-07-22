@@ -1,6 +1,7 @@
 import './styles/tokens.css';
 import './styles/base.css';
 import './styles/app.css';
+import './styles/opening-mobile.css';
 import './styles/workbook.css';
 import './styles/grayscale.css';
 
