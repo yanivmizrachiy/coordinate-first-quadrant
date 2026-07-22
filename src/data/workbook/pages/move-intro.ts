@@ -6,7 +6,9 @@ export const MOVE_INTRO: WorkbookPageContent = sheet({
   title: "הזזה של נקודות",
   subtitle: "איזה שיעור משתנה בכל כיוון",
   content: `
-<div class="rule-box">ימינה או שמאלה משנות את שיעור x. למעלה או למטה משנות את שיעור y.
+<div class="rule-box completion-intro">
+<div class="completion-sentence">הזזה ימינה או שמאלה משנה את שיעור <span class="word-blank word-short" data-missing="letter" aria-label="מקום להשלמת האות x"></span>.</div>
+<div class="completion-sentence">הזזה למעלה או <span class="word-blank word-medium" data-missing="direction" aria-label="מקום להשלמת המילה למטה"></span> משנה את שיעור <span class="math-ltr" dir="ltr">y</span>.</div>
 </div>
 <section class="q-card">
 <h3>א. הקיפו את התשובה הנכונה.</h3>

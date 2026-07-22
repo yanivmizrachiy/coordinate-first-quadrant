@@ -1,13 +1,14 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, blank, ltr, pair, grid } from '../authoring';
+import { sheet, blank, wordBlank, ltr, pair, grid } from '../authoring';
 
 export const COORDS_INTRO: WorkbookPageContent = sheet({
   sectionClass: 'sheet guided dense',
   title: 'שיעור x ושיעור y',
   subtitle: 'קוראים את מיקום הנקודה לפי שני מספרים',
   content: `
-<div class="rule-box">שיעור ${ltr('x')} מתאר את המיקום האופקי, והוא גם ה<b>מרחק</b> של הנקודה מציר ${ltr('y')}.<br>
-שיעור ${ltr('y')} מתאר את המיקום האנכי, והוא גם ה<b>מרחק</b> של הנקודה מציר ${ltr('x')}.
+<div class="rule-box completion-intro">
+<div class="completion-sentence">שיעור ${ltr('x')} מתאר את המיקום ה${wordBlank('medium', 'property', 'מקום להשלמת המילה אופקי')}, והוא גם ה<b>מרחק</b> של הנקודה מציר ${ltr('y')}.</div>
+<div class="completion-sentence">שיעור ${ltr('y')} מתאר את המיקום האנכי, והוא גם ה<b>מרחק</b> של הנקודה מציר ${wordBlank('short', 'letter', 'מקום להשלמת האות x')}.</div>
 </div>
 <section class="q-card">
 <h3>א. דוגמה: הנקודה ${ltr('A(4,3)')}.</h3>
@@ -21,13 +22,14 @@ ${grid({
     { from: [4, 0], to: [4, 3], dashed: true, type: 'guide' },
     { from: [0, 3], to: [4, 3], dashed: true, type: 'guide' },
   ],
-  // Each distance label is tied to the line it measures, so there is never a
-  // question of which dashed line a box is talking about.
+  // Every box points at what it describes. A coordinate label sits by its own
+  // tick on its own axis; a distance label sits on the line it measures. Left
+  // floating, „שיעור x = 4” could be read as belonging to either.
   labelboxes: [
-    { text: 'שיעור x = 4', at: [2, 0.8] },
-    { text: 'שיעור y = 3', at: [6.6, 3.4] },
-    { text: "מרחק 4 יח'", at: [2, 3.9], to: [2, 3] },
-    { text: "מרחק 3 יח'", at: [6.1, 1.3], to: [4, 1.3] },
+    { text: 'שיעור x = 4', at: [5.7, 0.7], to: [4, 0] },
+    { text: 'שיעור y = 3', at: [1.7, 4.9], to: [0, 3] },
+    { text: "מרחק 4 יח' מציר y", at: [2.4, 3.85], to: [2.4, 3] },
+    { text: "מרחק 3 יח' מציר x", at: [6.3, 2.1], to: [4, 2.1] },
   ],
 })}
 </section>
