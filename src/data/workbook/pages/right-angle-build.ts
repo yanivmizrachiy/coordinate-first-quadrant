@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet } from '../authoring';
+import { sheet, calcBox } from '../authoring';
 
 export const RIGHT_ANGLE_BUILD: WorkbookPageContent = sheet({
   sectionClass: "sheet guided dense",
@@ -40,13 +40,9 @@ export const RIGHT_ANGLE_BUILD: WorkbookPageContent = sheet({
 <h3>ג. חשבו את היקף ושטח המלבן ABCD מסעיף ב.</h3>
 <ul class="tasks compact">
 <li>האורך <span class="math-ltr" dir="ltr">AB</span>: <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'. &nbsp; הרוחב <span class="math-ltr" dir="ltr">BC</span>: <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'.</li>
-<li>היקף המלבן: <span class="blank" style="--blank-width:4ch"></span> יח'. &nbsp; שטח המלבן: <span class="blank" style="--blank-width:4ch"></span> יח"ר.</li>
+<li>אורך הצלע <span class="math-ltr" dir="ltr">AB</span> והרוחב <span class="math-ltr" dir="ltr">BC</span> הם ההפרשים בין השיעורים המתאימים.</li>
 </ul>
-<div class="calc-box"><b>דרך החישוב:</b>
-<div class="answer-line">
-</div>
-<div class="answer-line">
-</div>
+${calcBox({ perimeter: true, area: true })}
 </div>
 </section>
 `,

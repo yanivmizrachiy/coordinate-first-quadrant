@@ -557,6 +557,26 @@ describe('a calculation gets units and room to work', () => {
     }
   });
 
+  /* The hole that let page 69 through: the old check only looked INSIDE a
+     calc block, so a sheet that asked „היקף המלבן: ____ יח'” as a loose blank
+     was never examined. An area or a perimeter is answered in the calculation
+     block, with S and P — nowhere else. */
+  it('an area or perimeter is never asked as a loose blank', () => {
+    for (const p of WORKBOOK) {
+      const t = p.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+      if (!/היקף|שטח/.test(t)) continue;
+      /* Only a sheet that CALCULATES — one with a working block. Reading a
+         perimeter off a graph („ההיקף הוא ___ יח'”) has nothing to show. */
+      if (!p.html.includes('calc-box')) continue;
+      /* An ANSWER is a blank followed by its unit. „ההיקף והשטח ____, כי הזזה
+         אינה משנה את הצורה” is a relation, not an answer, and stays. */
+      expect(
+        p.html,
+        `page ${p.n}: „היקף/שטח: ____ יח'” outside a calculation block`,
+      ).not.toMatch(/(היקף|שטח)[^<]{0,16}<span class="blank"[^>]*><\/span>\s*יח/);
+    }
+  });
+
   it('a sheet that asks for a calculation leaves space to do it', () => {
     for (const p of WORKBOOK) {
       if (!computes(p.html)) continue;

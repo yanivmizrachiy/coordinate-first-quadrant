@@ -42,7 +42,7 @@ ${calcBox({ perimeter: true, area: true })}
 <ul class="tasks compact">
 <li>מה השתנה? <span class="blank" style="--blank-width:12ch"></span></li>
 <li>מה נשאר זהה? <span class="blank" style="--blank-width:12ch"></span></li>
-<li>אורכים / היקף / שטח: <span class="blank" style="--blank-width:12ch"></span> יח'</li>
+<li>אחרי ההזזה האורך, הרוחב, ההיקף והשטח <span class="blank" data-missing="relation" style="--blank-width:6ch"></span>, כי הזזה אינה משנה את הצורה.</li>
 </ul>
 </div>
 </div>

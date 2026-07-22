@@ -7,15 +7,17 @@ import { sheet, blank, ltr, pair, grid } from '../authoring';
    before every letter, and a marking task that is asked about afterwards. */
 export const RAYS_RIGHT_ANGLE: WorkbookPageContent = sheet({
   sectionClass: 'sheet guided',
-  title: 'קרניים וזווית ישרה ברביע הראשון',
-  subtitle: 'שתי קרניים מראשית הצירים, והזווית שביניהן',
+  title: 'זוויות ברביע הראשון',
+  subtitle: 'שתי קרניים מראשית הצירים — הזווית שביניהן',
   content: `
 <div class="rule-box completion-intro">
-<div class="completion-sentence">קרן שיוצאת מראשית הצירים ועוברת דרך נקודה שעל ציר ${ltr('x')} שוכבת על ציר ${ltr('x')} עצמו, ולכן היא ${blank(5, 'property')}.</div>
+<div class="completion-sentence">קרן שיוצאת מראשית הצירים ועוברת דרך נקודה שעל ציר ${ltr('x')} ממוקמת על ציר ${ltr('x')} עצמו, ולכן היא ${blank(5, 'property')}.</div>
 <div class="completion-sentence">קרן שיוצאת מראשית הצירים ועוברת דרך נקודה שעל ציר ${ltr('y')} היא אנכית, ולכן הזווית בין שתי הקרניים האלה היא זווית ${blank(5, 'property')}.</div>
 </div>
 <section class="q-card">
-<h3>א. הקיפו את התשובה הנכונה.</h3>
+<h3>א. סמנו, ציירו ובדקו — ואז הקיפו.</h3>
+<p>סמנו כל אפשרות על הסרטוט, ציירו את הקרן מראשית הצירים דרכה, ובדקו איזו יוצרת זווית ישרה.</p>
+${grid({ size: 'md', label: 'מערכת צירים לבדיקת האפשרויות: מסמנים נקודה ומציירים ממנה קרן' })}
 <ul class="tasks compact">
 <li>אחת הקרניים של זווית ישרה עוברת דרך הנקודה ${ltr('(4,0)')}. הנקודה שיכולה להיות על הקרן השנייה היא:
 <span class="choice-row"><span class="choice">${ltr('(0,4)')}</span><span class="choice">${ltr('(4,2)')}</span><span class="choice">${ltr('(2,4)')}</span><span class="choice">${ltr('(4,4)')}</span></span></li>
@@ -35,7 +37,7 @@ ${grid({
   ],
 })}
 <ul class="tasks compact">
-<li>הקרן ${ltr('OP')} שוכבת על ציר ${blank(3, 'letter')}, והקרן ${ltr('OQ')} שוכבת על ציר ${ltr('y')}.</li>
+<li>הקרן ${ltr('OP')} ממוקמת על ציר ${blank(3, 'letter')}, והקרן ${ltr('OQ')} ממוקמת על ציר ${ltr('y')}.</li>
 <li>גודל הזווית שנוצרת בין שתי הקרניים הוא ${blank(4, 'number')} מעלות.</li>
 <li>בכל נקודה שעל הקרן ${ltr('OP')} שיעור ה־${ltr('y')} הוא ${blank(3, 'number')}.</li>
 </ul>
@@ -44,7 +46,7 @@ ${grid({
 <h3>ג. כתבו שתי נקודות שונות שיכולות להיות על הקרן השנייה.</h3>
 <p>אחת הקרניים של זווית ישרה יוצאת מראשית הצירים ועוברת דרך הנקודה ${ltr('(3,0)')}.</p>
 <ul class="tasks compact">
-<li>הקרן הזאת שוכבת על ציר ${blank(3, 'letter')}, ולכן הקרן השנייה חייבת לשכב על הציר האחר.</li>
+<li>הקרן הזאת ממוקמת על ציר ${blank(3, 'letter')}, ולכן הקרן השנייה חייבת לשכב על הציר האחר.</li>
 <li>שתי נקודות אפשריות: ${pair()} ו־${pair()}.</li>
 <li>בשתיהן ערך ה־${ltr('x')} הוא ${blank(3, 'number')}, וזה מה שמעמיד אותן על אותה קרן.</li>
 </ul>

@@ -6,8 +6,8 @@ import { sheet, blank, ltr, pair, grid } from '../authoring';
    followed by a question about what the learner drew. */
 export const RAYS_BUILD_RIGHT_ANGLE: WorkbookPageContent = sheet({
   sectionClass: 'sheet practice',
-  title: 'בונים זווית ישרה ברביע הראשון',
-  subtitle: 'מסמנים נקודה שיוצרת זווית ישרה, ואז עונים עליה',
+  title: 'זוויות ברביע הראשון',
+  subtitle: 'בונים זווית ישרה, ואז משלימים עליה',
   content: `
 <section class="q-card">
 <h3>א. סמנו נקודה שיוצרת זווית ישרה, ואז השלימו את החסר.</h3>
