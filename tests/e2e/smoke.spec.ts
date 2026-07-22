@@ -487,6 +487,30 @@ test('no label sits on a mark, an arrowhead or a vertex', async ({ page }, testI
   expect(faults, faults.join(' | ')).toHaveLength(0);
 });
 
+/* „צריך לכתוב משמאל לימין AB שווה תרגיל שווה תשובה”. The markup says dir="ltr",
+   but what matters is where the parts actually land: the sheet around them is
+   RTL, and one stray rule would flip the line back without changing the HTML.
+   So this measures the painted positions — name leftmost, unit rightmost. */
+test('every calculation really is painted left to right', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
+  await page.goto('/#/book');
+  await page.waitForTimeout(9000);
+  const faults = await page.evaluate(() => {
+    const out: string[] = [];
+    for (const d of document.querySelectorAll('.sheet .calc-ltr')) {
+      const n = d.closest('.sheet')?.querySelector('.sheet-number')?.textContent?.trim() ?? '?';
+      const kids = [...d.children].filter((c) => c.getBoundingClientRect().width > 0);
+      if (kids.length < 2) { out.push(`page ${n}: a calculation line did not lay out`); continue; }
+      const first = kids[0]!.getBoundingClientRect().left;
+      const last = kids[kids.length - 1]!.getBoundingClientRect().left;
+      const text = (d as HTMLElement).innerText.replace(/\s+/g, ' ').trim();
+      if (first >= last) out.push(`page ${n}: „${text}” is painted right to left`);
+    }
+    return [...new Set(out)];
+  });
+  expect(faults.length, faults.join(' | ')).toBe(0);
+});
+
 /* Two letter O on one corner — the grid's own origin plus a point the sheet
    marked at (0,0) — reads as a mistake in the drawing. */
 test('the origin is never labelled twice', async ({ page }, testInfo) => {

@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, blank, ltr, pair, grid } from '../authoring';
+import { sheet, blank, ltr, pair, grid, exerciseGiven } from '../authoring';
 
 /* Based on the national-test question Yaniv sent: an average score plotted by
    year. Same genre, our own data — the sports hall attendance of a school. */
@@ -40,8 +40,11 @@ ${grid({
 <li>משמעות הנקודה ${ltr('(5,6)')}: בשנה ה־5 נרשמו ${blank(3, 'number')} עשרות תלמידים.</li>
 </ul>
 <ul class="tasks compact">
-<li>בין השנה הראשונה ובין השנה החמישית עברו ${ltr('5 − 1 =')} ${blank(3, 'number')} שנים.</li>
-<li>ההפרש במספר הנרשמים באותן שנים הוא ${ltr('6 − 2 =')} ${blank(3, 'number')} עשרות.</li>
+<li>בין השנה הראשונה ובין השנה החמישית, ואחר כך ההפרש במספר הנרשמים באותן שנים:</li>
+</ul>
+${exerciseGiven('', '5 − 1', 'שנים')}
+${exerciseGiven('', '6 − 2', 'עשרות')}
+<ul class="tasks compact">
 <li>סמנו על הגרף נקודה שמתארת את השנה השמינית, שבה נרשמו 70 תלמידים: ${pair()}.</li>
 <li>הנקודה שסימנתם ממוקמת ${blank(5, 'direction')} מכל הנקודות האחרות בגרף.</li>
 </ul>

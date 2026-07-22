@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, blank, ltr, pair, grid } from '../authoring';
+import { sheet, blank, ltr, pair, grid, exerciseGiven } from '../authoring';
 
 /* Real life, grade 7: a phone home screen IS a coordinate system. The icons sit
    on a grid, „הזזתי את האפליקציה” is a translation, and the child already knows
@@ -36,9 +36,15 @@ ${grid({
 <section class="q-card">
 <h3>ב. כמה רחוק גררתי את האפליקציה?</h3>
 <ul class="tasks compact">
-<li>גררתי את אפליקציית המוזיקה מ־${ltr('(1,5)')} אל מקום ההודעות ב־${ltr('(6,5)')}. תרגיל החיסור: ${ltr('6 − 1 =')} ${blank(3, 'number')}.</li>
+<li>גררתי את אפליקציית המוזיקה מ־${ltr('(1,5)')} אל מקום ההודעות ב־${ltr('(6,5)')}, וזהו תרגיל החיסור:</li>
+</ul>
+${exerciseGiven('', '6 − 1', 'משבצות')}
+<ul class="tasks compact">
 <li>לכן היא זזה ${blank(3, 'number')} עמודות ימינה, כלומר ההפרש בין ערכי ה־${ltr('x')} הוא 5.</li>
-<li>גררתי את אפליקציית השעון מ־${ltr('(6,2)')} אל ${ltr('(6,5)')}. ה־${ltr('y')} הגבוה הוא 5, ה־${ltr('y')} הנמוך הוא ${blank(3, 'number')}, וההפרש הוא 3.</li>
+<li>גררתי את אפליקציית השעון מ־${ltr('(6,2)')} אל ${ltr('(6,5)')}. ה־${ltr('y')} הגבוה הוא 5, ה־${ltr('y')} הנמוך הוא ${blank(3, 'number')}, וזהו תרגיל החיסור:</li>
+</ul>
+${exerciseGiven('', '5 − 2', 'משבצות')}
+<ul class="tasks compact">
 <li>ההזזה הזאת היא של 3 יחידות ${blank(6, 'direction')}.</li>
 </ul>
 </section>

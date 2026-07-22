@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, blank, ltr, pair, grid, wordBank } from '../authoring';
+import { sheet, blank, ltr, pair, grid, wordBank, exerciseGiven, exercise } from '../authoring';
 
 /* Real life, grade 7: a courier cannot fly. Every leg runs along a street, so
    every leg is parallel to an axis and its length is a subtraction — and the
@@ -31,9 +31,14 @@ ${grid({
 })}
 ${wordBank(['x', 'y', '4', '5', '9', 'ימינה', 'למעלה', 'הפרש'])}
 <ul class="tasks compact">
-<li>הקטע מהמסעדה אל כתובת א מקביל לציר ${blank(3, 'letter')}, ותרגיל החיסור שלו הוא ${ltr('6 − 1')}.</li>
-<li>אורך הקטע הראשון הוא ${blank(3, 'number')} יח', והשליח נסע בו ${blank(6, 'direction')}.</li>
-<li>בקטע השני ה־${ltr('y')} הגבוה הוא 5 וה־${ltr('y')} הנמוך הוא 1, ולכן ההפרש הוא ${blank(3, 'number')} יח'.</li>
+<li>הקטע ${ltr('AB')} מקביל לציר ${blank(3, 'letter')}, והשליח נסע בו ${blank(6, 'direction')}:</li>
+</ul>
+${exerciseGiven('AB', '6 − 1')}
+<ul class="tasks compact">
+<li>בקטע ${ltr('BC')} ה־${ltr('y')} הגבוה הוא 5 וה־${ltr('y')} הנמוך הוא 1:</li>
+</ul>
+${exerciseGiven('BC', '5 − 1')}
+<ul class="tasks compact">
 <li>לכן המסלול כולו באורך ${blank(3, 'number')} יח', כי מחברים את שני ההפרשים.</li>
 </ul>
 </section>
@@ -50,8 +55,9 @@ ${wordBank(['x', 'y', '4', '5', '9', 'ימינה', 'למעלה', 'הפרש'])}
 <ul class="tasks compact">
 <li>סמנו על הסרטוט כתובת חדשה שממוקמת באותו רחוב של המסעדה, כלומר באותו שיעור ${ltr('y')}.</li>
 <li>הכתובת שסימנתם היא ${pair()}.</li>
-<li>תרגיל החיסור מהמסעדה אליה הוא ${blank(9, 'number')}, ולכן המסלול באורך ${blank(3, 'number')} יח'.</li>
+<li>כתבו את תרגיל החיסור מהמסעדה אל הכתובת שסימנתם, ואת אורך המסלול:</li>
 </ul>
+${exercise('AD')}
 </section>
 `,
 });

@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, calcBox } from '../authoring';
+import { sheet, calcBox, exercise } from '../authoring';
 
 export const SQUARES_PRACTICE: WorkbookPageContent = sheet({
   sectionClass: "sheet practice",
@@ -14,7 +14,10 @@ export const SQUARES_PRACTICE: WorkbookPageContent = sheet({
 </div>
 <p class="axis-answer-box">הקודקוד הרביעי <span class="math-ltr" dir="ltr">D</span>: <span class="blank" style="--blank-width:10ch"></span></p>
 <ul class="tasks compact">
-<li>אורך הצלע — תרגיל החיסור: <span class="blank" data-missing="number" style="--blank-width:9ch"></span>, וההפרש הוא <span class="blank" data-missing="number" style="--blank-width:3ch"></span> יח'</li>
+<li>כתבו את תרגיל החיסור של אורך הצלע, ואת ההפרש שקיבלתם:</li>
+</ul>
+${exercise('AB')}
+<ul class="tasks compact">
 </ul>
 ${calcBox({ perimeter: true, area: true })}
 </section>

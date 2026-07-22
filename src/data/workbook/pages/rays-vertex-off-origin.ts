@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, blank, ltr, pair, grid } from '../authoring';
+import { sheet, blank, ltr, pair, grid, exerciseGiven } from '../authoring';
 
 /* The second half of „בונים זווית ישרה”. It was the third section of a page
    that already carried two drawings, and a drawing there had nowhere to grow:
@@ -34,7 +34,10 @@ ${grid({
 <h3>ב. הקטע שמאונך ל־${ltr('AB')}.</h3>
 <ul class="tasks compact">
 <li>הקטע ${ltr('BC')} שסימנתם מקביל לציר ${blank(3, 'letter')}, ולכן הוא ${blank(5, 'relation')} לקטע ${ltr('AB')}.</li>
-<li>אורך הקטע ${ltr('AB')} הוא ההפרש בין שיעור ה־${ltr('y')} הגבוה ובין הנמוך: ${ltr('4 − 0 =')} ${blank(3, 'number')} יח'.</li>
+<li>אורך הקטע ${ltr('AB')} הוא ההפרש בין שיעור ה־${ltr('y')} הגבוה ובין הנמוך:</li>
+</ul>
+${exerciseGiven('AB', '4 − 0')}
+<ul class="tasks compact">
 <li>נקודה שבה הזווית ${ltr('ABC')} <b>אינה</b> ישרה: ${pair()}, כי שיעור ה־${ltr('y')} שלה ${blank(5, 'relation')} משיעור ה־${ltr('y')} של ${ltr('B')}.</li>
 </ul>
 </section>

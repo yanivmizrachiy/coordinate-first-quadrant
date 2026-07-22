@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, blank, ltr, pair, grid, calcBox } from '../authoring';
+import { sheet, blank, ltr, pair, grid, calcBox, exerciseGiven } from '../authoring';
 
 /* Real life, grade 7: a ticket says „שורה 4, מקום 7”, and sitting in the wrong
    one is the ordered pair failing in public. The block of seats a group buys is
@@ -28,7 +28,10 @@ ${grid({
 <ul class="tasks compact">
 <li>על הכרטיס של נועה כתוב ${pair()}.</li>
 <li>גיא ואורי יושבים באותה שורה, ולכן שיעור ה־${ltr('y')} שלהם ${blank(5, 'relation')}.</li>
-<li>בין הכיסא של גיא ובין הכיסא של אורי יש ${blank(3, 'number')} מקומות הפרש, כי ${ltr('7 − 2 = 5')}.</li>
+<li>בין הכיסא של גיא ובין הכיסא של אורי מחשבים כך את ההפרש:</li>
+</ul>
+${exerciseGiven('', '7 − 2', 'מקומות')}
+<ul class="tasks compact">
 <li>דניאל וגיא יושבים באותו מקום בשורות שונות, ולכן הקטע שביניהם מקביל לציר ${blank(3, 'letter')}.</li>
 </ul>
 </section>
@@ -36,8 +39,11 @@ ${grid({
 <h3>ב. הכיתה מזמינה גוש כיסאות.</h3>
 <p>הכיתה הזמינה את כל הכיסאות שבין ${ltr('(3,2)')} ובין ${ltr('(6,4)')} — מלבן שלם של מקומות.</p>
 <ul class="tasks compact">
-<li>ברוחב הגוש: ה־${ltr('x')} הימני פחות ה־${ltr('x')} השמאלי, ${ltr('6 − 3 =')} ${blank(3, 'number')}, ולכן יש בו ${blank(3, 'number')} מקומות בכל שורה.</li>
-<li>בגובה הגוש: ה־${ltr('y')} הגבוה פחות ה־${ltr('y')} ה${blank(5, 'property')}, ${ltr('4 − 2 =')} ${blank(3, 'number')}, ולכן יש בו 3 שורות.</li>
+<li>לאורך הגוש: ה־${ltr('x')} הימני פחות ה־${ltr('x')} השמאלי. לרוחב הגוש: ה־${ltr('y')} הגבוה פחות ה־${ltr('y')} ה${blank(5, 'property')}.</li>
+</ul>
+${exerciseGiven('', '6 − 3', 'מקומות בשורה')}
+${exerciseGiven('', '4 − 2', 'שורות')}
+<ul class="tasks compact">
 </ul>
 ${calcBox({ perimeter: true, area: true })}
 </section>

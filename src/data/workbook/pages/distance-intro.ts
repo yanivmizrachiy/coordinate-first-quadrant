@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet } from '../authoring';
+import { sheet, exerciseGiven } from '../authoring';
 
 export const DISTANCE_INTRO: WorkbookPageContent = sheet({
   sectionClass: "sheet guided ultra-dense",
@@ -48,7 +48,10 @@ export const DISTANCE_INTRO: WorkbookPageContent = sheet({
 <h3>ג. מרחק אופקי בין שתי נקודות.</h3>
 <ul class="tasks compact">
 <li>לשתי הנקודות <span class="math-ltr" dir="ltr">A(2,5)</span> ו־<span class="math-ltr" dir="ltr">B(7,5)</span> יש שיעור <span class="blank" data-missing="letter" style="--blank-width:3ch"></span> <b>זהה</b>.</li>
-<li>תרגיל החיסור הוא <span class="math-ltr" dir="ltr">7 − 2 =</span> <span class="blank" data-missing="number" style="--blank-width:3ch"></span>, ולכן המרחק ביניהן <span class="blank" data-missing="number" style="--blank-width:3ch"></span> יח'.</li>
+<li>זהו תרגיל החיסור, והתוצאה שלו היא המרחק בין שתי הנקודות:</li>
+</ul>
+${exerciseGiven('AB', '7 − 2')}
+<ul class="tasks compact">
 <li>כתבו שתי נקודות משלכם שיש להן שיעור <span class="math-ltr" dir="ltr">y</span> זהה: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> ו־<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>.</li>
 </ul>
 </section>
@@ -65,8 +68,9 @@ export const DISTANCE_INTRO: WorkbookPageContent = sheet({
 <h3>ה. אורי חישב את המרחק בין <span class="math-ltr" dir="ltr">(2,5)</span> ובין <span class="math-ltr" dir="ltr">(7,5)</span> וקיבל 9.</h3>
 <ul class="tasks compact">
 <li>אורי <span class="blank" data-missing="relation" style="--blank-width:5ch"></span> את שני ערכי ה־<span class="math-ltr" dir="ltr">x</span> במקום לחסר אותם.</li>
-<li>תרגיל החיסור הנכון הוא <span class="math-ltr" dir="ltr">7 − 2 =</span> <span class="blank" data-missing="number" style="--blank-width:3ch"></span>, ולכן המרחק <span class="blank" data-missing="number" style="--blank-width:3ch"></span> יח'.</li>
+<li>זהו תרגיל החיסור הנכון, והתוצאה שלו היא המרחק:</li>
 </ul>
+${exerciseGiven('', '7 − 2')}
 <ul class="tasks compact">
 <li>ההסבר: <span class="blank" data-missing="relation" style="--blank-width:24ch"></span>.</li>
 </ul>
