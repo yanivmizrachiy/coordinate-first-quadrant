@@ -20,7 +20,18 @@ test('התחל opens the cover straight away', async ({ page }) => {
   await expect(page.locator('.book > .sheet').first()).toHaveClass(/cover-sheet/);
 });
 
-/* The menu still holds everything you can do, and is reachable in its own right. */
+/* The menu holds everything you can do — and must be REACHABLE. Pointing התחל
+   straight at the cover once left it orphaned, and הורדה, הדפסה and וואטסאפ
+   with it: a screen nobody can open is a capability that no longer exists. */
+test('the menu can be reached from the bar, on every screen that has one', async ({ page }) => {
+  for (const from of ['#/book', '#/workbook/1']) {
+    await page.goto('/' + from);
+    await page.waitForTimeout(700);
+    await page.locator('.appbar button', { hasText: 'תפריט' }).click();
+    await expect(page, `no way to the menu from ${from}`).toHaveURL(/#\/menu$/);
+  }
+});
+
 test('the menu has the four actions and the page picker', async ({ page }) => {
   await page.goto('/#/menu');
   await expect(page.locator('.act')).toHaveCount(4);

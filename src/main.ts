@@ -22,10 +22,15 @@ if (!app) throw new Error('#app root missing');
 const homeBtn = elem('button', { class: 'iconbtn iconbtn--primary', type: 'button', text: '⌂ בית', 'aria-label': 'מסך הבית' });
 homeBtn.addEventListener('click', () => navigate('#/'));
 
+/* Pointing התחל straight at the cover left #/menu with nothing linking to it,
+   and with it הורדה, הדפסה, וואטסאפ and the page picker. The bar is on every
+   screen except the opening, so this is where the way back to them belongs. */
+const menuBtn = elem('button', { class: 'iconbtn', type: 'button', text: '☰ תפריט', 'aria-label': 'תפריט הפעולות' });
+menuBtn.addEventListener('click', () => navigate('#/menu'));
+
 const titleEl = elem('div', { class: 'appbar__title', text: 'מערכת צירים — הרביע הראשון' });
 
-
-const appbar = elem('header', { class: 'appbar no-print' }, homeBtn, titleEl);
+const appbar = elem('header', { class: 'appbar no-print' }, homeBtn, menuBtn, titleEl);
 const outlet = elem('main', { class: 'app-main', id: 'main', tabindex: '-1' });
 const skip = elem('a', { class: 'skip-link', href: '#main', text: 'דלגו לתוכן' });
 
@@ -60,6 +65,7 @@ function render(match: RouteMatch): void {
   homeBtn.style.visibility = match.name === 'home' ? 'hidden' : 'visible';
   /* The opening is the whole screen — the bar would sit on the film. */
   appbar.classList.toggle('appbar--hidden', match.name === 'home');
+  menuBtn.style.visibility = match.name === 'menu' ? 'hidden' : 'visible';
   const ctx: ViewContext = { outlet, setTitle };
   const result = resolve(match)(ctx);
   cleanup = typeof result === 'function' ? result : undefined;
