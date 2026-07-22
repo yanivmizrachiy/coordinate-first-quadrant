@@ -31,7 +31,7 @@ export const colorDecodeGame: GameDefinition = {
     const colored = new Set<string>();
     const wrap = elem('div', { class: 'game' });
     wrap.append(elem('div', { class: 'game__intro' },
-      elem('h2', { text: 'פענוח צבעוני' }),
+      elem('h2', { text: 'איזה צבע מסתתר בכל נקודה?' }),
       elem('p', { text: 'צבעו את התאים לפי הרשימה. לחיצה על תא צובעת אותו, לחיצה נוספת מבטלת. כשכל התאים הנכונים צבועים — יתגלה הסמל.' }),
     ));
 

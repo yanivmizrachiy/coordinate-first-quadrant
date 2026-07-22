@@ -25,6 +25,7 @@ const describe = (moves: Move[]): string => {
 export const encryptedRoutePuzzle: RevealPuzzle = {
   id: 'encrypted-route',
   title: 'המסלול המוצפן',
+  question: 'לאן מוביל המסלול?',
   icon: '🧭',
   short: 'עוקבים אחרי פקודות תנועה ומגלים לאן הגעתם.',
   skill: 'הזזה במערכת הצירים (ימינה/שמאלה/למעלה/למטה)',

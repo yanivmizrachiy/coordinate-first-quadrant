@@ -39,14 +39,19 @@ export const READ_INTRO: WorkbookPageContent = sheet({
 </section>
 </div>
 <section class="q-card">
-<h3>ד. כתבו זוג נקודות שגם שיעור x שלהן שונה וגם שיעור y שלהן שונה.</h3>הנקודות: <span class="blank" style="--blank-width:5ch"></span> ו־<span class="blank" style="--blank-width:5ch"></span>
+<h3>ד. תנו דוגמה לשתי נקודות שערך ה־<span class="math-ltr" dir="ltr">x</span> שלהן שונה, וגם שיעור ה־<span class="math-ltr" dir="ltr">y</span> שלהן שונה.</h3>
+<ul class="tasks compact">
+<li>הנקודה <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> והנקודה <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>.</li>
+</ul>
 </section>
 <section class="q-card">
-<h3>ה. האם שתי נקודות קרובות זו לזו חייבות להיות בעלות שיעורים זהים? הסבירו.</h3>
-<div class="answer-line">
-</div>
-<div class="answer-line">
-</div>
+<h3>ה. שתי דעות — מי צודק?</h3>
+<ul class="tasks compact">
+<li><b>גיא</b> אומר: „שתי נקודות שקרובות זו לזו חייבות להיות בעלות אותם שיעורים.”</li>
+<li><b>נועה</b> אומרת: „שתי נקודות יכולות להיות קרובות זו לזו, ובכל זאת שיעוריהן שונים.”</li>
+<li>צודק/צודקת: <span class="blank" data-missing="letter" style="--blank-width:5ch"></span>.</li>
+<li>הנימוק: הנקודה <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> והנקודה <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> קרובות זו לזו, ובכל זאת ערך ה־<span class="math-ltr" dir="ltr">x</span> שלהן <span class="blank" data-missing="relation" style="--blank-width:5ch"></span>.</li>
+</ul>
 </section>
 `,
 });

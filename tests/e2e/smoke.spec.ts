@@ -198,7 +198,7 @@ test('a game sheet reveals its answer when solved correctly', async ({ page }) =
     const input = rows.nth(i).locator('input.answer-input');
     if (await input.count()) {
       await input.fill(answers[i] ?? '');
-      await rows.nth(i).locator('button', { hasText: 'בדיקה' }).click();
+      await rows.nth(i).locator('button', { hasText: 'בדקו' }).click();
     }
   }
   await expect(page.locator('.reveal').last()).toContainText('4705');

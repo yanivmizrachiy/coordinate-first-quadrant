@@ -54,7 +54,7 @@ function mountReveal(root: HTMLElement, puzzle: RevealPuzzle): () => void {
 
   wrap.append(
     elem('div', { class: 'game__intro' },
-      elem('h2', { text: puzzle.title }),
+      elem('h2', { text: puzzle.question }),
       elem('p', { text: puzzle.intro }),
     ),
   );
@@ -140,7 +140,7 @@ function renderStep(step: RevealStep, index: number, onResult: (correct: boolean
       placeholder: step.kind === 'point' ? '(x,y)' : '',
       'aria-label': step.prompt,
     }) as HTMLInputElement;
-    const check = elem('button', { class: 'iconbtn iconbtn--primary', type: 'button', text: 'בדיקה' });
+    const check = elem('button', { class: 'iconbtn iconbtn--primary', type: 'button', text: 'בדקו' });
     const evaluate = (): void => {
       const correct = isStepCorrect(step, input.value);
       input.classList.toggle('is-correct', correct);

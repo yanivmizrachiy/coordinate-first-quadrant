@@ -6,6 +6,7 @@ import { createRevealGame } from './revealEngine';
 export const coordinateSafePuzzle: RevealPuzzle = {
   id: 'coordinate-safe',
   title: 'כספת הקואורדינטות',
+  question: 'מהו הקוד שפותח את הכספת?',
   icon: '🔐',
   short: 'פותרים משימות קצרות ומרכיבים את קוד הכספת.',
   skill: 'שיעורים, הזזה ונקודות על הצירים',

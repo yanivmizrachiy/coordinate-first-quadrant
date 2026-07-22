@@ -169,6 +169,45 @@ describe('Hebrew and punctuation hold up to proofreading', () => {
     }
   });
 
+  /* USER_MEMORY §5. „כפל כותרת” — every game repeated the sheet title as its
+     own heading, so the reader met the same words twice before any task. */
+  it('no heading inside a sheet repeats the sheet title', () => {
+    for (const p of WORKBOOK) {
+      const h1 = /<h1[^>]*>([\s\S]*?)<\/h1>/.exec(p.html)?.[1]?.replace(/<[^>]+>/g, '').trim();
+      if (!h1) continue;
+      const bare = h1.replace(/[^֐-׿a-zA-Z ]/g, '').trim();
+      for (const m of p.html.matchAll(/<h[23][^>]*>([\s\S]*?)<\/h[23]>/g)) {
+        const head = m[1]!.replace(/<[^>]+>/g, '').trim();
+        expect(head, `page ${p.n}: „${head}” repeats the sheet title`).not.toBe(bare);
+      }
+    }
+  });
+
+  /* A heading that asks something ends in a question mark. */
+  it('a heading that asks a question is punctuated as one', () => {
+    const asks = /^(?:[֐-׿]\.\s*)?(מדוע|האם|איזו|איזה|אילו|מי |מה |כמה|לאן|איך)/;
+    for (const p of WORKBOOK) {
+      for (const m of p.html.matchAll(/<h[123][^>]*>([\s\S]*?)<\/h[123]>/g)) {
+        const head = m[1]!.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+        if (!asks.test(head)) continue;
+        // „מי אני? כתבו את הזוג הסדור.” is fine — the mark sits with the question
+        expect(head.includes('?'), `page ${p.n}: „${head}” asks without a question mark`).toBe(true);
+      }
+    }
+  });
+
+  /* A bare letter is not a point. „B ממוקמת” has nothing to agree with; it is
+     „הנקודה B ממוקמת” (§7). */
+  it('a statement about a point names it as a point', () => {
+    for (const p of WORKBOOK) {
+      for (const m of p.html.matchAll(/<(?:li|td)>([\s\S]*?)<\/(?:li|td)>/g)) {
+        const text = m[1]!.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+        expect(text, `page ${p.n}: „${text.slice(0, 40)}” starts with a bare letter`)
+          .not.toMatch(/^[A-Z] (ממוקמ|נמצא|היא |הוא )/);
+      }
+    }
+  });
+
   it('a Hebrew prefix before a Latin letter uses the Hebrew maqaf', () => {
     for (const p of WORKBOOK) {
       // „ל-x” is wrong; „ל־x” is right

@@ -6,7 +6,7 @@ import { sheet, blank, ltr, pair, grid, wordBank } from '../authoring';
    point YOU chose — the answer is not in the book, so it cannot be copied. */
 export const READ_FROM_DRAWING: WorkbookPageContent = sheet({
   sectionClass: 'sheet guided dense',
-  title: 'מה אפשר לקרוא מהסרטוט',
+  title: 'מה אפשר לקרוא מהסרטוט?',
   subtitle: 'קוראים נתונים על נקודות מסומנות, ואז מסמנים נקודה משלכם',
   content: `
 <section class="q-card">

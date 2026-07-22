@@ -53,7 +53,7 @@ export const suspectPointGame: GameDefinition = {
     const solved = new Array<boolean>(suspectRounds.length).fill(false);
     const wrap = elem('div', { class: 'game' });
     wrap.append(elem('div', { class: 'game__intro' },
-      elem('h2', { text: 'הנקודה החשודה' }),
+      elem('h2', { text: 'איזו נקודה אינה מתאימה?' }),
       elem('p', { text: 'בכל סיבוב יש כמה רמזים. רק נקודה אחת מתאימה לכל הרמזים יחד. בחרו אותה כדי לחשוף אות.' }),
     ));
 

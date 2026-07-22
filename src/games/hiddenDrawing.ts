@@ -35,7 +35,7 @@ export const hiddenDrawingGame: GameDefinition = {
     let solvedTo = 0; // how many points of the plan are confirmed
     const wrap = elem('div', { class: 'game' });
     wrap.append(elem('div', { class: 'game__intro' },
-      elem('h2', { text: 'ציור נסתר' }),
+      elem('h2', { text: 'מה מסתתר בציור?' }),
       elem('p', { text: 'לפניכם תוכנית בשני קווים. סמנו כל נקודה לפי הסדר, והקו ייחבר מנקודה לנקודה. בין הקו הראשון לשני מרימים את העיפרון — ובסוף יתגלה הציור.' }),
     ));
 

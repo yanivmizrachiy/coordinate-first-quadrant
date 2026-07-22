@@ -68,7 +68,7 @@ export const coordinateMazeGame: GameDefinition = {
 
     const wrap = elem('div', { class: 'game' });
     wrap.append(elem('div', { class: 'game__intro' },
-      elem('h2', { text: 'מבוך הקואורדינטות' }),
+      elem('h2', { text: 'איך יוצאים מהמבוך?' }),
       elem('p', { text: 'הזיזו את הסמן מהנקודה הירוקה אל היעד הזהוב. כל צעד משנה שיעור אחד: ימינה/שמאלה משנים את x, למעלה/למטה משנים את y. אסור לצאת מהרביע הראשון או לעמוד על קיר.' }),
     ));
 

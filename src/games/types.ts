@@ -33,6 +33,9 @@ export interface RevealStep {
 export interface RevealPuzzle {
   id: string;
   title: string;
+  /** The heading INSIDE the sheet. The sheet header already carries `title`,
+      so this asks what the learner is about to find out. */
+  question: string;
   icon: string;
   short: string;
   skill: string;

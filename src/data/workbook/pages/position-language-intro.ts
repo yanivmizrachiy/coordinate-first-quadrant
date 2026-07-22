@@ -27,19 +27,19 @@ export const POSITION_LANGUAGE_INTRO: WorkbookPageContent = sheet({
 <h3>ב. נכון / לא נכון.</h3>
 <table class="tf-table" data-balanced="true">
 <tbody>
-<tr data-answer="true"><td>B ממוקמת על ציר x.</td><td>
+<tr data-answer="true"><td>הנקודה B ממוקמת על ציר x.</td><td>
 <div class="tf-options" role="group" aria-label="סמנו נכון או לא נכון"><label class="tf-option"><input type="radio" name="tf-3-1" value="true"><span>נכון</span></label><label class="tf-option"><input type="radio" name="tf-3-1" value="false"><span>לא נכון</span></label>
 </div></td></tr>
-<tr data-answer="false"><td>C ממוקמת מימין לציר y.</td><td>
+<tr data-answer="false"><td>הנקודה C ממוקמת מימין לציר y.</td><td>
 <div class="tf-options" role="group" aria-label="סמנו נכון או לא נכון"><label class="tf-option"><input type="radio" name="tf-3-2" value="true"><span>נכון</span></label><label class="tf-option"><input type="radio" name="tf-3-2" value="false"><span>לא נכון</span></label>
 </div></td></tr>
-<tr data-answer="true"><td>A ממוקמת מעל ציר x.</td><td>
+<tr data-answer="true"><td>הנקודה A ממוקמת מעל ציר x.</td><td>
 <div class="tf-options" role="group" aria-label="סמנו נכון או לא נכון"><label class="tf-option"><input type="radio" name="tf-3-3" value="true"><span>נכון</span></label><label class="tf-option"><input type="radio" name="tf-3-3" value="false"><span>לא נכון</span></label>
 </div></td></tr>
-<tr data-answer="false"><td>E ממוקמת מימין לציר y.</td><td>
+<tr data-answer="false"><td>הנקודה E ממוקמת מימין לציר y.</td><td>
 <div class="tf-options" role="group" aria-label="סמנו נכון או לא נכון"><label class="tf-option"><input type="radio" name="tf-3-4" value="true"><span>נכון</span></label><label class="tf-option"><input type="radio" name="tf-3-4" value="false"><span>לא נכון</span></label>
 </div></td></tr>
-<tr data-answer="true"><td>D ממוקמת מימין לציר y.</td><td>
+<tr data-answer="true"><td>הנקודה D ממוקמת מימין לציר y.</td><td>
 <div class="tf-options" role="group" aria-label="סמנו נכון או לא נכון"><label class="tf-option"><input type="radio" name="tf-3-5" value="true"><span>נכון</span></label><label class="tf-option"><input type="radio" name="tf-3-5" value="false"><span>לא נכון</span></label>
 </div></td></tr>
 </tbody>
@@ -61,11 +61,12 @@ export const POSITION_LANGUAGE_INTRO: WorkbookPageContent = sheet({
 </div>
 </section>
 <section class="q-card">
-<h3>ד. מדוע <span class="math-ltr" dir="ltr">(0,4)</span> מעל ציר x אך אינה מימין לציר y?</h3>
-<div class="answer-line">
-</div>
-<div class="answer-line">
-</div>
+<h3>ד. מה משותף לכל הנקודות שעל ציר?</h3>
+<ul class="tasks compact">
+<li>כל הנקודות שממוקמות על ציר <span class="math-ltr" dir="ltr">y</span> הן מהצורה <span class="pair math-ltr" dir="ltr">(0,<span class="pair-blank"></span>)</span>, כי ערך ה־<span class="math-ltr" dir="ltr">x</span> שלהן הוא <span class="blank" data-missing="number" style="--blank-width:3ch"></span>.</li>
+<li>כל הנקודות שממוקמות על ציר <span class="math-ltr" dir="ltr">x</span> הן מהצורה <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,0)</span>, כי שיעור ה־<span class="blank" data-missing="letter" style="--blank-width:3ch"></span> שלהן הוא 0.</li>
+<li>לכן הנקודה <span class="math-ltr" dir="ltr">(0,4)</span> ממוקמת מעל ציר <span class="math-ltr" dir="ltr">x</span>, אבל היא אינה מימין לציר <span class="math-ltr" dir="ltr">y</span> — היא <span class="blank" data-missing="property" style="--blank-width:6ch"></span> עליו.</li>
+</ul>
 </section>
 `,
 });
