@@ -6,6 +6,7 @@ import { printBar } from './printBar';
 import { WORKBOOK } from '../data/workbook';
 import { gameById } from '../games';
 import { renderCoverSheet } from './coverSheet';
+import { renderTocSheet } from './tocSheet';
 import type { ViewContext } from './context';
 
 export function book({ outlet, setTitle }: ViewContext): (() => void) | void {
@@ -24,7 +25,7 @@ export function book({ outlet, setTitle }: ViewContext): (() => void) | void {
   );
 
   // Approved cover first, then all worksheets — no math content is altered.
-  bookEl.append(renderCoverSheet());
+  bookEl.append(renderCoverSheet(), renderTocSheet());
   for (const page of WORKBOOK) {
     bookEl.append(fromHTML(page.html));
   }

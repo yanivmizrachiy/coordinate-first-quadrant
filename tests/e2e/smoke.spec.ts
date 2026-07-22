@@ -36,11 +36,54 @@ test('no horizontal overflow on any core view', async ({ page }) => {
   }
 });
 
-test('the full booklet opens with the cover, then worksheet 1', async ({ page }) => {
+test('the full booklet opens with the cover, then the contents, then worksheet 1', async ({ page }) => {
   await page.goto('/#/book');
   const sheets = page.locator('.book > .sheet');
   await expect(sheets.first()).toHaveClass(/cover-sheet/);
-  await expect(sheets.nth(1).locator('.sheet-number')).toHaveText('1');
+  await expect(sheets.nth(1)).toHaveClass(/toc-sheet/);
+  await expect(sheets.nth(2).locator('.sheet-number')).toHaveText('1');
+});
+
+/* The contents sheet is a sheet: it prints with the booklet, and on screen each
+   chapter is a button that goes to that chapter's first page. */
+test('the contents sheet lists every chapter and each button reaches its page', async ({ page }) => {
+  await page.goto('/#/book');
+  await page.waitForTimeout(4000);
+  const buttons = page.locator('.toc-sheet .toc-btn');
+  const topics = await page.evaluate(() => document.querySelectorAll('.toc-sheet .toc-btn').length);
+  expect(topics, 'the contents sheet lists no chapters').toBeGreaterThanOrEqual(10);
+
+  // every button carries a colour of its own from the palette
+  const colours = await buttons.evaluateAll((els) =>
+    els.map((e) => getComputedStyle(e).backgroundColor),
+  );
+  expect(new Set(colours).size, 'the buttons are not colour-coded').toBeGreaterThan(5);
+
+  // the chapters cover the booklet end to end, with no page in a chapter twice
+  const ranges = await buttons.evaluateAll((els) =>
+    els.map((e) => (e.getAttribute('aria-label') ?? '').match(/(\d+) עד (\d+)/)?.slice(1, 3).map(Number) ?? [0, 0]),
+  );
+  expect(ranges[0]?.[0], 'the contents do not start at page 1').toBe(1);
+  for (const [i, r] of ranges.entries()) {
+    if (i === 0) continue;
+    expect(r[0], `chapter ${i + 1} does not follow the one before it`).toBe((ranges[i - 1]?.[1] ?? 0) + 1);
+  }
+
+  /* An en-dash between two digits is a neutral character: inside an RTL run it
+     splits them, and „1–3" is painted „3–1". Measured, not assumed. */
+  const flipped = await buttons.evaluateAll((els) =>
+    els.filter((e) => {
+      const node = e.querySelector('.toc-btn__pages [dir="ltr"]');
+      if (!node || !node.textContent?.includes('–')) return false;
+      const t = node.firstChild as Text;
+      const at = (i: number) => { const r = document.createRange(); r.setStart(t, i); r.setEnd(t, i + 1); return r.getBoundingClientRect().x; };
+      return at(0) > at(t.length - 1);
+    }).map((e) => e.textContent),
+  );
+  expect(flipped, 'a page range reads back to front').toEqual([]);
+
+  await buttons.first().click();
+  await expect(page).toHaveURL(/#\/workbook\/1$/);
 });
 
 /* A sheet is a fixed-height A4 box with overflow:hidden, so anything past its
