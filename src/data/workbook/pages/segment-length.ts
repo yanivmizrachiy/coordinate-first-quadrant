@@ -7,7 +7,7 @@ import { sheet, blank, wordBlank, ltr, pair, grid } from '../authoring';
    subtraction has a name: ההפרש. */
 export const SEGMENT_LENGTH: WorkbookPageContent = sheet({
   sectionClass: 'sheet guided',
-  title: 'אורך קטע מקביל לציר',
+  title: 'קטעים מקבילים לצירים',
   subtitle: 'האורך הוא ההפרש — התוצאה של תרגיל החיסור',
   content: `
 <div class="rule-box completion-intro">
