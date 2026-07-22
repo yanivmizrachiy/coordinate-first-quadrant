@@ -67,7 +67,7 @@ export interface GridSpec {
    "ציר y") must sit in the margin, never inside the grid or on the arrow. */
 /* R and T carry the axis NAMES, which are the largest type on the drawing and
    grow further when a small grid has its text put back to size. */
-const W = 560, H = 380, L = 56, R = 104, T = 70, B = 62;
+const W = 560, H = 380, L = 56, R = 104, T = 70, B = 82;
 const XM = 8, YM = 6;
 const SX = (W - L - R) / XM;
 const SY = (H - T - B) / YM;
@@ -212,7 +212,15 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
       // Mixed Hebrew+Latin flips text-anchor, so pin direction explicitly.
       /* Centred rather than anchored to an edge: in RTL, `start` anchors the
          RIGHT edge, so the name would grow back over the arrow. */
-      el('text', { x: X(XM) + 46, y: Y(0) + 5, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, spec.axisXName ?? 'ציר x'),
+      /* „ציר x” fits past the arrow. A real-life name („דקות למידה (עשרות)”)
+         does not — it reaches back over the last tick number — so a long one is
+         centred UNDER the axis, where a textbook puts it. */
+      ((): SVGElement => {
+        const name = spec.axisXName ?? 'ציר x';
+        return name.length > 8
+          ? el('text', { x: X(XM / 2), y: Y(0) + 46, 'text-anchor': 'middle', fill: AXIS, 'font-size': 15, 'font-weight': 800 }, name)
+          : el('text', { x: X(XM) + 46, y: Y(0) + 5, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, name);
+      })(),
       el('text', { x: X(0), y: Y(YM) - 32, 'text-anchor': 'middle', fill: AXIS, 'font-size': 16, 'font-weight': 800 }, spec.axisYName ?? 'ציר y'),
     );
   } else {

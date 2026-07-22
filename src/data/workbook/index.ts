@@ -67,6 +67,12 @@ import {
   LIFE_HALL_SEATS,
   LIFE_PIXEL_ART,
   LIFE_DELIVERY_ROUTE,
+  GRAPH_READING_INTRO,
+  GRAPH_YEARS,
+  GRAPH_SQUARE_AREA,
+  GRAPH_CONSTANT_RATE,
+  GRAPH_TWO_SERIES,
+  GRAPH_OWN_DATA,
 } from './pages';
 import { GAMES, type GameDefinition } from '../../games';
 import type { WorkbookPageContent, WorkbookTopic } from './types';
@@ -169,6 +175,10 @@ const BOOK: { id: string; title: string; slots: Slot[] }[] = [
   ] },
   { id: 'life', title: 'מערכת צירים בחיים שלנו', slots: [
     LIFE_PHONE_SCREEN, LIFE_HALL_SEATS, LIFE_PIXEL_ART, LIFE_DELIVERY_ROUTE,
+  ] },
+  { id: 'graphs', title: 'קוראים תיאור גרפי של נקודות', slots: [
+    GRAPH_READING_INTRO, GRAPH_YEARS, GRAPH_SQUARE_AREA,
+    GRAPH_CONSTANT_RATE, GRAPH_TWO_SERIES, GRAPH_OWN_DATA,
   ] },
   { id: 'rightangle', title: 'מקביל, מאונך וזווית ישרה', slots: [
     PARALLEL_PERPENDICULAR, RIGHT_ANGLE_INTRO, RIGHT_ANGLE_PRACTICE, RIGHT_ANGLE_BUILD, RAYS_RIGHT_ANGLE, RAYS_BUILD_RIGHT_ANGLE, RAYS_CLAIMS, RIGHT_ANGLE_SUMMARY,

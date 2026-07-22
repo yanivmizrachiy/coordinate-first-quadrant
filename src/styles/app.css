@@ -296,3 +296,20 @@
   .printbar__go, .printbar__toggle { flex: 1 1 auto; justify-content: center; padding: 10px 10px; }
   .printbar__range { width: 100%; justify-content: center; }
 }
+
+/* ---- a game sheet on paper ------------------------------------------------
+   The games are a screen experience, but every one of them is also a numbered
+   page in a printed booklet. A text field and a „בדקו” button mean nothing on
+   paper — Yaniv's point: „זה לא עבודה מתוקשבת”. In print the controls give way
+   to a ruled box the learner writes the answer in, by hand. */
+@media print {
+  .game .answer-input {
+    border: 0; border-bottom: 1.4px solid var(--ink); border-radius: 0;
+    background: transparent; min-width: 9ch;
+  }
+  .game .answer-input::placeholder { color: transparent; }
+  .game button,
+  .game .reveal--pending,
+  .game__prompt:empty { display: none !important; }
+  .game .word-slots .slot { border: 1.4px solid var(--ink); background: #fff; }
+}
