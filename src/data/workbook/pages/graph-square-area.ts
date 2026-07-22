@@ -7,8 +7,8 @@ import { sheet, blank, ltr, pair, grid } from '../authoring';
    the graph: four equal sides, so y is four times x. */
 export const GRAPH_SQUARE_AREA: WorkbookPageContent = sheet({
   sectionClass: 'sheet practice',
-  title: 'צלע הריבוע וההיקף שלו',
-  subtitle: 'מגרף של נקודות אל ביטוי אלגברי',
+  title: 'קריאת גרפים ברביע הראשון',
+  subtitle: 'צלע הריבוע וההיקף — מגרף אל ביטוי אלגברי',
   content: `
 <div class="rule-box completion-intro">
 <div class="completion-sentence">בריבוע כל ארבע הצלעות ${blank(5, 'relation')}, ולכן ההיקף הוא אורך הצלע כפול ${blank(3, 'number')}.</div>
@@ -41,7 +41,7 @@ ${grid({
 <li>נסמן באות ${ltr('x')} את אורך הצלע, ובאות ${ltr('y')} את ההיקף.</li>
 <li>הביטוי שמתאר את ההיקף הוא ${ltr('y = ')}${blank(6, 'number')}.</li>
 <li>לפי הביטוי, ריבוע שאורך צלעו 6 יח' — ההיקף שלו ${blank(4, 'number')} יח'.</li>
-<li>סמנו על הגרף את הנקודה של ריבוע שאורך צלעו 4 יח': ${pair()}.</li>
+<li>סמנו על הגרף את הנקודה שמתאימה לריבוע שאורך צלעו 4 יח': ${pair()}.</li>
 </ul>
 </section>
 `,

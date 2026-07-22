@@ -6,8 +6,8 @@ import { sheet, blank, ltr, pair, grid } from '../authoring';
    turns a picture into a rule. */
 export const GRAPH_CONSTANT_RATE: WorkbookPageContent = sheet({
   sectionClass: 'sheet guided',
-  title: 'קצב קבוע בגרף של נקודות',
-  subtitle: 'כשכל צעד מוסיף אותו דבר, אפשר לכתוב ביטוי',
+  title: 'קריאת גרפים ברביע הראשון',
+  subtitle: 'קצב קבוע — כשכל צעד משנה באותו מספר',
   content: `
 <div class="rule-box completion-intro">
 <div class="completion-sentence">אם בכל צעד על ציר ${ltr('x')} שיעור ה־${ltr('y')} עולה באותו מספר, אומרים שהקצב ${blank(5, 'property')}.</div>
@@ -37,7 +37,7 @@ ${grid({
 <li>נסמן באות ${ltr('x')} את מספר השעות, ובאות ${ltr('y')} את גובה הנר בס"מ.</li>
 <li>הביטוי שמתאר את הגובה הוא ${ltr('y = 6 − ')}${blank(4, 'number')}.</li>
 <li>לפי הביטוי, אחרי 5 שעות הגובה ${blank(5, 'relation')} ל־1 ס"מ.</li>
-<li>סמנו על הגרף את הנקודה של שעה 5, ובדקו: היא ממוקמת ${blank(5, 'direction')} לנקודה של שעה 4.</li>
+<li>סמנו את הנקודה שמתאימה לשעה 5, ובדקו: היא ממוקמת ${blank(5, 'direction')} לנקודה שמתאימה לשעה 4.</li>
 </ul>
 </section>
 `,

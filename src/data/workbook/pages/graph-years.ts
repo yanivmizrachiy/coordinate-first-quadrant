@@ -5,8 +5,8 @@ import { sheet, blank, ltr, pair, grid } from '../authoring';
    year. Same genre, our own data — the sports hall attendance of a school. */
 export const GRAPH_YEARS: WorkbookPageContent = sheet({
   sectionClass: 'sheet practice',
-  title: 'גרף לאורך השנים',
-  subtitle: 'ערך x הוא השנה, שיעור y הוא התוצאה',
+  title: 'קריאת גרפים ברביע הראשון',
+  subtitle: 'לאורך השנים — ערך x הוא השנה, שיעור y הוא התוצאה',
   content: `
 <div class="rule-box completion-intro">
 <div class="completion-sentence">כשערך ה־${ltr('x')} הוא שנה, המרחק בין שתי נקודות על ציר ${ltr('x')} הוא מספר ה${blank(5, 'concept')} שעברו.</div>
@@ -28,14 +28,17 @@ ${grid({
   ],
 })}
 <ul class="tasks compact">
-<li>בשנה השלישית נרשמו ${blank(3, 'number')} עשרות תלמידים, ולכן הנקודה שלה היא ${pair()}.</li>
+<li>בשנה השלישית נרשמו ${blank(3, 'number')} עשרות תלמידים, ולכן הנקודה שמתאימה לה היא ${pair()}.</li>
 <li>מספר הנרשמים היה הגבוה ביותר בשנה ה־${blank(3, 'number')}.</li>
 <li>בשנה הרביעית מספר הנרשמים ${blank(5, 'relation')} לעומת השנה שלפניה.</li>
-<li>לשתי הנקודות של השנה השלישית והשנה ה־${blank(3, 'number')} יש שיעור ${ltr('y')} זהה.</li>
+<li>לשתי הנקודות שמתאימות לשנה השלישית ולשנה ה־${blank(3, 'number')} יש שיעור ${ltr('y')} זהה.</li>
 </ul>
 </section>
 <section class="q-card">
-<h3>ב. מחשבים את השינוי.</h3>
+<h3>ב. משמעות הנקודה, ומחשבים את השינוי.</h3>
+<ul class="tasks compact">
+<li>משמעות הנקודה ${ltr('(5,6)')}: בשנה ה־5 נרשמו ${blank(3, 'number')} עשרות תלמידים.</li>
+</ul>
 <ul class="tasks compact">
 <li>בין השנה הראשונה ובין השנה החמישית עברו ${ltr('5 − 1 =')} ${blank(3, 'number')} שנים.</li>
 <li>ההפרש במספר הנרשמים באותן שנים הוא ${ltr('6 − 2 =')} ${blank(3, 'number')} עשרות.</li>

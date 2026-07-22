@@ -6,8 +6,8 @@ import { sheet, blank, ltr, pair, grid } from '../authoring';
    meet. Here it is two classes collecting bottle caps. */
 export const GRAPH_TWO_SERIES: WorkbookPageContent = sheet({
   sectionClass: 'sheet practice',
-  title: 'שתי סדרות נקודות באותו גרף',
-  subtitle: 'משווים בין שתי כיתות ומוצאים מתי הן משתוות',
+  title: 'קריאת גרפים ברביע הראשון',
+  subtitle: 'שתי סדרות באותם צירים — ומתי הן משתוות',
   content: `
 <p>כיתה ז'1 אספה 300 פקקים ומוסיפה 100 בכל חודש. כיתה ז'2 אספה 100 פקקים ומוסיפה 200 בכל חודש. בגרף שתי הסדרות באותם צירים.</p>
 <section class="q-card">
@@ -24,7 +24,7 @@ ${grid({
   ],
 })}
 <ul class="tasks compact">
-<li>אחרי חודש אחד היו לכיתה ז'1 ${blank(3, 'number')} מאות פקקים, ולכן הנקודה שלה היא ${pair()}.</li>
+<li>אחרי חודש אחד היו לכיתה ז'1 ${blank(3, 'number')} מאות פקקים, ולכן הנקודה שמתאימה לה היא ${pair()}.</li>
 <li>בחודש ה־${blank(3, 'number')} לשתי הכיתות אותו מספר פקקים, כי לשתי הנקודות שיעור ${ltr('y')} זהה.</li>
 <li>אחרי החודש הזה, מספר הפקקים של כיתה ז'2 ${blank(5, 'relation')} משל כיתה ז'1.</li>
 </ul>
