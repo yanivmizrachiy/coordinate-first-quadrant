@@ -641,3 +641,45 @@ describe('the booklet opens the way Yaniv asked', () => {
     }
   });
 });
+
+/* Yaniv's format for a calculation: „AB = 7 − 2 = ____ יח'”, on one left-to-right
+   line — the side's name, the subtraction, the result. A subtraction buried in a
+   Hebrew sentence is read right to left, which is not a subtraction; and the
+   answer then sits a whole clause away from the exercise it belongs to. The rule
+   was written on the rules page and applied on ONE page. („התרגיל לא כתוב לפי
+   הכללים שלנו… אתה חייב להיות עקבי.”) */
+describe('a calculation is written left to right', () => {
+  it('no subtraction is left inside a sentence', () => {
+    const loose: string[] = [];
+    for (const page of WORKBOOK) {
+      // strip the LTR calculation lines, then look for a subtraction in what is left
+      const prose = page.html.replace(/<div class="calc-ltr"[^>]*>[\s\S]*?<\/div>/g, '');
+      if (/[֐-׿][^<>]{0,40}\d\s*−\s*\d/.test(prose) || /\d\s*−\s*\d[^<>]{0,40}[֐-׿]/.test(prose)) {
+        loose.push(`page ${page.n}`);
+      }
+    }
+    expect(loose, `a subtraction is written inside a sentence on ${loose.join(', ')}`).toEqual([]);
+  });
+
+  /* The subtraction can also hide as a bare blank („תרגיל החיסור הוא ____”),
+     which the regex above cannot see — that shape is how three of them survived
+     the first sweep. If a page says „תרגיל החיסור”, it must show one. */
+  it('a page that speaks of a subtraction shows one', () => {
+    const talked: string[] = [];
+    for (const page of WORKBOOK) {
+      if (!/תרגיל החיסור/.test(page.html)) continue;
+      if (!/class="calc-ltr"/.test(page.html)) talked.push(`page ${page.n}`);
+    }
+    expect(talked, `„תרגיל החיסור” with no calculation line on ${talked.join(', ')}`).toEqual([]);
+  });
+
+  it('every calculation line carries its units', () => {
+    const bare: string[] = [];
+    for (const page of WORKBOOK) {
+      for (const line of page.html.match(/<div class="calc-ltr"[\s\S]*?<\/div><\/div>|<div class="calc-ltr"[^>]*>[\s\S]*?<\/div>/g) ?? []) {
+        if (!/calc-ltr__unit/.test(line)) bare.push(`page ${page.n}`);
+      }
+    }
+    expect([...new Set(bare)], `a calculation has no units on ${bare.join(', ')}`).toEqual([]);
+  });
+});

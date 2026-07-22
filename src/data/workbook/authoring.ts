@@ -138,6 +138,15 @@ export const exercise = (name: string, unit = "יח'"): string =>
   `${blank(10, 'number')}<span class="calc-ltr__eq">=</span>${blank(4, 'number')}` +
   `<span class="calc-ltr__unit">${unit}</span></div>`;
 
+/** „AB = 7 − 2 = ____ יח'” — the subtraction is GIVEN and the learner writes the
+    result. Same left-to-right line as exercise(); the name may be left out where
+    the quantity has none (a difference in years, in centimetres, in seats). */
+export const exerciseGiven = (name: string, calc: string, unit = "יח'"): string =>
+  '<div class="calc-ltr" dir="ltr">' +
+  (name ? `<span class="calc-ltr__name">${name}</span><span class="calc-ltr__eq">=</span>` : '') +
+  `<span>${calc}</span><span class="calc-ltr__eq">=</span>${blank(4, 'number')}` +
+  `<span class="calc-ltr__unit">${unit}</span></div>`;
+
 /** The value of that side, stated on its own line: „BC = ____ יח'”. */
 export const sideValue = (name: string, unit = "יח'"): string =>
   '<div class="calc-ltr" dir="ltr">' +

@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, blank, ltr, pair, grid } from '../authoring';
+import { sheet, blank, ltr, pair, grid, exerciseGiven } from '../authoring';
 
 /* The step between the sent questions and an algebraic expression: points that
    climb by the same amount every time. Reading the step off the graph is what
@@ -28,7 +28,10 @@ ${grid({
 <ul class="tasks compact">
 <li>בתחילת המדידה גובה הנר היה ${blank(3, 'number')} ס"מ, ולכן הנקודה הראשונה היא ${pair()}.</li>
 <li>בכל שעה הגובה ${blank(5, 'relation')} ב־1 ס"מ, ולכן הקצב קבוע.</li>
-<li>ההפרש בין הגובה בשעה 0 ובין הגובה בשעה 4 הוא ${ltr('6 − 2 =')} ${blank(3, 'number')} ס"מ.</li>
+<li>ההפרש בין הגובה בשעה 0 ובין הגובה בשעה 4 מחושב כך:</li>
+</ul>
+${exerciseGiven('', '6 − 2', 'ס"מ')}
+<ul class="tasks compact">
 </ul>
 </section>
 <section class="q-card">

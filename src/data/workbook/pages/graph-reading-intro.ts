@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, blank, ltr, pair, grid } from '../authoring';
+import { sheet, blank, ltr, pair, grid, exerciseGiven } from '../authoring';
 
 /* Reading a graph of points in the first quadrant — the genre Yaniv sent from
    the national tests. A real pair of axes with real names, and every question
@@ -49,7 +49,10 @@ ${grid({
 <h3>ג. השלימו לפי הגרף.</h3>
 <ul class="tasks compact">
 <li>ככל שערך ה־${ltr('x')} גדל, שיעור ה־${ltr('y')} בדרך כלל ${blank(5, 'relation')}.</li>
-<li>ההפרש בין שיעור ה־${ltr('y')} של ${ltr('F')} ובין שיעור ה־${ltr('y')} של ${ltr('A')} הוא ${ltr('6 − 2 =')} ${blank(3, 'number')} שאלות.</li>
+<li>ההפרש בין שיעור ה־${ltr('y')} של ${ltr('F')} ובין שיעור ה־${ltr('y')} של ${ltr('A')} מחושב כך:</li>
+</ul>
+${exerciseGiven('', '6 − 2', 'שאלות')}
+<ul class="tasks compact">
 <li>סמנו על הגרף נקודה ${ltr('G')} של תלמיד שלמד 50 דקות ופתר 4 שאלות: ${pair('G')}.</li>
 <li>הנקודה שסימנתם ממוקמת ${blank(5, 'direction')} לנקודה ${ltr('D')}.</li>
 </ul>

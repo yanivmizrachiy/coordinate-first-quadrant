@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, blank, ltr, pair, grid, calcBox } from '../authoring';
+import { sheet, blank, ltr, pair, grid, calcBox, exerciseGiven } from '../authoring';
 
 /* Real life, grade 7: every image on every screen they own is a grid of pixels,
    and a pixel is nothing but an ordered pair with a colour. Colouring squares
@@ -27,8 +27,10 @@ ${grid({ size: 'md', label: 'מערכת צירים ריקה לצביעת פיק�
 <h3>ב. כמה פיקסלים צריך?</h3>
 <p>מסך קטנטן של שעון חכם משתרע מ־${ltr('(1,1)')} ועד ${ltr('(7,5)')}.</p>
 <ul class="tasks compact">
-<li>הרוחב: ${ltr('7 − 1 =')} ${blank(3, 'number')} יח', והגובה: ה־${ltr('y')} הגבוה פחות ה־${ltr('y')} ה${blank(5, 'property')}.</li>
+<li>האורך הוא ההפרש בין ה־${ltr('x')} הימני ובין ה־${ltr('x')} השמאלי, והרוחב הוא ההפרש בין ה־${ltr('y')} הגבוה ובין ה־${ltr('y')} ה${blank(5, 'property')}.</li>
 </ul>
+${exerciseGiven('AB', '7 − 1')}
+${exerciseGiven('BC', '5 − 1')}
 ${calcBox({ perimeter: true, area: true })}
 </section>
 <section class="q-card">

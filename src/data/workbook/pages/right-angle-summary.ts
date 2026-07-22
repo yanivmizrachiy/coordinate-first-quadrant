@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, calcBox } from '../authoring';
+import { sheet, calcBox, exercise } from '../authoring';
 
 export const RIGHT_ANGLE_SUMMARY: WorkbookPageContent = sheet({
   sectionClass: "sheet practice",
@@ -17,9 +17,10 @@ export const RIGHT_ANGLE_SUMMARY: WorkbookPageContent = sheet({
 <li>הצלעות <span class="blank" data-missing="letter" style="--blank-width:8ch"></span> מקבילות לציר <span class="math-ltr" dir="ltr">x</span>.</li>
 <li>הצלעות שמקבילות לציר <span class="math-ltr" dir="ltr">y</span> מאונכות להן, כי הזווית ביניהן היא זווית <span class="blank" data-missing="property" style="--blank-width:5ch"></span>.</li>
 <li>מספר הזוויות הישרות: <span class="blank" style="--blank-width:3ch"></span></li>
-<li><span class="math-ltr" dir="ltr">AB =</span> <span class="blank" style="--blank-width:3ch"></span> יח', &nbsp; <span class="math-ltr" dir="ltr">BC =</span> <span class="blank" style="--blank-width:3ch"></span> יח'</li>
 </ul>
 <p>כתבו לכל צלע את תרגיל החיסור, ורק אחר כך את ההיקף ואת השטח.</p>
+${exercise('AB')}
+${exercise('BC')}
 ${calcBox({ perimeter: true, area: true })}
 </div>
 </div>

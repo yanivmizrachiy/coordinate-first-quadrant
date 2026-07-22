@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, blank, wordBlank, ltr, pair, grid } from '../authoring';
+import { sheet, blank, wordBlank, ltr, pair, grid, exerciseGiven, exercise } from '../authoring';
 
 /* The gap this fills: the booklet asked for lengths and never said how to get
    one. A child counted squares. The length of a segment parallel to an axis is
@@ -32,20 +32,23 @@ ${grid({
 })}
 <ul class="tasks compact">
 <li>הקטע ${ltr('AB')} מקביל לציר ${blank(3, 'letter')}, ולכן מחשבים את ההפרש בין ערכי ה־${ltr('x')}.</li>
-<li>ה־${ltr('x')} הימני הוא 7, ה־${ltr('x')} השמאלי הוא ${blank(3, 'number')}, ותרגיל החיסור הוא ${ltr('7 − 2')}.</li>
-<li>לכן אורך הקטע ${ltr('AB')} הוא ${blank(3, 'number')} יח'.</li>
-<li>בקטע ${ltr('CD')} מחשבים את ההפרש בין ה־${ltr('y')} הגבוה ובין ה־${ltr('y')} ה${blank(5, 'property')}.</li>
-<li>תרגיל החיסור הוא ${ltr('5 − 1')}, ולכן אורך הקטע ${ltr('CD')} הוא ${blank(3, 'number')} יח'.</li>
+<li>ה־${ltr('x')} הימני הוא 7, ה־${ltr('x')} השמאלי הוא ${blank(3, 'number')}, ולכן זהו תרגיל החיסור:</li>
 </ul>
+${exerciseGiven('AB', '7 − 2')}
+<ul class="tasks compact">
+<li>בקטע ${ltr('CD')} מחשבים את ההפרש בין ה־${ltr('y')} הגבוה ובין ה־${ltr('y')} ה${blank(5, 'property')}.</li>
+<li>ה־${ltr('y')} הגבוה הוא 5, ה־${ltr('y')} הנמוך הוא ${blank(3, 'number')}, ולכן זהו תרגיל החיסור:</li>
+</ul>
+${exerciseGiven('CD', '5 − 1')}
 </section>
 <section class="q-card">
 <h3>ב. כתבו את תרגיל החיסור, ואז את האורך.</h3>
 <table class="work-table center">
 <tbody>
-<tr><th>הקטע</th><th>מקביל לציר</th><th>תרגיל החיסור</th><th>האורך</th></tr>
-<tr><td>${ltr('(1,4)')} ו־${ltr('(6,4)')}</td><td>${blank(3, 'letter')}</td><td>${ltr('6 − 1 =')}</td><td>${blank(3, 'number')} יח'</td></tr>
-<tr><td>${ltr('(3,2)')} ו־${ltr('(3,6)')}</td><td>${blank(3, 'letter')}</td><td>${ltr('6 − 2 =')}</td><td>${blank(3, 'number')} יח'</td></tr>
-<tr><td>${ltr('(0,5)')} ו־${ltr('(8,5)')}</td><td>${ltr('x')}</td><td>${blank(7, 'number')}</td><td>${blank(3, 'number')} יח'</td></tr>
+<tr><th>הקטע</th><th>מקביל לציר</th><th>התרגיל והאורך</th></tr>
+<tr><td>${ltr('A(1,4)')} ו־${ltr('B(6,4)')}</td><td>${blank(3, 'letter')}</td><td>${exerciseGiven('AB', '6 − 1')}</td></tr>
+<tr><td>${ltr('C(3,2)')} ו־${ltr('D(3,6)')}</td><td>${blank(3, 'letter')}</td><td>${exerciseGiven('CD', '6 − 2')}</td></tr>
+<tr><td>${ltr('E(0,5)')} ו־${ltr('F(8,5)')}</td><td>${ltr('x')}</td><td>${exercise('EF')}</td></tr>
 </tbody>
 </table>
 </section>
@@ -54,8 +57,9 @@ ${grid({
 <ul class="tasks compact">
 <li>סמנו על הסרטוט שלמעלה קטע ${ltr('EF')} שמקביל לציר ${ltr('x')} ואורכו 4 יח'.</li>
 <li>הנקודה ${pair('E')} והנקודה ${pair('F')}.</li>
-<li>תרגיל החיסור שכתבתם הוא ${blank(9, 'number')}, וההפרש הוא ${blank(3, 'number')}.</li>
+<li>כתבו את תרגיל החיסור של הקטע שסימנתם, ואת ההפרש שקיבלתם:</li>
 </ul>
+${exercise('EF')}
 </section>
 `,
 });
