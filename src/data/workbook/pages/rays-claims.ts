@@ -5,8 +5,8 @@ import { sheet, blank, ltr, pair, grid } from '../authoring';
    disagree, and the city where every street runs parallel to an axis. */
 export const RAYS_CLAIMS: WorkbookPageContent = sheet({
   sectionClass: 'sheet practice',
-  title: 'טענות על זווית ישרה',
-  subtitle: 'מכריעים בין שתי דעות, ומתכננים שדרה חדשה בעיר',
+  title: 'זוויות ברביע הראשון',
+  subtitle: 'טענות — מכריעים בין שתי דעות ומתכננים שדרה חדשה',
   content: `
 <section class="q-card">
 <h3>א. שתי דעות — מי צודק?</h3>
@@ -33,7 +33,7 @@ ${grid({
 <div class="always-row"><span>2. קרן שעוברת דרך הנקודה ${ltr('(7,0)')} יוצרת זווית ישרה עם קרן שעוברת דרך נקודה שערך ה־${ltr('x')} שלה 0.</span>
 <span class="choice-row"><span class="choice">נכונה בהכרח</span><span class="choice">ייתכן שנכונה</span><span class="choice">לא ייתכן</span></span>
 </div>
-<div class="always-row"><span>3. אם הזווית בין שתי קרניים היא זווית ישרה, אז אחת מהן שוכבת על ציר ${ltr('x')} והשנייה על ציר ${ltr('y')}.</span>
+<div class="always-row"><span>3. אם הזווית בין שתי קרניים היא זווית ישרה, אז אחת מהן ממוקמת על ציר ${ltr('x')} והשנייה על ציר ${ltr('y')}.</span>
 <span class="choice-row"><span class="choice">נכונה בהכרח</span><span class="choice">ייתכן שנכונה</span><span class="choice">לא ייתכן</span></span>
 </div>
 </section>

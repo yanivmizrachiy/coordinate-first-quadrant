@@ -254,7 +254,7 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
     svg.append(el('line', {
       x1: X(g.from[0]), y1: Y(g.from[1]), x2: X(g.to[0]), y2: Y(g.to[1]),
       stroke: g.color || (g.type === 'guide' ? GUIDE : BLUE),
-      'stroke-width': g.type === 'guide' ? 1.7 : 2.6,
+      'stroke-width': g.type === 'guide' ? 1.7 : 3.4,
       'stroke-dasharray': g.dashed ? '7 5' : '',
       'marker-end': g.arrow ? `url(#${id})` : '',
       'vector-effect': 'non-scaling-stroke',
@@ -277,7 +277,13 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
 
   // Points with labels
   for (const p of spec.points ?? []) {
-    svg.append(el('circle', { cx: X(p.x), cy: Y(p.y), r: 5.1, fill: p.color || BLUE, stroke: '#fff', 'stroke-width': 1.7, 'vector-effect': 'non-scaling-stroke' }));
+    /* A point ON an axis sits on top of the axis line and the ray drawn along
+       it, and all three are the same weight — „לא ברור בדיוק איפה נמצאת נקודה
+       A”. The white ring cuts the line underneath so the mark reads as a mark. */
+    svg.append(el('circle', {
+      cx: X(p.x), cy: Y(p.y), r: 5.1, fill: p.color || BLUE,
+      stroke: '#fff', 'stroke-width': 3.4,
+    }));
     if (p.label !== undefined && p.label !== '') {
       // The sheet is RTL, and in RTL `text-anchor: start` anchors the RIGHT edge —
       // the label would grow leftwards, back across the dot and onto the axis
@@ -377,6 +383,9 @@ export function normaliseGridText(root: ParentNode = document): void {
       c.dataset['baseR'] = String(baseR);
       const grow = Math.min(MAX_GROWTH, Math.max(1, TARGET_DOT_PX / (baseR * scale)));
       c.setAttribute('r', String(Math.round(baseR * grow * 10) / 10));
+      const baseRing = Number(c.dataset['baseRing'] ?? c.getAttribute('stroke-width') ?? 3.4);
+      c.dataset['baseRing'] = String(baseRing);
+      c.setAttribute('stroke-width', String(Math.round(baseRing * grow * 10) / 10));
     }
     for (const t of svg.querySelectorAll<SVGTextElement>('text')) {
       const base = Number(t.dataset['baseSize'] ?? t.getAttribute('font-size') ?? 13);
