@@ -31,8 +31,6 @@ ${grid({
 <li>ההפרש בין הגובה בשעה 0 ובין הגובה בשעה 4 מחושב כך:</li>
 </ul>
 ${exerciseGiven('', '6 − 2', 'ס"מ')}
-<ul class="tasks compact">
-</ul>
 </section>
 <section class="q-card">
 <h3>ב. מהגרף אל הביטוי.</h3>

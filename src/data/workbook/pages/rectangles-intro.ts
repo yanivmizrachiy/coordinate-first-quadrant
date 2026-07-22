@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, calcBox } from '../authoring';
+import { sheet, calcBox, exerciseGiven } from '../authoring';
 
 export const RECTANGLES_INTRO: WorkbookPageContent = sheet({
   sectionClass: "sheet guided dense",
@@ -22,9 +22,13 @@ export const RECTANGLES_INTRO: WorkbookPageContent = sheet({
 <section class="q-card">
 <h3>ב. אורכי הצלעות — תרגיל חיסור.</h3>
 <ul class="tasks compact">
-<li>הצלע <span class="math-ltr" dir="ltr">AB</span> מקבילה לציר <span class="math-ltr" dir="ltr">x</span>: ה־<span class="math-ltr" dir="ltr">x</span> הימני פחות ה־<span class="math-ltr" dir="ltr">x</span> השמאלי, <span class="math-ltr" dir="ltr">6 − 1 =</span> <span class="blank" data-missing="number" style="--blank-width:3ch"></span> יח'.</li>
-<li>הצלע <span class="math-ltr" dir="ltr">BC</span> מקבילה לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>: ה־<span class="math-ltr" dir="ltr">y</span> הגבוה פחות ה־<span class="math-ltr" dir="ltr">y</span> הנמוך, <span class="math-ltr" dir="ltr">4 − 1 =</span> 3 יח'.</li>
+<li>הצלע <span class="math-ltr" dir="ltr">AB</span> מקבילה לציר <span class="math-ltr" dir="ltr">x</span>: ה־<span class="math-ltr" dir="ltr">x</span> הימני פחות השמאלי.</li>
 </ul>
+${exerciseGiven('AB', '6 − 1')}
+<ul class="tasks compact">
+<li>הצלע <span class="math-ltr" dir="ltr">BC</span> מקבילה לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>: ה־<span class="math-ltr" dir="ltr">y</span> הגבוה פחות הנמוך.</li>
+</ul>
+${exerciseGiven('BC', '4 − 1')}
 ${calcBox({ perimeter: true, area: true })}
 </section>
 </div>
@@ -34,8 +38,8 @@ ${calcBox({ perimeter: true, area: true })}
 <div class="cols-2">
 <div>
 <ul class="tasks compact">
-<li>הנקודה A′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> B′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
-<li>הנקודה C′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> D′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>הנקודה <span class="pair math-ltr" dir="ltr">A′(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">B′(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>הנקודה <span class="pair math-ltr" dir="ltr">C′(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">D′(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
 </ul>
 </div>
 <div>

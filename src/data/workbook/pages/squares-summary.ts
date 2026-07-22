@@ -22,7 +22,6 @@ ${calcBox({ perimeter: true, area: true })}
 <li>אם מזיזים את המלבן יחידה אחת ימינה, הקודקוד <span class="math-ltr" dir="ltr">A</span> מגיע אל <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>, וההיקף והשטח <span class="blank" data-missing="relation" style="--blank-width:5ch"></span>.</li>
 </ul>
 </section>
-</div>
 <section class="q-card">
 <h3>ב. הקיפו: מה נכון לגבי כל טענה?</h3>
 <p>הטענה <b>נכונה בהכרח</b> · <b>ייתכן</b> שהטענה נכונה · <b>לא ייתכן</b> שהטענה נכונה.</p>
@@ -54,6 +53,5 @@ ${calcBox({ perimeter: true, area: true })}
 <li>קודקודי המלבן: <span class="blank" style="--blank-width:34ch"></span></li>
 </ul>
 </section>
-</div>
 `,
 });

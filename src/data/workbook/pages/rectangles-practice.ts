@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, blank, ltr, pair, exercise, sideValue, grid } from '../authoring';
+import { sheet, blank, ltr, pair, exercise, grid } from '../authoring';
 
 export const RECTANGLES_PRACTICE: WorkbookPageContent = sheet({
   sectionClass: "sheet practice",
@@ -33,9 +33,7 @@ ${grid({
 </ul>
 <div class="calc-box"><b>דרך החישוב:</b>
 ${exercise('PQ')}
-${sideValue('PQ')}
 ${exercise('QR')}
-${sideValue('QR')}
 ${exercise('P')}
 ${exercise('S', 'יח"ר')}
 </div>
@@ -48,11 +46,11 @@ ${exercise('S', 'יח"ר')}
 </ul>
 <div class="calc-box"><b>דרך החישוב:</b>
 ${exercise('AB')}
-${sideValue('AB')}
 ${exercise('BC')}
 ${exercise('P')}
 ${exercise('S', 'יח"ר')}
 </div>
 </section>
+</div>
 `,
 });

@@ -43,8 +43,6 @@ ${exerciseGiven('', '7 − 2', 'מקומות')}
 </ul>
 ${exerciseGiven('', '6 − 3', 'מקומות בשורה')}
 ${exerciseGiven('', '4 − 2', 'שורות')}
-<ul class="tasks compact">
-</ul>
 ${calcBox({ perimeter: true, area: true })}
 </section>
 <section class="q-card">

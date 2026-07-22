@@ -10,12 +10,12 @@ import { elem } from '../lib/dom';
 import { navigate } from '../router';
 import { TOPICS } from '../data/workbook';
 
-/* Yaniv's ten colours, ordered so no two neighbours share a hue family: the two
-   purples and the two cyans sit far apart, or a reader scanning the page cannot
-   tell one chapter's chip from the next. */
+/* Yaniv's ten colours, in the order he gave them — „אלה הצבעים של תוכן העניינים
+   המסודר שלנו". I had reordered them so no two neighbours shared a hue family;
+   the palette is his, so it goes back the way he wrote it. */
 const PALETTE = [
-  '#2962FF', '#00C853', '#FF6D00', '#D500F9', '#00E5FF',
-  '#FF1744', '#AA00FF', '#FFD600', '#0091EA', '#64FFDA',
+  '#2962FF', '#00C853', '#FF6D00', '#D500F9', '#AA00FF',
+  '#0091EA', '#FFD600', '#FF1744', '#00E5FF', '#64FFDA',
 ] as const;
 
 /** Yellow and the two cyans need dark type on them; the rest carry white. */
@@ -37,19 +37,18 @@ export function renderTocSheet(): HTMLElement {
   for (const [i, topic] of TOPICS.entries()) {
     const colour = PALETTE[i % PALETTE.length]!;
     const first = topic.pages[0] ?? 1;
-    const last = topic.pages[topic.pages.length - 1] ?? first;
     const btn = elem('button', {
       class: 'toc-btn' + (DARK_INK.has(colour) ? ' toc-btn--dark' : ''),
       type: 'button',
       style: `--toc-colour:${colour}`,
-      'aria-label': `${topic.title}, עמודים ${first} עד ${last}`,
+      'aria-label': `${topic.title}, מתחיל בעמוד ${first}`,
     },
       elem('span', { class: 'toc-btn__name', text: topic.title }),
-      /* „עמודים" is Hebrew, so the span stays RTL; the range itself is not, and
-         in an RTL run the dash flips it to „3–1". Only the numbers are pinned. */
+      /* Only the page the chapter STARTS on — „תכתוב רק מספר עמוד שמתחיל הפרק".
+         „עמוד" is Hebrew and stays RTL; the number is pinned LTR beside it. */
       elem('span', { class: 'toc-btn__pages' },
-        first === last ? 'עמוד ' : 'עמודים ',
-        elem('span', { class: 'math-ltr', dir: 'ltr', text: first === last ? `${first}` : `${first}–${last}` }),
+        'עמוד ',
+        elem('span', { class: 'math-ltr', dir: 'ltr', text: String(first) }),
       ),
     );
     btn.addEventListener('click', () => navigate(`#/workbook/${first}`));

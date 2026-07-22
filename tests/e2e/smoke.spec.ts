@@ -59,28 +59,18 @@ test('the contents sheet lists every chapter and each button reaches its page', 
   );
   expect(new Set(colours).size, 'the buttons are not colour-coded').toBeGreaterThan(5);
 
-  // the chapters cover the booklet end to end, with no page in a chapter twice
-  const ranges = await buttons.evaluateAll((els) =>
-    els.map((e) => (e.getAttribute('aria-label') ?? '').match(/(\d+) עד (\d+)/)?.slice(1, 3).map(Number) ?? [0, 0]),
+  /* Each chip carries the page its chapter STARTS on, and nothing else. The
+     chapters must run in order and start at page 1. */
+  const starts = await buttons.evaluateAll((els) =>
+    els.map((e) => Number((e.getAttribute('aria-label') ?? '').match(/בעמוד (\d+)/)?.[1] ?? 0)),
   );
-  expect(ranges[0]?.[0], 'the contents do not start at page 1').toBe(1);
-  for (const [i, r] of ranges.entries()) {
+  expect(starts[0], 'the contents do not start at page 1').toBe(1);
+  for (const [i, n] of starts.entries()) {
     if (i === 0) continue;
-    expect(r[0], `chapter ${i + 1} does not follow the one before it`).toBe((ranges[i - 1]?.[1] ?? 0) + 1);
+    expect(n, `chapter ${i + 1} does not come after the one before it`).toBeGreaterThan(starts[i - 1]!);
   }
-
-  /* An en-dash between two digits is a neutral character: inside an RTL run it
-     splits them, and „1–3" is painted „3–1". Measured, not assumed. */
-  const flipped = await buttons.evaluateAll((els) =>
-    els.filter((e) => {
-      const node = e.querySelector('.toc-btn__pages [dir="ltr"]');
-      if (!node || !node.textContent?.includes('–')) return false;
-      const t = node.firstChild as Text;
-      const at = (i: number) => { const r = document.createRange(); r.setStart(t, i); r.setEnd(t, i + 1); return r.getBoundingClientRect().x; };
-      return at(0) > at(t.length - 1);
-    }).map((e) => e.textContent),
-  );
-  expect(flipped, 'a page range reads back to front').toEqual([]);
+  const ranged = await buttons.evaluateAll((els) => els.filter((e) => /[–-]/.test(e.textContent ?? '')).length);
+  expect(ranged, 'a chip still shows a page range instead of the starting page').toBe(0);
 
   await buttons.first().click();
   await expect(page).toHaveURL(/#\/workbook\/1$/);

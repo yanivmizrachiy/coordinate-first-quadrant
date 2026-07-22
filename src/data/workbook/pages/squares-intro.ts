@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, calcBox, exercise, sideValue } from '../authoring';
+import { sheet, calcBox, exercise } from '../authoring';
 
 export const SQUARES_INTRO: WorkbookPageContent = sheet({
   sectionClass: "sheet guided ultra-dense",
@@ -15,7 +15,7 @@ export const SQUARES_INTRO: WorkbookPageContent = sheet({
 <li>הצלעות המקבילות לציר <span class="math-ltr" dir="ltr">x</span> הן <span class="blank" data-missing="letter" style="--blank-width:8ch"></span>.</li>
 <li>המלבן הזה הוא <b>ריבוע</b>, כי כל הצלעות שלו <span class="blank" data-missing="relation" style="--blank-width:5ch"></span>.</li>
 </ul>
-${exercise('AB')}${sideValue('AB')}
+${exercise('AB')}
 ${calcBox({ perimeter: true, area: true })}
 <ul class="tasks compact">
 <li>באורך <span class="blank" data-missing="number" style="--blank-width:3ch"></span> יח' וברוחב <span class="blank" data-missing="number" style="--blank-width:3ch"></span> יח' — ולכן האורך והרוחב <b>זהים</b>.</li>
@@ -44,13 +44,14 @@ ${calcBox({ perimeter: true, area: true })}
 <section class="q-card">
 <h3>ג. הזיזו את הריבוע (1,1),(4,1),(4,4),(1,4) - 3 ימינה ו־2 למעלה.</h3>
 <ul class="tasks compact">
-<li>הנקודה A′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> B′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
-<li>הנקודה C′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> D′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>הנקודה <span class="pair math-ltr" dir="ltr">A′(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">B′(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>הנקודה <span class="pair math-ltr" dir="ltr">C′(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">D′(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
 </ul>
 ${calcBox({ perimeter: true, area: true })}
 <ul class="tasks compact">
 <li>מה נשאר זהה? <span class="blank" style="--blank-width:10ch"></span></li>
 </ul>
 </section>
+</div>
 `,
 });
