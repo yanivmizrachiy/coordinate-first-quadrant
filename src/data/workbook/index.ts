@@ -176,7 +176,7 @@ const BOOK: { id: string; title: string; slots: Slot[] }[] = [
   { id: 'life', title: 'מערכת צירים בחיים שלנו', slots: [
     LIFE_PHONE_SCREEN, LIFE_HALL_SEATS, LIFE_PIXEL_ART, LIFE_DELIVERY_ROUTE,
   ] },
-  { id: 'graphs', title: 'קוראים תיאור גרפי של נקודות', slots: [
+  { id: 'graphs', title: 'קריאת גרפים ברביע הראשון', slots: [
     GRAPH_READING_INTRO, GRAPH_YEARS, GRAPH_SQUARE_AREA,
     GRAPH_CONSTANT_RATE, GRAPH_TWO_SERIES, GRAPH_OWN_DATA,
   ] },

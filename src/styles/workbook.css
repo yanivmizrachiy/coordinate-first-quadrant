@@ -403,3 +403,30 @@
 .calc-ltr__name { min-width: 3.2ch; color: var(--blue); }
 .calc-ltr__eq { color: var(--muted); }
 .calc-ltr__unit { color: var(--muted); font-weight: 600; }
+
+/* ---- the contents sheet ---------------------------------------------------
+   Second sheet of the booklet: a coloured button per chapter, in the palette
+   Yaniv chose. Two columns on paper, one on a phone. The type stays at the
+   sheet's 13px so the page reads as part of the booklet, not as a web menu. */
+.toc-sheet .sheet-content { display: block; }
+/* One button per row: the chapter on the right, its pages on the left, the way
+   a contents page is read. One column also fills the sheet — two left half the
+   paper empty, and the sheet has to earn its page like every other. */
+.toc-buttons { display: grid; grid-template-columns: 1fr; gap: 7px; margin-top: 2px; }
+.toc-btn {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 17px 16px; border: 0; border-radius: 12px; cursor: pointer;
+  background: var(--toc-colour); color: #fff; font: inherit; text-align: start;
+  box-shadow: 0 2px 6px #1f2a4426;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.toc-btn--dark { color: #10233d; }
+.toc-btn__name { font-weight: 800; font-size: 13px; line-height: 1.25; }
+.toc-btn__pages { font-weight: 700; font-size: 13px; opacity: .92; white-space: nowrap; }
+.toc-btn:hover { filter: brightness(1.06); }
+.toc-btn:active { transform: translateY(1px); }
+.toc-btn:focus-visible { outline: 2.5px solid #10233d; outline-offset: 2px; }
+
+@media (max-width: 620px) { .toc-btn { padding: 13px 12px; } }
+/* Black-and-white printing drains the sheets, and this sheet is a sheet. */
+body.bw-print .sheet .toc-btn { background: #f0f0f0 !important; color: #111 !important; border: 1.4px solid #555; box-shadow: none; }
