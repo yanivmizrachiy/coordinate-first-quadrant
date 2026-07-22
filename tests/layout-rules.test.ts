@@ -769,3 +769,48 @@ describe('every page is valid markup', () => {
     }
   });
 });
+
+/* USER_MEMORY.md is the single rules page, and it is only worth reading if it
+   is true. It kept drifting: it named a booklet of 55 pages when there were 74,
+   it described a test that had been rewritten, it told the reader the arrow was
+   drawn shorter after that had stopped being so. Anything it states in
+   backticks about the code is checked here. */
+describe('the rules page still matches the code', () => {
+  const rules = readFileSync(new URL('../USER_MEMORY.md', import.meta.url), 'utf8');
+  const suites = readdirSync(new URL('../tests/e2e', import.meta.url))
+    .filter((f) => f.endsWith('.ts'))
+    .map((f) => readFileSync(new URL('../tests/e2e/' + f, import.meta.url), 'utf8'))
+    .concat(readFileSync(new URL('./layout-rules.test.ts', import.meta.url), 'utf8'),
+            readFileSync(new URL('./workbook.test.ts', import.meta.url), 'utf8'))
+    .join('\n');
+
+  it('every test the rules page names actually exists', () => {
+    /* A test title is an English sentence of three words or more. Shell
+       commands (`npm run verify`, `git remote …`) and single identifiers are
+       written the same way, so they are excluded by name. */
+    const named = [...rules.matchAll(/`([a-z][a-zA-Z0-9 ,'-]{15,})…?`/g)]
+      .map((m) => m[1]!.trim())
+      .filter((t) => t.split(' ').length >= 3 && !/^(npm|npx|git|node) /.test(t));
+    const missing = named.filter((t) => !suites.includes(t));
+    expect(missing, `the rules page names tests that do not exist: ${missing.join(' | ')}`).toEqual([]);
+  });
+
+  it('the page count it states is the page count there is', () => {
+    const stated = /\*\*החוברת = (\d+) עמודים ממוספרים\*\*/.exec(rules)?.[1];
+    expect(Number(stated), 'the rules page states a stale page count').toBe(WORKBOOK.length);
+    // and no other page total may be left lying around
+    for (const m of rules.matchAll(/(\d+) עמודים ממוספרים/g)) {
+      expect(Number(m[1]), 'a second, different page count in the rules').toBe(WORKBOOK.length);
+    }
+  });
+
+  it('the constants it quotes are the constants in force', () => {
+    const src = readFileSync(new URL('../src/lib/coordinateGrid.ts', import.meta.url), 'utf8');
+    for (const name of ['MAX_GROWTH', 'MAX_DOT_GROWTH']) {
+      if (!rules.includes(name)) continue;
+      const inRules = new RegExp(`${name} = ([\d.]+)`).exec(rules)?.[1];
+      const inCode = new RegExp(`const ${name} = ([\d.]+)`).exec(src)?.[1];
+      expect(inRules, `${name} in the rules is not what the code uses`).toBe(inCode);
+    }
+  });
+});
