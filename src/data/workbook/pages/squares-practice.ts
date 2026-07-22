@@ -10,7 +10,7 @@ export const SQUARES_PRACTICE: WorkbookPageContent = sheet({
 <section class="q-card">
 <h3>משלימים ריבוע</h3>
 <p>נתונים שלושה קודקודים: <span class="math-ltr" dir="ltr">A(2,1), B(6,1), C(6,5)</span>.</p>
-<div aria-label="שלושה קודקודים של ריבוע" class="coordinate-grid grid-xs" data-arrows="[]" data-points='[{"x": 2, "y": 1, "label": "A", "dx": 10, "dy": -10}, {"x": 6, "y": 1, "label": "B", "dx": 10, "dy": -10}, {"x": 6, "y": 5, "label": "C", "dx": 10, "dy": -10}]' data-polygons="[]" data-segments='[{"from": [2, 1], "to": [6, 1], "type": "shape"}, {"from": [6, 1], "to": [6, 5], "type": "shape"}]' role="img">
+<div aria-label="שלושה קודקודים של ריבוע" class="coordinate-grid grid-sm" data-arrows="[]" data-points='[{"x": 2, "y": 1, "label": "A", "dx": 10, "dy": -10}, {"x": 6, "y": 1, "label": "B", "dx": 10, "dy": -10}, {"x": 6, "y": 5, "label": "C", "dx": 10, "dy": -10}]' data-polygons="[]" data-segments='[{"from": [2, 1], "to": [6, 1], "type": "shape"}, {"from": [6, 1], "to": [6, 5], "type": "shape"}]' role="img">
 </div>
 <p class="axis-answer-box">הקודקוד הרביעי <span class="math-ltr" dir="ltr">D</span>: <span class="blank" style="--blank-width:10ch"></span></p>
 <p>אורך הצלע — תרגיל החיסור: <span class="blank" data-missing="number" style="--blank-width:9ch"></span>, וההפרש הוא <span class="blank" data-missing="number" style="--blank-width:3ch"></span> יח'</p>

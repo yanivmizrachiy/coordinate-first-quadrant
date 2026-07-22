@@ -129,6 +129,21 @@ export const calcBox = (o: { lines?: number; perimeter?: boolean; area?: boolean
   );
 };
 
+/* An exercise is written the way it is worked: LEFT to right. „BC = תרגיל =
+   תוצאה”, on one pinned line, and then the value of that side on the line under
+   it. Yaniv's format — a subtraction that reads backwards is not a subtraction. */
+export const exercise = (name: string, unit = "יח'"): string =>
+  '<div class="calc-ltr" dir="ltr">' +
+  `<span class="calc-ltr__name">${name}</span><span class="calc-ltr__eq">=</span>` +
+  `${blank(10, 'number')}<span class="calc-ltr__eq">=</span>${blank(4, 'number')}` +
+  `<span class="calc-ltr__unit">${unit}</span></div>`;
+
+/** The value of that side, stated on its own line: „BC = ____ יח'”. */
+export const sideValue = (name: string, unit = "יח'"): string =>
+  '<div class="calc-ltr" dir="ltr">' +
+  `<span class="calc-ltr__name">${name}</span><span class="calc-ltr__eq">=</span>` +
+  `${blank(4, 'number')}<span class="calc-ltr__unit">${unit}</span></div>`;
+
 /** „מחסן מילים” — the words to choose from, so the task needs no explaining. */
 export const wordBank = (words: string[]): string =>
   '<div class="word-bank"><b>מחסן מילים:</b> ' +

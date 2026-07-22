@@ -7,7 +7,7 @@ export const SQUARES_INTRO: WorkbookPageContent = sheet({
   subtitle: "השוואה, הזזה וטענות מתמטיות",
   content: `
 <div class="cols-2">
-<div aria-label="ריבוע ABCD" class="coordinate-grid grid-xs" data-arrows="[]" data-labelboxes="[]" data-points='[{"x": 2, "y": 1, "label": "A"}, {"x": 6, "y": 1, "label": "B"}, {"x": 6, "y": 5, "label": "C"}, {"x": 2, "y": 5, "label": "D"}]' data-polygons='[{"points": [[2, 1], [6, 1], [6, 5], [2, 5]]}]' data-segments="[]" role="img">
+<div aria-label="ריבוע ABCD" class="coordinate-grid grid-sm" data-arrows="[]" data-labelboxes="[]" data-points='[{"x": 2, "y": 1, "label": "A"}, {"x": 6, "y": 1, "label": "B"}, {"x": 6, "y": 5, "label": "C"}, {"x": 2, "y": 5, "label": "D"}]' data-polygons='[{"points": [[2, 1], [6, 1], [6, 5], [2, 5]]}]' data-segments="[]" role="img">
 </div>
 <section class="q-card">
 <h3>א. הריבוע ABCD.</h3>
@@ -24,12 +24,12 @@ export const SQUARES_INTRO: WorkbookPageContent = sheet({
 <p>לכל צלע כתבו קודם את <b>תרגיל החיסור</b>: הימני פחות השמאלי, או הגבוה פחות הנמוך.</p>
 <div class="cols-2">
 <div><b>מלבן א:</b> <span class="math-ltr" dir="ltr">(1,1),(7,1),(7,3),(1,3)</span>
-<div aria-label="מערכת צירים ברביע הראשון" class="coordinate-grid grid-xs" data-arrows="[]" data-labelboxes="[]" data-points='[{"x": 1, "y": 1}, {"x": 7, "y": 1}, {"x": 7, "y": 3}, {"x": 1, "y": 3}]' data-polygons='[{"points": [[1, 1], [7, 1], [7, 3], [1, 3]]}]' data-segments="[]" role="img">
+<div aria-label="מערכת צירים ברביע הראשון" class="coordinate-grid grid-sm" data-arrows="[]" data-labelboxes="[]" data-points='[{"x": 1, "y": 1}, {"x": 7, "y": 1}, {"x": 7, "y": 3}, {"x": 1, "y": 3}]' data-polygons='[{"points": [[1, 1], [7, 1], [7, 3], [1, 3]]}]' data-segments="[]" role="img">
 </div>
 <div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
 </div>
 <div><b>מלבן ב:</b> <span class="math-ltr" dir="ltr">(2,1),(5,1),(5,5),(2,5)</span>
-<div aria-label="מערכת צירים ברביע הראשון" class="coordinate-grid grid-xs" data-arrows="[]" data-labelboxes="[]" data-points='[{"x": 2, "y": 1}, {"x": 5, "y": 1}, {"x": 5, "y": 5}, {"x": 2, "y": 5}]' data-polygons='[{"points": [[2, 1], [5, 1], [5, 5], [2, 5]]}]' data-segments="[]" role="img">
+<div aria-label="מערכת צירים ברביע הראשון" class="coordinate-grid grid-sm" data-arrows="[]" data-labelboxes="[]" data-points='[{"x": 2, "y": 1}, {"x": 5, "y": 1}, {"x": 5, "y": 5}, {"x": 2, "y": 5}]' data-polygons='[{"points": [[2, 1], [5, 1], [5, 5], [2, 5]]}]' data-segments="[]" role="img">
 </div>
 <div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
 </div>
