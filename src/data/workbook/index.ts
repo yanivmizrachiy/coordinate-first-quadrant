@@ -20,6 +20,7 @@ import {
   GRAPH_REAL,
   SHAPE_MOVE,
   READ_PAIRS,
+  READ_FROM_DRAWING,
   ORDERED_PAIR_DRILL,
   PARALLEL_PERPENDICULAR,
   RIGHT_ANGLE_INTRO,
@@ -125,7 +126,7 @@ const BOOK: { id: string; title: string; slots: Slot[] }[] = [
   ] },
   { id: 'coords', title: 'שיעור x, שיעור y והזוג הסדור', slots: [
     HERO_INTRO,
-    COORDS_INTRO, READ_PAIRS, COORDS_PRACTICE, ORDERED_PAIR_DRILL, ORDERED_PAIR_INTRO, ORDERED_PAIR_PRACTICE,
+    COORDS_INTRO, READ_PAIRS, READ_FROM_DRAWING, COORDS_PRACTICE, ORDERED_PAIR_DRILL, ORDERED_PAIR_INTRO, ORDERED_PAIR_PRACTICE,
   ] },
   { id: 'plot', title: 'סימון נקודות', slots: [
     PLOT_A, PLOT_B, PLOT_PRACTICE, POSTER_SECRET_PICTURE, PLOT_SHAPE, game('hidden-drawing'),

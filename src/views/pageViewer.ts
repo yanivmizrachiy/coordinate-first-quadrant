@@ -1,4 +1,4 @@
-import { elem, fromHTML, clear } from '../lib/dom';
+import { elem, fromHTML } from '../lib/dom';
 import { navigate } from '../router';
 import { hydrateGrids } from '../lib/coordinateGrid';
 import { fitSheets } from '../lib/fitSheet';
@@ -139,5 +139,4 @@ function linkBtn(text: string, onClick: () => void): HTMLElement {
 function toggleFullscreen(elm: HTMLElement): void {
   if (!document.fullscreenElement) elm.requestFullscreen?.().catch(() => {});
   else document.exitFullscreen?.().catch(() => {});
-  void clear;
 }

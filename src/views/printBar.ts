@@ -70,7 +70,7 @@ export function printBar(opts: PrintBarOptions): HTMLElement {
     const range = elem('div', { class: 'printbar__range' },
       elem('span', { text: 'מעמוד' }), from, elem('span', { text: 'עד' }), to,
     );
-    const allBtn = elem('button', { class: 'printbar__go', type: 'button', text: '🖨️ הדפסת הכול' });
+    const allBtn = elem('button', { class: 'printbar__go', type: 'button', text: '🖨️ הכול' });
     const rangeBtn = elem('button', { class: 'printbar__go', type: 'button', text: '🖨️ הדפסת הטווח' });
     allBtn.addEventListener('click', () => { applyRange(true); window.print(); });
     rangeBtn.addEventListener('click', () => { applyRange(false); window.print(); });

@@ -14,11 +14,13 @@ export function book({ outlet, setTitle }: ViewContext): (() => void) | void {
 
   const bookEl = elem('div', { class: 'book' });
 
+  // One control row, like the page viewer: a second one only eats the sheet.
   c.append(
-    elem('div', { class: 'toolbar-row no-print' },
-      linkBtn('☰ תוכן העניינים', () => navigate('#/workbook')),
-    ),
-    printBar({ scope: 'book', root: () => bookEl }),
+    printBar({
+      scope: 'book',
+      root: () => bookEl,
+      lead: [linkBtn('☰ תוכן העניינים', () => navigate('#/workbook'))],
+    }),
   );
 
   // Approved cover first, then all worksheets — no math content is altered.

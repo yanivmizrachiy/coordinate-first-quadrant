@@ -36,6 +36,7 @@ export { PLOT_SHAPE } from './plot-shape';
 export { GRAPH_REAL } from './graph-real-life';
 export { SHAPE_MOVE } from './shape-move';
 export { READ_PAIRS } from './read-pairs';
+export { READ_FROM_DRAWING } from './read-from-drawing';
 export { ORDERED_PAIR_DRILL } from './ordered-pair-drill';
 export { PARALLEL_PERPENDICULAR } from './parallel-perpendicular';
 export { RIGHT_ANGLE_INTRO } from './right-angle-intro';
