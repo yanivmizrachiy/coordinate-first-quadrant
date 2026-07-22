@@ -7,12 +7,9 @@ export const ON_AXES_INTRO: WorkbookPageContent = sheet({
   subtitle: "מתי x=0 ומתי y=0",
   content: `
 <div class="cols-3 rules">
-<div class="rule-box">על ציר x: <span class="math-ltr" dir="ltr">y=0</span>
-</div>
-<div class="rule-box">על ציר y: <span class="math-ltr" dir="ltr">x=0</span>
-</div>
-<div class="rule-box">הראשית: <span class="math-ltr" dir="ltr">O(0,0)</span>
-</div>
+<div class="rule-box completion-intro"><div class="completion-sentence">על ציר <span class="math-ltr" dir="ltr">x</span> שיעור <span class="math-ltr" dir="ltr">y</span> הוא <span class="word-blank word-short" data-missing="number" aria-label="מקום להשלמת המספר אפס"></span>.</div></div>
+<div class="rule-box completion-intro"><div class="completion-sentence">על ציר <span class="word-blank word-short" data-missing="letter" aria-label="מקום להשלמת האות y"></span> ערך <span class="math-ltr" dir="ltr">x</span> הוא 0.</div></div>
+<div class="rule-box completion-intro"><div class="completion-sentence">ראשית הצירים נכתבת <span class="pair math-ltr" dir="ltr">O(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>.</div></div>
 </div>
 <section class="q-card">
 <h3>א. סמנו או בדקו את הנקודות: A(4,0), B(0,5), C(7,0), D(0,2), O(0,0), E(3,4).</h3>

@@ -8,7 +8,9 @@ export const RIGHT_ANGLE_BUILD: WorkbookPageContent = sheet({
   contentTag: 'div',
   content: `
 <div class="cols-2 compact-top">
-<div class="rule-box">מהראשית זזים תחילה לפי x ואז לפי y. בפינה שבה הכיוון משתנה מאופקי לאנכי נוצרת זווית ישרה.
+<div class="rule-box completion-intro">
+<div class="completion-sentence">מהראשית זזים תחילה לפי <span class="word-blank word-short" data-missing="letter" aria-label="מקום להשלמת האות x"></span> ואז לפי <span class="math-ltr" dir="ltr">y</span>.</div>
+<div class="completion-sentence">בפינה שבה הכיוון משתנה מאופקי לאנכי נוצרת זווית <span class="word-blank word-medium" data-missing="property" aria-label="מקום להשלמת המילה ישרה"></span>.</div>
 </div>
 <div aria-label="מסלול מהראשית עם זווית ישרה בפינה" class="coordinate-grid grid-md" data-arrows='[{"from": [0, 0], "to": [4, 0], "label": "4 ימינה"}, {"from": [4, 0], "to": [4, 3], "label": "3 למעלה"}]' data-labelboxes="[]" data-points='[{"x": 0, "y": 0, "label": "O"}, {"x": 4, "y": 0, "label": ""}, {"x": 4, "y": 3, "label": "P"}]' data-polygons="[]" data-segments='[{"from": [3.5, 0], "to": [3.5, 0.5], "type": "guide"}, {"from": [3.5, 0.5], "to": [4, 0.5], "type": "guide"}]' role="img">
 </div>

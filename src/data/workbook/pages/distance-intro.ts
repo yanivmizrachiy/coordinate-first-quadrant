@@ -7,7 +7,9 @@ export const DISTANCE_INTRO: WorkbookPageContent = sheet({
   subtitle: "מרחק לציר x, לציר y, אופקי ואנכי",
   content: `
 <div class="cols-2 compact-top">
-<div class="rule-box">אל ציר y משנים x ל־0. אל ציר x משנים y ל־0.
+<div class="rule-box completion-intro">
+<div class="completion-sentence">כדי להגיע אל ציר <span class="math-ltr" dir="ltr">y</span> משנים את ערך <span class="math-ltr" dir="ltr">x</span> ל־<span class="word-blank word-short" data-missing="number" aria-label="מקום להשלמת המספר אפס"></span>.</div>
+<div class="completion-sentence">כדי להגיע אל ציר <span class="word-blank word-short" data-missing="letter" aria-label="מקום להשלמת האות x"></span> משנים את שיעור <span class="math-ltr" dir="ltr">y</span> ל־0.</div>
 </div>
 <div aria-label="מערכת צירים ברביע הראשון" class="coordinate-grid grid-sm" data-arrows='[{"from": [6, 4], "to": [0, 4], "label": "6 שמאלה"}, {"from": [6, 4], "to": [6, 0], "label": "4 למטה"}]' data-labelboxes="[]" data-points='[{"x": 6, "y": 4, "label": "P"}, {"x": 0, "y": 4, "label": ""}, {"x": 6, "y": 0, "label": ""}]' data-polygons="[]" data-segments="[]" role="img">
 </div>

@@ -307,6 +307,39 @@ describe('a calculation gets units and room to work', () => {
     expect(toY, 'no dashed line across to ציר y').toBe(true);
   });
 
+  /* USER_MEMORY §8: „גם כלל או הגדרה מוצגים כמשפט השלמה, לא כמשפט מוכן”.
+     A rule handed over finished is a rule the learner reads past. */
+  it('a rule box states its rule as something to complete', () => {
+    for (const p of WORKBOOK) {
+      for (const rb of p.html.split('<div class="rule-box').slice(1)) {
+        const body = rb.split('</div>\n</div>')[0]!;
+        // the split leaves the tail of the opening tag („ completion-intro">”)
+        const words = body.slice(body.indexOf('>') + 1)
+          .replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+        if (!words) continue;
+        // A worked example is the one thing that must show its answer — that
+        // is what makes it an example. It has to say so on its face.
+        if (/^(הדגמה|דוגמה)/.test(words)) continue;
+        expect(body, `page ${p.n}: rule box reads as a finished sentence — „${words.slice(0, 54)}”`)
+          .toMatch(/class="(word-)?blank|pair-blank/);
+      }
+    }
+  });
+
+  /* USER_MEMORY §9. A box that floats loose is a box the learner has to guess
+     at — Yaniv reported it twice, on two different drawings. Every label on a
+     drawing states which point, tick or line it belongs to. */
+  it('every label box on a drawing points at what it describes', () => {
+    for (const p of WORKBOOK) {
+      for (const m of p.html.matchAll(/data-labelboxes='([^']*)'/g)) {
+        const boxes = JSON.parse(m[1]!.replace(/&#39;/g, "'")) as Array<{ text: string; to?: number[] }>;
+        for (const b of boxes) {
+          expect(b.to, `page ${p.n}: „${b.text}” floats with nothing to attach it to`).toBeDefined();
+        }
+      }
+    }
+  });
+
   /* Marking a point does not prove the learner can write it. */
   it('a "mark it on the drawing" task also asks for the ordered pair', () => {
     for (const p of WORKBOOK) {
