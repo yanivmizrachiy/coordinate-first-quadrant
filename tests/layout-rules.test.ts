@@ -156,6 +156,19 @@ describe('Hebrew and punctuation hold up to proofreading', () => {
     }
   });
 
+  /* You answer a QUESTION, never a drawing or a point: „ענו עליה” is not
+     Hebrew. And „קודם x ואחר כך y” describes an order of writing; the booklet
+     says WHERE each number sits — „מצד שמאל” / „מצד ימין” (§5, §7). */
+  it('the wording is Hebrew a teacher would sign', () => {
+    for (const p of WORKBOOK) {
+      const text = p.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+      expect(text, `page ${p.n}: "ענו עלי…" — one answers a question, not a drawing`)
+        .not.toMatch(/ענו עלי[ווה]/);
+      expect(text, `page ${p.n}: "קודם … ואחר כך" — say which SIDE, not which turn`)
+        .not.toMatch(/קודם [xy] ואחר כך|נכתב ראשון|נכתב שני/);
+    }
+  });
+
   it('a Hebrew prefix before a Latin letter uses the Hebrew maqaf', () => {
     for (const p of WORKBOOK) {
       // „ל-x” is wrong; „ל־x” is right

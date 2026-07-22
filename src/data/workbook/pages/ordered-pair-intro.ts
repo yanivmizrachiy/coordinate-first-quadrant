@@ -1,12 +1,15 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet } from '../authoring';
+import { sheet, blank, wordBlank, ltr, pair } from '../authoring';
 
 export const ORDERED_PAIR_INTRO: WorkbookPageContent = sheet({
   sectionClass: "sheet guided",
   title: "הזוג הסדור",
-  subtitle: "קודם x ואחר כך y",
+  subtitle: "מה נכתב מצד שמאל ומה מצד ימין",
   content: `
-<div class="rule-box">בזוג הסדור <span class="math-ltr" dir="ltr">(x,y)</span> המספר השמאלי הוא <b>שיעור x</b> והמספר הימני הוא <b>שיעור y</b>. לדוגמה: נקודה שבה <span class="math-ltr" dir="ltr">x=4, y=3</span> נכתבת <span class="math-ltr" dir="ltr">(4,3)</span>.
+<div class="rule-box completion-intro">
+<div class="completion-sentence">בזוג הסדור ${ltr('(x,y)')} המספר שנכתב מצד ${wordBlank('medium', 'property', 'מקום להשלמת המילה שמאל')} הוא <b>ערך ${ltr('x')}</b>.</div>
+<div class="completion-sentence">בזוג הסדור ${ltr('(x,y)')} המספר שנכתב מצד ימין הוא <b>שיעור ${wordBlank('short', 'letter', 'מקום להשלמת האות y')}</b>.</div>
+<div class="completion-sentence">לדוגמה: בנקודה שערך ה־${ltr('x')} שלה 4 ושיעור ה־${ltr('y')} שלה 3, הזוג הסדור הוא ${pair()}.</div>
 </div>
 <section class="q-card">
 <h3>א. השלימו את הזוג הסדור.</h3>
@@ -56,8 +59,8 @@ export const ORDERED_PAIR_INTRO: WorkbookPageContent = sheet({
 <h3>ה. השלימו — למה הסדר קובע.</h3>
 <ul class="tasks">
 <li>אם מחליפים בין שני המספרים, מקבלים נקודה <span class="blank" data-missing="relation" style="--blank-width:5ch"></span>.</li>
-<li>המספר שנכתב ראשון, מצד שמאל, אומר כמה זזים <span class="blank" data-missing="direction" style="--blank-width:6ch"></span>.</li>
-<li>המספר שנכתב שני, מצד ימין, אומר כמה זזים <span class="blank" data-missing="direction" style="--blank-width:6ch"></span>.</li>
+<li>המספר שמצד שמאל אומר כמה זזים ${blank(6, 'direction')}.</li>
+<li>המספר שמצד ימין הוא שיעור ${blank(3, 'letter')}, והוא אומר כמה זזים למעלה.</li>
 <li>לכן שני מספרים באותו סדר מתארים תמיד <span class="blank" data-missing="number" style="--blank-width:5ch"></span> נקודה.</li>
 </ul>
 </section>
