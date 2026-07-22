@@ -43,10 +43,9 @@ export const RELATIONS_INTRO: WorkbookPageContent = sheet({
 </section>
 <section class="q-card">
 <h3>ו. בנקודה <span class="math-ltr" dir="ltr">(2,4)</span>, y גם גדול ב־2 וגם גדול פי 2 מ־x. האם זה קורה תמיד?</h3>
-<div class="answer-line">
-</div>
-<div class="answer-line">
-</div>
+<ul class="tasks compact">
+<li>ההסבר: <span class="blank" data-missing="relation" style="--blank-width:24ch"></span>.</li>
+</ul>
 </section>
 `,
 });

@@ -36,15 +36,21 @@ ${calcBox({ perimeter: true, area: true })}
 ${calcBox({ perimeter: true, area: true })}
 </div>
 </div>
-<p>האם אותו שטח מחייב אותו היקף? <span class="blank" style="--blank-width:6ch"></span></p>
+<ul class="tasks compact">
+<li>האם אותו שטח מחייב אותו היקף? <span class="blank" style="--blank-width:6ch"></span></li>
+</ul>
 </section>
 <div class="cols-2">
 <section class="q-card">
 <h3>ג. הזיזו את הריבוע (1,1),(4,1),(4,4),(1,4) - 3 ימינה ו־2 למעלה.</h3>
-<p>A′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> B′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<p>C′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> D′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
+<ul class="tasks compact">
+<li>הנקודה A′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> B′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>הנקודה C′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> D′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+</ul>
 ${calcBox({ perimeter: true, area: true })}
-<p>מה נשאר זהה? <span class="blank" style="--blank-width:10ch"></span></p>
+<ul class="tasks compact">
+<li>מה נשאר זהה? <span class="blank" style="--blank-width:10ch"></span></li>
+</ul>
 </section>
 `,
 });

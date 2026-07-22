@@ -31,15 +31,17 @@ export const POSITION_LANGUAGE_PRACTICE: WorkbookPageContent = sheet({
 <li>הנקודות שבהן שיעור ה־<span class="math-ltr" dir="ltr">x</span> ושיעור ה־<span class="math-ltr" dir="ltr">y</span> <b>זהים</b> הן <span class="blank" data-missing="letter" style="--blank-width:10ch"></span>.</li>
 </ul>
 <p>כתבו שתי נקודות נוספות ברביע הראשון ששיעוריהן <b>שווים</b>:</p>
-<p><span class="blank" style="--blank-width:9ch"></span> &nbsp;&nbsp; <span class="blank" style="--blank-width:9ch"></span></p>
 <ul class="tasks compact">
+<li><span class="blank" style="--blank-width:9ch"></span> &nbsp;&nbsp; <span class="blank" style="--blank-width:9ch"></span></li>
 <li>גם בנקודה <span class="math-ltr" dir="ltr">(0,0)</span> ערך ה־<span class="math-ltr" dir="ltr">x</span> ושיעור ה־<span class="math-ltr" dir="ltr">y</span> שווים, ושניהם <span class="blank" data-missing="number" style="--blank-width:3ch"></span>.</li>
 </ul>
 </section>
 <section class="q-card span-2">
 <h3>מתיאור לזוג סדור</h3>
 <p>נקודה ממוקמת מימין לציר <span class="math-ltr" dir="ltr">y</span> במרחק 6 יחידות ומעל ציר <span class="math-ltr" dir="ltr">x</span> במרחק 3 יחידות.</p>
-<p>שיעוריה: <span class="blank" style="--blank-width:10ch"></span></p>
+<ul class="tasks compact">
+<li>שיעוריה: <span class="blank" style="--blank-width:10ch"></span></li>
+</ul>
 </section>
 </div>
 `,

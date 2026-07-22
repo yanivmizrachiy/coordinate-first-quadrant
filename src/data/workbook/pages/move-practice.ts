@@ -40,7 +40,9 @@ export const MOVE_PRACTICE: WorkbookPageContent = sheet({
 <div aria-label="הזזה מ-A ל-B ול-C" class="coordinate-grid grid-xs" data-arrows='[{"from": [2, 2], "to": [6, 2], "label": "4 ימינה"}, {"from": [6, 2], "to": [6, 5], "label": "3 למעלה"}]' data-points='[{"x": 2, "y": 2, "label": "A", "dx": 10, "dy": -10}, {"x": 6, "y": 2, "label": "B", "dx": 10, "dy": -10}, {"x": 6, "y": 5, "label": "C", "dx": 10, "dy": -10}]' data-polygons="[]" data-segments="[]" role="img">
 </div>
 <p>נקודה <span class="math-ltr" dir="ltr">A(2,2)</span> הוזזה 4 יחידות ימינה אל <span class="math-ltr" dir="ltr">B</span>, ואז 3 יחידות למעלה אל <span class="math-ltr" dir="ltr">C</span>.</p>
-<p>כתבו כזוג סדור: <span class="math-ltr" dir="ltr">B</span> = <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp; <span class="math-ltr" dir="ltr">C</span> = <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
+<ul class="tasks compact">
+<li>כתבו כזוג סדור: <span class="math-ltr" dir="ltr">B</span> = <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp; <span class="math-ltr" dir="ltr">C</span> = <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+</ul>
 </section>
 <section class="q-card span-2">
 <h3>מגלים את ההזזה</h3>

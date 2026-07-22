@@ -18,13 +18,15 @@ export const RIGHT_ANGLE_INTRO: WorkbookPageContent = sheet({
 </div>
 </div>
 <section class="q-card">
-<h3>א. דוגמה: הקטע AB מקביל לציר x והקטע BC מקביל לציר y.</h3>
+<h3>א. השלימו לפי הסרטוט.</h3>
 <div class="cols-2">
 <div aria-label="זווית ישרה בנקודה B בין קטע אופקי לקטע אנכי" class="coordinate-grid grid-md" data-arrows="[]" data-labelboxes='[{"text": "זווית ישרה", "at": [4.2, 3.6], "to": [6, 2]}]' data-points='[{"x": 2, "y": 2, "label": "A"}, {"x": 6, "y": 2, "label": "B"}, {"x": 6, "y": 5, "label": "C"}]' data-polygons="[]" data-segments='[{"from": [2, 2], "to": [6, 2], "type": "shape"}, {"from": [6, 2], "to": [6, 5], "type": "shape"}, {"from": [5.5, 2], "to": [5.5, 2.5], "type": "guide"}, {"from": [5.5, 2.5], "to": [6, 2.5], "type": "guide"}]' role="img">
 </div>
 <div>
-<p>הקטע AB מקביל לציר <span class="blank" style="--blank-width:4ch"></span>.</p>
-<p>הקטע BC מקביל לציר <span class="blank" style="--blank-width:4ch"></span>.</p>
+<ul class="tasks compact">
+<li>הקטע <span class="math-ltr" dir="ltr">AB</span> מקביל לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>, כי בשתי נקודותיו שיעור ה־<span class="math-ltr" dir="ltr">y</span> זהה.</li>
+<li>בשתי נקודותיו של הקטע <span class="math-ltr" dir="ltr">BC</span> יש ערך <span class="math-ltr" dir="ltr">x</span> זהה, ולכן הוא מקביל לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>.</li>
+</ul>
 <p class="axis-answer-box">הזווית הישרה ממוקמת בנקודה <span class="blank" style="--blank-width:4ch"></span></p>
 </div>
 </div>
@@ -33,7 +35,9 @@ export const RIGHT_ANGLE_INTRO: WorkbookPageContent = sheet({
 <h3>ב. נועה מסמנת קטע מ־(1,3) עד (5,3) וקטע מ־(5,3) עד (5,6). איזו זווית נוצרת בנקודה (5,3)?</h3>
 <div class="choice-row"><span class="choice">זווית ישרה</span><span class="choice">אין זווית ישרה</span>
 </div>
-<p>הקטע הראשון מקביל לציר <span class="blank" style="--blank-width:4ch"></span>; הקטע השני מקביל לציר <span class="blank" style="--blank-width:4ch"></span>.</p>
+<ul class="tasks compact">
+<li>הקטע הראשון מקביל לציר <span class="blank" style="--blank-width:4ch"></span>; הקטע השני מקביל לציר <span class="blank" style="--blank-width:4ch"></span>.</li>
+</ul>
 </section>
 <section class="q-card">
 <h3>ג. השלימו על שני הקטעים.</h3>

@@ -17,8 +17,10 @@ export const RIGHT_ANGLE_BUILD: WorkbookPageContent = sheet({
 </div>
 <section class="q-card">
 <h3>א. לפי המסלול שלמעלה.</h3>
-<p>בפינה (4,0) הכיוון משתנה מ־<span class="blank" style="--blank-width:5ch"></span> ל־<span class="blank" style="--blank-width:5ch"></span>.</p>
-<p>לכן ב־(4,0) נוצרת זווית <span class="blank" style="--blank-width:5ch"></span>.</p>
+<ul class="tasks compact">
+<li>בפינה (4,0) הכיוון משתנה מ־<span class="blank" style="--blank-width:5ch"></span> ל־<span class="blank" style="--blank-width:5ch"></span>.</li>
+<li>לכן ב־(4,0) נוצרת זווית <span class="blank" style="--blank-width:5ch"></span>.</li>
+</ul>
 </section>
 <section class="q-card">
 <h3>ב. אורי בונה מלבן ABCD. בכמה מקודקודי המלבן יש זווית ישרה?</h3>
@@ -27,15 +29,19 @@ export const RIGHT_ANGLE_BUILD: WorkbookPageContent = sheet({
 </div>
 <div>
 <p class="axis-answer-box">מספר הזוויות הישרות: <span class="blank" style="--blank-width:4ch"></span></p>
-<p>הצלעות AB ו־DC מקבילות לציר <span class="blank" style="--blank-width:4ch"></span>.</p>
-<p>הצלעות AD ו־BC מקבילות לציר <span class="blank" style="--blank-width:4ch"></span>.</p>
+<ul class="tasks compact">
+<li>הצלעות <span class="math-ltr" dir="ltr">AB</span> ו־<span class="math-ltr" dir="ltr">DC</span> מקבילות לציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span>.</li>
+<li>הצלעות <span class="blank" data-missing="letter" style="--blank-width:8ch"></span> ו־<span class="math-ltr" dir="ltr">BC</span> מקבילות לציר <span class="math-ltr" dir="ltr">y</span>, ולכן הן מאונכות ל־<span class="math-ltr" dir="ltr">AB</span>.</li>
+</ul>
 </div>
 </div>
 </section>
 <section class="q-card span-2">
 <h3>ג. חשבו את היקף ושטח המלבן ABCD מסעיף ב.</h3>
-<p>האורך <span class="math-ltr" dir="ltr">AB</span>: <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'. &nbsp; הרוחב <span class="math-ltr" dir="ltr">BC</span>: <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'.</p>
-<p>היקף המלבן: <span class="blank" style="--blank-width:4ch"></span> יח'. &nbsp; שטח המלבן: <span class="blank" style="--blank-width:4ch"></span> יח"ר.</p>
+<ul class="tasks compact">
+<li>האורך <span class="math-ltr" dir="ltr">AB</span>: <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'. &nbsp; הרוחב <span class="math-ltr" dir="ltr">BC</span>: <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'.</li>
+<li>היקף המלבן: <span class="blank" style="--blank-width:4ch"></span> יח'. &nbsp; שטח המלבן: <span class="blank" style="--blank-width:4ch"></span> יח"ר.</li>
+</ul>
 <div class="calc-box"><b>דרך החישוב:</b>
 <div class="answer-line">
 </div>

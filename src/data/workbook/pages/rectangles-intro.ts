@@ -12,10 +12,12 @@ export const RECTANGLES_INTRO: WorkbookPageContent = sheet({
 <div>
 <section class="q-card">
 <h3>א. לפי הגרף.</h3>
-<p>קודקודים עם אותו x: <span class="blank" style="--blank-width:10ch"></span></p>
-<p>קודקודים עם אותו y: <span class="blank" style="--blank-width:10ch"></span></p>
-<p>צלעות מקבילות ל־x: <span class="blank" style="--blank-width:8ch"></span></p>
-<p>צלעות מקבילות ל־y: <span class="blank" style="--blank-width:8ch"></span></p>
+<ul class="tasks compact">
+<li>לקודקודים <span class="blank" data-missing="letter" style="--blank-width:10ch"></span> יש ערך <span class="math-ltr" dir="ltr">x</span> זהה, ולכן הקטע שביניהם מקביל לציר <span class="math-ltr" dir="ltr">y</span>.</li>
+<li>הקודקודים <span class="math-ltr" dir="ltr">A</span> ו־<span class="math-ltr" dir="ltr">B</span> חולקים שיעור <span class="math-ltr" dir="ltr">y</span> זהה, והוא <span class="blank" data-missing="number" style="--blank-width:3ch"></span>.</li>
+<li>הצלעות המקבילות לציר <span class="math-ltr" dir="ltr">x</span> הן <span class="blank" data-missing="letter" style="--blank-width:8ch"></span>.</li>
+<li>הצלעות <span class="blank" data-missing="letter" style="--blank-width:8ch"></span> מקבילות לציר <span class="math-ltr" dir="ltr">y</span>.</li>
+</ul>
 </section>
 <section class="q-card">
 <h3>ב. אורכי הצלעות — תרגיל חיסור.</h3>
@@ -31,32 +33,37 @@ ${calcBox({ perimeter: true, area: true })}
 <h3>ג. הזיזו את המלבן 1 ימינה ו־2 למעלה.</h3>
 <div class="cols-2">
 <div>
-<p>A′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> B′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<p>C′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> D′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
+<ul class="tasks compact">
+<li>הנקודה A′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> B′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>הנקודה C′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> D′=<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+</ul>
 </div>
 <div>
-<p>מה השתנה? <span class="blank" style="--blank-width:12ch"></span></p>
-<p>מה נשאר זהה? <span class="blank" style="--blank-width:12ch"></span></p>
-<p>אורכים / היקף / שטח: <span class="blank" style="--blank-width:12ch"></span> יח'</p>
+<ul class="tasks compact">
+<li>מה השתנה? <span class="blank" style="--blank-width:12ch"></span></li>
+<li>מה נשאר זהה? <span class="blank" style="--blank-width:12ch"></span></li>
+<li>אורכים / היקף / שטח: <span class="blank" style="--blank-width:12ch"></span> יח'</li>
+</ul>
 </div>
 </div>
 </section>
 <div class="cols-2">
 <section class="q-card">
-<h3>ד. קודקוד חסר: P(2,2), Q(7,2), R(7,5). מצאו S והסבירו.</h3>
+<h3>ד. משלימים את הקודקוד החסר.</h3>
+<p>נתונים <span class="math-ltr" dir="ltr">P(2,2)</span>, <span class="math-ltr" dir="ltr">Q(7,2)</span> ו־<span class="math-ltr" dir="ltr">R(7,5)</span>.</p>
 <div aria-label="מערכת צירים ברביע הראשון" class="coordinate-grid grid-sm" data-arrows="[]" data-labelboxes="[]" data-points='[{"x": 2, "y": 2, "label": "P"}, {"x": 7, "y": 2, "label": "Q"}, {"x": 7, "y": 5, "label": "R"}]' data-polygons="[]" data-segments='[{"from": [2, 2], "to": [7, 2]}, {"from": [7, 2], "to": [7, 5]}]' role="img">
 </div>
 <p class="axis-answer-box">הקודקוד החסר: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
 ${calcBox({ perimeter: true, area: true })}
 </section>
 <section class="q-card">
-<h3>ה. עבור A(2,2), B(7,2), C(7,5) - הקיפו את הקודקוד הרביעי והסבירו.</h3>
+<h3>ה. הקיפו את הקודקוד הרביעי.</h3>
+<p>נתונים <span class="math-ltr" dir="ltr">A(2,2)</span>, <span class="math-ltr" dir="ltr">B(7,2)</span> ו־<span class="math-ltr" dir="ltr">C(7,5)</span>.</p>
 <div class="choice-row"><span class="choice"><span class="math-ltr" dir="ltr">(2,5)</span></span><span class="choice"><span class="math-ltr" dir="ltr">(5,2)</span></span><span class="choice"><span class="math-ltr" dir="ltr">(5,7)</span></span>
 </div>
-<div class="answer-line">
-</div>
-<div class="answer-line">
-</div>
+<ul class="tasks compact">
+<li>ההסבר: <span class="blank" data-missing="relation" style="--blank-width:24ch"></span>.</li>
+</ul>
 </section>
 </div>
 `,

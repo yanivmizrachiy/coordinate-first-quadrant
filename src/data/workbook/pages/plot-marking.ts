@@ -24,9 +24,11 @@ export const PLOT_A: WorkbookPageContent = sheet({
 <div aria-label="מערכת צירים לסימון הנקודות F G H" class="coordinate-grid grid-md" data-arrows="[]" data-labelboxes="[]" data-points="[]" data-polygons="[]" data-segments="[]" role="img">
 </div>
 <div>
-<p>נקודה <span class="math-ltr" dir="ltr">F</span>: שיעור <span class="math-ltr" dir="ltr">x =</span> 4, שיעור <span class="math-ltr" dir="ltr">y =</span> 2 &nbsp;←&nbsp; <span class="pair math-ltr" dir="ltr">F(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<p>נקודה <span class="math-ltr" dir="ltr">G</span>: שיעור <span class="math-ltr" dir="ltr">x =</span> 1, שיעור <span class="math-ltr" dir="ltr">y =</span> 5 &nbsp;←&nbsp; <span class="pair math-ltr" dir="ltr">G(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<p>נקודה <span class="math-ltr" dir="ltr">H</span>: שיעור <span class="math-ltr" dir="ltr">x =</span> 8, שיעור <span class="math-ltr" dir="ltr">y =</span> 3 &nbsp;←&nbsp; <span class="pair math-ltr" dir="ltr">H(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
+<ul class="tasks compact">
+<li>נקודה <span class="math-ltr" dir="ltr">F</span>: שיעור <span class="math-ltr" dir="ltr">x =</span> 4, שיעור <span class="math-ltr" dir="ltr">y =</span> 2 &nbsp;←&nbsp; <span class="pair math-ltr" dir="ltr">F(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>נקודה <span class="math-ltr" dir="ltr">G</span>: שיעור <span class="math-ltr" dir="ltr">x =</span> 1, שיעור <span class="math-ltr" dir="ltr">y =</span> 5 &nbsp;←&nbsp; <span class="pair math-ltr" dir="ltr">G(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>נקודה <span class="math-ltr" dir="ltr">H</span>: שיעור <span class="math-ltr" dir="ltr">x =</span> 8, שיעור <span class="math-ltr" dir="ltr">y =</span> 3 &nbsp;←&nbsp; <span class="pair math-ltr" dir="ltr">H(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+</ul>
 </div>
 </div>
 </section>
