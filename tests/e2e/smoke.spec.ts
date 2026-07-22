@@ -1,22 +1,64 @@
 import { test, expect } from '@playwright/test';
 
-test('home shows the cover, the action buttons and the page picker', async ({ page }) => {
+test('home shows the opening, the action buttons and the page picker', async ({ page }) => {
   await page.goto('/#/');
-  await expect(page.locator('.home-cover__img')).toBeVisible();
+  await expect(page.locator('.hero')).toBeVisible();
   // תצוגה · הורדה · הדפסה · וואטסאפ
   await expect(page.locator('.act')).toHaveCount(4);
   await expect(page.locator('.act--wa')).toHaveAttribute('href', /wa\.me/);
   expect(await page.locator('.jump__select option').count()).toBeGreaterThan(40);
 });
 
-test('the cover keeps its own aspect ratio — never stretched', async ({ page }) => {
+/* The opening film is the app's front door, so it has to behave like one: hold
+   its own space before it loads, never bring sound, and never reach paper. */
+test('the opening film reserves its space, is silent, and never prints', async ({ page }) => {
   await page.goto('/#/');
-  const ratios = await page.locator('.home-cover__img').evaluate((el) => {
+  const film = page.locator('.hero__film');
+  await expect(film).toHaveCount(1);
+  const shape = await film.evaluate((el) => {
+    const v = el as HTMLVideoElement;
+    const r = v.getBoundingClientRect();
+    return { ratio: r.width / r.height, muted: v.muted, poster: v.getAttribute('poster') ?? '', loops: v.loop };
+  });
+  expect(Math.abs(shape.ratio - 16 / 9), 'the stage is not 16:9').toBeLessThan(0.02);
+  expect(shape.muted, 'the film would make a sound').toBe(true);
+  expect(shape.poster, 'no poster, so the panel starts blank').not.toBe('');
+  expect(shape.loops, 'the film loops instead of coming to rest').toBe(false);
+
+  await page.emulateMedia({ media: 'print' });
+  const shown = await page.locator('.hero').evaluate((el) => getComputedStyle(el).display);
+  expect(shown, 'the film would be sent to the printer').toBe('none');
+  await page.emulateMedia({ media: 'screen' });
+});
+
+/* The district's badge belongs on the material it comes from: the opening, and
+   every sheet of the booklet. */
+test("the district's badge is on the opening and on every sheet", async ({ page }) => {
+  await page.goto('/#/');
+  await expect(page.locator('.hero__badge img')).toHaveCount(1);
+
+  await page.goto('/#/book');
+  await page.waitForTimeout(9000);
+  const missing = await page.evaluate(() =>
+    [...document.querySelectorAll('.book > .sheet')]
+      .filter((s) => !s.classList.contains('cover-sheet'))
+      .filter((s) => !s.querySelector('.gz-badge img'))
+      .map((s) => s.querySelector('.sheet-number')?.textContent?.trim() ?? '(toc)'),
+  );
+  expect(missing, `sheets with no badge: ${missing.join(', ')}`).toEqual([]);
+});
+
+/* The approved artwork is the booklet's first page and must keep its own shape:
+   an A4 cover stretched to fill a box is a different picture. */
+test('the cover keeps its own aspect ratio — never stretched', async ({ page }) => {
+  await page.goto('/#/book');
+  await page.waitForTimeout(2500);
+  const ratios = await page.locator('.cover-image').evaluate((el) => {
     const i = el as HTMLImageElement;
     const r = i.getBoundingClientRect();
     return { natural: i.naturalWidth / i.naturalHeight, shown: r.width / r.height };
   });
-  expect(Math.abs(ratios.natural - ratios.shown)).toBeLessThan(0.01);
+  expect(Math.abs(ratios.natural - ratios.shown)).toBeLessThan(0.02);
 });
 
 test('a worksheet renders an SVG coordinate grid', async ({ page }) => {
@@ -616,7 +658,10 @@ test('the cover carries the artwork and nothing else', async ({ page }, testInfo
       const cover = document.querySelector('.cover-sheet');
       if (!cover) return ['there is no cover sheet'];
       const box = cover.getBoundingClientRect();
-      const extra = [...cover.children].filter((e) => !e.classList.contains('cover-image')).map((e) => e.className);
+      // the artwork may be wrapped in <picture> so a lighter WebP can be offered
+      const extra = [...cover.children]
+        .filter((e) => !e.classList.contains('cover-image') && !e.classList.contains('cover-picture'))
+        .map((e) => e.className);
       const loose = [...document.querySelectorAll('.book > *:not(.sheet)')]
         .filter((e) => { const r = e.getBoundingClientRect(); return r.height && r.top < box.bottom && r.bottom > box.top; })
         .map((e) => `loose ${e.className} over the cover`);

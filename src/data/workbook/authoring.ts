@@ -5,10 +5,24 @@
    double quotes, no escaping, one element per line. */
 import type { WorkbookPageContent } from './types';
 
-const FOOTER =
+/* The district's badge stands with the credit lines it belongs to. It is built
+   here, in the one place the footer is built, so every sheet carries it and no
+   page can be authored without it. `BASE_URL` keeps the Pages subpath working. */
+const BADGE_SRC = `${import.meta.env.BASE_URL}assets/brand/district-logo.webp`;
+const BADGE_PNG = `${import.meta.env.BASE_URL}assets/brand/district-logo.png`;
+
+/** THE canonical footer. Exported, because a second copy of it is how eight
+    game sheets ended up without the district's badge. */
+export const FOOTER =
   '<footer class="gz-footer">' +
+  '<picture class="gz-badge">' +
+  `<source srcset="${BADGE_SRC}" type="image/webp">` +
+  `<img src="${BADGE_PNG}" alt="יחד מתמטיקה — מחוז ירושלים והעיר ירושלים" width="34" height="34" decoding="async" loading="lazy">` +
+  '</picture>' +
+  '<div class="gz-lines">' +
   '<div class="f1">יניב רז - מדריך מחוזי חט"ב בעיר ירושלים</div>' +
   '<div class="f2">הדרכה במחוז ירושלים והעיר ירושלים - מנח"י, בהובלת איילת קריספין</div>' +
+  '</div>' +
   '</footer>';
 
 /* Page numbers come from the position in BOOK (see index.ts), so a page is
@@ -56,6 +70,9 @@ export function sheet(spec: SheetSpec): WorkbookPageContent {
 export function posterSheet(spec: { file: string; title: string; alt: string }): WorkbookPageContent {
   const n = ++placeholder;
   const src = `${import.meta.env.BASE_URL}assets/games/${spec.file}`;
+  /* The same artwork at a tenth of the weight; the PNG stays behind it so a
+     browser that cannot take WebP still prints the poster. */
+  const webp = src.replace(/\.png$/, '.webp');
   return {
     n,
     id: `page-${n}`,
@@ -65,7 +82,10 @@ export function posterSheet(spec: { file: string; title: string; alt: string }):
     html:
       `<section aria-label="${spec.alt}" class="sheet poster-sheet" id="page-${n}">` +
       `<main class="sheet-content">` +
+      '<picture>' +
+      `<source srcset="${webp}" type="image/webp">` +
       `<img alt="${spec.alt}" class="poster" src="${src}" decoding="async">` +
+      '</picture>' +
       `<div aria-label="עמוד ${n}" class="sheet-number poster-number">${n}</div>` +
       `</main>` +
       FOOTER +

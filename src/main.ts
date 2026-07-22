@@ -45,6 +45,12 @@ function resolve(match: RouteMatch): View {
 
 let cleanup: (() => void) | undefined;
 
+/* A view swap is instant — the whole booklet is already in memory — so the only
+   thing to soften is the swap itself. The outgoing screen is not waited for:
+   the new one is built at once and fades up over a single frame, which reads as
+   quick rather than as an animation to sit through. */
+const CROSSFADE = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 150;
+
 function render(match: RouteMatch): void {
   if (cleanup) { cleanup(); cleanup = undefined; }
   clear(outlet);
@@ -52,6 +58,11 @@ function render(match: RouteMatch): void {
   const ctx: ViewContext = { outlet, setTitle };
   const result = resolve(match)(ctx);
   cleanup = typeof result === 'function' ? result : undefined;
+
+  if (CROSSFADE) {
+    outlet.classList.remove('app-main--in');
+    requestAnimationFrame(() => outlet.classList.add('app-main--in'));
+  }
 }
 
 // Black and white is a property of the SHEETS, not of the application, and the
