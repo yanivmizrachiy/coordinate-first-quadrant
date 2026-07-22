@@ -533,6 +533,61 @@ test('a Hebrew word never comes out in the wrong order', async ({ page }, testIn
   expect(faults, faults.join(' | ')).toHaveLength(0);
 });
 
+/* An empty box on a drawing is where the learner writes. A number sitting inside
+   it makes the task unanswerable — the „8” on page 1 was pushed sideways into
+   the box for „ציר x” by the pass that keeps the axis NAME off the arrowhead. */
+test('no number is left sitting inside a box the learner writes in', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
+  await page.goto('/#/book');
+  await page.waitForTimeout(9000);
+  const faults = await page.evaluate(() => {
+    const out: string[] = [];
+    for (const g of document.querySelectorAll('.sheet .coordinate-grid')) {
+      const svg = g.querySelector('svg');
+      if (!svg) continue;
+      const n = g.closest('.sheet')?.querySelector('.sheet-number')?.textContent?.trim() ?? '?';
+      /* An EMPTY box only — the blue-stroked one the learner writes in. A label
+         box is grey-stroked and holds its own text, which belongs inside it. */
+      const boxes = [...svg.querySelectorAll('rect')]
+        .filter((r) => (r.getAttribute('stroke') ?? '').toLowerCase() === '#1d4ed8')
+        .map((r) => r.getBoundingClientRect());
+      for (const t of svg.querySelectorAll('text')) {
+        const b = t.getBoundingClientRect();
+        if (!b.width) continue;
+        if (boxes.some((x) => b.left < x.right - 1 && x.left < b.right - 1 && b.top < x.bottom - 1 && x.top < b.bottom - 1)) {
+          out.push(`page ${n}: „${t.textContent!.trim()}” sits inside an answer box`);
+        }
+      }
+    }
+    return [...new Set(out)];
+  });
+  expect(faults, faults.join(' | ')).toHaveLength(0);
+});
+
+/* The cover is the approved artwork and nothing else. A footer that escaped its
+   own sheet was painted across the second page once; this says out loud that
+   nothing may be laid over the cover, on screen or on paper. */
+test('the cover carries the artwork and nothing else', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
+  await page.goto('/#/book');
+  await page.waitForTimeout(9000);
+  for (const media of ['screen', 'print'] as const) {
+    await page.emulateMedia({ media });
+    const over = await page.evaluate(() => {
+      const cover = document.querySelector('.cover-sheet');
+      if (!cover) return ['there is no cover sheet'];
+      const box = cover.getBoundingClientRect();
+      const extra = [...cover.children].filter((e) => !e.classList.contains('cover-image')).map((e) => e.className);
+      const loose = [...document.querySelectorAll('.book > *:not(.sheet)')]
+        .filter((e) => { const r = e.getBoundingClientRect(); return r.height && r.top < box.bottom && r.bottom > box.top; })
+        .map((e) => `loose ${e.className} over the cover`);
+      return [...extra, ...loose];
+    });
+    expect(over, `${media}: ${over.join(', ')}`).toHaveLength(0);
+  }
+  await page.emulateMedia({ media: 'screen' });
+});
+
 /* Two letter O on one corner — the grid's own origin plus a point the sheet
    marked at (0,0) — reads as a mistake in the drawing. */
 test('the origin is never labelled twice', async ({ page }, testInfo) => {
