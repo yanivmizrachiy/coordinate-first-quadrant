@@ -175,8 +175,6 @@ body.is-opening .app-main { padding: 0; }
 .startbtn:hover .startbtn__label { filter: brightness(1.08); }
 .startbtn:active { transform: scale(.965); transition-duration: .07s; }
 .startbtn:focus-visible { outline: 3px solid #ffd166; outline-offset: 4px; }
-/* The old sweep is gone: the ring is the animation now. */
-.startbtn__glow { display: none; }
 
 /* ---- sound and replay ---- */
 .soundbtn, .replaybtn {
@@ -388,89 +386,11 @@ body.is-opening .app-main { padding: 0; }
   outline: 3px solid var(--brand); outline-offset: 2px;
 }
 
-.home-grid {
-  display: grid; gap: 12px; margin: 4px auto 28px;
-  grid-template-columns: 1fr;
-  width: min(94vw, 560px);
-}
-@media (min-width: 760px) { .home-grid { width: min(94vw, 860px); grid-template-columns: 1fr 1fr; } }
-
-.entry-card {
-  display: flex; align-items: center; gap: 15px; text-align: right;
-  width: 100%; min-height: 78px; padding: 15px 18px;
-  border-radius: 18px; color: var(--ink);
-  background: linear-gradient(145deg, #ffffff 0%, #f6f9ff 100%);
-  border: 1px solid #dbe5f5;
-  box-shadow: 0 3px 10px #1f2a4414, 0 10px 26px #1f2a440f;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
-}
-.entry-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px #1f2a441f, 0 16px 38px #1f2a4417; border-color: #bcd0f0; }
-.entry-card:active { transform: translateY(0) scale(.985); box-shadow: 0 2px 8px #1f2a4418; }
-.entry-card:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
-
-.entry-card__icon {
-  flex: 0 0 auto; width: 54px; height: 54px; border-radius: 15px;
-  display: grid; place-items: center; font-size: 27px;
-  background: linear-gradient(145deg, #e8f0ff, #d6e4ff);
-  color: var(--brand);
-  box-shadow: inset 0 1px 0 #ffffffcc;
-}
-.entry-card--accent .entry-card__icon { background: linear-gradient(145deg, #e6f8f4, #d2f0e9); color: var(--accent); }
-
-.entry-card__body { min-width: 0; flex: 1 1 auto; }
-.entry-card__title { font-size: 19px; font-weight: 900; color: var(--brand-ink); line-height: 1.2; }
-.entry-card__desc { color: var(--muted); font-size: 14px; margin-top: 3px; line-height: 1.35; }
-
-/* Chevron points left — the "forward" direction in an RTL layout. */
-.entry-card__go {
-  flex: 0 0 auto; font-size: 30px; font-weight: 700; line-height: 1;
-  color: #9db2d6; padding-inline-start: 4px;
-  transition: transform .14s ease, color .14s ease;
-}
-.entry-card:hover .entry-card__go { color: var(--brand); transform: translateX(-3px); }
-
-/* ---------- Section headers ---------- */
-.section-title { display: flex; align-items: baseline; gap: 10px; margin: 26px 4px 12px; }
-.section-title h2 { font-size: 22px; font-weight: 900; color: var(--brand-ink); }
-.section-title span { color: var(--muted); font-size: 14px; }
-
-/* ---------- Workbook table of contents ---------- */
-.toc-topic { margin-bottom: 22px; }
-.toc-topic__head { display: flex; align-items: center; gap: 10px; margin: 0 4px 10px; }
-.toc-topic__badge { width: 30px; height: 30px; border-radius: 9px; background: var(--brand); color: #fff; display: grid; place-items: center; font-weight: 900; font-size: 14px; }
-.toc-topic__title { font-size: 18px; font-weight: 800; color: var(--ink); }
-.toc-grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-.page-card {
-  display: flex; flex-direction: column; gap: 4px; text-align: right;
-  padding: 12px 14px; border-radius: var(--r-md);
-  background: var(--surface); border: 1px solid var(--hairline);
-  box-shadow: var(--shadow-1); color: var(--ink); min-height: 78px;
-  transition: transform .1s, box-shadow .1s, border-color .1s;
-}
-.page-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-2); border-color: #c3d4f5; }
-.page-card__num { font-size: 12px; font-weight: 800; color: var(--brand); }
-.page-card__title { font-size: 15px; font-weight: 800; line-height: 1.25; }
-.page-card__sub { font-size: 12.5px; color: var(--muted); }
-
-/* ---------- Games hub ---------- */
-.games-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
-@media (min-width: 560px) { .games-grid { grid-template-columns: 1fr 1fr; } }
-@media (min-width: 900px) { .games-grid { grid-template-columns: 1fr 1fr 1fr; } }
-.game-card {
-  display: flex; flex-direction: column; text-align: right;
-  padding: 18px; border-radius: var(--r-lg);
-  background: var(--surface); border: 1px solid var(--hairline);
-  box-shadow: var(--shadow-1); color: var(--ink);
-  transition: transform .12s, box-shadow .12s, border-color .12s;
-}
-.game-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-2); border-color: #c3d4f5; }
-.game-card__icon { font-size: 34px; }
-.game-card__title { font-size: 19px; font-weight: 900; color: var(--brand-ink); margin-top: 8px; }
-.game-card__desc { color: var(--muted); font-size: 14px; margin-top: 4px; flex: 1 1 auto; }
-.game-card__skill { margin-top: 12px; font-size: 12.5px; font-weight: 800; color: var(--accent); }
+/* The home grid, the entry cards, the chapter-list page and the games hub all
+   used to live here. Every one of those screens was removed — the app opens on
+   the film, the contents page is the booklet's second sheet, and the games are
+   numbered worksheet pages. Their styles went with them: 86 lines, fourteen
+   class names, none of which appears anywhere in src/, tests/ or index.html. */
 
 /* ---------- Game shell ---------- */
 .game { max-width: 760px; margin: 0 auto; }

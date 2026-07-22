@@ -129,7 +129,6 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
   };
 
   const start = elem('button', { class: 'startbtn', type: 'button' },
-    elem('span', { class: 'startbtn__glow', 'aria-hidden': 'true' }),
     elem('span', { class: 'startbtn__label', text: 'התחל' }),
   );
   start.addEventListener('click', () => navigate('#/menu'));

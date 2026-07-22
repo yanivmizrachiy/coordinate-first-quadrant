@@ -795,6 +795,22 @@ describe('the rules page still matches the code', () => {
     expect(missing, `the rules page names tests that do not exist: ${missing.join(' | ')}`).toEqual([]);
   });
 
+  /* The README drifted to „51 עמודים" while the booklet was at 74 — three times
+     over, in the one document a newcomer reads first. Any page total stated in
+     either document must be the real one. */
+  it('the README states the page count there actually is', () => {
+    const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
+    const totals = [...readme.matchAll(/(\d+) עמודים/g)].map((m) => Number(m[1]));
+    expect(totals.length, 'the README states no page count at all').toBeGreaterThan(0);
+    for (const n of totals) {
+      expect(n, 'the README states a stale page count').toBe(WORKBOOK.length);
+    }
+    // and it must not describe screens that no longer exist
+    for (const gone of ['home-cover', 'workbookToc', 'אזור שעשועונים']) {
+      expect(readme, `the README still describes ${gone}`).not.toContain(gone);
+    }
+  });
+
   it('the page count it states is the page count there is', () => {
     const stated = /\*\*החוברת = (\d+) עמודים ממוספרים\*\*/.exec(rules)?.[1];
     expect(Number(stated), 'the rules page states a stale page count').toBe(WORKBOOK.length);

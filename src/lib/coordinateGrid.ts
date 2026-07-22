@@ -376,8 +376,6 @@ export function hydrateGrids(root: ParentNode = document): void {
   requestAnimationFrame(() => normaliseGridText(root));
 }
 
-export const gridGeometry = { W, H, L, R, T, B, XM, YM, X, Y };
-
 /* An SVG scales everything inside it, type included. A drawing that renders at
    half its viewBox turns 13px axis numbers into 7px ones — the body text beside
    them stays 13px, and the drawing reads as blurred and cramped. Yaniv reported

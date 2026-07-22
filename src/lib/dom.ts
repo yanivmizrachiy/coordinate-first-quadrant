@@ -38,9 +38,3 @@ export function fromHTML(htmlString: string): DocumentFragment {
 export const clear = (node: Node): void => {
   while (node.firstChild) node.removeChild(node.firstChild);
 };
-
-export const qs = <T extends Element = Element>(sel: string, root: ParentNode = document): T | null =>
-  root.querySelector<T>(sel);
-
-export const qsa = <T extends Element = Element>(sel: string, root: ParentNode = document): T[] =>
-  Array.from(root.querySelectorAll<T>(sel));
