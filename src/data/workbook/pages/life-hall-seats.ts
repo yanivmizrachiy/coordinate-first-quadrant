@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, blank, ltr, pair, grid } from '../authoring';
+import { sheet, blank, ltr, pair, grid, calcBox } from '../authoring';
 
 /* Real life, grade 7: a ticket says „שורה 4, מקום 7”, and sitting in the wrong
    one is the ordered pair failing in public. The block of seats a group buys is
@@ -39,7 +39,7 @@ ${grid({
 <li>ברוחב הגוש: ה־${ltr('x')} הימני פחות ה־${ltr('x')} השמאלי, ${ltr('6 − 3 =')} ${blank(3, 'number')}, ולכן יש בו ${blank(3, 'number')} מקומות בכל שורה.</li>
 <li>בגובה הגוש: ה־${ltr('y')} הגבוה פחות ה־${ltr('y')} ה${blank(5, 'property')}, ${ltr('4 − 2 =')} ${blank(3, 'number')}, ולכן יש בו 3 שורות.</li>
 </ul>
-<div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
+${calcBox({ perimeter: true, area: true })}
 </section>
 <section class="q-card">
 <h3>ג. בחרו לעצמכם מקום, ואז השלימו את החסר.</h3>

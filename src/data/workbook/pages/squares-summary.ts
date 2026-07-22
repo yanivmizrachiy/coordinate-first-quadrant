@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet } from '../authoring';
+import { sheet, calcBox } from '../authoring';
 
 /* Split off ריבועים ומלבנים: five calculations, each with room for the working
    and its answer, do not fit on one sheet — and Yaniv's rule is that the
@@ -17,7 +17,7 @@ export const SQUARES_SUMMARY: WorkbookPageContent = sheet({
 <li>הצלעות המקבילות לציר <span class="math-ltr" dir="ltr">x</span> הן <span class="blank" data-missing="letter" style="--blank-width:8ch"></span>.</li>
 <li>ה<b>אורך</b> הוא הצלע <span class="blank" data-missing="letter" style="--blank-width:4ch"></span>, וה<b>רוחב</b> הוא הצלע <span class="math-ltr" dir="ltr">AB</span>.</li>
 </ul>
-<div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
+${calcBox({ perimeter: true, area: true })}
 <ul class="tasks compact">
 <li>אם מזיזים את המלבן יחידה אחת ימינה, הקודקוד <span class="math-ltr" dir="ltr">A</span> מגיע אל <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>, וההיקף והשטח <span class="blank" data-missing="relation" style="--blank-width:5ch"></span>.</li>
 </ul>

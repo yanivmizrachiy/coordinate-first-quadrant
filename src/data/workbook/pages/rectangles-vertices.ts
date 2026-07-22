@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, grid } from '../authoring';
+import { sheet, grid, calcBox } from '../authoring';
 
 /* Split off מלבנים במערכת הצירים: once each side got its own exercise line and
    the drawing grew to a size a learner can read, the sheet ran 170px over. */
@@ -26,7 +26,7 @@ ${grid({ size: 'sm', label: 'מערכת צירים ריקה לסימון המל�
 <div aria-label="מערכת צירים ריקה לבניית מלבן" class="coordinate-grid grid-sm" data-arrows="[]" data-points="[]" data-polygons="[]" data-segments="[]" role="img">
 </div>
 <p class="axis-answer-box">כתבו את ארבעת הקודקודים כזוגות סדורים: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></p>
-<div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
+${calcBox({ perimeter: true, area: true })}
 </section>
 </div>
 </div>

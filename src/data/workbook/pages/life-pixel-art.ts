@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, blank, ltr, pair, grid } from '../authoring';
+import { sheet, blank, ltr, pair, grid, calcBox } from '../authoring';
 
 /* Real life, grade 7: every image on every screen they own is a grid of pixels,
    and a pixel is nothing but an ordered pair with a colour. Colouring squares
@@ -29,7 +29,7 @@ ${grid({ size: 'md', label: 'מערכת צירים ריקה לצביעת פיק�
 <ul class="tasks compact">
 <li>הרוחב: ${ltr('7 − 1 =')} ${blank(3, 'number')} יח', והגובה: ה־${ltr('y')} הגבוה פחות ה־${ltr('y')} ה${blank(5, 'property')}.</li>
 </ul>
-<div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
+${calcBox({ perimeter: true, area: true })}
 </section>
 <section class="q-card">
 <h3>ג. תכננו פיקסל משלכם, ואז השלימו את החסר.</h3>
