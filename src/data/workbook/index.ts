@@ -134,11 +134,11 @@ const BOOK: { id: string; title: string; slots: Slot[] }[] = [
     HERO_INTRO,
     COORDS_INTRO, READ_PAIRS, READ_FROM_DRAWING, COORDS_PRACTICE, ORDERED_PAIR_DRILL, ORDERED_PAIR_INTRO, ORDERED_PAIR_PRACTICE,
   ] },
-  { id: 'plot', title: 'סימון נקודות', slots: [
-    PLOT_A, PLOT_B, PLOT_PRACTICE, POSTER_SECRET_PICTURE, PLOT_SHAPE, game('hidden-drawing'),
-  ] },
   { id: 'read', title: 'קריאת נקודות ונקודות על הצירים', slots: [
     READ_INTRO, READ_PRACTICE, ON_AXES_INTRO, ON_AXES_PRACTICE, POSTER_SECRET_WORD, GRAPH_REAL, game('secret-word'),
+  ] },
+  { id: 'plot', title: 'סימון נקודות', slots: [
+    PLOT_A, PLOT_B, PLOT_PRACTICE, POSTER_SECRET_PICTURE, PLOT_SHAPE, game('hidden-drawing'),
   ] },
   { id: 'language', title: 'שפה של מיקום', slots: [
     POSITION_LANGUAGE_INTRO, POSITION_LANGUAGE_PRACTICE, game('color-decode'),

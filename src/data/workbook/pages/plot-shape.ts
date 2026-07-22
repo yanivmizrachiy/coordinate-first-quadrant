@@ -32,6 +32,7 @@ export const PLOT_SHAPE: WorkbookPageContent = sheet({
 </div>
 <section class="q-card">
 <h3>ד. חשבו את ההיקף והשטח.</h3>
+<p>אורך כל צלע הוא <b>הפרש</b>: בצלע המקבילה לציר <span class="math-ltr" dir="ltr">x</span> הימני פחות השמאלי, ובצלע המקבילה לציר <span class="math-ltr" dir="ltr">y</span> הגבוה פחות הנמוך.</p>
 <p>אורך <span class="math-ltr" dir="ltr">AB</span>: <span class="blank" style="--blank-width:4ch"></span> יח'. &nbsp; אורך <span class="math-ltr" dir="ltr">BC</span>: <span class="blank" style="--blank-width:4ch"></span> יח'.</p>
 <div class="calc-box"><b>דרך החישוב:</b><div class="answer-line"></div><div class="answer-line"></div><div class="calc-final"><span>ההיקף: <span class="math-ltr" dir="ltr">P</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח'</span><span>השטח: <span class="math-ltr" dir="ltr">S</span> = <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יח"ר</span></div></div>
 </section>

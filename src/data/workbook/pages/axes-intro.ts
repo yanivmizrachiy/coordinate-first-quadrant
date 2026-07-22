@@ -26,7 +26,6 @@ ${grid({
   // „ראשית הצירים” is two words — two stacked boxes at the origin.
   axisNames: false,
   originName: true,
-  originAngle: true,
   label: 'מערכת צירים ובה תיבות ריקות לשם ציר x, לשם ציר y ולשתי מילות „ראשית הצירים”, ותיבות למספרים החסרים שעל הצירים',
   xlabels: [0, 1, '', 3, '', 5, '', '', 8],
   ylabels: [0, '', 2, '', '', 5, ''],
