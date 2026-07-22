@@ -3,6 +3,7 @@ import { navigate } from '../router';
 import { TOTAL_PAGES } from '../data/workbook';
 import { APPROVED_COVER } from '../data/cover';
 import type { ViewContext } from './context';
+import { goToContents } from './tocSheet';
 
 /** Public address of this build — used for the WhatsApp share text. */
 const shareUrl = (): string => location.href.split('#')[0]!;
@@ -84,7 +85,7 @@ export function home({ outlet, setTitle }: ViewContext): void {
     elem('button', { class: 'jump__toc', type: 'button', text: '☰ תוכן העניינים' }),
   );
   (nav.querySelector('.jump__first') as HTMLElement).addEventListener('click', () => navigate('#/workbook/1'));
-  (nav.querySelector('.jump__toc') as HTMLElement).addEventListener('click', () => navigate('#/workbook'));
+  (nav.querySelector('.jump__toc') as HTMLElement).addEventListener('click', goToContents);
   c.append(nav);
 
   outlet.append(c);

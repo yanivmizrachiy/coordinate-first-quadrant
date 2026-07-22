@@ -25,6 +25,19 @@ test('a worksheet renders an SVG coordinate grid', async ({ page }) => {
   expect(await page.locator('.coordinate-grid svg').count()).toBeGreaterThan(0);
 });
 
+/* There is ONE contents page — the coloured sheet inside the booklet. The old
+   chapter-list page at #/workbook was deleted for good („תמחק לצמיתות… דרשתי
+   רק את התוכן עניינים הצבעוני"), so that address, and the legacy #/games,
+   land on the booklet instead of resurrecting a second index. */
+test('the deleted chapter-list page cannot come back', async ({ page }) => {
+  for (const dead of ['#/workbook', '#/games']) {
+    await page.goto('/' + dead);
+    await page.waitForTimeout(1200);
+    await expect(page.locator('.toc-sheet'), `${dead} does not reach the contents`).toHaveCount(1);
+    await expect(page.locator('.book > .sheet').first()).toHaveClass(/cover-sheet/);
+  }
+});
+
 test('no horizontal overflow on any core view', async ({ page }) => {
   for (const hash of ['#/', '#/workbook', '#/workbook/1', '#/workbook/12', '#/book']) {
     await page.goto('/' + hash);
@@ -71,6 +84,32 @@ test('the contents sheet lists every chapter and each button reaches its page', 
   }
   const ranged = await buttons.evaluateAll((els) => els.filter((e) => /[–-]/.test(e.textContent ?? '')).length);
   expect(ranged, 'a chip still shows a page range instead of the starting page').toBe(0);
+
+  /* In RTL the leading edge is the RIGHT one, so the page number in its disc is
+     the first thing read and the chapter name follows it. */
+  const wrongWayRound = await buttons.evaluateAll((els) =>
+    els.filter((e) => {
+      const no = e.querySelector('.toc-btn__no')?.getBoundingClientRect();
+      const name = e.querySelector('.toc-btn__name')?.getBoundingClientRect();
+      return !no || !name || no.left < name.left;
+    }).length,
+  );
+  expect(wrongWayRound, 'the page number is not on the side it is read from first').toBe(0);
+
+  /* The number is inked in its chapter's colour on a white disc, and three of
+     the ten colours are pale enough to vanish there. Measured, not eyeballed. */
+  const faint = await buttons.evaluateAll((els) =>
+    els.map((e) => {
+      const no = e.querySelector('.toc-btn__no');
+      if (!no) return null;
+      const rgb = getComputedStyle(no).color.match(/\d+/g)!.map(Number);
+      const lin = (c: number) => { const v = c / 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
+      const L = 0.2126 * lin(rgb[0]!) + 0.7152 * lin(rgb[1]!) + 0.0722 * lin(rgb[2]!);
+      const ratio = 1.05 / (L + 0.05);                 // against the white disc
+      return ratio < 4.5 ? `${no.textContent} at ${ratio.toFixed(1)}:1` : null;
+    }).filter(Boolean),
+  );
+  expect(faint, `a page number is too faint to read: ${faint.join(', ')}`).toEqual([]);
 
   await buttons.first().click();
   await expect(page).toHaveURL(/#\/workbook\/1$/);
