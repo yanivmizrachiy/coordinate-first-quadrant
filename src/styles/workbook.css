@@ -415,7 +415,7 @@
 .toc-buttons { display: grid; grid-template-columns: 1fr; gap: 7px; margin-top: 2px; }
 .toc-btn {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  padding: 17px 16px; border: 0; border-radius: 12px; cursor: pointer;
+  padding: 21px 16px; border: 0; border-radius: 12px; cursor: pointer;
   background: var(--toc-colour); color: #fff; font: inherit; text-align: start;
   box-shadow: 0 2px 6px #1f2a4426;
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
