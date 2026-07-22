@@ -491,6 +491,23 @@ describe('a calculation gets units and room to work', () => {
     }
   });
 
+  /* USER_MEMORY §5. A shared coordinate is stated as a whole sentence naming
+     both points — „לשתי הנקודות A ו־B יש שיעור y זהה” — never as a bare
+     „השיעור הזהה: ____”, and the sheet then asks the learner to PRODUCE two
+     such points, which is the half that cannot be copied. */
+  it('a shared coordinate is a sentence, and the learner is asked to make one', () => {
+    for (const p of WORKBOOK) {
+      const text = p.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+      expect(text, `page ${p.n}: „השיעור הזהה:” — say „לשתי הנקודות … יש שיעור … זהה”`)
+        .not.toContain('השיעור הזהה');
+    }
+    const asked = WORKBOOK.filter((p) =>
+      /כתבו שתי נקודות משלכם שיש להן שיעור/.test(p.html.replace(/<[^>]+>/g, ' ')),
+    );
+    expect(asked.length, 'nowhere asks the learner to produce two points with a shared coordinate')
+      .toBeGreaterThan(0);
+  });
+
   it('a sheet that asks for a calculation leaves space to do it', () => {
     for (const p of WORKBOOK) {
       if (!computes(p.html)) continue;
