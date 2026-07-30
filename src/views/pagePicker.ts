@@ -165,6 +165,7 @@ export function openPagePicker(initial?: readonly number[]): void {
   function close(): void {
     lazy.disconnect();
     document.removeEventListener('keydown', onKey);
+    window.removeEventListener('hashchange', close);
     document.body.style.overflow = prevOverflow;
     overlay.remove();
     opener?.focus?.();
@@ -172,6 +173,9 @@ export function openPagePicker(initial?: readonly number[]): void {
   closeBtn.addEventListener('click', close);
   overlay.addEventListener('mousedown', (e) => { if (e.target === overlay) close(); });
   document.addEventListener('keydown', onKey);
+  /* The modal lives on <body>, outside the router's outlet — a route change
+     would swap the screen underneath and leave it standing. */
+  window.addEventListener('hashchange', close);
   document.body.style.overflow = 'hidden';
 
   overlay.append(modal);

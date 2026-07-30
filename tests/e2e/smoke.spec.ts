@@ -458,6 +458,18 @@ test('the page picker prints only the pages chosen', async ({ page }) => {
   expect(kept).toEqual(['3', '4', '5']);
 });
 
+test('the picker never outlives its screen', async ({ page }) => {
+  /* The modal hangs off <body>, outside the router's outlet. Without a
+     hashchange guard it stayed standing over the NEXT screen — found by a
+     screenshot, not by a test, which is exactly why this test exists. */
+  await page.goto('/#/print');
+  await page.waitForTimeout(2000);
+  await page.locator('.wsbar .btn', { hasText: 'דפים נבחרים' }).click();
+  await expect(page.locator('.pick__modal')).toBeVisible();
+  await page.evaluate(() => { location.hash = '#/workbook/5'; });
+  await expect(page.locator('.pick__modal')).toHaveCount(0);
+});
+
 test('a picker preset chooses a whole chapter', async ({ page }) => {
   await page.goto('/#/print');
   await page.waitForTimeout(2000);
