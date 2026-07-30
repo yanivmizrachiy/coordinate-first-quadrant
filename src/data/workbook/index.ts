@@ -20,6 +20,7 @@ import {
   GRAPH_REAL,
   SHAPE_MOVE,
   READ_PAIRS,
+  SECRET_WORD_PRINT,
   READ_FROM_DRAWING,
   ORDERED_PAIR_DRILL,
   PARALLEL_PERPENDICULAR,
@@ -147,7 +148,7 @@ const BOOK: { id: string; title: string; slots: Slot[] }[] = [
     COORDS_INTRO, READ_PAIRS, READ_FROM_DRAWING, COORDS_PRACTICE, ORDERED_PAIR_DRILL, ORDERED_PAIR_INTRO, ORDERED_PAIR_PRACTICE,
   ] },
   { id: 'read', title: 'קריאת נקודות ונקודות על הצירים', slots: [
-    READ_INTRO, READ_PRACTICE, ON_AXES_INTRO, ON_AXES_PRACTICE, POSTER_SECRET_WORD, GRAPH_REAL, game('secret-word'),
+    READ_INTRO, READ_PRACTICE, ON_AXES_INTRO, ON_AXES_PRACTICE, POSTER_SECRET_WORD, GRAPH_REAL, SECRET_WORD_PRINT,
   ] },
   { id: 'plot', title: 'סימון נקודות', slots: [
     PLOT_A, PLOT_B, PLOT_PRACTICE, POSTER_SECRET_PICTURE, PLOT_SHAPE, game('hidden-drawing'),

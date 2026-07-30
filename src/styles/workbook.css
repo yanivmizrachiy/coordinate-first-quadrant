@@ -146,9 +146,13 @@
   border: 1px solid #d9e0ea; border-radius: 8px; background: #fff;
   display: block;
 }
-/* Ten legacy sheets still write `grid-large` by hand instead of going through
+/* Eight legacy sheets still write `grid-large` by hand instead of going through
    grid()'s size ladder. It is live — do not remove it. */
-.grid-large { max-width: 580px; height: 276px; }
+/* A fixed height here is what painted one drawing over another: with
+   aspect-ratio, height 276px DERIVES width 407px, and 580px of max-width let
+   it sail out of a half-width card onto its neighbour (עמודים 13, 21, 45 —
+   „עמוד על עמוד"). The card is the boundary; the drawing never crosses it. */
+.grid-large { max-width: min(580px, 100%); height: auto; }
 .coordinate-grid svg { display: block; width: 100%; height: 100%; font-family: var(--font-math); }
 
 .cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; align-items: start; }

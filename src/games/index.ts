@@ -1,7 +1,6 @@
 /* Game registry — the single list the hub and router read from.
    To add a game: build it as a GameDefinition and append it here. */
 import type { GameDefinition } from './types';
-import { secretWordGame } from './secretWord';
 import { encryptedRouteGame } from './encryptedRoute';
 import { sameAxisGame } from './sameAxis';
 import { suspectPointGame } from './suspectPoint';
@@ -11,7 +10,6 @@ import { coordinateMazeGame } from './coordinateMaze';
 import { colorDecodeGame } from './colorDecode';
 
 export const GAMES: GameDefinition[] = [
-  secretWordGame,
   hiddenDrawingGame,
   encryptedRouteGame,
   suspectPointGame,

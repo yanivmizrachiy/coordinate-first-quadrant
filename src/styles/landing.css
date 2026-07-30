@@ -72,9 +72,15 @@
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.14), 0 5px 16px rgba(0, 0, 0, 0.5), 0 0 22px rgba(194, 162, 78, 0.4);
   transition: transform var(--dur-move) var(--ease), box-shadow var(--dur-move) var(--ease);
 }
+/* הלוגו מסתובב סביב עצמו — כמו באתרים האחרים של יניב: „אמרנו הנפשות
+   אחידות". סיבוב איטי ורציף; מי שביקש פחות תנועה מקבל אותו עומד. */
+@keyframes ls-badge-turn { to { transform: rotate(360deg); } }
+.ls-topbar__logo { animation: ls-badge-turn 14s linear infinite; }
 .ls-topbar__logo:hover {
-  transform: scale(1.04) rotate(-2deg);
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2), 0 6px 20px rgba(0, 0, 0, 0.55), 0 0 28px rgba(194, 162, 78, 0.6);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ls-topbar__logo { animation: none; }
 }
 .ls-topbar__lead { font-family: var(--ls-font-head); font-size: var(--ls-step-2); font-weight: 700; color: var(--ls-gold); line-height: 1.25; max-width: 60rem; }
 .ls-topbar__year { font-family: var(--ls-font-head); font-size: calc(var(--ls-step--1) * 2); font-weight: 600; color: #fff; line-height: 1.2; }

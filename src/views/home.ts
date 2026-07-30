@@ -13,9 +13,12 @@ import type { ViewContext } from './context';
    quadrant, its film, and the 74-page booklet.
    =========================================================================== */
 
-/** The curriculum film Yaniv published — embedded with the misparim facade. */
+/** The curriculum film Yaniv published — embedded with the misparim facade.
+    The heading over it is his, word for word: the big line names the unit and
+    its author, the small line the curriculum update. */
 const YOUTUBE_ID = 'h5wegXI2ZGw';
-const YOUTUBE_TITLE = 'רביע ראשון עדכון ת"ל כיתה ז\' תשפ"ז';
+const YOUTUBE_TITLE = 'מערכת צירים ברביע הראשון — איילת קריספין';
+const YOUTUBE_SUB = 'עדכון ת"ל — כיתה ז\' תשפ"ז';
 
 const badgeImg = (cls: string): HTMLElement => {
   const pic = elem('picture', {});
@@ -52,11 +55,11 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
   };
   const toAnchor = (id: string) => () =>
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  const toTop = (): void => window.scrollTo({ top: 0, behavior: 'smooth' });
+  /* „בכותרת למעלה תמחק את המילים סרט הפתיחה — זה מיותר": the film is the top
+     of the page itself, so it needs no link pointing at it. */
   root.append(
     elem('nav', { class: 'ls-nav', 'aria-label': 'ניווט בעמוד' },
       elem('div', { class: 'ls-container ls-nav__inner' },
-        navLink('סרט הפתיחה', toTop),
         navLink('סרטון ההסבר', toAnchor('video')),
         navLink('חוברת העבודה', toAnchor('booklet')),
         navLink('כל הפעולות', () => navigate('#/menu')),
@@ -109,9 +112,10 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
             elem('span', { class: 'ls-axesbadge ls-axesbadge--x', text: 'x' }),
             elem('span', { class: 'ls-axesbadge ls-axesbadge--y', text: 'y' }),
           ),
-          elem('span', { class: 'ls-hero__eyebrow', text: 'מתמטיקה · יחידת לימוד' }),
+          /* No sales copy here — Yaniv: „כל המילים… זה דמו, תמחק הכל מייד".
+             The name of the unit, the way in, and nothing else. */
+          elem('span', { class: 'ls-hero__eyebrow', text: 'מתמטיקה · כיתה ז\'' }),
           elem('h1', { class: 'ls-hero__title', text: 'מערכת צירים ברביע הראשון' }),
-          elem('p', { class: 'ls-hero__desc', text: `יחידת לימוד מתוקשבת לכיתה ז' הכוללת חוברת עבודה של ${TOTAL_PAGES} עמודים, שעשועונים משולבים, סרט פתיחה וסרטון הסבר.` }),
           elem('div', { class: 'ls-hero__actions' }, ctaBook, ctaVideo),
         ),
         elem('div', { class: 'ls-hero__film ls-reveal' },
@@ -165,7 +169,7 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
   root.append(
     elem('section', { class: 'ls-section ls-section--soft', id: 'video' },
       elem('div', { class: 'ls-container' },
-        sectionHead('סרטון', YOUTUBE_TITLE),
+        sectionHead('סרטון', YOUTUBE_TITLE, YOUTUBE_SUB),
         videoBox,
         elem('div', { class: 'ls-viewer__bar' },
           elem('a', {
@@ -214,7 +218,7 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
       elem('div', { class: 'ls-container ls-footer__inner' },
         elem('span', { class: 'ls-footer__brand' },
           badgeImg('ls-footer__logo'),
-          elem('span', { text: 'מערכת צירים ברביע הראשון — יחידת לימוד מתוקשבת' }),
+          elem('span', { text: 'מערכת צירים ברביע הראשון · מחוז ירושלים — מנח"י' }),
         ),
         elem('span', { text: 'האתר מנוהל ע"י יניב רז · מדריך מחוזי חט"ב בעיר ירושלים' }),
       ),

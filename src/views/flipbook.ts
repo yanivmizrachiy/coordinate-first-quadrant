@@ -646,8 +646,10 @@ export function flipbook({ outlet, setTitle }: ViewContext): (() => void) | void
     const h = viewport.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
     if (!(w > 0) || !(h > 0)) return;
     const canDouble = w >= 680 && w / h >= 0.95;
-    // רצועת-צד לחצי הדפדוף — הספר גדל עד קצה השטח בלי שהחצים יחפפו את הדפים.
-    const ARROW_GUTTER = w >= 1100 ? 128 : 92;
+    /* רצועת-צד לחצי הדפדוף — הספר גדל עד קצה השטח בלי שהחצים יחפפו את הדפים.
+       צומצמה (128→100, 92→72) לבקשת יניב: „שיפרסו במסך באופן יותר נוח וברור"
+       — כל פיקסל שנחסך כאן הולך ישירות לגודל העמודים. */
+    const ARROW_GUTTER = w >= 1100 ? 100 : 72;
     const nextPw = canDouble
       ? Math.min((w - ARROW_GUTTER) / 2, (h - 6) * (210 / 297))
       : Math.min(w - 8, (h - 4) * (210 / 297));

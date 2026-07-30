@@ -79,3 +79,63 @@ describe('workbook integrity (USER_MEMORY.md mandatory checks)', () => {
     }
   });
 });
+
+/* עמוד 64 לימד את הלקח: נקודה אדומה צוירה מעל קצה המערכת, כי הנתונים הגיעו
+   ל-7 והציר נגמר ב-6. מעכשיו כל קואורדינטה בכל שרטוט נבדקת מול הטווח של
+   המערכת שהיא יושבת בה — נקודה מחוץ למערכת עוצרת את הבנייה, לא את המורה. */
+describe('every drawn coordinate stays inside its own system', () => {
+  const gridRe = /<div class="coordinate-grid[^>]*>/g;
+  const attr = (tag: string, name: string): string | null => {
+    const m = tag.match(new RegExp(`data-${name}='([^']*)'`)) ?? tag.match(new RegExp(`data-${name}="([^"]*)"`));
+    return m ? m[1]! : null;
+  };
+  it('points, segments, polygons and arrows are all in range', () => {
+    const out: string[] = [];
+    for (const page of WORKBOOK) {
+      for (const tag of page.html.match(gridRe) ?? []) {
+        const xmax = Number(attr(tag, 'xmax') ?? 8);
+        const ymax = Number(attr(tag, 'ymax') ?? 6);
+        const coords: Array<[number, number]> = [];
+        for (const name of ['points', 'segments', 'polygons', 'arrows', 'labelboxes']) {
+          const raw = attr(tag, name);
+          if (!raw) continue;
+          const parsed = JSON.parse(raw.replace(/&#39;/g, "'").replace(/&quot;/g, '"')) as unknown[];
+          const walk = (v: unknown): void => {
+            if (Array.isArray(v)) {
+              if (v.length === 2 && v.every((n) => typeof n === 'number')) coords.push(v as [number, number]);
+              else v.forEach(walk);
+            } else if (v && typeof v === 'object') {
+              const o = v as Record<string, unknown>;
+              if (typeof o['x'] === 'number' && typeof o['y'] === 'number') coords.push([o['x'], o['y']]);
+              for (const k of ['from', 'to', 'at', 'points']) if (k in o) walk(o[k]);
+            }
+          };
+          walk(parsed);
+        }
+        for (const [x, y] of coords) {
+          if (x < 0 || x > xmax || y < 0 || y > ymax) {
+            out.push(`page ${page.n}: (${x},${y}) outside 0..${xmax} × 0..${ymax}`);
+          }
+        }
+      }
+    }
+    expect(out, out.join(' | ')).toEqual([]);
+  });
+});
+
+/* „המשימות שלנו רק להדפסה ולא מתוקשבות" (יניב, 30.07.2026, על עמוד 18):
+   דף עבודה ממוספר חייב להיות פתיר על נייר. שדות קלט וכפתורים בתוך ה-HTML של
+   עמוד הם משימה שאי אפשר לענות עליה בעיפרון. (שעשועון חי נטען בזמן ריצה אל
+   game-host — זה נשאר; אבל ה-HTML המודפס של עמוד לעולם לא מכיל קלט.) */
+describe('a numbered page is answerable on paper', () => {
+  it('no page HTML carries typing widgets — ticks are pencil-friendly, keyboards are not', () => {
+    /* נכון/לא-נכון radios ARE the printed tick boxes Yaniv's rules demand —
+       a pencil answers them. A text field, a textarea or a button is a task
+       only a computer can answer, and that is what page 18 got wrong. */
+    const typing = /<textarea|<button|contenteditable|<input(?![^>]*type="(?:checkbox|radio)")/;
+    const bad = WORKBOOK
+      .filter((p) => typing.test(p.html))
+      .map((p) => `page ${p.n} (${p.title})`);
+    expect(bad, bad.join(', ')).toEqual([]);
+  });
+});

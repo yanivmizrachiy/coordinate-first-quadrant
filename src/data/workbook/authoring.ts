@@ -218,6 +218,10 @@ export interface GridOptions {
   originAngle?: boolean;
   axisX?: string;
   axisY?: string;
+  /** Axis ranges — 8×6 unless the page's data needs more room. A point must
+      never be plotted outside the system it stands in. */
+  xmax?: number;
+  ymax?: number;
   /** Numbers along an axis; `''` leaves an empty box for the learner to fill.
       Index = the value on that axis, so ['', 1, 2] blanks the first tick. */
   xlabels?: (number | string)[];
@@ -249,6 +253,8 @@ export function grid(o: GridOptions = {}): string {
     (o.originAngle === false ? ' data-originangle="false"' : '') +
     (o.axisX ? ` data-axisx="${o.axisX}"` : '') +
     (o.axisY ? ` data-axisy="${o.axisY}"` : '') +
+    (o.xmax ? ` data-xmax="${o.xmax}"` : '') +
+    (o.ymax ? ` data-ymax="${o.ymax}"` : '') +
     (o.xlabels ? ` data-xlabels='${attrJson(o.xlabels)}'` : '') +
     (o.ylabels ? ` data-ylabels='${attrJson(o.ylabels)}'` : '') +
     '></div>'

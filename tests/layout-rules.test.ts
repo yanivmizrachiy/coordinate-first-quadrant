@@ -871,3 +871,18 @@ describe('the app moves in one vocabulary', () => {
       .toMatch(/prefers-reduced-motion[\s\S]*--dur-slow:\s*0s/);
   });
 });
+
+/* „כל המילים… זה דמו — תמחק הכל מייד" (30.07.2026). מילות שיווק שנמחקו פעם
+   אסור שיחזרו דרך העתק-הדבק עתידי: טקסט באתר אומר עובדה או פותח פעולה. */
+describe('no demo copy anywhere', () => {
+  it('the deleted marketing phrases stay deleted', () => {
+    const files = readdirSync('src/views').filter((f) => f.endsWith('.ts'));
+    const banned = ['יחידת לימוד מתוקשבת', 'הכוללת חוברת עבודה של'];
+    const hits: string[] = [];
+    for (const f of files) {
+      const text = readFileSync(`src/views/${f}`, 'utf8');
+      for (const phrase of banned) if (text.includes(phrase)) hits.push(`${f}: ${phrase}`);
+    }
+    expect(hits, hits.join(' | ')).toEqual([]);
+  });
+});

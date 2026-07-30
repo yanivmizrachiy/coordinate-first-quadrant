@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { isFirstQuadrant, type Point } from '../src/lib/coordinateMath';
 import { normalizeAnswer, isStepCorrect, solutionOf } from '../src/games/revealEngine';
-import { secretWordPuzzle } from '../src/games/secretWord';
 import { coordinateSafePuzzle } from '../src/games/coordinateSafe';
 import { encryptedRoutePuzzle } from '../src/games/encryptedRoute';
 import { sameAxisRounds, correctSelection, sameAxisSolution } from '../src/games/sameAxis';
@@ -19,21 +18,14 @@ describe('reveal engine', () => {
     expect(normalizeAnswer('point', '5 3')).toBe('5,3');
   });
   it('accepts a correct step and rejects a wrong one', () => {
-    const step = secretWordPuzzle.steps[0]!;
-    expect(isStepCorrect(step, '(3,2)')).toBe(true);
-    expect(isStepCorrect(step, '2,3')).toBe(false);
+    const step = coordinateSafePuzzle.steps[0]!;
+    expect(isStepCorrect(step, step.answer)).toBe(true);
+    expect(isStepCorrect(step, '0,0')).toBe(false);
   });
 });
 
-describe('מילת הסוד', () => {
-  it('spells נקודה and every answer is a first-quadrant point', () => {
-    expect(solutionOf(secretWordPuzzle)).toBe('נקודה');
-    for (const step of secretWordPuzzle.steps) {
-      const [x, y] = step.answer.split(',').map(Number);
-      expect(inRange({ x: x!, y: y! })).toBe(true);
-    }
-  });
-});
+/* מילת הסוד הפך לדף המודפס „מילת הצופן" (secret-word-print) — יניב:
+   „המשימות שלנו רק להדפסה ולא מתוקשבות". הדף נבדק עם שאר העמודים. */
 
 describe('כספת הקואורדינטות', () => {
   it('assembles the code 4705', () => {

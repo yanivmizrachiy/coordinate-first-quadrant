@@ -89,8 +89,22 @@ export function fitSheet(sheet: HTMLElement): void {
 
   /* Spare height goes to the drawings first — a bigger system is worth more to
      a learner than a wider margin. Grown a step at a time and re-measured,
-     because two systems sharing a row grow the page once, not twice. */
+     because two systems sharing a row grow the page once, not twice.
+
+     Two stops guard every step, because CSS cannot be trusted to (a class once
+     carried max-width:580px and a grown drawing sailed onto its neighbour):
+     - the drawing must stay INSIDE its parent's width — a page may never show
+       one drawing painted over another;
+     - the box must stay the DRAWING's shape. Once max-width binds, more height
+       is only empty bands above and below the drawing, not a bigger drawing. */
   const grids = isGame ? [] : [...content.querySelectorAll<HTMLElement>('.coordinate-grid')];
+  const RATIO = 560 / 380;
+  const wasted = (g: HTMLElement): boolean => {
+    const r = g.getBoundingClientRect();
+    const host = g.parentElement?.getBoundingClientRect();
+    if (host && r.width > host.width + 1) return true; // escapes the card
+    return r.height > 0 && r.width / r.height < RATIO - 0.02; // letterboxing
+  };
   const grown = new Map<HTMLElement, number>();
   for (let pass = 0; pass < 5 && grids.length; pass++) {
     if (room() < 110) break;
@@ -99,7 +113,13 @@ export function fitSheet(sheet: HTMLElement): void {
       const added = grown.get(g) ?? 0;
       if (added >= GRID_GROWTH) continue;
       const step = Math.min(26, GRID_GROWTH - added);
+      const before = g.style.height;
       g.style.height = `${Math.round(px(g.getBoundingClientRect().height) + step)}px`;
+      if (wasted(g)) {
+        g.style.height = before;
+        grown.set(g, GRID_GROWTH); // done growing this one
+        continue;
+      }
       grown.set(g, added + step);
       changed = true;
     }

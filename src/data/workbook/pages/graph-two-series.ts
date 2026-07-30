@@ -16,6 +16,9 @@ ${grid({
   size: 'lg',
   axisX: 'חודשים',
   axisY: 'פקקים (מאות)',
+  /* ז'2 reaches 700 caps in month 3 — the y axis must reach past 7, or the
+     point lands OUTSIDE the system (Yaniv: „הנקודה האדומה יצאה מהמערכת"). */
+  ymax: 8,
   label: 'שתי סדרות נקודות: כיתה ז1 מתחילה גבוה, כיתה ז2 עולה מהר יותר',
   points: [
     { x: 1, y: 4, label: '' }, { x: 2, y: 5, label: '' }, { x: 3, y: 6, label: '' },

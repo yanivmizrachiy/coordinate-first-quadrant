@@ -48,6 +48,9 @@ export interface GridSpec {
   labelboxes?: GridLabelBox[];
   xlabels?: (number | string)[];
   ylabels?: (number | string)[];
+  /** Axis ranges — 8×6 unless the page's data needs more room. */
+  xmax?: number;
+  ymax?: number;
   /** Set false to hide the "ציר x" / "ציר y" names (tasks that ask for them). */
   axisNames?: boolean;
   /** With axisNames:false — ask for the origin's NAME (two words, two boxes)
@@ -68,9 +71,19 @@ export interface GridSpec {
 /* R and T carry the axis NAMES, which are the largest type on the drawing and
    grow further when a small grid has its text put back to size. */
 const W = 560, H = 380, L = 56, R = 104, T = 70, B = 82;
-const XM = 8, YM = 6;
-const SX = (W - L - R) / XM;
-const SY = (H - T - B) / YM;
+/* The axis ranges are 8×6 unless the page asks otherwise (data-xmax/data-ymax).
+   A page whose DATA reaches 7 must say so — a point may never be plotted
+   outside the system it stands in (עמוד 64: „הנקודה יצאה מהמערכת").
+   Module-level and set per render: every drawing routine below reads X()/Y(),
+   and rendering is synchronous, so the range can never leak across grids. */
+let XM = 8, YM = 6;
+let SX = (W - L - R) / XM;
+let SY = (H - T - B) / YM;
+const setRange = (xm: number, ym: number): void => {
+  XM = xm; YM = ym;
+  SX = (W - L - R) / XM;
+  SY = (H - T - B) / YM;
+};
 const X = (x: number): number => L + x * SX;
 const Y = (y: number): number => H - B - y * SY;
 
@@ -107,6 +120,7 @@ function el(tag: string, attrs: Attrs = {}, text = ''): SVGElement {
 
 /** Render a coordinate grid from a typed spec. Returns a standalone <svg>. */
 export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
+  setRange(spec.xmax ?? 8, spec.ymax ?? 6);
   const id = 'cg-arrow-' + ++markerCounter;
   const svg = el('svg', {
     viewBox: `0 0 ${W} ${H}`,
@@ -151,8 +165,8 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
   // learner is asked to READ that number, so it must never be crowded by the
   // dot: the clashing number is pushed further into the margin and gets a white
   // halo. (Never move it to the other side — the numbers must stay in one line.)
-  const xl = spec.xlabels ?? [0, 1, 2, 3, 4, 5, 6, 7, 8];
-  const yl = spec.ylabels ?? [0, 1, 2, 3, 4, 5, 6];
+  const xl = spec.xlabels ?? Array.from({ length: XM + 1 }, (_, i) => i);
+  const yl = spec.ylabels ?? Array.from({ length: YM + 1 }, (_, i) => i);
   const pts = spec.points ?? [];
   const onXAxis = new Set(pts.filter((p) => p.y === 0).map((p) => p.x));
   const onYAxis = new Set(pts.filter((p) => p.x === 0).map((p) => p.y));
@@ -368,6 +382,8 @@ export function hydrateGrids(root: ParentNode = document): void {
     if (elm.dataset['originangle'] === 'false') spec.originAngle = false;
     if (elm.dataset['axisx']) spec.axisXName = elm.dataset['axisx'];
     if (elm.dataset['axisy']) spec.axisYName = elm.dataset['axisy'];
+    if (elm.dataset['xmax']) spec.xmax = Number(elm.dataset['xmax']);
+    if (elm.dataset['ymax']) spec.ymax = Number(elm.dataset['ymax']);
     elm.replaceChildren(renderCoordinateGrid(spec));
     elm.dataset['hydrated'] = '1';
   });

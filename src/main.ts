@@ -45,9 +45,15 @@ const setTitle = (t: string): void => {
   document.title = `${t} | מערכת צירים`;
 };
 
+/* Two builds from one repo — Yaniv keeps two addresses:
+   the OLD one (GitHub Pages) is the booklet and nothing else, as it always
+   was; the NEW one (Vercel) carries the full landing site. The booklet build
+   opens straight on the flipbook — no landing, no site design. */
+const BOOKLET_ONLY = import.meta.env['VITE_SITE'] === 'booklet';
+
 function resolve(match: RouteMatch): View {
   switch (match.name) {
-    case 'home': return home;
+    case 'home': return BOOKLET_ONLY ? flipbook : home;
     case 'menu': return menu;
     case 'page': return pageViewer(Number(match.params['n'] ?? '1'));
     case 'book': return flipbook;

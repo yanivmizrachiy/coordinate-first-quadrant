@@ -9,6 +9,15 @@ test('the landing carries the misparim structure: top bar, nav, hero, sections, 
   // the sticky nav and the hero naming the unit
   await expect(page.locator('.ls-nav')).toBeVisible();
   await expect(page.locator('.ls-hero__title')).toHaveText('מערכת צירים ברביע הראשון');
+  // Yaniv: the sales paragraph was demo copy — it must never come back
+  await expect(page.locator('.ls-hero__desc')).toHaveCount(0);
+  // the film IS the hero — inside the hero grid, not a section further down
+  await expect(page.locator('.ls-hero .ls-viewer video')).toHaveCount(1);
+  // „תמחק את המילים סרט הפתיחה" — the nav does not name the film
+  await expect(page.locator('.ls-nav__link', { hasText: 'סרט הפתיחה' })).toHaveCount(0);
+  // the badge turns on itself, like on Yaniv's other sites
+  const spin = await page.locator('.ls-topbar__logo').evaluate((el) => getComputedStyle(el).animationName);
+  expect(spin, 'the badge does not turn').toBe('ls-badge-turn');
   // one section per material, and the dark footer
   for (const id of ['video', 'opening', 'booklet']) {
     await expect(page.locator(`section#${id}`), `section #${id} is missing`).toHaveCount(1);
@@ -27,7 +36,8 @@ test('the landing carries the misparim structure: top bar, nav, hero, sections, 
 test('the curriculum film carries its title and loads on press', async ({ page }) => {
   await page.goto('/#/');
   await expect(page.locator('#video .ls-section__title'))
-    .toHaveText('רביע ראשון עדכון ת"ל כיתה ז\' תשפ"ז');
+    .toHaveText('מערכת צירים ברביע הראשון — איילת קריספין');
+  await expect(page.locator('#video .ls-section__sub')).toHaveText('עדכון ת"ל — כיתה ז\' תשפ"ז');
   // before the press: a facade, no iframe — nothing talks to YouTube yet
   await expect(page.locator('#video iframe')).toHaveCount(0);
   await expect(page.locator('.ls-facade')).toBeVisible();
@@ -830,4 +840,37 @@ test('the origin is never labelled twice', async ({ page }, testInfo) => {
       .filter(Boolean),
   );
   expect(doubled, doubled.join(', ')).toHaveLength(0);
+});
+
+/* עמודים 13, 21 ו-45 הראו את אותה תקלה: שרטוט שגדל מעבר לכרטיס שלו ונמרח על
+   השכן — „עמוד על עמוד". הבדיקה הזו עוברת על כל 74 העמודים: שרטוט לעולם לא
+   רחב מהכרטיס שהוא יושב בו, ושני שרטוטים לעולם לא נוגעים זה בזה. */
+test('no drawing escapes its card and no two drawings overlap', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
+  await page.goto('/#/print');
+  await page.waitForTimeout(9000);
+  const faults = await page.evaluate(() => {
+    const out: string[] = [];
+    for (const sheet of document.querySelectorAll('.book > .sheet')) {
+      const n = sheet.querySelector('.sheet-number')?.textContent?.trim() ?? '(cover)';
+      const grids = [...sheet.querySelectorAll<HTMLElement>('.coordinate-grid')];
+      for (const g of grids) {
+        const r = g.getBoundingClientRect();
+        const host = g.parentElement!.getBoundingClientRect();
+        if (r.width > host.width + 2 || r.left < host.left - 2 || r.right > host.right + 2) {
+          out.push(`page ${n}: drawing ${Math.round(r.width)}px wide in a ${Math.round(host.width)}px card`);
+        }
+      }
+      for (let i = 0; i < grids.length; i++) {
+        for (let j = i + 1; j < grids.length; j++) {
+          const a = grids[i]!.getBoundingClientRect();
+          const b = grids[j]!.getBoundingClientRect();
+          const overlap = a.left < b.right - 2 && b.left < a.right - 2 && a.top < b.bottom - 2 && b.top < a.bottom - 2;
+          if (overlap) out.push(`page ${n}: two drawings painted over each other`);
+        }
+      }
+    }
+    return [...new Set(out)];
+  });
+  expect(faults, faults.join(' | ')).toHaveLength(0);
 });

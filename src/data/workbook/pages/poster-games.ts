@@ -15,8 +15,8 @@ export const POSTER_SECRET_PICTURE: WorkbookPageContent = posterSheet({
 /** Read a marked point and identify it by a property. */
 export const POSTER_SECRET_WORD: WorkbookPageContent = posterSheet({
   file: 'secret-word-poster.png',
-  title: 'מילת הסוד',
-  alt: 'שעשועון מילת הסוד: מזהים אותיות לפי שיעורים ולפי תכונות, ומרכיבים את המילה',
+  title: 'מילת הצופן',
+  alt: 'שעשועון מילת הצופן: מזהים אותיות לפי שיעורים ולפי תכונות, ומרכיבים את המילה',
 });
 
 /** Movement along the grid, and recording where you passed. */
