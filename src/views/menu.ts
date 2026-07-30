@@ -2,6 +2,8 @@ import { elem } from '../lib/dom';
 import { navigate } from '../router';
 import { TOTAL_PAGES } from '../data/workbook';
 import { DISTRICT_BADGE } from '../data/cover';
+import { printPages } from '../lib/printPages';
+import { openPagePicker } from './pagePicker';
 import type { ViewContext } from './context';
 import { goToContents } from './tocSheet';
 
@@ -51,21 +53,10 @@ export function menu({ outlet, setTitle }: ViewContext): void {
     return b;
   };
 
-  /* Print needs the booklet laid out first, so it waits for the sheets to be
-     measured rather than for a guessed number of milliseconds. */
-  const openThenPrint = (): void => {
-    navigate('#/book');
-    const ready = (): void => {
-      if (document.querySelectorAll('.book > .sheet').length > 1) requestAnimationFrame(() => window.print());
-      else setTimeout(ready, 120);
-    };
-    setTimeout(ready, 200);
-  };
-
   actions.append(
-    act('act--view', '📖', 'תצוגה', 'קריאת החוברת', () => navigate('#/book')),
-    act('act--download', '⬇️', 'הורדה', 'שמירה כקובץ', openThenPrint),
-    act('act--print', '🖨️', 'הדפסה', 'הדפסה על נייר', openThenPrint),
+    act('act--view', '📖', 'תצוגה', 'החוברת הנפתחת', () => navigate('#/book')),
+    act('act--download', '⬇️', 'הורדה', 'שמירה כקובץ', () => printPages('all')),
+    act('act--print', '🖨️', 'הדפסה', 'כולה או דפים נבחרים', () => openPagePicker()),
   );
 
   const wa = elem('a', {

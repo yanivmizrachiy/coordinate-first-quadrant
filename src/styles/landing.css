@@ -111,7 +111,16 @@
     var(--ls-surface);
   border-bottom: 1px solid var(--ls-border);
 }
-.ls-hero__grid { display: grid; grid-template-columns: 1fr; gap: 44px; align-items: center; padding-block: 60px 64px; }
+/* שתי עמודות: המלל והדרך פנימה מימין, סרט הרכבת משמאל — הסרט הוא העמוד
+   הראשי של החוברת, לא סעיף בהמשך הדף. במסך צר הסרט עולה מעל המלל. */
+.ls-hero__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 44px; align-items: center; padding-block: 60px 64px; }
+.ls-hero__film { min-width: 0; }
+.ls-hero__film .ls-viewer { margin-top: 0; box-shadow: var(--ls-shadow-lg); }
+.ls-hero__filmcap { margin: 12px 4px 0; font-size: var(--ls-step--1); color: var(--ls-text-soft); }
+@media (max-width: 860px) {
+  .ls-hero__grid { grid-template-columns: 1fr; gap: 26px; }
+  .ls-hero__film { order: -1; }
+}
 .ls-hero__eyebrow { display: inline-flex; align-items: center; gap: 8px; color: var(--ls-teal); font-weight: 800; font-size: var(--ls-step--1); margin-bottom: 10px; }
 .ls-hero__title { font-size: var(--ls-step-4); font-weight: 800; line-height: 1.05; color: var(--ls-ink); }
 .ls-hero__desc { margin-top: 18px; font-size: var(--ls-step-1); color: var(--ls-text); max-width: 34rem; }

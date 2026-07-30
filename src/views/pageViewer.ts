@@ -2,7 +2,7 @@ import { elem, fromHTML } from '../lib/dom';
 import { navigate } from '../router';
 import { hydrateGrids } from '../lib/coordinateGrid';
 import { fitSheets } from '../lib/fitSheet';
-import { printBar } from './printBar';
+import { readerBar } from './wsbar';
 import { pageByNumber, TOTAL_PAGES, topicOfPage } from '../data/workbook';
 import { lastPage, sheetZoom } from '../lib/storage';
 import { gameById } from '../games';
@@ -40,12 +40,9 @@ export function pageViewer(n: number): (ctx: ViewContext) => (() => void) | void
       sheetWrap.append(elem('div', { class: 'empty-note', text: 'העמוד לא נמצא.' }));
     }
 
+    /* The bottom row keeps what the zaviyot bar does not carry: the page
+       select, the zoomer and full screen. The TOP bar is theirs, verbatim. */
     const nav = elem('div', { class: 'pagenav no-print' });
-    const prev = actionBtn('▶ הקודם', () => navigate(`#/workbook/${page - 1}`));
-    const next = actionBtn('הבא ◀', () => navigate(`#/workbook/${page + 1}`));
-    (prev as HTMLButtonElement).disabled = page <= 1;
-    (next as HTMLButtonElement).disabled = page >= TOTAL_PAGES;
-
     const select = elem('select', { 'aria-label': 'בחירת עמוד' }) as HTMLSelectElement;
     for (let i = 1; i <= TOTAL_PAGES; i++) {
       const opt = elem('option', { value: String(i), text: `עמוד ${i}` }) as HTMLOptionElement;
@@ -54,23 +51,15 @@ export function pageViewer(n: number): (ctx: ViewContext) => (() => void) | void
     }
     select.addEventListener('change', () => navigate(`#/workbook/${select.value}`));
 
-    nav.append(prev, elem('span', { class: 'pagenav__indicator', text: `${page} / ${TOTAL_PAGES}` }), select, next);
-
-    viewer.append(
-      printBar({
-        scope: 'page',
-        current: page,
-        root: () => sheetWrap,
-        // One row, not two: the page is what the reader came for.
-        lead: [
-          linkBtn('☰ תוכן העניינים', goToContents),
-          zoom,
-          iconOnly('⛶', 'מסך מלא', () => toggleFullscreen(sheetWrap)),
-        ],
-      }),
-      sheetWrap,
-      nav,
+    nav.append(
+      linkBtn('☰ תוכן העניינים', goToContents),
+      elem('span', { class: 'pagenav__indicator', text: `${page} / ${TOTAL_PAGES}` }),
+      select,
+      zoom,
+      iconOnly('⛶', 'מסך מלא', () => toggleFullscreen(sheetWrap)),
     );
+
+    viewer.append(readerBar(page), sheetWrap, nav);
     c.append(viewer);
     outlet.append(c);
     window.scrollTo({ top: 0 });
@@ -124,11 +113,6 @@ export function pageViewer(n: number): (ctx: ViewContext) => (() => void) | void
 
 function iconOnly(glyph: string, label: string, onClick: () => void): HTMLElement {
   const b = elem('button', { class: 'iconbtn', type: 'button', text: glyph, 'aria-label': label, title: label });
-  b.addEventListener('click', onClick);
-  return b;
-}
-function actionBtn(text: string, onClick: () => void): HTMLElement {
-  const b = elem('button', { class: 'iconbtn', type: 'button', text });
   b.addEventListener('click', onClick);
   return b;
 }

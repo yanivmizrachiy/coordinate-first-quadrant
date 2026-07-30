@@ -2,6 +2,7 @@ import { elem } from '../lib/dom';
 import { navigate } from '../router';
 import { TOTAL_PAGES } from '../data/workbook';
 import { APPROVED_COVER, OPENING_FILM, DISTRICT_BADGE } from '../data/cover';
+import { printPages } from '../lib/printPages';
 import type { ViewContext } from './context';
 
 /* ===========================================================================
@@ -51,25 +52,57 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
   };
   const toAnchor = (id: string) => () =>
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const toTop = (): void => window.scrollTo({ top: 0, behavior: 'smooth' });
   root.append(
     elem('nav', { class: 'ls-nav', 'aria-label': 'ניווט בעמוד' },
       elem('div', { class: 'ls-container ls-nav__inner' },
+        navLink('סרט הפתיחה', toTop),
         navLink('סרטון ההסבר', toAnchor('video')),
-        navLink('סרט הפתיחה', toAnchor('opening')),
         navLink('חוברת העבודה', toAnchor('booklet')),
         navLink('כל הפעולות', () => navigate('#/menu')),
       ),
     ),
   );
 
-  /* ---- hero ------------------------------------------------------------- */
+  /* ---- hero: the tram film IS the workbook's front page ------------------
+     Yaniv: „הסרטון של הרכבת הוא העמוד הראשי של חוברת העבודה" — so it sits in
+     the hero itself, playing as the page opens, with the unit's name and the
+     way into the booklet beside it. Not a section further down; the front. */
   const ctaBook = elem('button', { class: 'ls-btn ls-btn--primary', type: 'button', text: 'פתיחת החוברת' });
   ctaBook.addEventListener('click', () => navigate('#/book'));
   const ctaVideo = elem('button', { class: 'ls-btn ls-btn--ghost', type: 'button', text: 'צפייה בסרטון' });
   ctaVideo.addEventListener('click', toAnchor('video'));
 
+  const film = elem('video', {
+    class: 'ls-film',
+    poster: OPENING_FILM.poster,
+    preload: 'metadata',
+    playsinline: '', muted: '', autoplay: '',
+    'aria-label': OPENING_FILM.alt,
+  }) as HTMLVideoElement;
+  film.muted = true;
+  film.playsInline = true;
+  film.append(
+    elem('source', { src: OPENING_FILM.webm, type: 'video/webm' }),
+    elem('source', { src: OPENING_FILM.mp4, type: 'video/mp4' }),
+  );
+
+  const soundBtn = elem('button', { class: 'ls-filmbtn', type: 'button', 'aria-label': 'הפעלת הקול' },
+    elem('span', { 'aria-hidden': 'true', text: '🔇' }), elem('span', { text: 'הפעלת קול' }));
+  soundBtn.addEventListener('click', () => {
+    film.muted = !film.muted;
+    if (!film.muted) void film.play();
+    soundBtn.replaceChildren(
+      elem('span', { 'aria-hidden': 'true', text: film.muted ? '🔇' : '🔊' }),
+      ...(film.muted ? [elem('span', { text: 'הפעלת קול' })] : []),
+    );
+    soundBtn.setAttribute('aria-label', film.muted ? 'הפעלת הקול' : 'השתקת הקול');
+  });
+  const replayBtn = elem('button', { class: 'ls-filmbtn ls-filmbtn--replay', type: 'button', 'aria-label': 'הצגה מחדש', text: '↻' });
+  replayBtn.addEventListener('click', () => { film.currentTime = 0; void film.play(); });
+
   root.append(
-    elem('section', { class: 'ls-hero' },
+    elem('section', { class: 'ls-hero', id: 'opening' },
       elem('div', { class: 'ls-container ls-hero__grid' },
         elem('div', { class: 'ls-reveal' },
           elem('div', { 'aria-hidden': 'true' },
@@ -80,6 +113,10 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
           elem('h1', { class: 'ls-hero__title', text: 'מערכת צירים ברביע הראשון' }),
           elem('p', { class: 'ls-hero__desc', text: `יחידת לימוד מתוקשבת לכיתה ז' הכוללת חוברת עבודה של ${TOTAL_PAGES} עמודים, שעשועונים משולבים, סרט פתיחה וסרטון הסבר.` }),
           elem('div', { class: 'ls-hero__actions' }, ctaBook, ctaVideo),
+        ),
+        elem('div', { class: 'ls-hero__film ls-reveal' },
+          elem('div', { class: 'ls-viewer' }, film, soundBtn, replayBtn),
+          elem('p', { class: 'ls-hero__filmcap', text: 'רכבת קלה בירושלים, ומעליה מערכת הצירים משרטטת את עצמה — הצירים, ואז הנקודות (2,3), (3,1), (4,5) ו־(5,2).' }),
         ),
       ),
     ),
@@ -141,45 +178,6 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
     ),
   );
 
-  /* ---- the opening film: ours, in the same viewer card ------------------ */
-  const film = elem('video', {
-    class: 'ls-film',
-    poster: OPENING_FILM.poster,
-    preload: 'metadata',
-    playsinline: '', muted: '', autoplay: '',
-    'aria-label': OPENING_FILM.alt,
-  }) as HTMLVideoElement;
-  film.muted = true;
-  film.playsInline = true;
-  film.append(
-    elem('source', { src: OPENING_FILM.webm, type: 'video/webm' }),
-    elem('source', { src: OPENING_FILM.mp4, type: 'video/mp4' }),
-  );
-
-  const soundBtn = elem('button', { class: 'ls-filmbtn', type: 'button', 'aria-label': 'הפעלת הקול' },
-    elem('span', { 'aria-hidden': 'true', text: '🔇' }), elem('span', { text: 'הפעלת קול' }));
-  soundBtn.addEventListener('click', () => {
-    film.muted = !film.muted;
-    if (!film.muted) void film.play();
-    soundBtn.replaceChildren(
-      elem('span', { 'aria-hidden': 'true', text: film.muted ? '🔇' : '🔊' }),
-      ...(film.muted ? [elem('span', { text: 'הפעלת קול' })] : []),
-    );
-    soundBtn.setAttribute('aria-label', film.muted ? 'הפעלת הקול' : 'השתקת הקול');
-  });
-  const replayBtn = elem('button', { class: 'ls-filmbtn ls-filmbtn--replay', type: 'button', 'aria-label': 'הצגה מחדש', text: '↻' });
-  replayBtn.addEventListener('click', () => { film.currentTime = 0; void film.play(); });
-
-  root.append(
-    elem('section', { class: 'ls-section', id: 'opening' },
-      elem('div', { class: 'ls-container' },
-        sectionHead('סרט הפתיחה', 'הרביע הראשון נבנה מעל ירושלים',
-          'רכבת קלה בעיר, ומעליה מערכת הצירים משרטטת את עצמה — הצירים, ואז הנקודות (2,3), (3,1), (4,5) ו־(5,2).'),
-        elem('div', { class: 'ls-viewer' }, film, soundBtn, replayBtn),
-      ),
-    ),
-  );
-
   /* ---- the booklet, in the misparim pdfframe ---------------------------- */
   const coverLink = elem('a', { class: 'ls-pdfframe__page', href: '#/book', 'aria-label': 'פתיחת החוברת המלאה' });
   const coverPic = elem('picture', {});
@@ -192,14 +190,7 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
   const openBtn = elem('button', { class: 'ls-btn ls-btn--gold', type: 'button', text: 'תצוגה מלאה' });
   openBtn.addEventListener('click', () => navigate('#/book'));
   const printBtn = elem('button', { class: 'ls-btn ls-btn--ghost', type: 'button', text: 'הדפסה' });
-  printBtn.addEventListener('click', () => {
-    navigate('#/book');
-    const ready = (): void => {
-      if (document.querySelectorAll('.book > .sheet').length > 1) requestAnimationFrame(() => window.print());
-      else setTimeout(ready, 120);
-    };
-    setTimeout(ready, 200);
-  });
+  printBtn.addEventListener('click', () => printPages('all'));
 
   root.append(
     elem('section', { class: 'ls-section ls-section--soft', id: 'booklet' },

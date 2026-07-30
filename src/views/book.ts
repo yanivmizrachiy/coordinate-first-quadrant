@@ -1,27 +1,23 @@
 import { elem, fromHTML } from '../lib/dom';
 import { hydrateGrids } from '../lib/coordinateGrid';
 import { fitSheets } from '../lib/fitSheet';
-import { printBar } from './printBar';
+import { bookletBar } from './wsbar';
 import { WORKBOOK } from '../data/workbook';
 import { gameById } from '../games';
 import { renderCoverSheet } from './coverSheet';
-import { renderTocSheet, goToContents } from './tocSheet';
+import { renderTocSheet } from './tocSheet';
 import type { ViewContext } from './context';
 
+/* The continuous booklet — every sheet in one scroll, true A4. This is the
+   layout the PRINTER sees; reading happens in the flipbook (#/book). */
 export function book({ outlet, setTitle }: ViewContext): (() => void) | void {
   setTitle('החוברת המלאה');
   const c = elem('div', { class: 'container' });
 
   const bookEl = elem('div', { class: 'book' });
 
-  // One control row, like the page viewer: a second one only eats the sheet.
-  c.append(
-    printBar({
-      scope: 'book',
-      root: () => bookEl,
-      lead: [linkBtn('☰ תוכן העניינים', goToContents)],
-    }),
-  );
+  // One control row, in the zaviyot bar language.
+  c.append(bookletBar());
 
   // Approved cover first, then all worksheets — no math content is altered.
   bookEl.append(renderCoverSheet(), renderTocSheet());
@@ -44,10 +40,4 @@ export function book({ outlet, setTitle }: ViewContext): (() => void) | void {
   outlet.append(c);
   window.scrollTo({ top: 0 });
   return () => { for (const fn of cleanups) fn(); };
-}
-
-function linkBtn(text: string, onClick: () => void): HTMLElement {
-  const b = elem('button', { class: 'iconbtn iconbtn--primary', type: 'button', text });
-  b.addEventListener('click', onClick);
-  return b;
 }

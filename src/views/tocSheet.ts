@@ -12,7 +12,7 @@ import { navigate } from '../router';
    page he named. It is NOT derived from BOOK any more — he wants a reader's
    map, not an index of every section, and „כל השאר תמחק מהתוכן".
    A test checks that every page number here exists. */
-const CONTENTS: ReadonlyArray<{ title: string; page: number }> = [
+export const CONTENTS: ReadonlyArray<{ title: string; page: number }> = [
   { title: 'הרביע הראשון — מושגים בסיסיים', page: 1 },
   { title: 'נקודות במערכת הצירים', page: 12 },
   { title: 'קטעים מקבילים לצירים', page: 29 },
@@ -101,6 +101,17 @@ export function renderTocSheet(): HTMLElement {
 
   section.append(head, elem('main', { class: 'sheet-content' }, list), foot);
   return section;
+}
+
+/** Each chapter with the span of pages it covers. The page picker's presets and
+    the flipbook's contents both need spans rather than starting pages, and
+    deriving them here is what keeps one list of chapters in the project. */
+export function chapterSpans(total: number): Array<{ title: string; from: number; to: number }> {
+  return CONTENTS.map((c, i) => ({
+    title: c.title,
+    from: c.page,
+    to: (CONTENTS[i + 1]?.page ?? total + 1) - 1,
+  }));
 }
 
 /** Go to the contents page — it is the booklet's second sheet, so this opens the

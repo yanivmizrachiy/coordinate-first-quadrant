@@ -64,14 +64,50 @@ test('the booklet frame shows the cover and opens the book', async ({ page }) =>
   await expect(page.locator('.ls-pdfframe__bar')).toContainText('חוברת עבודה');
   await page.locator('.ls-pdfframe__page').click();
   await expect(page).toHaveURL(/#\/book$/);
-  await expect(page.locator('.book > .sheet').first()).toHaveClass(/cover-sheet/);
+  // the flipbook opens closed, the approved cover on its stage
+  await expect(page.locator('.lxbook')).toHaveAttribute('data-open', 'false');
+  await expect(page.locator('.lx-half--left .cover-sheet')).toHaveCount(1);
 });
 
 test('the hero CTA opens the cover straight away', async ({ page }) => {
   await page.goto('/#/');
   await page.locator('.ls-btn--primary', { hasText: 'פתיחת החוברת' }).click();
   await expect(page).toHaveURL(/#\/book$/);
-  await expect(page.locator('.book > .sheet').first()).toHaveClass(/cover-sheet/);
+  await expect(page.locator('.lx-half--left .cover-sheet')).toHaveCount(1);
+});
+
+/* The flipbook is the reading experience Yaniv asked for — „חוברת נפתחת
+   דיגיטלית נוחה, כמו בפרויקט של זוויות": closed on the cover, a press opens
+   the first spread, the toolbar walks and reports pages. */
+test('the flipbook opens from the cover to the first spread', async ({ page }) => {
+  await page.goto('/#/book');
+  await expect(page.locator('.lxbook')).toHaveAttribute('data-open', 'false');
+  await expect(page.locator('.lx-entry__btn')).toHaveText('פתיחת החוברת');
+  await page.locator('.lx-entry__btn').click();
+  await expect(page.locator('.lxbook')).toHaveAttribute('data-open', 'true', { timeout: 4000 });
+  // the first spread of a Hebrew book: contents on the right, page 1 on the left
+  const which = await page.evaluate(() => ({
+    right: !!document.querySelector('.lx-half--right .toc-sheet'),
+    left: document.querySelector('.lx-half--left .sheet-number')?.textContent?.trim() ?? '',
+    single: document.querySelector('.lxbook')?.getAttribute('data-view'),
+  }));
+  if (which.single === 'double') {
+    expect(which.right, 'the contents sheet is not on the right half').toBe(true);
+    expect(which.left, 'page 1 is not on the left half').toBe('1');
+  } else {
+    // a phone shows one page at a time — the contents comes first
+    expect(await page.locator('.lx-half--left .toc-sheet').count()).toBe(1);
+  }
+  await expect(page.locator('.lx-toolbar')).toBeVisible();
+});
+
+test('the flipbook top bar carries the way back, the reader, the download and the picker', async ({ page }) => {
+  await page.goto('/#/book');
+  const acts = page.locator('.lx-topbar__acts');
+  await expect(acts.locator('a', { hasText: 'חזרה לאתר' })).toHaveAttribute('href', '#/');
+  await expect(acts.locator('a', { hasText: 'מצב קריאה נגיש' })).toHaveAttribute('href', /#\/workbook\/\d+/);
+  await expect(acts.locator('button', { hasText: 'הורדת החוברת' })).toBeVisible();
+  await expect(acts.locator('button', { hasText: 'דפים נבחרים' })).toBeVisible();
 });
 
 test('the landing never reaches the printer', async ({ page }) => {
@@ -89,7 +125,7 @@ test("the district's badge is on the landing and on every sheet", async ({ page 
   await expect(page.locator('.ls-topbar__logo')).toBeVisible();
   await expect(page.locator('.ls-footer__logo')).toBeVisible();
 
-  await page.goto('/#/book');
+  await page.goto('/#/print');
   await page.waitForTimeout(9000);
   const missing = await page.evaluate(() =>
     [...document.querySelectorAll('.book > .sheet')]
@@ -103,7 +139,7 @@ test("the district's badge is on the landing and on every sheet", async ({ page 
 /* The approved artwork is the booklet's first page and must keep its own shape:
    an A4 cover stretched to fill a box is a different picture. */
 test('the cover keeps its own aspect ratio — never stretched', async ({ page }) => {
-  await page.goto('/#/book');
+  await page.goto('/#/print');
   await page.waitForTimeout(2500);
   const ratios = await page.locator('.cover-image').evaluate((el) => {
     const i = el as HTMLImageElement;
@@ -127,13 +163,14 @@ test('the deleted chapter-list page cannot come back', async ({ page }) => {
   for (const dead of ['#/workbook', '#/games']) {
     await page.goto('/' + dead);
     await page.waitForTimeout(1200);
-    await expect(page.locator('.toc-sheet'), `${dead} does not reach the contents`).toHaveCount(1);
-    await expect(page.locator('.book > .sheet').first()).toHaveClass(/cover-sheet/);
+    // the flipbook carries the one coloured contents sheet — no second index
+    await expect(page.locator('.toc-sheet'), `${dead} does not reach the booklet`).toHaveCount(1);
+    await expect(page.locator('.lxbook')).toHaveCount(1);
   }
 });
 
 test('no horizontal overflow on any core view', async ({ page }) => {
-  for (const hash of ['#/', '#/menu', '#/workbook', '#/workbook/1', '#/workbook/12', '#/book']) {
+  for (const hash of ['#/', '#/menu', '#/workbook', '#/workbook/1', '#/workbook/12', '#/book', '#/print']) {
     await page.goto('/' + hash);
     await page.waitForTimeout(200);
     const overflow = await page.evaluate(
@@ -144,7 +181,7 @@ test('no horizontal overflow on any core view', async ({ page }) => {
 });
 
 test('the full booklet opens with the cover, then the contents, then worksheet 1', async ({ page }) => {
-  await page.goto('/#/book');
+  await page.goto('/#/print');
   const sheets = page.locator('.book > .sheet');
   await expect(sheets.first()).toHaveClass(/cover-sheet/);
   await expect(sheets.nth(1)).toHaveClass(/toc-sheet/);
@@ -154,7 +191,7 @@ test('the full booklet opens with the cover, then the contents, then worksheet 1
 /* The contents sheet is a sheet: it prints with the booklet, and on screen each
    chapter is a button that goes to that chapter's first page. */
 test('the contents sheet lists every chapter and each button reaches its page', async ({ page }) => {
-  await page.goto('/#/book');
+  await page.goto('/#/print');
   await page.waitForTimeout(4000);
   const buttons = page.locator('.toc-sheet .toc-btn');
   const topics = await page.evaluate(() => document.querySelectorAll('.toc-sheet .toc-btn').length);
@@ -208,7 +245,7 @@ test('the contents sheet lists every chapter and each button reaches its page', 
 
   /* Every chip opens the page it names, straight away. */
   for (const [i, n] of [1, 12, 29, 50, 60].entries()) {
-    await page.goto('/#/book');
+    await page.goto('/#/print');
     await page.waitForTimeout(3500);
     await page.locator('.toc-btn').nth(i).click();
     await expect(page, `chip ${i + 1} does not open page ${n}`).toHaveURL(new RegExp(`#/workbook/${n}$`));
@@ -218,7 +255,7 @@ test('the contents sheet lists every chapter and each button reaches its page', 
 /* A sheet is a fixed-height A4 box with overflow:hidden, so anything past its
    bottom edge is content the learner never sees — silently, with no error. */
 test('no sheet cuts off its own content', async ({ page }) => {
-  await page.goto('/#/book');
+  await page.goto('/#/print');
   await page.waitForTimeout(3500);
   const clipped = await page.evaluate(() =>
     [...document.querySelectorAll('.sheet')]
@@ -245,7 +282,7 @@ test('no sheet cuts off its own content', async ({ page }) => {
    phone scales the whole sheet down and would fail it for the wrong reason. */
 test('every coordinate system renders large enough to write on', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet, not on a phone');
-  await page.goto('/#/book');
+  await page.goto('/#/print');
   await page.waitForTimeout(3500);
   const tiny = await page.evaluate(() =>
     [...document.querySelectorAll('.sheet')]
@@ -265,7 +302,7 @@ test('every coordinate system renders large enough to write on', async ({ page }
    a label to LTR moves the Hebrew left, and it then reads „y ציר”: backwards.
    Only measuring the glyph positions tells the two apart. */
 test('a mixed label puts its Hebrew word on the right, where it is read first', async ({ page }) => {
-  await page.goto('/#/book');
+  await page.goto('/#/print');
   await page.waitForTimeout(3500);
   const reversed = await page.evaluate(() =>
     [...document.querySelectorAll('.coordinate-grid text')]
@@ -295,7 +332,7 @@ test('a mixed label puts its Hebrew word on the right, where it is read first', 
    air would be worse than leaving them. */
 test('the typical sheet uses the paper it is printed on', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
-  await page.goto('/#/book');
+  await page.goto('/#/print');
   await page.waitForTimeout(6000);
   const used = await page.evaluate(() =>
     [...document.querySelectorAll('.sheet')]
@@ -322,7 +359,7 @@ test('the typical sheet uses the paper it is printed on', async ({ page }, testI
 /* Sheet text is 13px — including anything a game draws. The exceptions are
    deliberate and listed here; anything else is a regression. */
 test('every sheet keeps its body text at 13px', async ({ page }) => {
-  await page.goto('/#/book');
+  await page.goto('/#/print');
   await page.waitForTimeout(4000);
   const offenders = await page.evaluate(() => {
     const out: string[] = [];
@@ -356,7 +393,7 @@ test('a game sheet reveals its answer when solved correctly', async ({ page }) =
   const n = await page.evaluate(async () => {
     const res = await fetch(location.pathname);
     void res;
-    location.hash = '#/book';
+    location.hash = '#/print';
     await new Promise((r) => setTimeout(r, 4000));
     const host = document.querySelector('[data-game-host="coordinate-safe"]');
     return host?.closest('.sheet')?.querySelector('.sheet-number')?.textContent?.trim() ?? '';
@@ -379,10 +416,10 @@ test('a game sheet reveals its answer when solved correctly', async ({ page }) =
 /* Black and white is for the SHEETS. The application keeps its colour — the
    point is a clean printed page, not a drained interface. */
 test('black-and-white print greys the sheets and leaves the app in colour', async ({ page }) => {
-  await page.goto('/#/book');
+  await page.goto('/#/print');
   await page.waitForTimeout(2500);
-  const bar = page.locator('.printbar__toggle');
-  await expect(bar).toContainText(/הדפסה שחור|חזרה לצבע/);
+  const bar = page.locator('.wsbar .btn', { hasText: /שחור־לבן|צבעונית/ });
+  await expect(bar).toBeVisible();
 
   const read = async (): Promise<{ sheet: string; app: string }> =>
     page.evaluate(() => ({
@@ -399,48 +436,83 @@ test('black-and-white print greys the sheets and leaves the app in colour', asyn
   expect(mono.app, 'the application lost its colour too').toBe(colour.app);
 });
 
-test('the print bar prints only the pages asked for', async ({ page }) => {
-  await page.goto('/#/book');
+/* The page picker is the zaviyot WorksheetPicker, on our live sheets: the
+   teacher marks exactly the pages wanted, and only those reach the paper. */
+test('the page picker prints only the pages chosen', async ({ page }) => {
+  await page.goto('/#/print');
   await page.waitForTimeout(3000);
-  const kept = await page.evaluate(() => {
-    const bar = document.querySelector('.printbar')!;
-    const [from, to] = bar.querySelectorAll<HTMLInputElement>('.printbar__num');
-    from!.value = '3';
-    to!.value = '5';
-    const print = window.print;
-    window.print = (): void => {};
-    bar.querySelector<HTMLButtonElement>('.printbar__go')!.click();
-    window.print = print;
-    return [...document.querySelectorAll('.sheet')]
+  await page.evaluate(() => { window.print = (): void => {}; });
+  await page.locator('.wsbar .btn', { hasText: 'דפים נבחרים' }).click();
+  await expect(page.locator('.pick__modal')).toBeVisible();
+  // nothing chosen — nothing to send
+  await expect(page.locator('.pick__acts .btn--gold')).toBeDisabled();
+  for (const n of [3, 4, 5]) await page.locator(`.pick__card[data-page="${n}"]`).click();
+  await expect(page.locator('.pick__count')).toHaveText('נבחרו 3 עמודים');
+  await page.locator('.pick__acts .btn', { hasText: 'הדפסת הנבחרים' }).click();
+  await page.waitForTimeout(600);
+  const kept = await page.evaluate(() =>
+    [...document.querySelectorAll('.sheet')]
       .filter((s) => !s.classList.contains('print-skip'))
-      .map((s) => s.querySelector('.sheet-number')?.textContent?.trim() ?? 'cover');
-  });
+      .map((s) => s.querySelector('.sheet-number')?.textContent?.trim() ?? 'cover'),
+  );
   expect(kept).toEqual(['3', '4', '5']);
+});
+
+test('a picker preset chooses a whole chapter', async ({ page }) => {
+  await page.goto('/#/print');
+  await page.waitForTimeout(2000);
+  await page.locator('.wsbar .btn', { hasText: 'דפים נבחרים' }).click();
+  // the first chapter runs from page 1 up to the second chapter's start
+  await page.locator('.pick__chip', { hasText: 'מושגים בסיסיים' }).click();
+  await expect(page.locator('.pick__count')).toHaveText('נבחרו 11 עמודים');
+  await page.locator('.pick__chip', { hasText: 'כל החוברת' }).click();
+  await expect(page.locator('.pick__count')).toHaveText('נבחרו 74 עמודים');
+  await page.locator('.pick__chip', { hasText: 'ניקוי הבחירה' }).click();
+  await expect(page.locator('.pick__count')).toHaveText('לא נבחרו עמודים');
+});
+
+/* The bars themselves are the zaviyot bars: navy, sticky, the gold
+   הורדה / הדפסה closing the actions — on the booklet and on every single page. */
+test('the reading bars speak the zaviyot button language', async ({ page }) => {
+  await page.goto('/#/print');
+  const bar = page.locator('.wsbar');
+  await expect(bar).toBeVisible();
+  await expect(bar.locator('.btn--gold')).toHaveText('הורדה / הדפסה');
+  const navy = await bar.evaluate((el) => getComputedStyle(el).backgroundColor);
+  expect(navy, 'the bar lost the navy of the zaviyot bars').toBe('rgb(22, 35, 63)');
+
+  await page.goto('/#/workbook/5');
+  await expect(page.locator('.wsbar__title')).toHaveText('דף עבודה מספר 5 מתוך 74');
+  await expect(page.locator('.wsbar .btn--gold')).toHaveText('הורדה / הדפסה');
+  // the prev/next pair sits in the bar, like the zaviyot reader
+  await expect(page.locator('.wsbar__nav .btn')).toHaveCount(2);
 });
 
 /* The single-page view is what the reader spends their time in. Stacking a
    second toolbar above it cost 78px of screen and it stopped being comfortable
-   to read — this holds the controls to one row and the sheet to full size. */
+   to read — one bar above the sheet (the zaviyot wsbar), and the sheet full
+   size. On a desktop the bar's buttons must not wrap it onto a second line. */
 test('the page viewer keeps its controls to one row and the sheet readable', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop', 'the phone stacks the bar on purpose');
   await page.goto('/#/workbook/5');
   await page.waitForTimeout(2500);
 
-  const bar = page.locator('.printbar');
+  const bar = page.locator('.wsbar');
   await expect(bar).toHaveCount(1);
-  await expect(page.locator('.toolbar-row')).toHaveCount(0); // the second row is gone
+  await expect(page.locator('.printbar')).toHaveCount(0); // the old bar is gone for good
 
-  const rows = async (): Promise<number> =>
+  /* The title takes a full-width line of its own by design (the zaviyot bar
+     does the same on narrow screens); the BUTTONS must all share one row. */
+  const buttonRows = async (): Promise<number> =>
     bar.evaluate(
-      (b) => new Set([...b.children].map((c) => Math.round(c.getBoundingClientRect().top + c.getBoundingClientRect().height / 2))).size,
+      (b) => new Set([...b.querySelectorAll('.btn')].map((c) => Math.round(c.getBoundingClientRect().top + c.getBoundingClientRect().height / 2))).size,
     );
-  expect(await rows(), 'the control bar wrapped onto more than one row').toBe(1);
+  expect(await buttonRows(), 'the bar buttons wrapped onto more than one row').toBe(1);
 
-  // the booklet carries more controls — range pickers too — and must still fit
-  await page.goto('/#/book');
+  // the booklet bar carries more actions — B&W, the picker — and must still fit
+  await page.goto('/#/print');
   await page.waitForTimeout(4000);
-  await expect(page.locator('.toolbar-row')).toHaveCount(0);
-  expect(await rows(), 'the booklet control bar wrapped').toBe(1);
+  expect(await buttonRows(), 'the booklet bar buttons wrapped').toBe(1);
   await page.goto('/#/workbook/5');
   await page.waitForTimeout(2500);
 
@@ -478,7 +550,7 @@ test('zooming the page out leaves the drawings the size they were', async ({ pag
    means. This measures the type as the reader sees it, not the box around it. */
 test('every axis number renders at a size a learner can actually read', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
-  await page.goto('/#/book');
+  await page.goto('/#/print');
   await page.waitForTimeout(9000);
   const tiny = await page.evaluate(() =>
     [...document.querySelectorAll('.sheet .coordinate-grid')]
@@ -508,7 +580,7 @@ test('every axis number renders at a size a learner can actually read', async ({
    of its neighbour. Both are worse than small type, so both are measured. */
 test('no label spills out of its drawing or lands on another', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
-  await page.goto('/#/book');
+  await page.goto('/#/print');
   await page.waitForTimeout(9000);
   const faults = await page.evaluate(() => {
     const out: string[] = [];
@@ -545,7 +617,7 @@ test('no label spills out of its drawing or lands on another', async ({ page }, 
    measures the marks. */
 test('every point on a drawing is drawn large enough to see', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
-  await page.goto('/#/book');
+  await page.goto('/#/print');
   await page.waitForTimeout(9000);
   const faults = await page.evaluate(() =>
     [...document.querySelectorAll('.sheet .coordinate-grid')]
@@ -577,7 +649,7 @@ test('every point on a drawing is drawn large enough to see', async ({ page }, t
    everything actually drawn on it. */
 test('no label sits on a mark, an arrowhead or a vertex', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
-  await page.goto('/#/book');
+  await page.goto('/#/print');
   await page.waitForTimeout(9000);
   const faults = await page.evaluate(() => {
     const out: string[] = [];
@@ -622,7 +694,7 @@ test('no label sits on a mark, an arrowhead or a vertex', async ({ page }, testI
    So this measures the painted positions — name leftmost, unit rightmost. */
 test('every calculation really is painted left to right', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
-  await page.goto('/#/book');
+  await page.goto('/#/print');
   await page.waitForTimeout(9000);
   const faults = await page.evaluate(() => {
     const out: string[] = [];
@@ -646,7 +718,7 @@ test('every calculation really is painted left to right', async ({ page }, testI
    leftwards, every next character further left than the one before it. */
 test('a Hebrew word never comes out in the wrong order', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
-  await page.goto('/#/book');
+  await page.goto('/#/print');
   await page.waitForTimeout(9000);
   const faults = await page.evaluate(() => {
     const out: string[] = [];
@@ -677,7 +749,7 @@ test('a Hebrew word never comes out in the wrong order', async ({ page }, testIn
    the box for „ציר x” by the pass that keeps the axis NAME off the arrowhead. */
 test('no number is left sitting inside a box the learner writes in', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
-  await page.goto('/#/book');
+  await page.goto('/#/print');
   await page.waitForTimeout(9000);
   const faults = await page.evaluate(() => {
     const out: string[] = [];
@@ -708,7 +780,7 @@ test('no number is left sitting inside a box the learner writes in', async ({ pa
    nothing may be laid over the cover, on screen or on paper. */
 test('the cover carries the artwork and nothing else', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
-  await page.goto('/#/book');
+  await page.goto('/#/print');
   await page.waitForTimeout(9000);
   for (const media of ['screen', 'print'] as const) {
     await page.emulateMedia({ media });
@@ -734,7 +806,7 @@ test('the cover carries the artwork and nothing else', async ({ page }, testInfo
    marked at (0,0) — reads as a mistake in the drawing. */
 test('the origin is never labelled twice', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
-  await page.goto('/#/book');
+  await page.goto('/#/print');
   await page.waitForTimeout(9000);
   const doubled = await page.evaluate(() =>
     [...document.querySelectorAll('.sheet .coordinate-grid svg')]

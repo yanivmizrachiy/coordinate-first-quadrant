@@ -2,6 +2,8 @@ import './styles/tokens.css';
 import './styles/base.css';
 import './styles/app.css';
 import './styles/landing.css';
+import './styles/actions.css';
+import './styles/flipbook.css';
 import './styles/workbook.css';
 import './styles/grayscale.css';
 
@@ -13,6 +15,7 @@ import { home } from './views/home';
 import { menu } from './views/menu';
 import { pageViewer } from './views/pageViewer';
 import { book } from './views/book';
+import { flipbook } from './views/flipbook';
 import { ensureFreshBuild } from './lib/freshBuild';
 
 const app = document.getElementById('app');
@@ -47,7 +50,8 @@ function resolve(match: RouteMatch): View {
     case 'home': return home;
     case 'menu': return menu;
     case 'page': return pageViewer(Number(match.params['n'] ?? '1'));
-    case 'book': return book;
+    case 'book': return flipbook;
+    case 'print': return book;
   }
 }
 
@@ -63,8 +67,9 @@ function render(match: RouteMatch): void {
   if (cleanup) { cleanup(); cleanup = undefined; }
   clear(outlet);
   homeBtn.style.visibility = match.name === 'home' ? 'hidden' : 'visible';
-  /* The opening is the whole screen — the bar would sit on the film. */
-  appbar.classList.toggle('appbar--hidden', match.name === 'home');
+  /* The landing and the flipbook are whole screens with bars of their own —
+     the app bar would sit on the film or on the book's stage. */
+  appbar.classList.toggle('appbar--hidden', match.name === 'home' || match.name === 'book');
   menuBtn.style.visibility = match.name === 'menu' ? 'hidden' : 'visible';
   const ctx: ViewContext = { outlet, setTitle };
   const result = resolve(match)(ctx);
