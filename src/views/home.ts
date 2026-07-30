@@ -5,222 +5,233 @@ import { APPROVED_COVER, OPENING_FILM, DISTRICT_BADGE } from '../data/cover';
 import type { ViewContext } from './context';
 
 /* ===========================================================================
-   The opening — and nothing else.
-
-   Ten seconds of a Jerusalem tram at golden hour, over which the first quadrant
-   draws itself. It fills the screen, it carries its own sound, and the only
-   thing on top of it is the way in. Everything you can DO lives one press away,
-   on #/menu, so this screen has one job and does it.
+   The landing — the same site language as Yaniv's misparim unit, word for
+   word in its structure: a dark top bar carrying the district badge and the
+   מנח"י credit, a sticky pill nav, a hero that names the unit, a section per
+   material, and a dark footer. Only the material itself is ours: the first
+   quadrant, its film, and the 74-page booklet.
    =========================================================================== */
 
-/** Has this device asked for less motion, or for less data? */
-const wantsStillness = (): boolean => {
-  const conn = (navigator as { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
-  return (
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
-    conn?.saveData === true ||
-    /^(slow-)?2g$/.test(conn?.effectiveType ?? '')
-  );
-};
+/** The curriculum film Yaniv published — embedded with the misparim facade. */
+const YOUTUBE_ID = 'h5wegXI2ZGw';
+const YOUTUBE_TITLE = 'רביע ראשון עדכון ת"ל כיתה ז\' תשפ"ז';
 
-/* The credit line, set letter by letter so it can be typed on by animation.
-   Hebrew has no contextual shaping, so one span per character is safe; the
-   spans are inline-block and the RTL container lays them out right to left. */
-function letters(text: string, cls: string, from: number, step: number): { line: HTMLElement; done: number } {
-  const line = elem('div', { class: cls, 'aria-label': text });
-  let i = from;
-  for (const ch of text) {
-    if (ch === ' ') {
-      line.append(elem('span', { class: 'ltr-sp', 'aria-hidden': 'true', html: '&nbsp;' }));
-      i += step;
-      continue;
-    }
-    line.append(elem('span', {
-      class: 'ltr-ch', 'aria-hidden': 'true', text: ch,
-      style: `--d:${i.toFixed(3)}s`,
-    }));
-    i += step;
-  }
-  /* When the last letter has finished — its own delay plus the .44s it takes to
-     travel. התחל waits for this, so the wait is derived from the text rather
-     than guessed at, and stays right if the credit is ever reworded. */
-  return { line, done: i + 0.44 };
-}
+const badgeImg = (cls: string): HTMLElement => {
+  const pic = elem('picture', {});
+  pic.append(
+    elem('source', { srcset: DISTRICT_BADGE.webp, type: 'image/webp' }),
+    elem('img', { class: cls, src: DISTRICT_BADGE.png, alt: DISTRICT_BADGE.alt, decoding: 'async' }),
+  );
+  return pic;
+};
 
 export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
   setTitle('מערכת צירים — הרביע הראשון');
-  document.body.classList.add('is-opening');
+  const root = elem('div', { class: 'landing' });
 
-  const screen = elem('div', { class: 'opening' });
-  const stage = elem('div', { class: 'opening__stage' });
-  const still = wantsStillness();
-
-  let film: HTMLVideoElement | null = null;
-  if (still) {
-    const pic = elem('picture', { class: 'opening__pic' });
-    pic.append(
-      elem('source', { srcset: OPENING_FILM.still, type: 'image/webp' }),
-      elem('img', { class: 'opening__media', src: OPENING_FILM.stillFallback, alt: OPENING_FILM.alt, decoding: 'async' }),
-    );
-    stage.append(pic);
-  } else {
-    film = elem('video', {
-      class: 'opening__media opening__film',
-      poster: OPENING_FILM.poster,
-      preload: 'auto',
-      playsinline: '',
-      autoplay: '',
-      'aria-label': OPENING_FILM.alt,
-    }) as HTMLVideoElement;
-    film.playsInline = true;
-    film.append(
-      elem('source', { src: OPENING_FILM.webm, type: 'video/webm' }),
-      elem('source', { src: OPENING_FILM.mp4Small, type: 'video/mp4', media: '(max-width: 620px)' }),
-      elem('source', { src: OPENING_FILM.mp4, type: 'video/mp4' }),
-    );
-    stage.append(film);
-  }
-
-  /* The district's badge, turning slowly and lit. */
-  const badge = elem('picture', { class: 'opening__badge' });
-  badge.append(
-    elem('source', { srcset: DISTRICT_BADGE.webp, type: 'image/webp' }),
-    elem('img', { src: DISTRICT_BADGE.png, alt: DISTRICT_BADGE.alt, decoding: 'async' }),
-  );
-
-  /* Everything below arrives only when the tram has stopped and the axes are
-     drawn — the film is the title sequence, and this is its end card. */
-  /* The page count is the promise the booklet makes, so it is set large and
-     counts up to itself when the card arrives. */
-  const count = elem('span', { class: 'opening__count', text: '0' });
-  const line1 = letters('יניב רז - מדריך מחוזי חט"ב בעיר ירושלים', 'opening__credit', 0.10, 0.028);
-  const line2 = letters('הדרכה במחוז ירושלים והעיר ירושלים - מנח"י, בהובלת איילת קריספין', 'opening__credit opening__credit--2', 0.60, 0.021);
-
-  const card = elem('div', { class: 'opening__card' },
-    elem('h1', { class: 'opening__title' }, elem('span', { text: 'מערכת צירים' })),
-    elem('p', { class: 'opening__sub' }, elem('span', { text: 'הרביע הראשון' })),
-    elem('p', { class: 'opening__meta' },
-      elem('span', { class: 'opening__kind', text: 'חוברת עבודה' }),
-      elem('span', { class: 'opening__pages' }, count, elem('span', { class: 'opening__unit', text: 'עמודים' })),
+  /* ---- top bar: the badge in its gold ring, the credit centred ---------- */
+  root.append(
+    elem('header', { class: 'ls-topbar' },
+      elem('div', { class: 'ls-container ls-topbar__inner' },
+        elem('span', { class: 'ls-topbar__logobox' }, badgeImg('ls-topbar__logo')),
+        elem('div', { class: 'ls-topbar__text' },
+          elem('span', { class: 'ls-topbar__lead', text: 'הדרכה במחוז ירושלים והעיר ירושלים - מנח"י, בהובלת איילת קריספין' }),
+          elem('span', { class: 'ls-topbar__year', text: 'שנה"ל התשפ"ז' }),
+          elem('span', { class: 'ls-topbar__credit', text: 'האתר מנוהל ע"י יניב רז · מדריך מחוזי חט"ב בעיר ירושלים' }),
+        ),
+      ),
     ),
-    line1.line,
-    line2.line,
   );
 
-  /* התחל arrives only once the last letter has landed — measured from the text
-     itself, not from a number typed in the stylesheet. */
-  const afterAllText = Math.max(line1.done, line2.done) + 0.25;
+  /* ---- sticky nav ------------------------------------------------------- */
+  const navLink = (label: string, go: () => void): HTMLElement => {
+    const a = elem('button', { class: 'ls-nav__link', type: 'button', text: label });
+    a.addEventListener('click', go);
+    return a;
+  };
+  const toAnchor = (id: string) => () =>
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  root.append(
+    elem('nav', { class: 'ls-nav', 'aria-label': 'ניווט בעמוד' },
+      elem('div', { class: 'ls-container ls-nav__inner' },
+        navLink('סרטון ההסבר', toAnchor('video')),
+        navLink('סרט הפתיחה', toAnchor('opening')),
+        navLink('חוברת העבודה', toAnchor('booklet')),
+        navLink('כל הפעולות', () => navigate('#/menu')),
+      ),
+    ),
+  );
 
-  /** The count runs up as soon as the card is on screen. */
-  const runCount = (): void => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      count.textContent = String(TOTAL_PAGES);
-      return;
+  /* ---- hero ------------------------------------------------------------- */
+  const ctaBook = elem('button', { class: 'ls-btn ls-btn--primary', type: 'button', text: 'פתיחת החוברת' });
+  ctaBook.addEventListener('click', () => navigate('#/book'));
+  const ctaVideo = elem('button', { class: 'ls-btn ls-btn--ghost', type: 'button', text: 'צפייה בסרטון' });
+  ctaVideo.addEventListener('click', toAnchor('video'));
+
+  root.append(
+    elem('section', { class: 'ls-hero' },
+      elem('div', { class: 'ls-container ls-hero__grid' },
+        elem('div', { class: 'ls-reveal' },
+          elem('div', { 'aria-hidden': 'true' },
+            elem('span', { class: 'ls-axesbadge ls-axesbadge--x', text: 'x' }),
+            elem('span', { class: 'ls-axesbadge ls-axesbadge--y', text: 'y' }),
+          ),
+          elem('span', { class: 'ls-hero__eyebrow', text: 'מתמטיקה · יחידת לימוד' }),
+          elem('h1', { class: 'ls-hero__title', text: 'מערכת צירים ברביע הראשון' }),
+          elem('p', { class: 'ls-hero__desc', text: `יחידת לימוד מתוקשבת לכיתה ז' הכוללת חוברת עבודה של ${TOTAL_PAGES} עמודים, שעשועונים משולבים, סרט פתיחה וסרטון הסבר.` }),
+          elem('div', { class: 'ls-hero__actions' }, ctaBook, ctaVideo),
+        ),
+      ),
+    ),
+  );
+
+  const sectionHead = (eyebrow: string, title: string, sub?: string): HTMLElement =>
+    elem('div', { class: 'ls-section__head ls-reveal' },
+      elem('span', { class: 'ls-section__eyebrow', text: eyebrow }),
+      elem('h2', { class: 'ls-section__title', text: title }),
+      ...(sub ? [elem('p', { class: 'ls-section__sub', text: sub })] : []),
+    );
+
+  /* ---- the curriculum film: the misparim facade, player loads on press -- */
+  const videoBox = elem('div', { class: 'ls-viewer' });
+  const facade = elem('button', {
+    class: 'ls-facade', type: 'button', 'aria-label': `הפעלת הסרטון: ${YOUTUBE_TITLE}`,
+  });
+  const thumb = elem('img', {
+    class: 'ls-facade__thumb',
+    src: `https://i.ytimg.com/vi/${YOUTUBE_ID}/maxresdefault.jpg`,
+    alt: YOUTUBE_TITLE, loading: 'lazy',
+  }) as HTMLImageElement;
+  thumb.addEventListener('error', () => {
+    if (!thumb.dataset['fallback']) {
+      thumb.dataset['fallback'] = '1';
+      thumb.src = `https://i.ytimg.com/vi/${YOUTUBE_ID}/hqdefault.jpg`;
     }
-    const started = performance.now();
-    const dur = 1100;
-    const tick = (now: number): void => {
-      const t = Math.min(1, (now - started) / dur);
-      const eased = 1 - (1 - t) ** 3;
-      count.textContent = String(Math.round(eased * TOTAL_PAGES));
-      if (t < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  };
+  });
+  const play = elem('span', { class: 'ls-facade__play', 'aria-hidden': 'true' });
+  play.innerHTML =
+    '<svg viewBox="0 0 68 48" width="72" height="50">' +
+    '<path d="M66.5 7.7c-.8-2.9-3-5.1-5.9-5.9C55.5.5 34 .5 34 .5S12.5.5 7.4 1.8C4.5 2.6 2.3 4.8 1.5 7.7.2 12.8.2 24 .2 24s0 11.2 1.3 16.3c.8 2.9 3 5.1 5.9 5.9C12.5 47.5 34 47.5 34 47.5s21.5 0 26.6-1.3c2.9-.8 5.1-3 5.9-5.9C67.8 35.2 67.8 24 67.8 24s0-11.2-1.3-16.3z" fill="#cc0000"/>' +
+    '<path d="M27 34.5l18-10.5-18-10.5z" fill="#fff"/></svg>';
+  facade.append(thumb, play);
+  facade.addEventListener('click', () => {
+    const frame = elem('iframe', {
+      src: `https://www.youtube-nocookie.com/embed/${YOUTUBE_ID}?autoplay=1&rel=0`,
+      title: YOUTUBE_TITLE,
+      allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share',
+      allowfullscreen: '',
+    });
+    videoBox.replaceChildren(frame);
+  });
+  videoBox.append(facade);
 
-  const start = elem('button', { class: 'startbtn', type: 'button' },
-    elem('span', { class: 'startbtn__label', text: 'התחל' }),
+  root.append(
+    elem('section', { class: 'ls-section ls-section--soft', id: 'video' },
+      elem('div', { class: 'ls-container' },
+        sectionHead('סרטון', YOUTUBE_TITLE),
+        videoBox,
+        elem('div', { class: 'ls-viewer__bar' },
+          elem('a', {
+            class: 'ls-btn ls-btn--ghost',
+            href: `https://www.youtube.com/watch?v=${YOUTUBE_ID}`,
+            target: '_blank', rel: 'noopener noreferrer', text: 'פתיחה ביוטיוב',
+          }),
+        ),
+      ),
+    ),
   );
-  /* Straight to the booklet, which opens on the cover — „חובה שייפתח מייד עמוד
-     השער מהיר ואוטומט". The cover artwork was decoded while the film played, so
-     it is already in memory and the first paint is immediate; the booklet's own
-     print bar carries the actions that used to need a menu stop. */
-  start.addEventListener('click', () => navigate('#/book'));
 
-  /* Sound. Browsers refuse to start a film with sound before the reader has
-     touched the page — a policy, not a setting. So: try with sound, and if the
-     browser says no, fall back to a silent start and offer one tap to turn it
-     on. The control says which of the two happened. */
-  const sound = elem('button', { class: 'soundbtn', type: 'button', 'aria-label': 'הפעלת הקול' },
-    elem('span', { class: 'soundbtn__icon', 'aria-hidden': 'true', text: '🔇' }),
-    elem('span', { class: 'soundbtn__label', text: 'הפעלת קול' }),
+  /* ---- the opening film: ours, in the same viewer card ------------------ */
+  const film = elem('video', {
+    class: 'ls-film',
+    poster: OPENING_FILM.poster,
+    preload: 'metadata',
+    playsinline: '', muted: '', autoplay: '',
+    'aria-label': OPENING_FILM.alt,
+  }) as HTMLVideoElement;
+  film.muted = true;
+  film.playsInline = true;
+  film.append(
+    elem('source', { src: OPENING_FILM.webm, type: 'video/webm' }),
+    elem('source', { src: OPENING_FILM.mp4, type: 'video/mp4' }),
   );
-  const showSound = (muted: boolean): void => {
-    sound.classList.toggle('soundbtn--on', !muted);
-    (sound.querySelector('.soundbtn__icon') as HTMLElement).textContent = muted ? '🔇' : '🔊';
-    /* Only the invitation carries words. Once the sound is on there is nothing
-       left to say — the speaker says it — so the label goes and the pill
-       shrinks to the icon. */
-    (sound.querySelector('.soundbtn__label') as HTMLElement).textContent = muted ? 'הפעלת קול' : '';
-    sound.setAttribute('aria-label', muted ? 'הפעלת הקול' : 'השתקת הקול');
-  };
-  sound.addEventListener('click', () => {
-    if (!film) return;
+
+  const soundBtn = elem('button', { class: 'ls-filmbtn', type: 'button', 'aria-label': 'הפעלת הקול' },
+    elem('span', { 'aria-hidden': 'true', text: '🔇' }), elem('span', { text: 'הפעלת קול' }));
+  soundBtn.addEventListener('click', () => {
     film.muted = !film.muted;
     if (!film.muted) void film.play();
-    showSound(film.muted);
-  });
-
-  const replay = elem('button', { class: 'replaybtn', type: 'button', 'aria-label': 'הצגת הפתיחה מחדש' },
-    elem('span', { 'aria-hidden': 'true', text: '↻' }));
-  replay.addEventListener('click', () => {
-    if (!film) return;
-    screen.classList.remove('opening--ended');
-    count.textContent = '0';
-    film.currentTime = 0;
-    void film.play();
-  });
-
-  screen.style.setProperty('--after-text', `${afterAllText.toFixed(2)}s`);
-  screen.append(stage, elem('div', { class: 'opening__scrim', 'aria-hidden': 'true' }), badge, card, start);
-  if (film) screen.append(sound, replay);
-  else { screen.classList.add('opening--ended'); requestAnimationFrame(runCount); }
-
-  outlet.append(screen);
-
-  /* Warm the booklet's first page while the film plays, so „התחל" is instant. */
-  const warm = new Image();
-  warm.decoding = 'async';
-  warm.src = APPROVED_COVER.webp;
-
-  let cleanup: (() => void) | undefined;
-  if (film) {
-    const f = film;
-    const ended = (): void => { screen.classList.add('opening--ended'); runCount(); };
-    f.addEventListener('ended', ended);
-
-    /* Sound first. If the browser refuses, start silent — a silent opening is
-       far better than a still frame and a play button. */
-    f.muted = false;
-    void f.play().then(
-      () => showSound(false),
-      () => {
-        f.muted = true;
-        showSound(true);
-        void f.play().catch(() => { /* the poster stands in */ });
-      },
+    soundBtn.replaceChildren(
+      elem('span', { 'aria-hidden': 'true', text: film.muted ? '🔇' : '🔊' }),
+      ...(film.muted ? [elem('span', { text: 'הפעלת קול' })] : []),
     );
+    soundBtn.setAttribute('aria-label', film.muted ? 'הפעלת הקול' : 'השתקת הקול');
+  });
+  const replayBtn = elem('button', { class: 'ls-filmbtn ls-filmbtn--replay', type: 'button', 'aria-label': 'הצגה מחדש', text: '↻' });
+  replayBtn.addEventListener('click', () => { film.currentTime = 0; void film.play(); });
 
-    /* One tap anywhere turns the sound on, which is what a reader expects after
-       a silent start. It runs once, and never fights the buttons. */
-    const firstTouch = (e: Event): void => {
-      if ((e.target as HTMLElement).closest('button')) return;
-      if (!f.muted) return;
-      f.muted = false;
-      showSound(false);
-      void f.play();
+  root.append(
+    elem('section', { class: 'ls-section', id: 'opening' },
+      elem('div', { class: 'ls-container' },
+        sectionHead('סרט הפתיחה', 'הרביע הראשון נבנה מעל ירושלים',
+          'רכבת קלה בעיר, ומעליה מערכת הצירים משרטטת את עצמה — הצירים, ואז הנקודות (2,3), (3,1), (4,5) ו־(5,2).'),
+        elem('div', { class: 'ls-viewer' }, film, soundBtn, replayBtn),
+      ),
+    ),
+  );
+
+  /* ---- the booklet, in the misparim pdfframe ---------------------------- */
+  const coverLink = elem('a', { class: 'ls-pdfframe__page', href: '#/book', 'aria-label': 'פתיחת החוברת המלאה' });
+  const coverPic = elem('picture', {});
+  coverPic.append(
+    elem('source', { srcset: APPROVED_COVER.webp, type: 'image/webp' }),
+    elem('img', { src: APPROVED_COVER.src, alt: APPROVED_COVER.alt, loading: 'lazy', decoding: 'async' }),
+  );
+  coverLink.append(coverPic);
+
+  const openBtn = elem('button', { class: 'ls-btn ls-btn--gold', type: 'button', text: 'תצוגה מלאה' });
+  openBtn.addEventListener('click', () => navigate('#/book'));
+  const printBtn = elem('button', { class: 'ls-btn ls-btn--ghost', type: 'button', text: 'הדפסה' });
+  printBtn.addEventListener('click', () => {
+    navigate('#/book');
+    const ready = (): void => {
+      if (document.querySelectorAll('.book > .sheet').length > 1) requestAnimationFrame(() => window.print());
+      else setTimeout(ready, 120);
     };
-    screen.addEventListener('pointerdown', firstTouch, { once: true });
+    setTimeout(ready, 200);
+  });
 
-    cleanup = () => {
-      f.removeEventListener('ended', ended);
-      f.pause();
-      document.body.classList.remove('is-opening');
-    };
-  } else {
-    cleanup = () => document.body.classList.remove('is-opening');
-  }
+  root.append(
+    elem('section', { class: 'ls-section ls-section--soft', id: 'booklet' },
+      elem('div', { class: 'ls-container' },
+        sectionHead('חוברת העבודה', `החוברת המלאה · ${TOTAL_PAGES} עמודים`,
+          'דפי עבודה, שעשועונים משולבים ותוכן עניינים צבעוני — להדפסה כ־A4 או לפתרון על המסך.'),
+        elem('div', { class: 'ls-pdfframe' },
+          elem('div', { class: 'ls-pdfframe__bar' },
+            elem('span', { class: 'ls-pdfframe__title', text: 'מערכת צירים — הרביע הראשון · חוברת עבודה' }),
+            elem('span', { class: 'ls-pdfframe__acts' }, openBtn, printBtn),
+          ),
+          elem('div', { class: 'ls-pdfframe__stage' }, coverLink),
+        ),
+      ),
+    ),
+  );
 
-  requestAnimationFrame(() => screen.classList.add('opening--in'));
-  return cleanup;
+  /* ---- footer ----------------------------------------------------------- */
+  root.append(
+    elem('footer', { class: 'ls-footer' },
+      elem('div', { class: 'ls-container ls-footer__inner' },
+        elem('span', { class: 'ls-footer__brand' },
+          badgeImg('ls-footer__logo'),
+          elem('span', { text: 'מערכת צירים ברביע הראשון — יחידת לימוד מתוקשבת' }),
+        ),
+        elem('span', { text: 'האתר מנוהל ע"י יניב רז · מדריך מחוזי חט"ב בעיר ירושלים' }),
+      ),
+    ),
+  );
+
+  outlet.append(root);
+  requestAnimationFrame(() => root.classList.add('landing--in'));
+
+  return () => { film.pause(); };
 }

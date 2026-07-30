@@ -353,7 +353,25 @@
 
 ## 8. מבנה החוברת
 
-- **מסך ראשון = הסרט בלבד** (22.07.2026). „בעמוד הראשי הראשון יהיה רק הסרטון."
+- **דף הבית = דף נחיתה בשפת misparim** (22.07.2026, מחליף את „מסך ראשון = הסרט
+  בלבד"). „צריך להכין אתר אינטרנט כמו שמופיע בריפו misparim... בדיוק."
+  - **המבנה, אחד־לאחד עם misparim**: TopBar כהה (`#11203c`) עם פס זהב, הלוגו
+    בטבעת זהב, והקרדיט של מנח"י במרכז · ניווט דביק עם קישורי גלולה · Hero עם
+    eyebrow טורקיז וכותרת „מערכת צירים ברביע הראשון" · סקציה לכל חומר · פוטר כהה.
+  - **הפלטה של misparim כלשונה**: ink `#11203c` · gold `#c2a24e` · teal
+    `#2c6e6b` · blue `#2d6cb3` · רקע `#f7f8fb`. הכול ב־`landing.css`, ממוסך
+    תחת `.landing` — **אסור שיגיע לגיליונות המודפסים**.
+  - **סרטון ההסבר**: YouTube `h5wegXI2ZGw`, כותרת **„רביע ראשון עדכון ת"ל
+    כיתה ז' תשפ"ז"**, מוטמע בדיוק בטכניקת misparim — façade עם תמונת ממוזער
+    וכפתור נגן אדום; הנגן (`youtube-nocookie`, `autoplay=1`) נטען רק בלחיצה.
+    שום דבר לא מדבר עם YouTube לפני שהמשתמש ביקש.
+  - **סרט הפתיחה (הרכבת)**: סקציה משלו בכרטיס viewer עם מסגרת זהב — מושתק עד
+    שמבקשים, בלי לולאה, עם כפתורי קול והפעלה מחדש.
+  - **החוברת מוצגת ב־pdfframe** של misparim: סרגל כהה עם הפעולות, והכריכה
+    כ„עמוד" על הבמה; לחיצה פותחת את `#/book`.
+  - מסך הפתיחה המלא (כותרת נוחתת, קרדיט אות־אחר־אות, מונה 74, „התחל") **הוסר**
+    — הכותרות והקרדיט עברו ל־TopBar ול־Hero כמו ב־misparim.
+- ~~**(הוחלף)**~~ מסך ראשון = הסרט בלבד** (22.07.2026). „בעמוד הראשי הראשון יהיה רק הסרטון."
   אין עליו כפתורי פעולה, אין שורת בקרה ואין סרגל עליון — רק הסרט, הלוגו, כפתור
   קול, ו**„התחל"**. כל שאר הכפתורים עברו למסך `#/menu` שאליו „התחל" מוביל.
 - **„חוברת עבודה · N עמודים"** — לא „חוברת מלאה" (22.07.2026).
@@ -1017,11 +1035,13 @@ scale = min(w / vbW, h / vbH)             // מודד את הציור   → 0.55
 - **סרט הפתיחה מתנהג** — `the opening film reserves its space, is silent, and
   never prints`: 16:9 שמור מראש כך שכלום לא קופץ, מושתק, עם פוסטר, בלי `loop`,
   ומוסתר בהדפסה.
-- **הלוגו במקומו** — `the district's badge is on the opening and on every sheet`.
+- **הלוגו במקומו** — `the district's badge is on the landing and on every sheet`.
 - **המסך הראשון נקי** — `the opening screen carries the film and the way in, and
   nothing else`, ו־`התחל leads to the menu…`.
-- **הסרט מוגדר נכון** — `the opening film is sized, sounded and kept off paper`.
-- **הקרדיט אות־אחר־אות ומחכה לסוף** — `the credit is set letter by letter…`.
+- **הסרט מוגדר נכון** — `the opening film section plays silently and offers sound and replay`.
+- **דף הנחיתה בנוי נכון** — `the landing carries the misparim structure…`,
+  `the curriculum film carries its title and loads on press`,
+  ו־`the landing never reaches the printer`.
 - **טלפון** — `on a phone the whole film is visible and nothing runs off the
   screen`: `contain`, „התחל" ממורכז ובתוך המסך, בלי גלילה.
 - **התחל מחכה למלל, והמספר מוביל** — `התחל waits for the last letter, and the

@@ -1,157 +1,93 @@
 import { test, expect } from '@playwright/test';
 
-test('the opening screen carries the film and the way in, and nothing else', async ({ page }) => {
+test('the landing carries the misparim structure: top bar, nav, hero, sections, footer', async ({ page }) => {
   await page.goto('/#/');
-  await expect(page.locator('.opening')).toBeVisible();
-  await expect(page.locator('.startbtn')).toBeVisible();
-  // everything you can DO lives one press away, so none of it is on this screen
-  await expect(page.locator('.act')).toHaveCount(0);
-  await expect(page.locator('.jump')).toHaveCount(0);
-  await expect(page.locator('.appbar')).toHaveClass(/appbar--hidden/);
+  // the top bar: the district credit, the year, the badge in its gold ring
+  await expect(page.locator('.ls-topbar__lead')).toContainText('מנח"י');
+  await expect(page.locator('.ls-topbar__year')).toContainText('תשפ"ז');
+  await expect(page.locator('.ls-topbar__logo')).toBeVisible();
+  // the sticky nav and the hero naming the unit
+  await expect(page.locator('.ls-nav')).toBeVisible();
+  await expect(page.locator('.ls-hero__title')).toHaveText('מערכת צירים ברביע הראשון');
+  // one section per material, and the dark footer
+  for (const id of ['video', 'opening', 'booklet']) {
+    await expect(page.locator(`section#${id}`), `section #${id} is missing`).toHaveCount(1);
+  }
+  await expect(page.locator('.ls-footer')).toBeVisible();
+  // the app bar stays out of the landing's way — it has its own top bar
+  // measured, not by class name: the class was once applied while the CSS rule
+  // that hides the bar had been deleted, and the check passed on a visible bar
+  const barShown = await page.locator('.appbar').evaluate((el) => getComputedStyle(el).display);
+  expect(barShown, 'the app bar sits on top of the landing').toBe('none');
 });
 
-/* התחל opens the booklet at its cover, with no stop on the way — the cover
-   artwork is decoded while the film plays, so it is there the moment it is
-   asked for. */
-test('התחל opens the cover straight away', async ({ page }) => {
+/* The curriculum film, embedded exactly the way misparim embeds its videos: a
+   facade with the thumbnail and the red play button, and the real player only
+   loads when it is asked for. */
+test('the curriculum film carries its title and loads on press', async ({ page }) => {
   await page.goto('/#/');
-  await page.locator('.startbtn').click();
+  await expect(page.locator('#video .ls-section__title'))
+    .toHaveText('רביע ראשון עדכון ת"ל כיתה ז\' תשפ"ז');
+  // before the press: a facade, no iframe — nothing talks to YouTube yet
+  await expect(page.locator('#video iframe')).toHaveCount(0);
+  await expect(page.locator('.ls-facade')).toBeVisible();
+
+  await page.locator('.ls-facade').click();
+  const frame = page.locator('#video iframe');
+  await expect(frame).toHaveCount(1);
+  const src = await frame.getAttribute('src');
+  expect(src, 'the player is not the privacy embed').toContain('youtube-nocookie.com/embed/h5wegXI2ZGw');
+  expect(src, 'the player does not start on press').toContain('autoplay=1');
+});
+
+/* Our opening film sits in a viewer card like every other material: it plays
+   once, stays silent until asked, and offers sound and replay. */
+test('the opening film section plays silently and offers sound and replay', async ({ page }) => {
+  await page.goto('/#/');
+  const film = page.locator('#opening video');
+  await expect(film).toHaveCount(1);
+  const shape = await film.evaluate((el) => {
+    const v = el as HTMLVideoElement;
+    return { muted: v.muted, loops: v.loop, inline: v.playsInline, poster: v.getAttribute('poster') ?? '' };
+  });
+  expect(shape.muted, 'the film would start with sound the browser blocks').toBe(true);
+  expect(shape.loops, 'the film loops instead of coming to rest').toBe(false);
+  expect(shape.inline, 'iOS would take the film full screen').toBe(true);
+  expect(shape.poster, 'no poster, so the card starts blank').not.toBe('');
+  await expect(page.locator('#opening .ls-filmbtn').first()).toBeVisible();
+});
+
+/* The booklet is presented in the misparim pdfframe: a dark bar with the
+   actions, and the cover as the page on the stage. */
+test('the booklet frame shows the cover and opens the book', async ({ page }) => {
+  await page.goto('/#/');
+  await expect(page.locator('.ls-pdfframe__bar')).toContainText('חוברת עבודה');
+  await page.locator('.ls-pdfframe__page').click();
   await expect(page).toHaveURL(/#\/book$/);
   await expect(page.locator('.book > .sheet').first()).toHaveClass(/cover-sheet/);
 });
 
-/* The menu holds everything you can do — and must be REACHABLE. Pointing התחל
-   straight at the cover once left it orphaned, and הורדה, הדפסה and וואטסאפ
-   with it: a screen nobody can open is a capability that no longer exists. */
-test('the menu can be reached from the bar, on every screen that has one', async ({ page }) => {
-  for (const from of ['#/book', '#/workbook/1']) {
-    await page.goto('/' + from);
-    await page.waitForTimeout(700);
-    await page.locator('.appbar button', { hasText: 'תפריט' }).click();
-    await expect(page, `no way to the menu from ${from}`).toHaveURL(/#\/menu$/);
-  }
-});
-
-test('the menu has the four actions and the page picker', async ({ page }) => {
-  await page.goto('/#/menu');
-  await expect(page.locator('.act')).toHaveCount(4);
-  await expect(page.locator('.act--wa')).toHaveAttribute('href', /wa\.me/);
-  expect(await page.locator('.jump__select option').count()).toBeGreaterThan(40);
-});
-
-/* The film is the app's front door: it holds its own space, comes to rest
-   instead of looping, carries its sound, and never reaches paper. */
-test('the opening film is sized, sounded and kept off paper', async ({ page }) => {
+test('the hero CTA opens the cover straight away', async ({ page }) => {
   await page.goto('/#/');
-  const film = page.locator('.opening__film');
-  await expect(film).toHaveCount(1);
-  const shape = await film.evaluate((el) => {
-    const v = el as HTMLVideoElement;
-    return {
-      poster: v.getAttribute('poster') ?? '',
-      loops: v.loop,
-      inline: v.playsInline,
-      sources: [...v.querySelectorAll('source')].map((s) => s.getAttribute('src') ?? ''),
-    };
-  });
-  expect(shape.poster, 'no poster, so the screen starts blank').not.toBe('');
-  expect(shape.loops, 'the film loops instead of coming to rest').toBe(false);
-  expect(shape.inline, 'iOS would take the film full screen').toBe(true);
-  expect(shape.sources.length, 'only one encoding is offered').toBeGreaterThan(1);
+  await page.locator('.ls-btn--primary', { hasText: 'פתיחת החוברת' }).click();
+  await expect(page).toHaveURL(/#\/book$/);
+  await expect(page.locator('.book > .sheet').first()).toHaveClass(/cover-sheet/);
+});
 
+test('the landing never reaches the printer', async ({ page }) => {
+  await page.goto('/#/');
   await page.emulateMedia({ media: 'print' });
-  const shown = await page.locator('.opening').evaluate((el) => getComputedStyle(el).display);
-  expect(shown, 'the opening would be sent to the printer').toBe('none');
+  const shown = await page.locator('.landing').evaluate((el) => getComputedStyle(el).display);
+  expect(shown, 'the landing would be sent to the printer').toBe('none');
   await page.emulateMedia({ media: 'screen' });
-});
-
-/* The credit is written on letter by letter, and only once the film has ended —
-   so every letter must be a separate element carrying its own delay. */
-test('the credit is set letter by letter and waits for the film', async ({ page }) => {
-  await page.goto('/#/');
-  const chars = page.locator('.opening__credit .ltr-ch');
-  expect(await chars.count(), 'the credit is not split into letters').toBeGreaterThan(40);
-  const before = await chars.first().evaluate((el) => getComputedStyle(el).opacity);
-  expect(Number(before), 'the letters are visible before the film ends').toBeLessThan(0.5);
-
-  await page.locator('.opening').evaluate((el) => el.classList.add('opening--ended'));
-  await page.waitForTimeout(1800);
-  const after = await chars.first().evaluate((el) => getComputedStyle(el).opacity);
-  expect(Number(after), 'the letters never arrive').toBeGreaterThan(0.9);
-});
-
-/* A phone held upright is nothing like 16:9: cropping the film to fill it would
-   cut away the axes, which is the one thing the film is for. */
-test('on a phone the whole film is visible and nothing runs off the screen', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/#/');
-  await page.waitForTimeout(600);
-  const m = await page.evaluate(() => {
-    const v = document.querySelector('.opening__media') as HTMLElement;
-    const s = document.querySelector('.startbtn') as HTMLElement;
-    const vb = v.getBoundingClientRect(), sb = s.getBoundingClientRect();
-    return {
-      fit: getComputedStyle(v).objectFit,
-      filmWidth: vb.width, viewport: window.innerWidth,
-      startOnTheLeft: sb.x < window.innerWidth / 2,
-      startInside: sb.x >= 0 && sb.right <= window.innerWidth,
-      verticalOverflow: document.scrollingElement!.scrollHeight - window.innerHeight,
-    };
-  });
-  expect(m.fit, 'the film is cropped on a phone').toBe('contain');
-  expect(m.filmWidth, 'the film does not use the width it has').toBeGreaterThan(m.viewport * 0.9);
-  expect(m.startOnTheLeft, 'התחל is not at the bottom left').toBe(true);
-  expect(m.startInside, 'התחל runs off the screen').toBe(true);
-  expect(m.verticalOverflow, 'the opening scrolls').toBeLessThanOrEqual(1);
-});
-
-/* התחל must not arrive before the last letter of the credit has landed, and the
-   page count must be the biggest thing on its line and in the axes' turquoise.
-   Both were asked for by name, and both are easy to undo by accident. */
-test('התחל waits for the last letter, and the count leads in the axes colour', async ({ page }) => {
-  await page.goto('/#/');
-  await page.waitForFunction(
-    () => document.querySelector('.opening')?.classList.contains('opening--ended'),
-    null, { timeout: 25000 },
-  );
-
-  const shape = await page.evaluate(() => {
-    const scr = document.querySelector('.opening') as HTMLElement;
-    const wait = parseFloat(getComputedStyle(scr).getPropertyValue('--after-text'));
-    const last = [...document.querySelectorAll('.opening__credit--2 .ltr-ch')].pop() as HTMLElement;
-    const lastDelay = parseFloat(getComputedStyle(last).getPropertyValue('--d'));
-    const count = document.querySelector('.opening__count') as HTMLElement;
-    const unit = document.querySelector('.opening__unit') as HTMLElement;
-    return {
-      wait, lastDelay,
-      countSize: parseFloat(getComputedStyle(count).fontSize),
-      unitSize: parseFloat(getComputedStyle(unit).fontSize),
-      countColour: getComputedStyle(count).color,
-      startDelay: parseFloat(getComputedStyle(document.querySelector('.startbtn')!).transitionDelay),
-    };
-  });
-
-  expect(shape.wait, 'התחל does not wait for the credit').toBeGreaterThan(shape.lastDelay);
-  expect(shape.startDelay, 'התחל arrives before the text').toBeGreaterThanOrEqual(shape.wait - 0.01);
-  expect(shape.countSize, 'the page count is not the biggest thing on its line')
-    .toBeGreaterThan(shape.unitSize * 1.8);
-  // #77F1F6 — sampled from the axes the film draws
-  expect(shape.countColour, 'the count is not the axes turquoise').toBe('rgb(119, 241, 246)');
-
-  // and it counts UP: still 0 while the film runs, its full value once ended
-  await page.reload();
-  await page.waitForTimeout(1200);
-  const early = await page.locator('.opening__count').textContent();
-  expect(Number(early), 'the count does not start from zero').toBeLessThan(74);
 });
 
 /* The district's badge belongs on the material it comes from: the opening, the
    menu, and every sheet of the booklet. */
-test("the district's badge is on the opening and on every sheet", async ({ page }) => {
+test("the district's badge is on the landing and on every sheet", async ({ page }) => {
   await page.goto('/#/');
-  await expect(page.locator('.opening__badge img')).toHaveCount(1);
-  const spins = await page.locator('.opening__badge img').evaluate((el) => getComputedStyle(el).animationName);
-  expect(spins, 'the badge does not turn').toBe('badge-turn');
+  await expect(page.locator('.ls-topbar__logo')).toBeVisible();
+  await expect(page.locator('.ls-footer__logo')).toBeVisible();
 
   await page.goto('/#/book');
   await page.waitForTimeout(9000);

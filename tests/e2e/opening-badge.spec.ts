@@ -1,30 +1,19 @@
 import { test, expect } from '@playwright/test';
 
-test('on a tall screen the district badge stays outside the film', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
+/* The district badge must stand clear of the film — the invariant this file has
+   always guarded. On the landing the badge lives in the dark top bar and the
+   film in its own section card, so they must be visible and disjoint on every
+   viewport, the tall phone included. */
+test('the district badge stays outside the film', async ({ page }) => {
   await page.goto('/#/');
-  await page.waitForTimeout(700);
-
-  const layout = await page.evaluate(() => {
-    const badge = document.querySelector('.opening__badge img') as HTMLElement;
-    const stage = document.querySelector('.opening__stage') as HTMLElement;
-    const sound = document.querySelector('.soundbtn') as HTMLElement;
-    const b = badge.getBoundingClientRect();
-    const s = stage.getBoundingClientRect();
-    const c = sound.getBoundingClientRect();
-    const overlaps = (a: DOMRect, other: DOMRect): boolean =>
-      a.left < other.right && a.right > other.left && a.top < other.bottom && a.bottom > other.top;
-
-    return {
-      gapFromFilm: s.top - b.bottom,
-      badgeTouchesFilm: overlaps(b, s),
-      badgeTouchesSound: overlaps(b, c),
-      verticalOverflow: document.scrollingElement!.scrollHeight - window.innerHeight,
-    };
-  });
-
-  expect(layout.badgeTouchesFilm, 'the district badge still covers the film').toBe(false);
-  expect(layout.gapFromFilm, 'there is no clear gap between the badge and film').toBeGreaterThanOrEqual(8);
-  expect(layout.badgeTouchesSound, 'the badge collides with the sound control').toBe(false);
-  expect(layout.verticalOverflow, 'moving the badge created opening-screen scroll').toBeLessThanOrEqual(1);
+  const badge = page.locator('.ls-topbar__logo');
+  const film = page.locator('#opening .ls-viewer');
+  await expect(badge).toBeVisible();
+  await expect(film).toBeVisible();
+  const [b, f] = await Promise.all([badge.boundingBox(), film.boundingBox()]);
+  expect(b && f, 'badge or film not measurable').toBeTruthy();
+  const overlap =
+    b!.x < f!.x + f!.width && f!.x < b!.x + b!.width &&
+    b!.y < f!.y + f!.height && f!.y < b!.y + b!.height;
+  expect(overlap, 'the badge overlaps the film').toBe(false);
 });
