@@ -69,9 +69,9 @@
 
 ## מה עדיין חסר
 
-**חיבור Vercel.** דורש את החשבון של יניב — פעולה אחת בדפדפן: `vercel.com` →
-Add New Project → Import את `yanivmizrachiy/coordinate-first-quadrant` → Deploy.
-`vercel.json` כבר בריפו ועונה על הכול.
+**כלום.** חיבור Vercel בוצע (22.07.2026): הפרויקט מקושר לחשבון
+`yanivs-projects-322b2b37`, ריפו GitHub מחובר לפריסה אוטומטית בכל push,
+והייצור חי ב־https://coordinate-first-quadrant.vercel.app — לצד GitHub Pages.
 
 ## הפעלה
 
