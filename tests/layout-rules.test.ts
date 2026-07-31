@@ -37,8 +37,13 @@ describe('nothing is silently cut off the page', () => {
     // `.sheet` is re-declared further down the file; a single-class override
     // loses on source order and the board gets cut mid-question.
     expect(css).toContain('.sheet.game-sheet { height: auto;');
-    expect(css).toContain('.sheet.game-sheet .gz-footer');
     expect(css).not.toMatch(/^\.game-sheet \{/m);
+    /* הכותרת התחתונה מוצמדת בכל סוג עמוד — „כמו ספר לימוד" (31.07.2026).
+       דריסת static על שעשועונים/פוסטרים היא בדיוק מה שיצר את חוסר האחידות
+       בעמודים 22–23, ואסור שתחזור. הריפוד התחתון שומר על הלוח מתחתיה. */
+    expect(css).not.toContain('.sheet.game-sheet .gz-footer');
+    expect(css).not.toContain('.sheet.poster-sheet .gz-footer { position: static');
+    expect(css).toContain('.sheet.game-sheet { padding-bottom:');
   });
 });
 

@@ -105,22 +105,28 @@
    fixed A4 box. On a phone the sheet keeps its width but not its height, and a
    fixed height left the poster as a narrow strip adrift in a tall white page —
    which is why Yaniv could not find it on his phone. */
-/* ריפוד תחתון: בלי הוא, השורה השנייה של הכותרת התחתונה הקנונית נחתכה על
-   עמודי הפוסטר (עמוד 16) — כלל ברזל: כותרת תחתית אחידה ושלמה בכל עמוד. */
-.sheet.poster-sheet { padding: 6mm 6mm 3mm; height: auto; min-height: 0; }
+/* כלל ברזל — כמו ספר לימוד: הכותרת התחתונה יושבת באותו מקום בדיוק בכל
+   עמוד. גם עמוד פוסטר שומר גובה A4, האמנות מוגבלת כך שלעולם לא תיגע
+   בכותרת, והכותרת מוצמדת לתחתית כמו בכל דף אחר. */
+.sheet.poster-sheet { padding: 6mm 6mm 20mm; height: auto; min-height: 297mm; }
 .sheet.poster-sheet .sheet-content { padding: 0; height: auto; }
-/* The artwork is shown exactly as Yaniv supplied it — no crop, no header,
-   nothing of ours over it. object-fit keeps it from ever being stretched.
-   Only the page number is added, in the corner, so the sheet can be found. */
+/* The artwork is shown exactly as Yaniv supplied it — no crop, no stretch —
+   centred, and CAPPED so it can never reach the pinned footer, even on the
+   fixed-height printed page. auto width + the two max-* keep the ratio. */
 .sheet.poster-sheet .sheet-content { position: relative; }
-.sheet.poster-sheet .poster { display: block; width: 100%; height: auto; }
+.sheet.poster-sheet .poster {
+  display: block; width: auto; height: auto;
+  max-width: 100%; max-height: 268mm; margin-inline: auto;
+}
 /* משמאל למעלה — „מספר העמוד צריך להופיע משמאל למעלה ולא למטה" (30.07.2026). */
 .poster-number { position: absolute; left: 3mm; top: 3mm; }
-.sheet.poster-sheet .gz-footer { position: static; margin-top: 2mm; }
+/* אין דריסה — הכותרת התחתונה נשארת מוצמדת, כמו בכל עמוד. */
 
 .sheet.game-sheet { height: auto; min-height: 297mm; overflow: visible; }
 .sheet.game-sheet .sheet-content { display: block; }
-.sheet.game-sheet .gz-footer { position: static; margin-top: 10mm; }
+/* גם על דף שעשועון שגדל מעבר ל-A4 הכותרת מוצמדת לתחתית הדף — אותו מקום,
+   אותם שוליים; הריפוד שומר שהלוח לא ירוץ מתחתיה. */
+.sheet.game-sheet { padding-bottom: 20mm; }
 .game-host { min-height: 150mm; }
 .game-host > * { max-width: 100%; }
 /* No sub-13px text anywhere on a sheet, including game-rendered markup. */

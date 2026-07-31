@@ -890,24 +890,37 @@ test('the origin is never labelled twice', async ({ page }, testInfo) => {
 /* עמוד 16 לימד: הפוסטר מילא את כל ה-A4 ודחף את השורה השנייה של הכותרת
    התחתונה אל מחוץ לגיליון. כלל ברזל — כותרת תחתית אחידה ושלמה בכל עמוד —
    נמדד עכשיו על כל 76 הגיליונות, מסך והדפסה. */
-test('the canonical footer sits whole on every sheet', async ({ page }, testInfo) => {
+test('the canonical footer sits whole — and in the SAME place — on every sheet', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
   await page.goto('/#/print');
   await page.waitForTimeout(9000);
   for (const media of ['screen', 'print'] as const) {
     await page.emulateMedia({ media });
-    const cut = await page.evaluate(() =>
-      [...document.querySelectorAll('.book > .sheet')].flatMap((sheet) => {
+    const faults = await page.evaluate(() => {
+      const out: string[] = [];
+      const geo: Array<{ n: string; up: number; left: number; right: number }> = [];
+      for (const sheet of document.querySelectorAll('.book > .sheet')) {
         const n = sheet.querySelector('.sheet-number')?.textContent?.trim() ?? '(cover)';
         const f = sheet.querySelector('.gz-footer');
-        if (!f) return sheet.classList.contains('cover-sheet') ? [] : [`page ${n}: no footer`];
+        if (!f) { if (!sheet.classList.contains('cover-sheet')) out.push(`page ${n}: no footer`); continue; }
         const fr = f.getBoundingClientRect();
         const sr = sheet.getBoundingClientRect();
-        if (!fr.height) return [`page ${n}: footer collapsed`];
-        return fr.bottom > sr.bottom + 1 ? [`page ${n}: footer clipped (${Math.round(fr.bottom - sr.bottom)}px past the sheet)`] : [];
-      }),
-    );
-    expect(cut, `${media}: ${cut.join(' | ')}`).toEqual([]);
+        if (!fr.height) { out.push(`page ${n}: footer collapsed`); continue; }
+        if (fr.bottom > sr.bottom + 1) out.push(`page ${n}: footer clipped`);
+        geo.push({ n, up: sr.bottom - fr.bottom, left: fr.left - sr.left, right: sr.right - fr.right });
+      }
+      /* אחידות של 100% — „כמו ספר לימוד": אותו מרחק מהתחתית ואותם שוליים
+         בכל עמוד, פוסטרים ושעשועונים בכלל זה. נמדד מול העמוד הראשון. */
+      const base = geo[0];
+      if (base) {
+        for (const g of geo) {
+          if (Math.abs(g.up - base.up) > 2) out.push(`page ${g.n}: footer height differs (${Math.round(g.up)} vs ${Math.round(base.up)})`);
+          if (Math.abs(g.left - base.left) > 2 || Math.abs(g.right - base.right) > 2) out.push(`page ${g.n}: footer insets differ`);
+        }
+      }
+      return [...new Set(out)];
+    });
+    expect(faults, `${media}: ${faults.join(' | ')}`).toEqual([]);
   }
   await page.emulateMedia({ media: 'screen' });
 });
