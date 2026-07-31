@@ -64,3 +64,6 @@ export { GRAPH_SQUARE_AREA } from './graph-square-area';
 export { GRAPH_CONSTANT_RATE } from './graph-constant-rate';
 export { GRAPH_TWO_SERIES } from './graph-two-series';
 export { GRAPH_OWN_DATA } from './graph-own-data';
+export { RULE_TO_GRAPH } from './rule-to-graph';
+export { SHAPES_CLAIMS } from './shapes-claims';
+export { LIFE_PARK_MAP } from './life-park-map';

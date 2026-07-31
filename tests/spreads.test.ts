@@ -7,9 +7,9 @@ import {
 /* The spread model is the flipbook's arithmetic: which page sits on which half,
    in a HEBREW book — evens on the right, odds on the left, the leaf turning to
    the right. It came from the zaviyot project with its tests' intent; these are
-   ours against our totals (76 = cover + contents + 74 pages). */
+   ours against our totals (79 = cover + contents + 77 pages). */
 
-const TOTAL = 76;
+const TOTAL = 79;
 
 describe('the flipbook spread model', () => {
   it('closed front shows page 1 alone on the left half', () => {
@@ -22,9 +22,11 @@ describe('the flipbook spread model', () => {
     expect(pagesAtSpread(10, TOTAL)).toEqual({ right: { kind: 'page', page: 20 }, left: { kind: 'page', page: 21 } });
   });
 
-  it('the last open spread pairs the final page with the colophon', () => {
+  it('the last open spread closes an odd book with a blank verso and the colophon', () => {
     const last = lastOpenSpread(TOTAL);
-    expect(pagesAtSpread(last, TOTAL)).toEqual({ right: { kind: 'page', page: 76 }, left: { kind: 'back-inner' } });
+    expect(pagesAtSpread(last, TOTAL)).toEqual({ right: { kind: 'blank' }, left: { kind: 'back-inner' } });
+    // …and the final pages still sit together on the spread before it.
+    expect(pagesAtSpread(last - 1, TOTAL)).toEqual({ right: { kind: 'page', page: 78 }, left: { kind: 'page', page: 79 } });
   });
 
   it('past the colophon there is only the closed back cover', () => {

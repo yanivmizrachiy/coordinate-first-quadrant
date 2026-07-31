@@ -238,7 +238,7 @@ test('the contents sheet lists every chapter and each button reaches its page', 
   const starts = await buttons.evaluateAll((els) =>
     els.map((e) => Number((e.getAttribute('aria-label') ?? '').match(/בעמוד (\d+)/)?.[1] ?? 0)),
   );
-  expect(starts, 'the contents point at the wrong pages').toEqual([1, 12, 29, 50, 60]);
+  expect(starts, 'the contents point at the wrong pages').toEqual([1, 12, 29, 51, 63]);
   const ranged = await buttons.evaluateAll((els) => els.filter((e) => /[–-]/.test(e.textContent ?? '')).length);
   expect(ranged, 'a chip still shows a page range instead of the starting page').toBe(0);
 
@@ -273,7 +273,7 @@ test('the contents sheet lists every chapter and each button reaches its page', 
   expect(faint, `a page number is too faint to read: ${faint.join(', ')}`).toEqual([]);
 
   /* Every chip opens the page it names, straight away. */
-  for (const [i, n] of [1, 12, 29, 50, 60].entries()) {
+  for (const [i, n] of [1, 12, 29, 51, 63].entries()) {
     await page.goto('/#/print');
     await page.waitForTimeout(3500);
     await page.locator('.toc-btn').nth(i).click();
@@ -526,7 +526,7 @@ test('a picker preset chooses a whole chapter', async ({ page }) => {
   await page.locator('.pick__chip', { hasText: 'מושגים בסיסיים' }).click();
   await expect(page.locator('.pick__count')).toHaveText('נבחרו 11 עמודים');
   await page.locator('.pick__chip', { hasText: 'כל החוברת' }).click();
-  await expect(page.locator('.pick__count')).toHaveText('נבחרו 74 עמודים');
+  await expect(page.locator('.pick__count')).toHaveText('נבחרו 77 עמודים');
   await page.locator('.pick__chip', { hasText: 'ניקוי הבחירה' }).click();
   await expect(page.locator('.pick__count')).toHaveText('לא נבחרו עמודים');
 });
@@ -548,7 +548,7 @@ test('the reading bars speak the zaviyot button language', async ({ page }) => {
   expect(navy, 'the bar lost the navy of the zaviyot bars').toBe('rgb(22, 35, 63)');
 
   await page.goto('/#/workbook/5');
-  await expect(page.locator('.wsbar__title')).toHaveText('דף עבודה מספר 5 מתוך 74');
+  await expect(page.locator('.wsbar__title')).toHaveText('דף עבודה מספר 5 מתוך 77');
   await expect(page.locator('.wsbar__nav .btn')).toHaveCount(2);
   // the way to the next page lives at the BOTTOM too — under the thumb
   await expect(page.locator('.pagenav .btn', { hasText: 'הבא' })).toBeVisible();

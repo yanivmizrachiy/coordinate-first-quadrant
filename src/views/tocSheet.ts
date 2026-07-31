@@ -16,8 +16,8 @@ export const CONTENTS: ReadonlyArray<{ title: string; page: number }> = [
   { title: 'הרביע הראשון — מושגים בסיסיים', page: 1 },
   { title: 'נקודות במערכת הצירים', page: 12 },
   { title: 'קטעים מקבילים לצירים', page: 29 },
-  { title: 'שטחים והיקפים במערכת הצירים', page: 50 },
-  { title: 'קריאת גרפים ברביע הראשון', page: 60 },
+  { title: 'שטחים והיקפים במערכת הצירים', page: 51 },
+  { title: 'קריאת גרפים ברביע הראשון', page: 63 },
 ];
 import { DISTRICT_BADGE } from '../data/cover';
 
@@ -28,27 +28,6 @@ const PALETTE = [
   '#2962FF', '#00C853', '#FF6D00', '#D500F9', '#AA00FF',
   '#0091EA', '#FFD600', '#FF1744', '#00E5FF', '#64FFDA',
 ] as const;
-
-/** Yellow and the two cyans are too light to carry white type. */
-const PALE = new Set(['#FFD600', '#00E5FF', '#64FFDA']);
-
-/* The page number sits on a WHITE disc, inked in its chapter's own colour — and
-   a bright colour on white is not readable at 13px. Eight of the ten failed the
-   contrast bar, not the three I expected, so the ink is DERIVED rather than
-   hand-picked: darken the chapter's colour until it clears 4.5:1 on white. Any
-   palette Yaniv gives will work, without a second list to keep in step. */
-function inkOn(hex: string): string {
-  const rgb = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
-  const lin = (c: number): number => {
-    const v = c / 255;
-    return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
-  };
-  const ratio = (c: number[]): number =>
-    1.05 / (0.2126 * lin(c[0]!) + 0.7152 * lin(c[1]!) + 0.0722 * lin(c[2]!) + 0.05);
-  let ink = rgb;
-  for (let step = 0; step < 40 && ratio(ink) < 4.6; step++) ink = ink.map((c) => Math.round(c * 0.9));
-  return '#' + ink.map((c) => c.toString(16).padStart(2, '0')).join('');
-}
 
 /** The ink that sits ON the coloured tile itself: white where white reads,
     near-black where the tile is too bright to carry it. Measured, not guessed —
@@ -85,9 +64,9 @@ export function renderTocSheet(): HTMLElement {
     const colour = PALETTE[i % PALETTE.length]!;
     const first = topic.page;
     const btn = elem('button', {
-      class: 'toc-btn' + (PALE.has(colour) ? ' toc-btn--dark' : ''),
+      class: 'toc-btn',
       type: 'button',
-      style: `--toc-colour:${colour};--toc-ink:${inkOn(colour)};--toc-text:${textOn(colour)}`,
+      style: `--toc-colour:${colour};--toc-text:${textOn(colour)}`,
       'aria-label': `${topic.title}, מתחיל בעמוד ${first}`,
     },
       /* The tile IS the chapter's colour — „כל פרק במשבצת בצבע שונה". The

@@ -75,6 +75,9 @@ import {
   GRAPH_CONSTANT_RATE,
   GRAPH_TWO_SERIES,
   GRAPH_OWN_DATA,
+  RULE_TO_GRAPH,
+  SHAPES_CLAIMS,
+  LIFE_PARK_MAP,
 } from './pages';
 import { GAMES, type GameDefinition } from '../../games';
 import { FOOTER } from './authoring';
@@ -167,16 +170,21 @@ const BOOK: { id: string; title: string; slots: Slot[] }[] = [
     game('encrypted-route'), game('coordinate-maze'),
   ] },
   { id: 'missing', title: 'שיעור חסר ודפוסים', slots: [
-    MISSING_COORD_INTRO, MISSING_COORD_PRACTICE, game('coordinate-safe'),
+    // From a pattern the learner NAMES a rule; here the rule is GIVEN and the
+    // learner builds the table and the points — the same road, walked back.
+    MISSING_COORD_INTRO, MISSING_COORD_PRACTICE, RULE_TO_GRAPH, game('coordinate-safe'),
   ] },
   { id: 'errors', title: 'זיהוי ותיקון טעויות', slots: [
     ERRORS_INTRO, ERRORS_PRACTICE, game('suspect-point'),
   ] },
   { id: 'rect', title: 'מלבנים, ריבועים, היקף ושטח', slots: [
     RECTANGLES_INTRO, RECTANGLES_PRACTICE, RECTANGLES_VERTICES, SQUARES_INTRO, SQUARES_SUMMARY, SQUARES_PRACTICE,
+    // The chapter's closing sheet: claims that need everything above them —
+    // coordinates, moves, area and perimeter — and the counterexample craft.
+    SHAPES_CLAIMS,
   ] },
   { id: 'life', title: 'מערכת צירים בחיים שלנו', slots: [
-    LIFE_PHONE_SCREEN, LIFE_HALL_SEATS, LIFE_PIXEL_ART, LIFE_DELIVERY_ROUTE,
+    LIFE_PHONE_SCREEN, LIFE_HALL_SEATS, LIFE_PIXEL_ART, LIFE_DELIVERY_ROUTE, LIFE_PARK_MAP,
   ] },
   { id: 'graphs', title: 'קריאת גרפים ברביע הראשון', slots: [
     GRAPH_READING_INTRO, GRAPH_YEARS, GRAPH_SQUARE_AREA,

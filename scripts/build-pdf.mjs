@@ -16,8 +16,8 @@ const url = 'http://localhost:4177/#/print';
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1200, height: 1600 } });
 await page.goto(url, { waitUntil: 'networkidle' });
-// כל 76 הגיליונות (שער + תוכן + 74) חייבים להיות בעץ לפני שמודדים
-await page.waitForFunction(() => document.querySelectorAll('.book > .sheet').length >= 76, null, { timeout: 30_000 });
+// כל 79 הגיליונות (שער + תוכן + 77) חייבים להיות בעץ לפני שמודדים
+await page.waitForFunction(() => document.querySelectorAll('.book > .sheet').length >= 79, null, { timeout: 30_000 });
 // fitSheets מסיים לגדול אחרי הריצה הדחויה שלו
 await page.waitForTimeout(3_000);
 
