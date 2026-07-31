@@ -85,6 +85,12 @@ test('the opening film runs once on load, no buttons, and comes to rest', async 
 test('the booklet frame shows the cover and opens the book', async ({ page }) => {
   await page.goto('/#/');
   await expect(page.locator('.ls-pdfframe__bar')).toContainText('חוברת עבודה');
+  // „על החוברת למטה צריך להופיע במקום נוח כפתור ההתחל" — big, centred, under
+  // the cover, and it opens the booklet like the cover itself does
+  const start = page.locator('.ls-pdfframe__start');
+  await expect(start).toHaveText('התחל');
+  const [s2, c2] = await Promise.all([start.boundingBox(), page.locator('.ls-pdfframe__page').boundingBox()]);
+  expect(s2!.y, 'the start button is not under the cover').toBeGreaterThan(c2!.y + c2!.height - 4);
   await page.locator('.ls-pdfframe__page').click();
   await expect(page).toHaveURL(/#\/book$/);
   // the flipbook opens closed, the approved cover on its stage

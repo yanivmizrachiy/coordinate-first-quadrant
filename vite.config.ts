@@ -12,7 +12,11 @@ export default defineConfig({
     sourcemap: false,
   },
   server: {
-    port: 5173,
+    /* Two working sessions each start their own dev server on this repo; a
+       hard-coded 5173 means the second one dies on a taken port. The harness
+       assigns a free port through PORT (autoPort in .claude/launch.json);
+       5173 stays the default for a plain `npm run dev`. */
+    port: Number(process.env.PORT) || 5173,
     host: true,
   },
   preview: {

@@ -210,7 +210,11 @@
 }
 .ls-pdfframe__title { font-family: var(--ls-font-head); font-weight: 600; font-size: var(--ls-step-0); }
 .ls-pdfframe__acts { display: flex; gap: 8px; flex-wrap: wrap; }
-.ls-pdfframe__stage { background: #eef1f6; padding: 22px; display: grid; place-items: center; }
+.ls-pdfframe__stage { background: #eef1f6; padding: 22px 22px 26px; display: grid; place-items: center; gap: 18px; }
+/* „על החוברת למטה צריך להופיע במקום נוח כפתור ההתחל" — גדול, ממורכז, זהב,
+   מתחת לכריכה; אותו יעד כמו לחיצה על הכריכה עצמה. */
+.ls-pdfframe__startrow { display: flex; justify-content: center; }
+.ls-btn.ls-pdfframe__start { font-size: 22px; font-weight: 700; padding: 14px 72px; letter-spacing: .12em; }
 .ls-pdfframe__page {
   display: block; width: min(430px, 88%); border-radius: 8px; overflow: hidden;
   background: #fff; box-shadow: 0 8px 28px rgba(17, 32, 60, 0.2);
