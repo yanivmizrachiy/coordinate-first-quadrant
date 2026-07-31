@@ -60,9 +60,10 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
   root.append(
     elem('nav', { class: 'ls-nav', 'aria-label': 'ניווט בעמוד' },
       elem('div', { class: 'ls-container ls-nav__inner' },
+        /* „תמחק את הכפתור כל הפעולות — מיותר ממש" (31.07.2026): the nav keeps
+           only the two materials; the menu is reachable from the app itself. */
         navLink('סרטון עדכון ת"ל', toAnchor('video')),
         navLink('חוברת העבודה', toAnchor('booklet')),
-        navLink('כל הפעולות', () => navigate('#/menu')),
       ),
     ),
   );
