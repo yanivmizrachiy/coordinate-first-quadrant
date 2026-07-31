@@ -203,7 +203,7 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
   );
   coverLink.append(coverPic);
 
-  const openBtn = elem('button', { class: 'ls-btn ls-btn--gold', type: 'button', text: 'תצוגה מלאה' });
+  const openBtn = elem('button', { class: 'ls-btn ls-btn--gold', type: 'button', text: 'פתיחת החוברת' });
   openBtn.addEventListener('click', () => navigate('#/book'));
   const dlBtn = elem('button', { class: 'ls-btn ls-btn--ghost', type: 'button', text: '⬇ הורדה (PDF)' });
   dlBtn.addEventListener('click', downloadBooklet);
