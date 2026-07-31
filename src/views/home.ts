@@ -2,7 +2,8 @@ import { elem } from '../lib/dom';
 import { navigate } from '../router';
 import { TOTAL_PAGES } from '../data/workbook';
 import { APPROVED_COVER, OPENING_FILM, DISTRICT_BADGE } from '../data/cover';
-import { printPages } from '../lib/printPages';
+import { downloadBooklet } from '../lib/downloadPdf';
+import { openPrintChoice } from './printChoice';
 import type { ViewContext } from './context';
 
 /* ===========================================================================
@@ -60,7 +61,7 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
   root.append(
     elem('nav', { class: 'ls-nav', 'aria-label': 'ניווט בעמוד' },
       elem('div', { class: 'ls-container ls-nav__inner' },
-        navLink('סרטון ההסבר', toAnchor('video')),
+        navLink('סרטון עדכון ת"ל', toAnchor('video')),
         navLink('חוברת העבודה', toAnchor('booklet')),
         navLink('כל הפעולות', () => navigate('#/menu')),
       ),
@@ -76,33 +77,45 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
   const ctaVideo = elem('button', { class: 'ls-btn ls-btn--ghost', type: 'button', text: 'צפייה בסרטון' });
   ctaVideo.addEventListener('click', toAnchor('video'));
 
+  /* The film runs ONCE, with sound, every time the page comes up — no sound
+     button, no replay: „הסרטון ירוץ עם הקול פעם אחת בכל פעם שעולה העמוד…
+     אחרי שהסרטון ירוץ תישאר רק תמונה עומדת". A browser may refuse sound
+     before the user has touched the page; then the film still runs (muted),
+     and the very first touch anywhere turns the sound on mid-run. When it
+     ends, the finished coordinate system stands as a still picture. */
+  const filmBox = elem('div', { class: 'ls-viewer' });
   const film = elem('video', {
     class: 'ls-film',
     poster: OPENING_FILM.poster,
-    preload: 'metadata',
-    playsinline: '', muted: '', autoplay: '',
+    preload: 'auto',
+    playsinline: '', autoplay: '',
     'aria-label': OPENING_FILM.alt,
   }) as HTMLVideoElement;
-  film.muted = true;
   film.playsInline = true;
   film.append(
     elem('source', { src: OPENING_FILM.webm, type: 'video/webm' }),
     elem('source', { src: OPENING_FILM.mp4, type: 'video/mp4' }),
   );
 
-  const soundBtn = elem('button', { class: 'ls-filmbtn', type: 'button', 'aria-label': 'הפעלת הקול' },
-    elem('span', { 'aria-hidden': 'true', text: '🔇' }), elem('span', { text: 'הפעלת קול' }));
-  soundBtn.addEventListener('click', () => {
-    film.muted = !film.muted;
-    if (!film.muted) void film.play();
-    soundBtn.replaceChildren(
-      elem('span', { 'aria-hidden': 'true', text: film.muted ? '🔇' : '🔊' }),
-      ...(film.muted ? [elem('span', { text: 'הפעלת קול' })] : []),
-    );
-    soundBtn.setAttribute('aria-label', film.muted ? 'הפעלת הקול' : 'השתקת הקול');
+  const unmuteOnTouch = (): void => {
+    if (!film.paused && !film.ended) film.muted = false;
+  };
+  film.muted = false;
+  film.play().catch(() => {
+    film.muted = true;
+    void film.play().catch(() => { /* the poster stands */ });
+    window.addEventListener('pointerdown', unmuteOnTouch, { once: true });
   });
-  const replayBtn = elem('button', { class: 'ls-filmbtn ls-filmbtn--replay', type: 'button', 'aria-label': 'הצגה מחדש', text: '↻' });
-  replayBtn.addEventListener('click', () => { film.currentTime = 0; void film.play(); });
+
+  film.addEventListener('ended', () => {
+    const still = elem('picture', {});
+    still.append(
+      elem('source', { srcset: OPENING_FILM.still, type: 'image/webp' }),
+      elem('img', { class: 'ls-film', src: OPENING_FILM.stillFallback, alt: OPENING_FILM.alt, decoding: 'async' }),
+    );
+    filmBox.replaceChildren(still);
+  });
+  filmBox.append(film);
 
   root.append(
     elem('section', { class: 'ls-hero', id: 'opening' },
@@ -118,10 +131,7 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
           elem('h1', { class: 'ls-hero__title', text: 'מערכת צירים ברביע הראשון' }),
           elem('div', { class: 'ls-hero__actions' }, ctaBook, ctaVideo),
         ),
-        elem('div', { class: 'ls-hero__film ls-reveal' },
-          elem('div', { class: 'ls-viewer' }, film, soundBtn, replayBtn),
-          elem('p', { class: 'ls-hero__filmcap', text: 'רכבת קלה בירושלים, ומעליה מערכת הצירים משרטטת את עצמה — הצירים, ואז הנקודות (2,3), (3,1), (4,5) ו־(5,2).' }),
-        ),
+        elem('div', { class: 'ls-hero__film ls-reveal' }, filmBox),
       ),
     ),
   );
@@ -156,8 +166,10 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
     '<path d="M27 34.5l18-10.5-18-10.5z" fill="#fff"/></svg>';
   facade.append(thumb, play);
   facade.addEventListener('click', () => {
+    /* cc_load_policy=1 turns the video's Hebrew captions on inside the embed
+       itself — „הכתוביות ניתן יהיה לראות גם בסרטון המוטמע". */
     const frame = elem('iframe', {
-      src: `https://www.youtube-nocookie.com/embed/${YOUTUBE_ID}?autoplay=1&rel=0`,
+      src: `https://www.youtube-nocookie.com/embed/${YOUTUBE_ID}?autoplay=1&rel=0&cc_load_policy=1&cc_lang_pref=iw&hl=iw`,
       title: YOUTUBE_TITLE,
       allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share',
       allowfullscreen: '',
@@ -193,8 +205,10 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
 
   const openBtn = elem('button', { class: 'ls-btn ls-btn--gold', type: 'button', text: 'תצוגה מלאה' });
   openBtn.addEventListener('click', () => navigate('#/book'));
-  const printBtn = elem('button', { class: 'ls-btn ls-btn--ghost', type: 'button', text: 'הדפסה' });
-  printBtn.addEventListener('click', () => printPages('all'));
+  const dlBtn = elem('button', { class: 'ls-btn ls-btn--ghost', type: 'button', text: '⬇ הורדה (PDF)' });
+  dlBtn.addEventListener('click', downloadBooklet);
+  const printBtn = elem('button', { class: 'ls-btn ls-btn--ghost', type: 'button', text: '🖨 הדפסה' });
+  printBtn.addEventListener('click', () => openPrintChoice('all'));
 
   root.append(
     elem('section', { class: 'ls-section ls-section--soft', id: 'booklet' },
@@ -204,7 +218,7 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
         elem('div', { class: 'ls-pdfframe' },
           elem('div', { class: 'ls-pdfframe__bar' },
             elem('span', { class: 'ls-pdfframe__title', text: 'מערכת צירים — הרביע הראשון · חוברת עבודה' }),
-            elem('span', { class: 'ls-pdfframe__acts' }, openBtn, printBtn),
+            elem('span', { class: 'ls-pdfframe__acts' }, openBtn, dlBtn, printBtn),
           ),
           elem('div', { class: 'ls-pdfframe__stage' }, coverLink),
         ),
@@ -228,5 +242,8 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
   outlet.append(root);
   requestAnimationFrame(() => root.classList.add('landing--in'));
 
-  return () => { film.pause(); };
+  return () => {
+    film.pause();
+    window.removeEventListener('pointerdown', unmuteOnTouch);
+  };
 }

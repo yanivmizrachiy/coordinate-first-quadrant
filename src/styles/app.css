@@ -236,7 +236,9 @@
 }
 .pagenav {
   position: sticky; bottom: 0; z-index: 40;
-  display: flex; align-items: center; justify-content: center; gap: 10px;
+  /* wrap: הקודם/הבא החדשים הוסיפו רוחב, ובלי גלישת-שורה הסרגל חרג ב-41px
+     מרוחב הטלפון — הכלל הוא בלי גלילה אופקית באף מסך קריאה. */
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px;
   padding: 10px 12px; margin-top: 10px;
   background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(10px);
   border-top: 1px solid var(--hairline);

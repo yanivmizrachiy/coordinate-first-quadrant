@@ -50,6 +50,24 @@ function inkOn(hex: string): string {
   return '#' + ink.map((c) => c.toString(16).padStart(2, '0')).join('');
 }
 
+/** The ink that sits ON the coloured tile itself: white where white reads,
+    near-black where the tile is too bright to carry it. Measured, not guessed —
+    the hand-picked guess was wrong on 8 of these 10 colours once already. */
+function textOn(hex: string): string {
+  const rgb = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+  const lin = (c: number): number => {
+    const v = c / 255;
+    return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+  };
+  const L = 0.2126 * lin(rgb[0]!) + 0.7152 * lin(rgb[1]!) + 0.0722 * lin(rgb[2]!);
+  const whiteRatio = 1.05 / (L + 0.05);
+  if (whiteRatio >= 4.5) return '#ffffff';
+  /* A mid-luminance tile (the magenta) defeats the navy too — then only true
+     black clears the bar. Checked, because 4.1:1 already slipped through once. */
+  const navyL = 0.0142; // #0b1f3a
+  return (L + 0.05) / (navyL + 0.05) >= 4.6 ? '#0b1f3a' : '#000000';
+}
+
 export function renderTocSheet(): HTMLElement {
   const section = elem('section', {
     class: 'sheet toc-sheet', id: 'toc', 'aria-label': 'תוכן העניינים',
@@ -69,13 +87,12 @@ export function renderTocSheet(): HTMLElement {
     const btn = elem('button', {
       class: 'toc-btn' + (PALE.has(colour) ? ' toc-btn--dark' : ''),
       type: 'button',
-      style: `--toc-colour:${colour};--toc-ink:${inkOn(colour)}`,
+      style: `--toc-colour:${colour};--toc-ink:${inkOn(colour)};--toc-text:${textOn(colour)}`,
       'aria-label': `${topic.title}, מתחיל בעמוד ${first}`,
     },
-      /* A rule of colour at the leading edge, the chapter's name, and the page
-         set large and quiet at the other end. Colour identifies the chapter; it
-         does not have to shout it. */
-      elem('span', { class: 'toc-btn__rule', 'aria-hidden': 'true' }),
+      /* The tile IS the chapter's colour — „כל פרק במשבצת בצבע שונה". The
+         white disc carries the chapter number; the CSS reads it from data-no. */
+      elem('span', { class: 'toc-btn__rule', 'aria-hidden': 'true', 'data-no': String(i + 1) }),
       elem('span', { class: 'toc-btn__body' },
         elem('span', { class: 'toc-btn__kicker', text: `פרק ${i + 1}` }),
         elem('span', { class: 'toc-btn__name', text: topic.title }),

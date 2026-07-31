@@ -8,7 +8,6 @@ import './styles/workbook.css';
 import './styles/grayscale.css';
 
 import { startRouter, navigate, type RouteMatch } from './router';
-import { grayscale } from './lib/storage';
 import { elem, clear } from './lib/dom';
 import type { View, ViewContext } from './views/context';
 import { home } from './views/home';
@@ -87,9 +86,9 @@ function render(match: RouteMatch): void {
   }
 }
 
-// Black and white is a property of the SHEETS, not of the application, and the
-// switch for it lives in the print bar. Restore the last choice on load.
-document.body.classList.toggle('bw-print', grayscale.get());
+// The screen always shows colour — „החוברת מוצגת בצבעוני". Black and white
+// exists only as a choice at PRINT time (printChoice), applied for the length
+// of the print dialog and removed on afterprint.
 startRouter(render);
 
 // A device that opened the site earlier can be holding an old index.html;

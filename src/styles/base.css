@@ -2,7 +2,20 @@
    Base reset + app chrome (RTL, mobile-first).
    =========================================================================== */
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+/* scroll-padding: anything scrolled INTO view stops CLEAR of the sticky bars —
+   the app bar above, the page navigator below. Without this, a game button
+   scrolled to an edge sat under a bar and swallowed the tap — found on a
+   phone, where the bars wrap taller. */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 16px);
+  scroll-padding-bottom: 170px;
+  -webkit-text-size-adjust: 100%;
+}
+/* Motion-sensitive users asked for no motion — smooth scrolling included. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
 body {
   margin: 0;
   background: var(--bg);

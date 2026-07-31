@@ -112,7 +112,8 @@
    Only the page number is added, in the corner, so the sheet can be found. */
 .sheet.poster-sheet .sheet-content { position: relative; }
 .sheet.poster-sheet .poster { display: block; width: 100%; height: auto; }
-.poster-number { position: absolute; left: 3mm; bottom: 3mm; }
+/* משמאל למעלה — „מספר העמוד צריך להופיע משמאל למעלה ולא למטה" (30.07.2026). */
+.poster-number { position: absolute; left: 3mm; top: 3mm; }
 .sheet.poster-sheet .gz-footer { position: static; margin-top: 2mm; }
 
 .sheet.game-sheet { height: auto; min-height: 297mm; overflow: visible; }
@@ -429,61 +430,66 @@ td > .calc-pair, td .calc-pair { margin: 2px 0; }
    sheet's 13px so the page reads as part of the booklet, not as a web menu. */
 .toc-sheet .sheet-content { display: block; }
 
-/* The contents page, redesigned.
-   Five slabs of saturated colour read as a web menu dropped onto paper. A
-   contents page in a well-made book is quiet: white, generous, set in a clear
-   hierarchy, with colour used to IDENTIFY a chapter rather than to shout it. So
-   each row is a card on the page's own white, carrying a rule of its chapter's
-   colour at the leading edge, the chapter name, and the page number set large
-   and light at the far end. It also prints on a tenth of the ink. */
-.toc-buttons { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px; }
-
+/* עמוד תוכן העניינים — צבעוני ומיוחד (30.07.2026, מחליף את „עמוד תוכן שקט").
+   יניב: „תעצב מחדש את תוכן העניינים בצבעים שונים — כל פרק במשבצת בצבע שונה,
+   צבעוני ומיוחד". כל פרק הוא משבצת מלאה בצבע משלו מהפלטה של יניב; מספר
+   הפרק יושב בעיגול לבן, שם הפרק לבן (או כהה על צבע בהיר — מחושב, לא מנוחש),
+   והמשבצות רוקדות מעט — הטיה עדינה מתחלפת, כמו כרטיסיות שהונחו ביד. */
+.toc-buttons { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 12px;
+}
 .toc-btn {
   position: relative; overflow: hidden;
   display: flex; align-items: center; gap: 18px;
-  width: 100%; padding: 52px 26px 52px 0;
-  border: 1px solid #e4e9f2; border-radius: 16px; cursor: pointer;
-  background: #fff; color: var(--ink); font: inherit; text-align: start;
-  box-shadow: 0 1px 2px #1f2a440A, 0 10px 24px #1f2a4408;
-  transition: border-color var(--dur-quick) ease, box-shadow var(--dur-quick) ease,
-              transform var(--dur-quick) var(--ease);
+  width: 100%; padding: 44px 24px 44px 0;
+  border: 0; border-radius: 20px; cursor: pointer;
+  background: var(--toc-colour); color: #fff; font: inherit; text-align: start;
+  box-shadow: 0 3px 10px #1f2a4426, 0 14px 30px #1f2a441f;
+  transition: box-shadow var(--dur-quick) ease, transform var(--dur-quick) var(--ease);
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
-
-/* The chapter's colour, as a rule rather than a field. */
+/* the gentle alternating tilt — special, but still a book page */
+.toc-buttons .toc-btn:nth-child(odd) { transform: rotate(-0.6deg); }
+.toc-buttons .toc-btn:nth-child(even) { transform: rotate(0.6deg); }
+/* a soft light sweeping the tile's corner, so the colour has depth on screen */
+.toc-btn::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(115deg, rgba(255,255,255,.22), transparent 42%);
+}
+/* the chapter's number, in a white disc at the leading edge */
 .toc-btn__rule {
-  flex: none; align-self: stretch; width: 7px; border-radius: 7px;
-  background: var(--toc-colour);
+  flex: none; width: 54px; height: 54px; margin-inline-start: 20px;
+  border-radius: 50%; background: var(--toc-colour);
+  border: 3px solid #fff; box-shadow: 0 2px 8px #1f2a4433;
+  display: grid; place-items: center;
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
-
-.toc-btn__body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.toc-btn__rule::after {
+  /* דיו כהה קבוע: ספרה בצבע-הפרק על דיסקית לבנה נבלעה בשלושה מהצבעים. */
+  content: attr(data-no); color: var(--ink); font-size: 22px; font-weight: 900;
+}
+.toc-btn__body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 4px;
+}
 .toc-btn__kicker {
-  font-size: 13px; font-weight: 700; letter-spacing: .04em;
-  color: var(--toc-ink, var(--muted));
+  font-size: 13px; font-weight: 700; letter-spacing: .06em; color: var(--toc-text, #fff); opacity: .85;
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
-.toc-btn__name { font-weight: 800; font-size: 13px; line-height: 1.3; color: var(--ink); }
-
-/* The page number: large, light, and the last thing the eye lands on. */
+.toc-btn__name { font-weight: 800; font-size: 13px; line-height: 1.3; color: var(--toc-text, #fff);
+}
+/* the page number closes the line — 13px like every sheet text, weight does
+   the talking */
 .toc-btn__no {
-  flex: none; font-size: 13px; font-weight: 800; line-height: 1;
-  color: var(--toc-ink, var(--toc-colour));
-  padding-inline-start: 6px;
+  flex: none; font-size: 13px; font-weight: 900; line-height: 1; color: var(--toc-text, #fff);
+  padding-inline-start: 8px; opacity: .95;
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
-
 .toc-btn:hover {
-  transform: translateY(-2px);
-  border-color: var(--toc-colour);
-  box-shadow: 0 2px 4px #1f2a4414, 0 16px 34px #1f2a4414;
+  transform: translateY(-3px) rotate(0deg);
+  box-shadow: 0 6px 16px #1f2a4433, 0 20px 44px #1f2a4429;
 }
-.toc-btn:active { transform: translateY(0); transition-duration: var(--dur-press); }
-.toc-btn:focus-visible { outline: 3px solid var(--toc-colour); outline-offset: 3px; }
-
-@media (max-width: 620px) { .toc-btn { padding: 16px 16px 16px 0; gap: 12px; } }
-
-/* Black-and-white printing drains the sheets, and this sheet is a sheet. */
+.toc-btn:active { transform: translateY(0); transition-duration: var(--dur-press);
+}
+.toc-btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px;
+}
 body.bw-print .sheet .toc-btn { background: #fff !important; border-color: #999; box-shadow: none; }
 body.bw-print .sheet .toc-btn__rule { background: #555 !important; }
 body.bw-print .sheet .toc-btn__kicker, body.bw-print .sheet .toc-btn__no { color: #333 !important; }

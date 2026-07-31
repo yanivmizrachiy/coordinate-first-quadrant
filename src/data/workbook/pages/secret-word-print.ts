@@ -45,5 +45,30 @@ ${grid({
 <li>סמנו את הנקודה של האות הראשונה במילה, וכתבו את שיעוריה: ${pair()}.</li>
 </ul>
 </section>
+<div class="two-col">
+<section class="q-card">
+<h3>ד. משווים בין האותיות.</h3>
+<ul class="tasks">
+<li>האות שממוקמת הכי גבוה במערכת היא ${blank(2, 'letter')}.</li>
+<li>המרחק האופקי בין הנקודה של <strong>נ</strong> לנקודה של <strong>ה</strong> הוא ${blank(3, 'number')} יחידה.</li>
+<li>הנקודה של האות <strong>ד</strong> היא ה${blank(5, 'property')} ביותר במערכת.</li>
+</ul>
+</section>
+<section class="q-card">
+<h3>ה. מוסיפים אות משלכם.</h3>
+<ul class="tasks">
+<li>סמנו נקודה חדשה ששיעור ה־${ltr('y')} שלה הוא 6, וכתבו את שיעוריה: ${pair()}.</li>
+<li>כתבו לצד הנקודה את האות <strong>ם</strong>. איזו מילה נוצרת עכשיו מכל האותיות? ${blank(8, 'concept')}.</li>
+</ul>
+</section>
+</div>
+<section class="q-card">
+<h3>ו. בודקים את המילה.</h3>
+<ul class="tasks compact">
+<li>האות האמצעית במילה שפענחתם היא ${blank(2, 'letter')}.</li>
+<li>ההפרש בין שיעור ה־${ltr('x')} של <strong>ק</strong> לשיעור ה־${ltr('x')} של <strong>ה</strong> הוא ${blank(3, 'number')} יחידות.</li>
+<li>הנקודה של <strong>ק</strong> ממוקמת ${blank(6, 'direction')} לנקודה של <strong>ה</strong>.</li>
+</ul>
+</section>
 `,
 });

@@ -101,6 +101,9 @@
   position: sticky;
   top: 0;
   z-index: 30;
+  /* בטלפון הסרגל נשבר לשלוש שורות; דביק — הוא היה מכסה שליש מסך ותופס
+     לחיצות (כפתור „בדקו" של שעשועון נלכד מתחתיו). בצר הוא נגלל עם הדף,
+     והדפדוף חי בניווט התחתון — בדיוק בשביל זה הוא נוסף. */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -271,6 +274,15 @@
 .pick__count { font: 700 15px var(--font-he); color: var(--act-ink); }
 .pick__count--empty { color: #8892a6; }
 .pick__acts { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* חלונית בחירת הצבע — נשאלת רק כשמדפיסים */
+.pick__modal--choice { width: min(440px, 94vw); max-height: none; }
+.pick__choice { display: flex; flex-direction: column; gap: 12px; padding: 22px 20px 24px; }
+.pick__choice .btn { width: 100%; }
+
+@media (max-width: 720px) {
+  .wsbar { position: static; }
+}
 
 @media print {
   .wsbar, .pick, [data-noprint] { display: none !important; }

@@ -40,8 +40,10 @@ export function pageViewer(n: number): (ctx: ViewContext) => (() => void) | void
       sheetWrap.append(elem('div', { class: 'empty-note', text: 'העמוד לא נמצא.' }));
     }
 
-    /* The bottom row keeps what the zaviyot bar does not carry: the page
-       select, the zoomer and full screen. The TOP bar is theirs, verbatim. */
+    /* The bottom row: page-turning MUST be comfortable from here too —
+       „אפשרי לדפדף עמוד הבא ועמוד קודם באופן נוח גם מתחתית העמוד" — on a
+       phone the reader is at the bottom when the page ends, and the way to
+       the next page has to be under the thumb, not back at the top. */
     const nav = elem('div', { class: 'pagenav no-print' });
     const select = elem('select', { 'aria-label': 'בחירת עמוד' }) as HTMLSelectElement;
     for (let i = 1; i <= TOTAL_PAGES; i++) {
@@ -51,10 +53,21 @@ export function pageViewer(n: number): (ctx: ViewContext) => (() => void) | void
     }
     select.addEventListener('change', () => navigate(`#/workbook/${select.value}`));
 
+    const prevB = elem('button', { class: 'btn btn--ghost btn--sm', type: 'button', text: '› הקודם' }) as HTMLButtonElement;
+    const nextB = elem('button', { class: 'btn btn--gold btn--sm', type: 'button', text: 'הבא ‹' }) as HTMLButtonElement;
+    prevB.disabled = page <= 1;
+    nextB.disabled = page >= TOTAL_PAGES;
+    prevB.classList.toggle('btn--disabled', prevB.disabled);
+    nextB.classList.toggle('btn--disabled', nextB.disabled);
+    prevB.addEventListener('click', () => navigate(`#/workbook/${page - 1}`));
+    nextB.addEventListener('click', () => navigate(`#/workbook/${page + 1}`));
+
     nav.append(
-      linkBtn('☰ תוכן העניינים', goToContents),
+      prevB,
       elem('span', { class: 'pagenav__indicator', text: `${page} / ${TOTAL_PAGES}` }),
       select,
+      nextB,
+      linkBtn('☰ תוכן העניינים', goToContents),
       zoom,
       iconOnly('⛶', 'מסך מלא', () => toggleFullscreen(sheetWrap)),
     );

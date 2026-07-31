@@ -1,6 +1,6 @@
 /* localStorage wrapper — namespaced, defensive, and typed.
    Used only for simple local UI state: last page, menu/view preferences,
-   grayscale mode, and which practice items the learner ticked. */
+   and which practice items the learner ticked. */
 
 const PREFIX = 'cfq:'; // coordinate-first-quadrant
 
@@ -25,11 +25,6 @@ export function writeValue<T>(key: string, value: T): void {
 export const lastPage = {
   get: (): number => readValue<number>('lastPage', 1),
   set: (n: number): void => writeValue('lastPage', n),
-};
-
-export const grayscale = {
-  get: (): boolean => readValue<boolean>('grayscale', false),
-  set: (on: boolean): void => writeValue('grayscale', on),
 };
 
 /* How big the reader wants a sheet on screen: 'fit' shrinks it to the room the

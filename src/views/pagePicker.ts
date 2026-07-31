@@ -1,8 +1,8 @@
 import { elem, fromHTML } from '../lib/dom';
 import { hydrateGrids } from '../lib/coordinateGrid';
 import { WORKBOOK, TOTAL_PAGES } from '../data/workbook';
-import { grayscale } from '../lib/storage';
-import { printPages } from '../lib/printPages';
+import { downloadPages } from '../lib/downloadPdf';
+import { openPrintChoice } from './printChoice';
 import { chapterSpans } from './tocSheet';
 
 /* ===========================================================================
@@ -13,8 +13,6 @@ import { chapterSpans } from './tocSheet';
    פעולות למטה. ההבדל היחיד הוא שאצלנו העמוד הוא DOM חי ולא תמונה — ולכן
    הממוזערת נבנית רק כשהיא נכנסת למסך, ולא 74 פעמים מראש.
    =========================================================================== */
-
-const BW = 'bw-print';
 
 export function openPagePicker(initial?: readonly number[]): void {
   const selected = new Set<number>(initial ?? []);
@@ -112,33 +110,20 @@ export function openPagePicker(initial?: readonly number[]): void {
   }
   modal.append(grid);
 
-  /* ---- foot: colour or black and white, then the two actions ------------ */
+  /* ---- foot: the two DIFFERENT actions -----------------------------------
+     „כפתורים של הורדה והדפסה צריכים להיות שונים": הורדה מרכיבה קובץ PDF
+     מהעמודים שנבחרו ומורידה אותו; הדפסה שואלת צבע או שחור-לבן ומדפיסה. */
   const count = elem('span', { class: 'pick__count' });
 
-  const bwBtn = elem('button', { class: 'btn btn--ghost btn--sm', type: 'button' }) as HTMLButtonElement;
-  const syncBw = (): void => {
-    const on = document.body.classList.contains(BW);
-    bwBtn.textContent = on ? 'תצוגה צבעונית' : 'תצוגת שחור־לבן';
-    bwBtn.setAttribute('aria-pressed', String(on));
-  };
-  bwBtn.addEventListener('click', () => {
-    const on = !document.body.classList.contains(BW);
-    document.body.classList.toggle(BW, on);
-    grayscale.set(on);
-    syncBw();
-  });
-  syncBw();
-
-  const printBtn = elem('button', { class: 'btn btn--ghost btn--sm', type: 'button', text: 'הדפסת הנבחרים' }) as HTMLButtonElement;
-  const dlBtn = elem('button', { class: 'btn btn--gold btn--sm', type: 'button', text: 'הורדת הנבחרים' }) as HTMLButtonElement;
-  const send = (): void => { close(); printPages(new Set(selected)); };
-  printBtn.addEventListener('click', send);
-  dlBtn.addEventListener('click', send);
+  const printBtn = elem('button', { class: 'btn btn--ghost btn--sm', type: 'button', text: '🖨 הדפסת הנבחרים' }) as HTMLButtonElement;
+  const dlBtn = elem('button', { class: 'btn btn--gold btn--sm', type: 'button', text: '⬇ הורדת הנבחרים (PDF)' }) as HTMLButtonElement;
+  printBtn.addEventListener('click', () => { const pages = new Set(selected); close(); openPrintChoice(pages); });
+  dlBtn.addEventListener('click', () => { const pages = new Set(selected); close(); void downloadPages(pages); });
 
   modal.append(
     elem('div', { class: 'pick__foot' },
       count,
-      elem('span', { class: 'pick__acts' }, bwBtn, printBtn, dlBtn),
+      elem('span', { class: 'pick__acts' }, printBtn, dlBtn),
     ),
   );
 

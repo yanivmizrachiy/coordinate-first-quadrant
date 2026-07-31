@@ -6,7 +6,8 @@ import { gameById } from '../games';
 import { renderCoverSheet } from './coverSheet';
 import { renderTocSheet, CONTENTS } from './tocSheet';
 import { openPagePicker } from './pagePicker';
-import { printPages } from '../lib/printPages';
+import { downloadBooklet } from '../lib/downloadPdf';
+import { openPrintChoice } from './printChoice';
 import {
   backCoverPos, bookShift, clampPos, lastOpenSpread, pageAtPos, pagesAtSpread,
   posOfSpread, spreadOfPos, visiblePagesAtSpread, type PageRef,
@@ -533,11 +534,17 @@ export function flipbook({ outlet, setTitle }: ViewContext): (() => void) | void
   readBtn.innerHTML =
     '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">' +
     '<rect x="2" y="2.5" width="12" height="11" rx="1.5"/><path d="M5 5.5h6M5 8h6M5 10.5h4" stroke-linecap="round"/></svg>מצב קריאה נגיש';
-  const dlBtn = elem('button', { type: 'button', title: 'הורדת החוברת המלאה או הדפסתה' }) as HTMLButtonElement;
+  /* הורדה אמיתית: קובץ PDF מוכן, בלי חלון הדפסה — כמו אצל הזוויות. */
+  const dlBtn = elem('button', { type: 'button', title: 'הורדת החוברת המלאה — קובץ PDF מוכן' }) as HTMLButtonElement;
   dlBtn.innerHTML =
     '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">' +
     '<path d="M8 1.5v8.5M4.5 7 8 10.5 11.5 7" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.5 13.5h11" stroke-linecap="round"/></svg>הורדת החוברת (PDF)';
-  dlBtn.addEventListener('click', () => printPages('all'));
+  dlBtn.addEventListener('click', downloadBooklet);
+  const prBtn = elem('button', { type: 'button', title: 'הדפסת החוברת — בצבע או בשחור-לבן' }) as HTMLButtonElement;
+  prBtn.innerHTML =
+    '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">' +
+    '<path d="M4 6V2.5h8V6M4 11h-1.5V6h11v5H12" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="9.5" width="8" height="4" rx="0.5"/></svg>הדפסה';
+  prBtn.addEventListener('click', () => openPrintChoice('all'));
   const pickBtn = elem('button', { type: 'button', title: 'הדפסת דפים נבחרים' }) as HTMLButtonElement;
   pickBtn.innerHTML =
     '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">' +
@@ -550,7 +557,7 @@ export function flipbook({ outlet, setTitle }: ViewContext): (() => void) | void
 
   const topbar = elem('div', { class: 'lx-topbar lx-chrome', 'data-lx-chrome': 'true' },
     elem('span', { class: 'lx-topbar__title', text: 'מערכת צירים — הרביע הראשון · חוברת דיגיטלית' }),
-    elem('span', { class: 'lx-topbar__acts' }, backBtn, readBtn, dlBtn, pickBtn),
+    elem('span', { class: 'lx-topbar__acts' }, backBtn, readBtn, dlBtn, prBtn, pickBtn),
   );
   stage.append(topbar);
 
@@ -585,8 +592,10 @@ export function flipbook({ outlet, setTitle }: ViewContext): (() => void) | void
   );
   stage.append(toolbar);
 
-  /* ---- מסך כניסה — «פתיחת החוברת» ---------------------------------------- */
-  const entryBtn = elem('button', { class: 'lx-entry__btn', type: 'button', text: 'פתיחת החוברת' });
+  /* ---- מסך כניסה — «התחל» -------------------------------------------------
+     „בעמוד הראשון של החוברת חייב להיות כפתור שכתוב עליו התחל… ופותח מייד את
+     תוכן העניינים." הדפדוף הראשון נוחת על הכפולה שתוכן העניינים יושב בה. */
+  const entryBtn = elem('button', { class: 'lx-entry__btn', type: 'button', text: 'התחל' });
   entryBtn.addEventListener('click', () => next());
   const entry = elem('div', { class: 'lx-entry', 'data-lx-chrome': 'true' }, entryBtn);
   stage.append(entry);

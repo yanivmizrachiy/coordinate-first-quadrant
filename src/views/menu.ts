@@ -2,7 +2,7 @@ import { elem } from '../lib/dom';
 import { navigate } from '../router';
 import { TOTAL_PAGES } from '../data/workbook';
 import { DISTRICT_BADGE } from '../data/cover';
-import { printPages } from '../lib/printPages';
+import { downloadBooklet } from '../lib/downloadPdf';
 import { openPagePicker } from './pagePicker';
 import type { ViewContext } from './context';
 import { goToContents } from './tocSheet';
@@ -55,7 +55,7 @@ export function menu({ outlet, setTitle }: ViewContext): void {
 
   actions.append(
     act('act--view', '📖', 'תצוגה', 'החוברת הנפתחת', () => navigate('#/book')),
-    act('act--download', '⬇️', 'הורדה', 'שמירה כקובץ', () => printPages('all')),
+    act('act--download', '⬇️', 'הורדה', 'קובץ PDF מוכן', downloadBooklet),
     act('act--print', '🖨️', 'הדפסה', 'כולה או דפים נבחרים', () => openPagePicker()),
   );
 

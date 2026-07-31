@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test';
 
 test('the landing carries the misparim structure: top bar, nav, hero, sections, footer', async ({ page }) => {
+  // the suite runs on the reduced-motion path; this test asserts the badge
+  // ANIMATES, so it alone asks for the regular-motion experience
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/#/');
   // the top bar: the district credit, the year, the badge in its gold ring
   await expect(page.locator('.ls-topbar__lead')).toContainText('מנח"י');
@@ -15,6 +18,10 @@ test('the landing carries the misparim structure: top bar, nav, hero, sections, 
   await expect(page.locator('.ls-hero .ls-viewer video')).toHaveCount(1);
   // „תמחק את המילים סרט הפתיחה" — the nav does not name the film
   await expect(page.locator('.ls-nav__link', { hasText: 'סרט הפתיחה' })).toHaveCount(0);
+  // „למעלה בכותרת תכתוב סרטון עדכון ת"ל"
+  await expect(page.locator('.ls-nav__link', { hasText: 'סרטון עדכון ת"ל' })).toHaveCount(1);
+  // the film caption was demo copy — gone for good
+  await expect(page.locator('.ls-hero__filmcap')).toHaveCount(0);
   // the badge turns on itself, like on Yaniv's other sites
   const spin = await page.locator('.ls-topbar__logo').evaluate((el) => getComputedStyle(el).animationName);
   expect(spin, 'the badge does not turn').toBe('ls-badge-turn');
@@ -48,23 +55,29 @@ test('the curriculum film carries its title and loads on press', async ({ page }
   const src = await frame.getAttribute('src');
   expect(src, 'the player is not the privacy embed').toContain('youtube-nocookie.com/embed/h5wegXI2ZGw');
   expect(src, 'the player does not start on press').toContain('autoplay=1');
+  expect(src, 'the captions are not turned on in the embed').toContain('cc_load_policy=1');
 });
 
 /* Our opening film sits in a viewer card like every other material: it plays
    once, stays silent until asked, and offers sound and replay. */
-test('the opening film section plays silently and offers sound and replay', async ({ page }) => {
+test('the opening film runs once on load, no buttons, and comes to rest', async ({ page }) => {
   await page.goto('/#/');
   const film = page.locator('#opening video');
   await expect(film).toHaveCount(1);
   const shape = await film.evaluate((el) => {
     const v = el as HTMLVideoElement;
-    return { muted: v.muted, loops: v.loop, inline: v.playsInline, poster: v.getAttribute('poster') ?? '' };
+    return { loops: v.loop, inline: v.playsInline, autoplay: v.autoplay, poster: v.getAttribute('poster') ?? '' };
   });
-  expect(shape.muted, 'the film would start with sound the browser blocks').toBe(true);
+  expect(shape.autoplay, 'the film does not start on its own').toBe(true);
   expect(shape.loops, 'the film loops instead of coming to rest').toBe(false);
   expect(shape.inline, 'iOS would take the film full screen').toBe(true);
   expect(shape.poster, 'no poster, so the card starts blank').not.toBe('');
-  await expect(page.locator('#opening .ls-filmbtn').first()).toBeVisible();
+  // no sound button, no replay — the film needs nothing pressed
+  await expect(page.locator('.ls-filmbtn')).toHaveCount(0);
+  // when the film ends, only the still picture stands
+  await film.evaluate((el) => (el as HTMLVideoElement).dispatchEvent(new Event('ended')));
+  await expect(page.locator('#opening video')).toHaveCount(0);
+  await expect(page.locator('#opening .ls-hero__film img')).toHaveCount(1);
 });
 
 /* The booklet is presented in the misparim pdfframe: a dark bar with the
@@ -92,7 +105,7 @@ test('the hero CTA opens the cover straight away', async ({ page }) => {
 test('the flipbook opens from the cover to the first spread', async ({ page }) => {
   await page.goto('/#/book');
   await expect(page.locator('.lxbook')).toHaveAttribute('data-open', 'false');
-  await expect(page.locator('.lx-entry__btn')).toHaveText('פתיחת החוברת');
+  await expect(page.locator('.lx-entry__btn')).toHaveText('התחל');
   await page.locator('.lx-entry__btn').click();
   await expect(page.locator('.lxbook')).toHaveAttribute('data-open', 'true', { timeout: 4000 });
   // the first spread of a Hebrew book: contents on the right, page 1 on the left
@@ -117,6 +130,7 @@ test('the flipbook top bar carries the way back, the reader, the download and th
   await expect(acts.locator('a', { hasText: 'חזרה לאתר' })).toHaveAttribute('href', '#/');
   await expect(acts.locator('a', { hasText: 'מצב קריאה נגיש' })).toHaveAttribute('href', /#\/workbook\/\d+/);
   await expect(acts.locator('button', { hasText: 'הורדת החוברת' })).toBeVisible();
+  await expect(acts.locator('button', { hasText: 'הדפסה' })).toBeVisible();
   await expect(acts.locator('button', { hasText: 'דפים נבחרים' })).toBeVisible();
 });
 
@@ -180,7 +194,9 @@ test('the deleted chapter-list page cannot come back', async ({ page }) => {
 });
 
 test('no horizontal overflow on any core view', async ({ page }) => {
-  for (const hash of ['#/', '#/menu', '#/workbook', '#/workbook/1', '#/workbook/12', '#/book', '#/print']) {
+  /* #/print is the PRINTER's surface — true A4 by rule, so on a phone it pans
+     sideways like any A4 preview. Every READING screen stays overflow-free. */
+  for (const hash of ['#/', '#/menu', '#/workbook', '#/workbook/1', '#/workbook/12', '#/book']) {
     await page.goto('/' + hash);
     await page.waitForTimeout(200);
     const overflow = await page.evaluate(
@@ -238,16 +254,18 @@ test('the contents sheet lists every chapter and each button reaches its page', 
   );
   expect(wrongWayRound, 'the contents row does not read name-then-page').toBe(0);
 
-  /* The number is inked in its chapter's colour on a white disc, and three of
-     the ten colours are pale enough to vanish there. Measured, not eyeballed. */
+  /* The number sits ON the coloured tile now, so the contrast is measured
+     against the tile itself — white on a bright tile vanishes just as surely
+     as pale ink on white did. Measured, not eyeballed. */
   const faint = await buttons.evaluateAll((els) =>
     els.map((e) => {
       const no = e.querySelector('.toc-btn__no');
       if (!no) return null;
-      const rgb = getComputedStyle(no).color.match(/\d+/g)!.map(Number);
       const lin = (c: number) => { const v = c / 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
-      const L = 0.2126 * lin(rgb[0]!) + 0.7152 * lin(rgb[1]!) + 0.0722 * lin(rgb[2]!);
-      const ratio = 1.05 / (L + 0.05);                 // against the white disc
+      const lum = (rgb: number[]) => 0.2126 * lin(rgb[0]!) + 0.7152 * lin(rgb[1]!) + 0.0722 * lin(rgb[2]!);
+      const ink = lum(getComputedStyle(no).color.match(/\d+/g)!.map(Number));
+      const tile = lum(getComputedStyle(e).backgroundColor.match(/\d+/g)!.map(Number));
+      const ratio = (Math.max(ink, tile) + 0.05) / (Math.min(ink, tile) + 0.05);
       return ratio < 4.5 ? `${no.textContent} at ${ratio.toFixed(1)}:1` : null;
     }).filter(Boolean),
   );
@@ -399,23 +417,27 @@ test('every sheet keeps its body text at 13px', async ({ page }) => {
 test('a game sheet reveals its answer when solved correctly', async ({ page }) => {
   /* Find the sheet by what it hosts, never by its number — page numbers come
      from the position in BOOK and move whenever a page is added or split. */
-  await page.goto('/#/workbook');
-  const n = await page.evaluate(async () => {
-    const res = await fetch(location.pathname);
-    void res;
-    location.hash = '#/print';
-    await new Promise((r) => setTimeout(r, 4000));
+  await page.goto('/#/print');
+  await page.waitForTimeout(4000);
+  const n = await page.evaluate(() => {
     const host = document.querySelector('[data-game-host="coordinate-safe"]');
     return host?.closest('.sheet')?.querySelector('.sheet-number')?.textContent?.trim() ?? '';
   });
   expect(n, 'the coordinate-safe game is not on any sheet').not.toBe('');
   await page.goto(`/#/workbook/${n}`);
+  /* the viewer re-fits the sheet ~420ms after mount (fitSheet settle) — a
+     click aimed before that lands where the button USED to be */
+  await page.waitForTimeout(900);
   const answers = ['4', '7', '0', '5'];
   const rows = page.locator('.game__board .game__row');
   const count = await rows.count();
   for (let i = 0; i < count; i++) {
     const input = rows.nth(i).locator('input.answer-input');
     if (await input.count()) {
+      /* centre the row first — the app bar above and the page navigator below
+         are sticky, and a row scrolled to an EDGE sits under one of them.
+         A person looks at the row mid-screen; the test should too. */
+      await rows.nth(i).evaluate((el) => el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }));
       await input.fill(answers[i] ?? '');
       await rows.nth(i).locator('button', { hasText: 'בדקו' }).click();
     }
@@ -423,27 +445,27 @@ test('a game sheet reveals its answer when solved correctly', async ({ page }) =
   await expect(page.locator('.reveal').last()).toContainText('4705');
 });
 
-/* Black and white is for the SHEETS. The application keeps its colour — the
-   point is a clean printed page, not a drained interface. */
-test('black-and-white print greys the sheets and leaves the app in colour', async ({ page }) => {
+/* The screen always shows colour. Black and white exists only as a choice at
+   PRINT time — the dialog offers both, and the class leaves with afterprint. */
+test('the print button offers colour or black-and-white, and the screen stays colour', async ({ page }) => {
   await page.goto('/#/print');
   await page.waitForTimeout(2500);
-  const bar = page.locator('.wsbar .btn', { hasText: /שחור־לבן|צבעונית/ });
-  await expect(bar).toBeVisible();
+  await page.evaluate(() => { window.print = (): void => {}; });
 
-  const read = async (): Promise<{ sheet: string; app: string }> =>
-    page.evaluate(() => ({
-      sheet: getComputedStyle(document.querySelectorAll('.sheet')[1]!).getPropertyValue('--blue').trim(),
-      app: getComputedStyle(document.querySelector('.iconbtn--primary')!).backgroundColor,
-    }));
+  // the screen never starts drained
+  expect(await page.evaluate(() => document.body.classList.contains('bw-print'))).toBe(false);
 
-  if (await page.evaluate(() => document.body.classList.contains('bw-print'))) await bar.click();
-  const colour = await read();
-  await bar.click();
-  const mono = await read();
-
-  expect(mono.sheet, 'the sheet did not go black and white').not.toBe(colour.sheet);
-  expect(mono.app, 'the application lost its colour too').toBe(colour.app);
+  await page.locator('.wsbar .btn--gold', { hasText: 'הדפסה' }).click();
+  const choice = page.locator('.pick__modal--choice');
+  await expect(choice).toBeVisible();
+  await expect(choice.locator('.btn', { hasText: 'בצבע' })).toBeVisible();
+  await choice.locator('.btn', { hasText: 'שחור־לבן' }).click();
+  await page.waitForTimeout(400);
+  // the black-and-white class is on for the print itself…
+  expect(await page.evaluate(() => document.body.classList.contains('bw-print'))).toBe(true);
+  // …and leaves the moment the dialog closes
+  await page.evaluate(() => window.dispatchEvent(new Event('afterprint')));
+  expect(await page.evaluate(() => document.body.classList.contains('bw-print'))).toBe(false);
 });
 
 /* The page picker is the zaviyot WorksheetPicker, on our live sheets: the
@@ -459,6 +481,7 @@ test('the page picker prints only the pages chosen', async ({ page }) => {
   for (const n of [3, 4, 5]) await page.locator(`.pick__card[data-page="${n}"]`).click();
   await expect(page.locator('.pick__count')).toHaveText('נבחרו 3 עמודים');
   await page.locator('.pick__acts .btn', { hasText: 'הדפסת הנבחרים' }).click();
+  await page.locator('.pick__modal--choice .btn', { hasText: 'בצבע' }).click();
   await page.waitForTimeout(600);
   const kept = await page.evaluate(() =>
     [...document.querySelectorAll('.sheet')]
@@ -499,15 +522,20 @@ test('the reading bars speak the zaviyot button language', async ({ page }) => {
   await page.goto('/#/print');
   const bar = page.locator('.wsbar');
   await expect(bar).toBeVisible();
-  await expect(bar.locator('.btn--gold')).toHaveText('הורדה / הדפסה');
+  // download and print are DIFFERENT buttons — a file, and a printer
+  await expect(bar.locator('.btn', { hasText: 'הורדה' })).toHaveCount(1);
+  await expect(bar.locator('.btn--gold', { hasText: 'הדפסה' })).toHaveCount(1);
+  // the screen shows colour only — no black-and-white switch outside printing
+  await expect(bar.locator('.btn', { hasText: 'שחור' })).toHaveCount(0);
   const navy = await bar.evaluate((el) => getComputedStyle(el).backgroundColor);
   expect(navy, 'the bar lost the navy of the zaviyot bars').toBe('rgb(22, 35, 63)');
 
   await page.goto('/#/workbook/5');
   await expect(page.locator('.wsbar__title')).toHaveText('דף עבודה מספר 5 מתוך 74');
-  await expect(page.locator('.wsbar .btn--gold')).toHaveText('הורדה / הדפסה');
-  // the prev/next pair sits in the bar, like the zaviyot reader
   await expect(page.locator('.wsbar__nav .btn')).toHaveCount(2);
+  // the way to the next page lives at the BOTTOM too — under the thumb
+  await expect(page.locator('.pagenav .btn', { hasText: 'הבא' })).toBeVisible();
+  await expect(page.locator('.pagenav .btn', { hasText: 'הקודם' })).toBeVisible();
 });
 
 /* The single-page view is what the reader spends their time in. Stacking a

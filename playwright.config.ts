@@ -9,6 +9,11 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:4319',
     trace: 'on-first-retry',
+    /* Smooth scrolling kept moving elements exactly while a click's stability
+       check ran — a retry loop that only the slow mobile emulation lost. The
+       app honours prefers-reduced-motion everywhere (tokens + scroll), so this
+       runs the tests on the calm path a motion-sensitive user gets. */
+    contextOptions: { reducedMotion: 'reduce' },
   },
   webServer: {
     command: 'npm run build && npm run preview',

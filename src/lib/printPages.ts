@@ -48,13 +48,18 @@ function withBooklet(then: () => void): void {
   setTimeout(wait, 200);
 }
 
-/** Send the chosen pages to the printer — which is also how they are saved as a
-    PDF, since „שמירה כ-PDF" is a destination in the same dialog. */
-export function printPages(pages: ReadonlySet<number> | 'all'): void {
+/** Send the chosen pages to the printer. The screen always shows colour —
+    black-and-white exists only as a PRINT choice, so the class goes on just
+    before the dialog and comes off the moment it closes. */
+export function printPages(pages: ReadonlySet<number> | 'all', bw = false): void {
   withBooklet(() => {
     applySelection(pages);
+    document.body.classList.toggle('bw-print', bw);
     window.print();
   });
 }
 
-window.addEventListener('afterprint', clearSelection);
+window.addEventListener('afterprint', () => {
+  clearSelection();
+  document.body.classList.remove('bw-print');
+});
