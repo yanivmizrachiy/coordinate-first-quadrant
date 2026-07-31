@@ -2,10 +2,10 @@
    Workbook model — the single ordered list of pages plus the topic map used by
    the table of contents.
 
-   Worksheets and the 8 games are interleaved by topic: each game is a numbered
-   worksheet page that hosts the interactive game (see `gameId`). Page numbers
-   are assigned by POSITION here, so a page can be inserted, split or reordered
-   without hand-editing the number baked into every sheet.
+   Every numbered page is a printed worksheet — „המשימות שלנו הן להדפסה (31.07.2026),
+   so the last five interactive games became printed pages too and nothing here
+   mounts a widget. Page numbers are assigned by POSITION, so a page can be
+   inserted, split or reordered without hand-editing the number baked into it.
    =========================================================================== */
 import {
   AXES_IDENTIFY,
@@ -23,6 +23,11 @@ import {
   SECRET_WORD_PRINT,
   HIDDEN_DRAWING_PRINT,
   COLOR_DECODE_PRINT,
+  ENCRYPTED_ROUTE_PRINT,
+  COORDINATE_MAZE_PRINT,
+  COORDINATE_SAFE_PRINT,
+  SUSPECT_POINT_PRINT,
+  SAME_AXIS_PRINT,
   READ_FROM_DRAWING,
   ORDERED_PAIR_DRILL,
   PARALLEL_PERPENDICULAR,
@@ -82,17 +87,10 @@ import {
   LIFE_PARK_MAP,
   LIFE_PARK_ROUTE,
 } from './pages';
-import { GAMES, type GameDefinition } from '../../games';
 import { FOOTER } from './authoring';
 import type { WorkbookPageContent, WorkbookTopic } from './types';
 
 export type { WorkbookPageContent, WorkbookTopic } from './types';
-
-const game = (id: string): GameDefinition => {
-  const g = GAMES.find((x) => x.id === id);
-  if (!g) throw new Error(`game ${id} missing`);
-  return g;
-};
 
 /* The one footer, from the one place that builds it. It used to be copied out
    here, and the copy is exactly why the eight game sheets had no badge on them
@@ -116,35 +114,7 @@ function renumber(page: WorkbookPageContent, n: number): WorkbookPageContent {
   return { ...page, n, id: `page-${n}`, html };
 }
 
-/** A game becomes a numbered worksheet page hosting the interactive game. */
-function gamePage(g: GameDefinition, n: number): WorkbookPageContent {
-  const html =
-    `<section aria-labelledby="title-${n}" class="sheet game-sheet" id="page-${n}">` +
-    `<header class="sheet-header"><div><h1 id="title-${n}">${g.icon} ${g.title}</h1><p>${g.short}</p></div>` +
-    `<div aria-label="עמוד ${n}" class="sheet-number">${n}</div></header>` +
-    `<main class="sheet-content"><div class="game-host" data-game-host="${g.id}"></div>${
-      g.id === 'coordinate-maze'
-        ? '<div class="q-card"><h3>גם על הנייר.</h3><ul class="tasks compact">' +
-          '<li>המסלול מתחיל בנקודה <span class="math-ltr" dir="ltr">(0,0)</span> ומסתיים בנקודה <span class="math-ltr" dir="ltr">(6,4)</span>. כתבו שתי נקודות נוספות שהמסלול שלכם עובר דרכן: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>.</li>' +
-          '<li>הצעד הראשון במסלול שלכם הוא יחידה אחת <span class="blank" data-missing="direction" style="--blank-width:5ch"></span>.</li>' +
-          '</ul></div>'
-        : ''
-    }</main>` +
-    FOOTER_HTML +
-    '</section>';
-  return {
-    n,
-    id: `page-${n}`,
-    sectionClass: 'sheet game-sheet',
-    title: g.title,
-    subtitle: g.skill,
-    html,
-    gameId: g.id,
-  };
-}
-
-type Slot = WorkbookPageContent | GameDefinition;
-const isGame = (s: Slot): s is GameDefinition => typeof (s as GameDefinition).mount === 'function';
+type Slot = WorkbookPageContent;
 
 /* כותרת פרק אחידה — „הכותרת היא אחידה בכל העמודים שאמרתי כאן" (31.07.2026,
    מרחיב את תקדים פרק הגרפים): בפרק עם `chapterTitle` כל דף עבודה נושא את
@@ -197,19 +167,19 @@ const BOOK: { id: string; title: string; chapterTitle?: string; slots: Slot[] }[
   ] },
   { id: 'move', title: 'הזזה ומרחק במערכת הצירים', slots: [
     MOVE_INTRO, MOVE_PRACTICE, POSTER_ROUTE_RACE, DISTANCE_INTRO, DISTANCE_PRACTICE, SHAPE_MOVE, POSTER_TREASURE_MAZE,
-    game('encrypted-route'), game('coordinate-maze'),
+    ENCRYPTED_ROUTE_PRINT, COORDINATE_MAZE_PRINT,
   ] },
   { id: 'missing', title: 'שיעור חסר ודפוסים', slots: [
-    MISSING_COORD_INTRO, MISSING_COORD_PRACTICE, RULE_TO_GRAPH, game('coordinate-safe'),
+    MISSING_COORD_INTRO, MISSING_COORD_PRACTICE, RULE_TO_GRAPH, COORDINATE_SAFE_PRINT,
   ] },
   { id: 'errors', title: 'זיהוי ותיקון טעויות', slots: [
-    ERRORS_INTRO, ERRORS_PRACTICE, game('suspect-point'),
+    ERRORS_INTRO, ERRORS_PRACTICE, SUSPECT_POINT_PRINT,
   ] },
   /* קטעים מקבילים — מיד לפני המלבן: „לפני המלבן חייבים להיות העמודים
      שעוסקים בקטעים מקבילים לצירים". שיעור זהה → אורך קטע → תרגול → מקביל
      ומאונך — הסולם שממנו המלבן בנוי. */
   { id: 'parallel', title: 'קטעים מקבילים לצירים', chapterTitle: 'קטעים מקבילים לצירים', slots: [
-    SAME_COORD_INTRO, SEGMENT_LENGTH, SAME_COORD_PRACTICE, game('same-axis'), PARALLEL_PERPENDICULAR,
+    SAME_COORD_INTRO, SEGMENT_LENGTH, SAME_COORD_PRACTICE, SAME_AXIS_PRINT, PARALLEL_PERPENDICULAR,
   ] },
   { id: 'rect', title: 'המלבן ברביע הראשון', chapterTitle: 'המלבן ברביע הראשון', slots: [
     // הפתיח הקל: מנקודות מסומנות נולדת צורה. ואז מלבן, ריבוע, וטענות.
@@ -234,7 +204,6 @@ const ORDER: Array<{ slot: Slot; chapterTitle?: string }> = BOOK.flatMap((t) =>
 );
 
 export const WORKBOOK: WorkbookPageContent[] = ORDER.map(({ slot, chapterTitle }, i) => {
-  if (isGame(slot)) return gamePage(slot, i + 1);
   const page = chapterTitle ? rechapter(slot, chapterTitle) : slot;
   return renumber(page, i + 1);
 });

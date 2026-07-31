@@ -3,7 +3,7 @@ import { sheet } from '../authoring';
 
 export const RIGHT_ANGLE_PRACTICE: WorkbookPageContent = sheet({
   sectionClass: "sheet practice",
-  title: "מזהים זווית ישרה",
+  title: "קטעים מאונכים ברביע הראשון",
   subtitle: "זווית ישרה נוצרת רק כשקטע אחד אופקי והשני אנכי",
   contentTag: 'div',
   content: `

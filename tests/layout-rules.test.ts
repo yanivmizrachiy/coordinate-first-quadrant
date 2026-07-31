@@ -964,3 +964,20 @@ describe('a point letter never stands bare after של', () => {
     expect(bad, bad.join(', ')).toEqual([]);
   });
 });
+
+/* „לא לכתוב ראשית — לכתוב ראשית הצירים" (31.07.2026). המילה נבדקת בטקסט
+   שהלומד קורא בלבד: פריט במחסן מילים הוא מילה בודדת בכוונה, כי „ראשית
+   הצירים" נכתב בשתי תיבות נפרדות — וזה כלל אחר, ותיק, עם בדיקה משלו. */
+describe('the origin is always named in full', () => {
+  it('no sheet says "ראשית" without "הצירים" in its prose', () => {
+    const bad: string[] = [];
+    for (const p of WORKBOOK) {
+      const prose = p.html
+        .replace(/<div class="word-bank">[\s\S]*?<\/div>/g, ' ')  // bank items
+        .replace(/aria-label="[^"]*"/g, ' ')                       // box hints
+        .replace(/<[^>]+>/g, ' ');
+      if (/ראשית(?! הצירים)/.test(prose)) bad.push(`page ${p.n}`);
+    }
+    expect(bad, bad.join(', ')).toEqual([]);
+  });
+});
