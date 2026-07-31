@@ -115,6 +115,13 @@ export function pageViewer(n: number): (ctx: ViewContext) => (() => void) | void
     // …and again once fitSheet has finished growing the drawings.
     const settle = window.setTimeout(applyZoom, 420);
     window.addEventListener('resize', applyZoom);
+    /* A poster page is one big image; measured before it loads, the wrap got
+       the height of an empty sheet and CLIPPED the footer's second line —
+       the broken footer Yaniv photographed on page 16. Re-fit as each image
+       arrives. */
+    for (const img of sheetWrap.querySelectorAll('img')) {
+      if (!img.complete) img.addEventListener('load', applyZoom, { once: true });
+    }
 
     return () => {
       window.clearTimeout(settle);

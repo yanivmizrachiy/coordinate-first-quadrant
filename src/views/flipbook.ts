@@ -5,9 +5,7 @@ import { WORKBOOK, TOTAL_PAGES } from '../data/workbook';
 import { gameById } from '../games';
 import { renderCoverSheet } from './coverSheet';
 import { renderTocSheet, CONTENTS } from './tocSheet';
-import { openPagePicker } from './pagePicker';
-import { downloadBooklet } from '../lib/downloadPdf';
-import { openPrintChoice } from './printChoice';
+import { openActionChooser } from './printChoice';
 import {
   backCoverPos, bookShift, clampPos, lastOpenSpread, pageAtPos, pagesAtSpread,
   posOfSpread, spreadOfPos, visiblePagesAtSpread, type PageRef,
@@ -539,25 +537,19 @@ export function flipbook({ outlet, setTitle }: ViewContext): (() => void) | void
   dlBtn.innerHTML =
     '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">' +
     '<path d="M8 1.5v8.5M4.5 7 8 10.5 11.5 7" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.5 13.5h11" stroke-linecap="round"/></svg>הורדת החוברת (PDF)';
-  dlBtn.addEventListener('click', downloadBooklet);
+  dlBtn.addEventListener('click', () => openActionChooser('download'));
   const prBtn = elem('button', { type: 'button', title: 'הדפסת החוברת — בצבע או בשחור-לבן' }) as HTMLButtonElement;
   prBtn.innerHTML =
     '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">' +
     '<path d="M4 6V2.5h8V6M4 11h-1.5V6h11v5H12" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="9.5" width="8" height="4" rx="0.5"/></svg>הדפסה';
-  prBtn.addEventListener('click', () => openPrintChoice('all'));
-  const pickBtn = elem('button', { type: 'button', title: 'הדפסת דפים נבחרים' }) as HTMLButtonElement;
-  pickBtn.innerHTML =
-    '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">' +
-    '<path d="M4 6V2.5h8V6M4 11h-1.5V6h11v5H12" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="9.5" width="8" height="4" rx="0.5"/></svg>דפים נבחרים';
-  pickBtn.addEventListener('click', () => openPagePicker(pos > 2 ? [innerOf(pos)] : undefined));
-
+  prBtn.addEventListener('click', () => openActionChooser('print'));
   /* אצל הזוויות החוברת מוטמעת בעמוד האתר; אצלנו היא כתובת — ולכן חייבת דרך
      חזרה, כמו ה„חזרה לאתר" של סרגלי הקריאה שלהם. */
   const backBtn = elem('a', { href: '#/', title: 'חזרה לאתר', text: '‹ חזרה לאתר' }) as HTMLAnchorElement;
 
   const topbar = elem('div', { class: 'lx-topbar lx-chrome', 'data-lx-chrome': 'true' },
     elem('span', { class: 'lx-topbar__title', text: 'מערכת צירים — הרביע הראשון · חוברת דיגיטלית' }),
-    elem('span', { class: 'lx-topbar__acts' }, backBtn, readBtn, dlBtn, prBtn, pickBtn),
+    elem('span', { class: 'lx-topbar__acts' }, backBtn, readBtn, dlBtn, prBtn),
   );
   stage.append(topbar);
 

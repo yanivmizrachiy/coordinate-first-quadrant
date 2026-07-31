@@ -1,9 +1,7 @@
 import { elem } from '../lib/dom';
 import { navigate } from '../router';
 import { TOTAL_PAGES } from '../data/workbook';
-import { downloadBooklet, downloadPages } from '../lib/downloadPdf';
-import { openPrintChoice } from './printChoice';
-import { openPagePicker } from './pagePicker';
+import { openActionChooser } from './printChoice';
 import { goToContents } from './tocSheet';
 
 /* ===========================================================================
@@ -37,9 +35,8 @@ export function bookletBar(): HTMLElement {
     ),
     elem('span', { class: 'wsbar__title', text: `חוברת העבודה · ${TOTAL_PAGES} עמודים ממוספרים` }),
     elem('span', { class: 'wsbar__side wsbar__side--acts' },
-      ghost('דפים נבחרים', () => openPagePicker()),
-      ghost('⬇ הורדה (PDF)', downloadBooklet),
-      gold('🖨 הדפסה', () => openPrintChoice('all')),
+      ghost('⬇ הורדה (PDF)', () => openActionChooser('download')),
+      gold('🖨 הדפסה', () => openActionChooser('print')),
     ),
   );
 }
@@ -60,9 +57,8 @@ export function readerBar(page: number): HTMLElement {
     ),
     elem('span', { class: 'wsbar__title', text: `דף עבודה מספר ${page} מתוך ${TOTAL_PAGES}` }),
     elem('span', { class: 'wsbar__side wsbar__side--acts' },
-      ghost('דפים נבחרים', () => openPagePicker([page])),
-      ghost('⬇ הורדת הדף', () => { void downloadPages(new Set([page])); }),
-      gold('🖨 הדפסה', () => openPrintChoice(new Set([page]))),
+      ghost('⬇ הורדת הדף', () => openActionChooser('download', new Set([page]))),
+      gold('🖨 הדפסה', () => openActionChooser('print', new Set([page]))),
     ),
   );
 }

@@ -131,7 +131,8 @@ test('the flipbook top bar carries the way back, the reader, the download and th
   await expect(acts.locator('a', { hasText: 'מצב קריאה נגיש' })).toHaveAttribute('href', /#\/workbook\/\d+/);
   await expect(acts.locator('button', { hasText: 'הורדת החוברת' })).toBeVisible();
   await expect(acts.locator('button', { hasText: 'הדפסה' })).toBeVisible();
-  await expect(acts.locator('button', { hasText: 'דפים נבחרים' })).toBeVisible();
+  // „לא צריך למעלה כפתור של דפים נבחרים" — the chooser owns that choice now
+  await expect(acts.locator('button', { hasText: 'דפים נבחרים' })).toHaveCount(0);
 });
 
 test('the landing never reaches the printer', async ({ page }) => {
@@ -447,7 +448,7 @@ test('a game sheet reveals its answer when solved correctly', async ({ page }) =
 
 /* The screen always shows colour. Black and white exists only as a choice at
    PRINT time — the dialog offers both, and the class leaves with afterprint. */
-test('the print button offers colour or black-and-white, and the screen stays colour', async ({ page }) => {
+test('one chooser asks all-or-selected and colour-or-BW, for print and for download', async ({ page }) => {
   await page.goto('/#/print');
   await page.waitForTimeout(2500);
   await page.evaluate(() => { window.print = (): void => {}; });
@@ -458,14 +459,22 @@ test('the print button offers colour or black-and-white, and the screen stays co
   await page.locator('.wsbar .btn--gold', { hasText: 'הדפסה' }).click();
   const choice = page.locator('.pick__modal--choice');
   await expect(choice).toBeVisible();
-  await expect(choice.locator('.btn', { hasText: 'בצבע' })).toBeVisible();
-  await choice.locator('.btn', { hasText: 'שחור־לבן' }).click();
+  // both questions live in the ONE dialog
+  await expect(choice.locator('.pick__chip', { hasText: 'כל החוברת' })).toBeVisible();
+  await expect(choice.locator('.pick__chip', { hasText: 'דפים נבחרים' })).toBeVisible();
+  await expect(choice.locator('.pick__chip', { hasText: 'בצבע' })).toBeVisible();
+  await choice.locator('.pick__chip', { hasText: 'שחור־לבן' }).click();
+  await choice.locator('.btn--gold').click();
   await page.waitForTimeout(400);
   // the black-and-white class is on for the print itself…
   expect(await page.evaluate(() => document.body.classList.contains('bw-print'))).toBe(true);
   // …and leaves the moment the dialog closes
   await page.evaluate(() => window.dispatchEvent(new Event('afterprint')));
   expect(await page.evaluate(() => document.body.classList.contains('bw-print'))).toBe(false);
+
+  // the download button opens the SAME chooser
+  await page.locator('.wsbar .btn', { hasText: 'הורדה' }).click();
+  await expect(page.locator('.pick__modal--choice .pick__chip', { hasText: 'דפים נבחרים' })).toBeVisible();
 });
 
 /* The page picker is the zaviyot WorksheetPicker, on our live sheets: the
@@ -474,14 +483,15 @@ test('the page picker prints only the pages chosen', async ({ page }) => {
   await page.goto('/#/print');
   await page.waitForTimeout(3000);
   await page.evaluate(() => { window.print = (): void => {}; });
-  await page.locator('.wsbar .btn', { hasText: 'דפים נבחרים' }).click();
-  await expect(page.locator('.pick__modal')).toBeVisible();
+  await page.locator('.wsbar .btn--gold', { hasText: 'הדפסה' }).click();
+  await page.locator('.pick__modal--choice .pick__chip', { hasText: 'דפים נבחרים' }).click();
+  await page.locator('.pick__modal--choice .btn--gold').click();
+  await expect(page.locator('.pick__grid')).toBeVisible();
   // nothing chosen — nothing to send
   await expect(page.locator('.pick__acts .btn--gold')).toBeDisabled();
   for (const n of [3, 4, 5]) await page.locator(`.pick__card[data-page="${n}"]`).click();
   await expect(page.locator('.pick__count')).toHaveText('נבחרו 3 עמודים');
   await page.locator('.pick__acts .btn', { hasText: 'הדפסת הנבחרים' }).click();
-  await page.locator('.pick__modal--choice .btn', { hasText: 'בצבע' }).click();
   await page.waitForTimeout(600);
   const kept = await page.evaluate(() =>
     [...document.querySelectorAll('.sheet')]
@@ -497,8 +507,10 @@ test('the picker never outlives its screen', async ({ page }) => {
      screenshot, not by a test, which is exactly why this test exists. */
   await page.goto('/#/print');
   await page.waitForTimeout(2000);
-  await page.locator('.wsbar .btn', { hasText: 'דפים נבחרים' }).click();
-  await expect(page.locator('.pick__modal')).toBeVisible();
+  await page.locator('.wsbar .btn--gold', { hasText: 'הדפסה' }).click();
+  await page.locator('.pick__modal--choice .pick__chip', { hasText: 'דפים נבחרים' }).click();
+  await page.locator('.pick__modal--choice .btn--gold').click();
+  await expect(page.locator('.pick__grid')).toBeVisible();
   await page.evaluate(() => { location.hash = '#/workbook/5'; });
   await expect(page.locator('.pick__modal')).toHaveCount(0);
 });
@@ -506,7 +518,10 @@ test('the picker never outlives its screen', async ({ page }) => {
 test('a picker preset chooses a whole chapter', async ({ page }) => {
   await page.goto('/#/print');
   await page.waitForTimeout(2000);
-  await page.locator('.wsbar .btn', { hasText: 'דפים נבחרים' }).click();
+  await page.locator('.wsbar .btn--gold', { hasText: 'הדפסה' }).click();
+  await page.locator('.pick__modal--choice .pick__chip', { hasText: 'דפים נבחרים' }).click();
+  await page.locator('.pick__modal--choice .btn--gold').click();
+  await expect(page.locator('.pick__grid')).toBeVisible();
   // the first chapter runs from page 1 up to the second chapter's start
   await page.locator('.pick__chip', { hasText: 'מושגים בסיסיים' }).click();
   await expect(page.locator('.pick__count')).toHaveText('נבחרו 11 עמודים');
@@ -527,6 +542,8 @@ test('the reading bars speak the zaviyot button language', async ({ page }) => {
   await expect(bar.locator('.btn--gold', { hasText: 'הדפסה' })).toHaveCount(1);
   // the screen shows colour only — no black-and-white switch outside printing
   await expect(bar.locator('.btn', { hasText: 'שחור' })).toHaveCount(0);
+  // and no standalone picker button — the chooser asks all/selected itself
+  await expect(bar.locator('.btn', { hasText: 'דפים נבחרים' })).toHaveCount(0);
   const navy = await bar.evaluate((el) => getComputedStyle(el).backgroundColor);
   expect(navy, 'the bar lost the navy of the zaviyot bars').toBe('rgb(22, 35, 63)');
 
@@ -868,6 +885,31 @@ test('the origin is never labelled twice', async ({ page }, testInfo) => {
       .filter(Boolean),
   );
   expect(doubled, doubled.join(', ')).toHaveLength(0);
+});
+
+/* עמוד 16 לימד: הפוסטר מילא את כל ה-A4 ודחף את השורה השנייה של הכותרת
+   התחתונה אל מחוץ לגיליון. כלל ברזל — כותרת תחתית אחידה ושלמה בכל עמוד —
+   נמדד עכשיו על כל 76 הגיליונות, מסך והדפסה. */
+test('the canonical footer sits whole on every sheet', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
+  await page.goto('/#/print');
+  await page.waitForTimeout(9000);
+  for (const media of ['screen', 'print'] as const) {
+    await page.emulateMedia({ media });
+    const cut = await page.evaluate(() =>
+      [...document.querySelectorAll('.book > .sheet')].flatMap((sheet) => {
+        const n = sheet.querySelector('.sheet-number')?.textContent?.trim() ?? '(cover)';
+        const f = sheet.querySelector('.gz-footer');
+        if (!f) return sheet.classList.contains('cover-sheet') ? [] : [`page ${n}: no footer`];
+        const fr = f.getBoundingClientRect();
+        const sr = sheet.getBoundingClientRect();
+        if (!fr.height) return [`page ${n}: footer collapsed`];
+        return fr.bottom > sr.bottom + 1 ? [`page ${n}: footer clipped (${Math.round(fr.bottom - sr.bottom)}px past the sheet)`] : [];
+      }),
+    );
+    expect(cut, `${media}: ${cut.join(' | ')}`).toEqual([]);
+  }
+  await page.emulateMedia({ media: 'screen' });
 });
 
 /* עמודים 13, 21 ו-45 הראו את אותה תקלה: שרטוט שגדל מעבר לכרטיס שלו ונמרח על

@@ -2,8 +2,7 @@ import { elem } from '../lib/dom';
 import { navigate } from '../router';
 import { TOTAL_PAGES } from '../data/workbook';
 import { APPROVED_COVER, OPENING_FILM, DISTRICT_BADGE } from '../data/cover';
-import { downloadBooklet } from '../lib/downloadPdf';
-import { openPrintChoice } from './printChoice';
+import { openActionChooser } from './printChoice';
 import type { ViewContext } from './context';
 
 /* ===========================================================================
@@ -206,9 +205,9 @@ export function home({ outlet, setTitle }: ViewContext): (() => void) | void {
   const openBtn = elem('button', { class: 'ls-btn ls-btn--gold', type: 'button', text: 'פתיחת החוברת' });
   openBtn.addEventListener('click', () => navigate('#/book'));
   const dlBtn = elem('button', { class: 'ls-btn ls-btn--ghost', type: 'button', text: '⬇ הורדה (PDF)' });
-  dlBtn.addEventListener('click', downloadBooklet);
+  dlBtn.addEventListener('click', () => openActionChooser('download'));
   const printBtn = elem('button', { class: 'ls-btn ls-btn--ghost', type: 'button', text: '🖨 הדפסה' });
-  printBtn.addEventListener('click', () => openPrintChoice('all'));
+  printBtn.addEventListener('click', () => openActionChooser('print'));
 
   root.append(
     elem('section', { class: 'ls-section ls-section--soft', id: 'booklet' },

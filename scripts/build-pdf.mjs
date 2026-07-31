@@ -29,6 +29,16 @@ await page.pdf({
   preferCSSPageSize: true,
 });
 
+// הגרסה בשחור-לבן — אותם דפים, עם מחלקת ההדפסה החסכונית
+await page.evaluate(() => document.body.classList.add('bw-print'));
+await page.waitForTimeout(400);
+await page.pdf({
+  path: 'public/hoveret-bw.pdf',
+  format: 'A4',
+  printBackground: true,
+  preferCSSPageSize: true,
+});
+
 await browser.close();
 await new Promise((resolve) => server.httpServer.close(resolve));
 console.log('public/hoveret.pdf written');

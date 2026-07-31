@@ -2,7 +2,7 @@ import { elem, fromHTML } from '../lib/dom';
 import { hydrateGrids } from '../lib/coordinateGrid';
 import { WORKBOOK, TOTAL_PAGES } from '../data/workbook';
 import { downloadPages } from '../lib/downloadPdf';
-import { openPrintChoice } from './printChoice';
+import { printPages } from '../lib/printPages';
 import { chapterSpans } from './tocSheet';
 
 /* ===========================================================================
@@ -14,8 +14,13 @@ import { chapterSpans } from './tocSheet';
    הממוזערת נבנית רק כשהיא נכנסת למסך, ולא 74 פעמים מראש.
    =========================================================================== */
 
-export function openPagePicker(initial?: readonly number[]): void {
-  const selected = new Set<number>(initial ?? []);
+export interface PickerAction {
+  mode: 'download' | 'print';
+  bw: boolean;
+}
+
+export function openPagePicker(action: PickerAction = { mode: 'print', bw: false }): void {
+  const selected = new Set<number>();
   const groups = chapterSpans(TOTAL_PAGES);
 
   const overlay = elem('div', { class: 'pick', role: 'presentation' });
@@ -110,20 +115,25 @@ export function openPagePicker(initial?: readonly number[]): void {
   }
   modal.append(grid);
 
-  /* ---- foot: the two DIFFERENT actions -----------------------------------
-     „כפתורים של הורדה והדפסה צריכים להיות שונים": הורדה מרכיבה קובץ PDF
-     מהעמודים שנבחרו ומורידה אותו; הדפסה שואלת צבע או שחור-לבן ומדפיסה. */
+  /* ---- foot: ONE action — the chooser already decided what and in which
+     colour; here the teacher only marks the pages and fires. ------------- */
   const count = elem('span', { class: 'pick__count' });
 
-  const printBtn = elem('button', { class: 'btn btn--ghost btn--sm', type: 'button', text: '🖨 הדפסת הנבחרים' }) as HTMLButtonElement;
-  const dlBtn = elem('button', { class: 'btn btn--gold btn--sm', type: 'button', text: '⬇ הורדת הנבחרים (PDF)' }) as HTMLButtonElement;
-  printBtn.addEventListener('click', () => { const pages = new Set(selected); close(); openPrintChoice(pages); });
-  dlBtn.addEventListener('click', () => { const pages = new Set(selected); close(); void downloadPages(pages); });
+  const actText = action.mode === 'download'
+    ? `⬇ הורדת הנבחרים (${action.bw ? 'שחור־לבן' : 'צבע'})`
+    : `🖨 הדפסת הנבחרים (${action.bw ? 'שחור־לבן' : 'צבע'})`;
+  const goBtn = elem('button', { class: 'btn btn--gold btn--sm', type: 'button', text: actText }) as HTMLButtonElement;
+  goBtn.addEventListener('click', () => {
+    const pages = new Set(selected);
+    close();
+    if (action.mode === 'download') void downloadPages(pages, action.bw);
+    else printPages(pages, action.bw);
+  });
 
   modal.append(
     elem('div', { class: 'pick__foot' },
       count,
-      elem('span', { class: 'pick__acts' }, printBtn, dlBtn),
+      elem('span', { class: 'pick__acts' }, goBtn),
     ),
   );
 
@@ -138,7 +148,7 @@ export function openPagePicker(initial?: readonly number[]): void {
     }
     count.textContent = selected.size ? `נבחרו ${selected.size} עמודים` : 'לא נבחרו עמודים';
     count.classList.toggle('pick__count--empty', selected.size === 0);
-    for (const b of [printBtn, dlBtn]) b.disabled = selected.size === 0;
+    goBtn.disabled = selected.size === 0;
   }
   syncAll();
 
