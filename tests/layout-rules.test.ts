@@ -737,12 +737,18 @@ describe('a calculation is written left to right', () => {
   });
 
   /* „צריך מספיק מקום לכל תרגיל.” A subtraction written by hand needs a real
-     line to write it on, not a few characters. */
+     line to write it on, not a few characters. The rule holds where the learner
+     WRITES the working (two blanks on the line); a printed subtraction from
+     exerciseGiven() carries one short result blank by design and is exempt —
+     the old greedy regex swallowed a given-block into the exercise after it
+     and failed the wrong line. */
   it('every exercise leaves room to write the subtraction', () => {
     for (const page of WORKBOOK) {
-      for (const b of page.html.match(/<div class="calc-pair">[\s\S]*?<\/div><\/div><\/div>/g) ?? []) {
-        const first = b.match(/--blank-width:(\d+)ch/);
-        expect(Number(first?.[1] ?? 0), `page ${page.n}: no room to write the exercise`).toBeGreaterThanOrEqual(14);
+      for (const seg of page.html.split('<div class="calc-pair">').slice(1)) {
+        const line = seg.match(/<div class="calc-ltr"[\s\S]*?<\/div>/)?.[0] ?? '';
+        const blanks = [...line.matchAll(/--blank-width:(\d+)ch/g)].map((m) => Number(m[1]));
+        if (blanks.length < 2) continue;
+        expect(blanks[0], `page ${page.n}: no room to write the exercise`).toBeGreaterThanOrEqual(14);
       }
     }
   });

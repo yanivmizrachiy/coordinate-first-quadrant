@@ -225,11 +225,10 @@ test('the contents sheet lists every chapter and each button reaches its page', 
   /* Five chapters, named by Yaniv, and no others: „כל השאר תמחק מהתוכן". */
   expect(topics, 'the contents sheet does not list the five chapters').toBe(5);
 
-  /* Each chapter carries a colour of its own — now as a rule at the leading
-     edge rather than a slab of fill, so the page reads as a contents page and
-     prints on a fraction of the ink. */
+  /* Each chapter carries a noble metal of its own — the dot in its divider and
+     its large page number wear it. Five chapters, five distinct metals. */
   const colours = await buttons.evaluateAll((els) =>
-    els.map((e) => getComputedStyle(e.querySelector('.toc-btn__rule')!).backgroundColor),
+    els.map((e) => getComputedStyle(e.querySelector('.toc-btn__dot')!).backgroundColor),
   );
   expect(new Set(colours).size, 'the chapters are not colour-coded').toBe(5);
 
@@ -242,22 +241,34 @@ test('the contents sheet lists every chapter and each button reaches its page', 
   const ranged = await buttons.evaluateAll((els) => els.filter((e) => /[–-]/.test(e.textContent ?? '')).length);
   expect(ranged, 'a chip still shows a page range instead of the starting page').toBe(0);
 
-  /* The chapter leads and the page number closes the line — the reader is
-     looking for a chapter, not for a number. In RTL that puts the name at the
-     right and the number at the left. */
+  /* The entry reads top-to-bottom, chapter before page: the N° kicker above
+     the name, the name above the LARGE page number, the metal divider last.
+     The reader is looking for a chapter, not for a number. */
   const wrongWayRound = await buttons.evaluateAll((els) =>
     els.filter((e) => {
-      const no = e.querySelector('.toc-btn__no')?.getBoundingClientRect();
+      const kicker = e.querySelector('.toc-btn__kicker')?.getBoundingClientRect();
       const name = e.querySelector('.toc-btn__name')?.getBoundingClientRect();
+      const no = e.querySelector('.toc-btn__no')?.getBoundingClientRect();
       const rule = e.querySelector('.toc-btn__rule')?.getBoundingClientRect();
-      return !no || !name || !rule || no.left > name.left || rule.left < name.left;
+      return !kicker || !name || !no || !rule ||
+        kicker.top >= name.top || name.top >= no.top || no.top >= rule.top;
     }).length,
   );
-  expect(wrongWayRound, 'the contents row does not read name-then-page').toBe(0);
+  expect(wrongWayRound, 'the entry does not read No, name, page, divider').toBe(0);
 
-  /* The number sits ON the coloured tile now, so the contrast is measured
-     against the tile itself — white on a bright tile vanishes just as surely
-     as pale ink on white did. Measured, not eyeballed. */
+  /* „תגדיל מספרי העמודים ותגדיל כתב של שמות הפרקים" (31.07.2026) — the page
+     number and the chapter name are LARGE, not the sheet's 13px body size. */
+  const small = await buttons.evaluateAll((els) =>
+    els.filter((e) =>
+      parseFloat(getComputedStyle(e.querySelector('.toc-btn__no')!).fontSize) < 32 ||
+      parseFloat(getComputedStyle(e.querySelector('.toc-btn__name')!).fontSize) < 20,
+    ).length,
+  );
+  expect(small, 'a page number or chapter name shrank back to body size').toBe(0);
+
+  /* The metal sits on the night ink, so the contrast is measured against the
+     sheet itself — a faint metal vanishes on dark just as pale ink did on
+     white. Measured, not eyeballed. */
   const faint = await buttons.evaluateAll((els) =>
     els.map((e) => {
       const no = e.querySelector('.toc-btn__no');
@@ -265,8 +276,8 @@ test('the contents sheet lists every chapter and each button reaches its page', 
       const lin = (c: number) => { const v = c / 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
       const lum = (rgb: number[]) => 0.2126 * lin(rgb[0]!) + 0.7152 * lin(rgb[1]!) + 0.0722 * lin(rgb[2]!);
       const ink = lum(getComputedStyle(no).color.match(/\d+/g)!.map(Number));
-      const tile = lum(getComputedStyle(e).backgroundColor.match(/\d+/g)!.map(Number));
-      const ratio = (Math.max(ink, tile) + 0.05) / (Math.min(ink, tile) + 0.05);
+      const sheet = lum(getComputedStyle(e.closest('.toc-sheet')!).backgroundColor.match(/\d+/g)!.map(Number));
+      const ratio = (Math.max(ink, sheet) + 0.05) / (Math.min(ink, sheet) + 0.05);
       return ratio < 4.5 ? `${no.textContent} at ${ratio.toFixed(1)}:1` : null;
     }).filter(Boolean),
   );

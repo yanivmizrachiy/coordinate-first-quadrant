@@ -2,10 +2,18 @@
    cover, before page 1. It is a real A4 sheet, so it prints with the rest; on
    screen every chapter is a button that jumps to that chapter's first page.
 
-   The colours are the palette Yaniv chose. The chapters come from BOOK, so this
-   page can never go stale; there are more chapters than colours, so the palette
-   cycles — and two chapters of one colour are never neighbours, because the
-   cycle is longer than any run of related work. */
+   The design Yaniv chose (31.07.2026): the centred No-numbering of a Chanel
+   catalogue on the night-ink ground of the Jerusalem film, a faint gold
+   coordinate grid behind, and the chapters dressed in NOBLE METALS rather
+   than bright colour — platinum, champagne, rose gold, copper, antique gold.
+   Large page numbers, large chapter names, and the five entries spread so the
+   whole A4 page is used. Serif faces are bundled locally (no runtime fetch). */
+import '@fontsource/frank-ruhl-libre/hebrew-300.css';
+import '@fontsource/frank-ruhl-libre/hebrew-400.css';
+import '@fontsource/frank-ruhl-libre/300.css';
+import '@fontsource/frank-ruhl-libre/400.css';
+import '@fontsource/cormorant-garamond/400.css';
+import '@fontsource/cormorant-garamond/500.css';
 import { elem } from '../lib/dom';
 import { navigate } from '../router';
 /* The contents Yaniv asked for: five chapters, named by him, each opening the
@@ -21,62 +29,57 @@ export const CONTENTS: ReadonlyArray<{ title: string; page: number }> = [
 ];
 import { DISTRICT_BADGE } from '../data/cover';
 
-/* Yaniv's ten colours, in the order he gave them — „אלה הצבעים של תוכן העניינים
-   המסודר שלנו". I had reordered them so no two neighbours shared a hue family;
-   the palette is his, so it goes back the way he wrote it. */
-const PALETTE = [
-  '#2962FF', '#00C853', '#FF6D00', '#D500F9', '#AA00FF',
-  '#0091EA', '#FFD600', '#FF1744', '#00E5FF', '#64FFDA',
+/* The noble-metal palette Yaniv picked (31.07.2026) — „אפשרות 2": platinum,
+   champagne, rose gold, copper, antique gold. One metal per chapter, in this
+   order. Every one of them clears 4.5:1 on the night ink; a test measures it. */
+const METALS = [
+  '#E4E0D5', '#D9C08A', '#D4A29A', '#C58B5F', '#B49B57',
 ] as const;
 
-/** The ink that sits ON the coloured tile itself: white where white reads,
-    near-black where the tile is too bright to carry it. Measured, not guessed —
-    the hand-picked guess was wrong on 8 of these 10 colours once already. */
-function textOn(hex: string): string {
-  const rgb = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
-  const lin = (c: number): number => {
-    const v = c / 255;
-    return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
-  };
-  const L = 0.2126 * lin(rgb[0]!) + 0.7152 * lin(rgb[1]!) + 0.0722 * lin(rgb[2]!);
-  const whiteRatio = 1.05 / (L + 0.05);
-  if (whiteRatio >= 4.5) return '#ffffff';
-  /* A mid-luminance tile (the magenta) defeats the navy too — then only true
-     black clears the bar. Checked, because 4.1:1 already slipped through once. */
-  const navyL = 0.0142; // #0b1f3a
-  return (L + 0.05) / (navyL + 0.05) >= 4.6 ? '#0b1f3a' : '#000000';
-}
+/** The night ink the whole sheet sits on. Exported for the contrast test. */
+export const TOC_INK = '#121016';
 
 export function renderTocSheet(): HTMLElement {
   const section = elem('section', {
     class: 'sheet toc-sheet', id: 'toc', 'aria-label': 'תוכן העניינים',
   });
 
-  const head = elem('header', { class: 'sheet-header' },
-    elem('div', {},
-      elem('h1', { text: 'תוכן העניינים' }),
-      elem('p', { text: 'מערכת צירים — הרביע הראשון' }),
+  /* The heading is centred: the unit's name as a letterspaced gold kicker,
+     then the title in light serif, then a small gold diamond between rules. */
+  const head = elem('header', { class: 'toc-head' },
+    elem('p', { class: 'toc-head__kicker', text: 'מערכת צירים · הרביע הראשון' }),
+    elem('h1', { class: 'toc-head__title', text: 'תוכן העניינים' }),
+    elem('span', { class: 'toc-head__gem', 'aria-hidden': 'true' },
+      elem('span', { class: 'toc-head__gem-dot' }),
     ),
   );
 
   const list = elem('div', { class: 'toc-buttons' });
   for (const [i, topic] of CONTENTS.entries()) {
-    const colour = PALETTE[i % PALETTE.length]!;
+    const metal = METALS[i % METALS.length]!;
     const first = topic.page;
     const btn = elem('button', {
       class: 'toc-btn',
       type: 'button',
-      style: `--toc-colour:${colour};--toc-text:${textOn(colour)}`,
+      style: `--toc-metal:${metal}`,
       'aria-label': `${topic.title}, מתחיל בעמוד ${first}`,
     },
-      /* The tile IS the chapter's colour — „כל פרק במשבצת בצבע שונה". The
-         white disc carries the chapter number; the CSS reads it from data-no. */
-      elem('span', { class: 'toc-btn__rule', 'aria-hidden': 'true', 'data-no': String(i + 1) }),
-      elem('span', { class: 'toc-btn__body' },
-        elem('span', { class: 'toc-btn__kicker', text: `פרק ${i + 1}` }),
-        elem('span', { class: 'toc-btn__name', text: topic.title }),
+      /* Reading order, top to bottom: the chapter's No, its name, then the
+         page it starts on — the reader looks for a chapter, not a number. */
+      elem('span', { class: 'toc-btn__kicker', dir: 'ltr' },
+        elem('span', { text: 'N' }),
+        elem('sup', { text: 'o' }),
+        elem('span', { text: ` ${i + 1}` }),
       ),
-      elem('span', { class: 'toc-btn__no', dir: 'ltr', text: String(first) }),
+      elem('span', { class: 'toc-btn__name', text: topic.title }),
+      elem('span', { class: 'toc-btn__page' },
+        elem('span', { class: 'toc-btn__page-word', text: 'עמוד' }),
+        elem('span', { class: 'toc-btn__no', dir: 'ltr', text: String(first) }),
+      ),
+      /* the metal divider — a glowing dot between two hairlines */
+      elem('span', { class: 'toc-btn__rule', 'aria-hidden': 'true' },
+        elem('span', { class: 'toc-btn__dot' }),
+      ),
     );
     btn.addEventListener('click', () => navigate(`#/workbook/${first}`));
     list.append(btn);

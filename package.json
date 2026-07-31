@@ -23,6 +23,8 @@
     "vitest": "^2.1.8"
   },
   "dependencies": {
+    "@fontsource/cormorant-garamond": "^5.3.0",
+    "@fontsource/frank-ruhl-libre": "^5.3.0",
     "pdf-lib": "^1.17.1"
   }
 }
