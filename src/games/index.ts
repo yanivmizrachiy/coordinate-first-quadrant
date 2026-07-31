@@ -6,17 +6,17 @@ import { sameAxisGame } from './sameAxis';
 import { suspectPointGame } from './suspectPoint';
 import { coordinateSafeGame } from './coordinateSafe';
 import { coordinateMazeGame } from './coordinateMaze';
-import { colorDecodeGame } from './colorDecode';
 
-/* „ציור נסתר" יצא מהשעשועונים המקוונים — הוא עכשיו דף עבודה מודפס
-   (`HIDDEN_DRAWING_PRINT`), כי „המשימות שלנו הן להדפסה" (31.07.2026). */
+/* „ציור נסתר" ו„פענוח צבעוני" יצאו מהשעשועונים המקוונים — הם עכשיו דפי
+   עבודה מודפסים (`HIDDEN_DRAWING_PRINT`, `COLOR_DECODE_PRINT`), כי „אנחנו
+   רק דפים להדפסה ולא מתוקשב" (31.07.2026). לוגיקת התאים של פענוח צבעוני
+   נשארת ב־`colorDecode.ts` ונבדקת שם, ומשמשת את הדף המודפס. */
 export const GAMES: GameDefinition[] = [
   encryptedRouteGame,
   suspectPointGame,
   sameAxisGame,
   coordinateSafeGame,
   coordinateMazeGame,
-  colorDecodeGame,
 ];
 
 export const gameById = (id: string): GameDefinition | undefined => GAMES.find((g) => g.id === id);
