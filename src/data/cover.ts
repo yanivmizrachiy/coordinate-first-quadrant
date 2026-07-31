@@ -47,13 +47,10 @@ const FILM_DIR = `${import.meta.env.BASE_URL}assets/cover/`;
 export const OPENING_FILM = {
   webm: `${FILM_DIR}opening-720.webm`,
   mp4: `${FILM_DIR}opening-720.mp4`,
-  mp4Small: `${FILM_DIR}opening-480.mp4`,
   poster: `${FILM_DIR}opening-first.webp`,
-  posterFallback: `${FILM_DIR}opening-first.jpg`,
   /** The finished coordinate system — shown instead of the film when motion is off. */
   still: `${FILM_DIR}opening-last.webp`,
   stillFallback: `${FILM_DIR}opening-last.jpg`,
-  seconds: 10,
   alt: 'רכבת קלה בירושלים, ומעליה נבנית מערכת צירים ברביע הראשון עם הנקודות (2,3), (3,1), (4,5) ו־(5,2)',
 } as const;
 
