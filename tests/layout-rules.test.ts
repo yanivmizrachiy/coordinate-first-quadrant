@@ -464,17 +464,19 @@ describe('a calculation gets units and room to work', () => {
       if (!/שטח|היקף/.test(text)) continue;
       for (const f of p.html.matchAll(/<div class="calc-final">([\s\S]*?)<\/div>\s*<\/div>/g)) {
         const plain = f[1]!.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
-        expect(plain, `page ${p.n}: a final answer that is not the „ה… הוא” completion`).toMatch(/ה(היקף|שטח) הוא/);
+        /* „לא לכתוב ההיקף הוא — לכתוב היקף המלבן הוא" (31.07.2026): the
+           answer names the figure, in the construct form a textbook uses. */
+        expect(plain, `page ${p.n}: a final answer that does not name the figure`).toMatch(/(היקף|שטח) ה\S+ הוא/);
         expect(plain, `page ${p.n}: a final answer without its unit`).toMatch(/יח/);
         expect(plain, `page ${p.n}: the answer written twice — P/S belong to the working slot`).not.toMatch(/[SP] =/);
       }
-      /* Room to work means ruled lines OR the named exercise lines that replaced
-         them — „PQ = ____ = ____ יח'”, written left to right. Either is room; a
-         box with neither is a calculation with nowhere to do it. */
+      /* Room to work is the squared notebook surface — or the named exercise
+         lines („PQ = ____ = ____ יח'”). A box with neither is a calculation
+         with nowhere to do it. */
       for (const box of p.html.split('<div class="calc-box">').slice(1)) {
         const head = box.slice(0, 400);
         expect(
-          /answer-line|calc-ltr/.test(head),
+          /calc-squared|calc-ltr/.test(head),
           `page ${p.n}: a calculation with no room to write the working`,
         ).toBe(true);
       }

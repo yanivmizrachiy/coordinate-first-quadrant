@@ -17,7 +17,7 @@ export const SQUARES_PRACTICE: WorkbookPageContent = sheet({
 <li>כתבו את תרגיל החיסור של אורך הצלע, ואת ההפרש שקיבלתם:</li>
 </ul>
 ${exercise('AB')}
-${calcBox({ perimeter: true, area: true })}
+${calcBox({ perimeter: true, area: true, shape: 'הריבוע' })}
 </section>
 <section class="q-card">
 <h3>ריבוע מתיאור</h3>
@@ -26,7 +26,7 @@ ${calcBox({ perimeter: true, area: true })}
 <ul class="tasks compact">
 <li><span class="blank" style="--blank-width:10ch"></span> &nbsp; <span class="blank" style="--blank-width:10ch"></span> &nbsp; <span class="blank" style="--blank-width:10ch"></span></li>
 </ul>
-${calcBox({ perimeter: true, area: true })}
+${calcBox({ perimeter: true, area: true, shape: 'הריבוע' })}
 </section>
 <section class="q-card">
 <h3>סיכום קצר</h3>

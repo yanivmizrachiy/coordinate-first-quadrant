@@ -16,7 +16,7 @@ export const SQUARES_INTRO: WorkbookPageContent = sheet({
 <li>המלבן הזה הוא <b>ריבוע</b>, כי כל הצלעות שלו <span class="blank" data-missing="relation" style="--blank-width:5ch"></span>.</li>
 </ul>
 ${exercise('AB')}
-${calcBox({ lines: 1, perimeter: true, area: true })}
+${calcBox({ lines: 1, perimeter: true, area: true, shape: 'הריבוע' })}
 <ul class="tasks compact">
 <li>באורך <span class="blank" data-missing="number" style="--blank-width:3ch"></span> יח' וברוחב <span class="blank" data-missing="number" style="--blank-width:3ch"></span> יח' — ולכן האורך והרוחב <b>זהים</b>.</li>
 </ul>
@@ -28,12 +28,12 @@ ${calcBox({ lines: 1, perimeter: true, area: true })}
 <div><b>מלבן א:</b> <span class="math-ltr" dir="ltr">(1,1),(7,1),(7,3),(1,3)</span>
 <div aria-label="מערכת צירים ברביע הראשון" class="coordinate-grid grid-sm" data-arrows="[]" data-labelboxes="[]" data-points='[{"x": 1, "y": 1}, {"x": 7, "y": 1}, {"x": 7, "y": 3}, {"x": 1, "y": 3}]' data-polygons='[{"points": [[1, 1], [7, 1], [7, 3], [1, 3]]}]' data-segments="[]" role="img">
 </div>
-${calcBox({ lines: 1, perimeter: true, area: true })}
+${calcBox({ lines: 1, perimeter: true, area: true, shape: 'המלבן' })}
 </div>
 <div><b>מלבן ב:</b> <span class="math-ltr" dir="ltr">(2,1),(5,1),(5,5),(2,5)</span>
 <div aria-label="מערכת צירים ברביע הראשון" class="coordinate-grid grid-sm" data-arrows="[]" data-labelboxes="[]" data-points='[{"x": 2, "y": 1}, {"x": 5, "y": 1}, {"x": 5, "y": 5}, {"x": 2, "y": 5}]' data-polygons='[{"points": [[2, 1], [5, 1], [5, 5], [2, 5]]}]' data-segments="[]" role="img">
 </div>
-${calcBox({ lines: 1, perimeter: true, area: true })}
+${calcBox({ lines: 1, perimeter: true, area: true, shape: 'המלבן' })}
 </div>
 </div>
 <ul class="tasks compact">
