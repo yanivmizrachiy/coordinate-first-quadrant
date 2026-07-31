@@ -19,6 +19,6 @@
     "resolveJsonModule": true,
     "useDefineForClassFields": true
   },
-  "include": ["src", "tools", "tests"],
+  "include": ["src", "tests"],
   "exclude": ["node_modules", "dist"]
 }

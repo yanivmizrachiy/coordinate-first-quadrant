@@ -777,8 +777,12 @@ test('no label sits on a mark, an arrowhead or a vertex', async ({ page }, testI
       if (!svg) continue;
       const n = g.closest('.sheet')?.querySelector('.sheet-number')?.textContent?.trim() ?? '?';
       // an arrowhead inside <defs> is never painted where its box claims to be
+      /* `[data-icon]` is a pictogram that BELONGS to its point (the park map's
+         bench, tree, gate…). It is decoration drawn beside its own label by
+         design, so it is not a structural mark a label may not touch. */
       const drawn = (sel: string) =>
-        [...svg.querySelectorAll<SVGElement>(sel)].filter((e) => !e.closest('defs') && !e.closest('marker'));
+        [...svg.querySelectorAll<SVGElement>(sel)].filter(
+          (e) => !e.closest('defs') && !e.closest('marker') && !e.closest('[data-icon]'));
       const paths = drawn('path');
       const marks = drawn('circle');
 
@@ -841,8 +845,27 @@ test('each final answer sits on its own painted line', async ({ page }, testInfo
       const n = fin.closest('.sheet')?.querySelector('.sheet-number')?.textContent?.trim() ?? '?';
       const rows = [...fin.querySelectorAll('.calc-final__row')].map((r) => r.getBoundingClientRect());
       seen += rows.length;
+      /* יניב, 31.07.2026: „השטח שיופיע מתחת לשטח ולא מתחת להיקף" — שתי
+         התשובות יושבות זו לצד זו, כל אחת מתחת לתיבה שלה. הכלל שנשמר כאן הוא
+         שהן לעולם לא נדרסות זו על זו: או שורה מתחת לשורה, או עמודה לצד
+         עמודה — אף פעם לא שתי תשובות מרוחות על אותו מקום. */
       for (let i = 1; i < rows.length; i++) {
-        if (rows[i]!.top < rows[i - 1]!.bottom - 1) out.push(`page ${n}: two final answers share a line`);
+        const a = rows[i - 1]!, b = rows[i]!;
+        const overlaps =
+          a.left < b.right - 2 && b.left < a.right - 2 &&
+          a.top < b.bottom - 2 && b.top < a.bottom - 2;
+        if (overlaps) out.push(`page ${n}: two final answers are painted over each other`);
+      }
+      /* וכל תשובה מיושרת עם תיבת החישוב שלה — לא מתחת לתיבה של הכמות האחרת. */
+      const secs = [...(fin.closest('.calc-box')?.querySelectorAll('.calc-sec') ?? [])];
+      if (secs.length === rows.length && rows.length === 2) {
+        for (let i = 0; i < rows.length; i++) {
+          const sb = secs[i]!.getBoundingClientRect();
+          const centred = rows[i]!.left + rows[i]!.width / 2;
+          if (centred < sb.left - 4 || centred > sb.right + 4) {
+            out.push(`page ${n}: an answer is not under its own working box`);
+          }
+        }
       }
       const work = fin.closest('.calc-box')?.querySelector('.calc-work')?.getBoundingClientRect();
       if (work && rows.length && rows[0]!.top < work.bottom - 1) out.push(`page ${n}: the answer is not under the working slot`);

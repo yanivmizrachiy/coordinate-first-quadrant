@@ -130,6 +130,9 @@ function pointIcon(kind: NonNullable<GridPoint['icon']>, px: number, py: number)
   const g = el('g', {
     transform: `translate(${px - 20 + nudge}, ${py - 48}) scale(1.8)`,
     'aria-hidden': 'true',
+    /* קישוט השייך לנקודה שלו — לא סימן מבני של השרטוט. הביקורות שמחפשות
+       „תווית שיושבת על סימן" מדלגות עליו, אחרת כל ציור יסמן את עצמו כתקלה. */
+    'data-icon': '1',
   });
   const S = (attrs: Attrs, d: string): SVGElement => el('path', { d, fill: 'none', stroke: AXIS, 'stroke-width': 1.7, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', ...attrs });
   const halo = el('rect', { x: -2, y: -2, width: 26, height: 26, rx: 6, fill: '#fff', opacity: 0.85 });
@@ -207,6 +210,8 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
   // learner is asked to READ that number, so it must never be crowded by the
   // dot: the clashing number is pushed further into the margin and gets a white
   // halo. (Never move it to the other side — the numbers must stay in one line.)
+  // The clearance is sized for the LARGEST mark a board can put on an axis —
+  // the maze's „■” wall, not just a 5px dot; 6px left them touching.
   const xl = spec.xlabels ?? Array.from({ length: XM + 1 }, (_, i) => i);
   const yl = spec.ylabels ?? Array.from({ length: YM + 1 }, (_, i) => i);
   const pts = spec.points ?? [];
@@ -230,7 +235,7 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
     } else if (lab !== null && lab !== undefined) {
       const clash = onXAxis.has(x);
       svg.append(el('text', {
-        x: X(x), y: Y(0) + (clash ? 27 : 21), 'text-anchor': 'middle', direction: 'ltr',
+        x: X(x), y: Y(0) + (clash ? 34 : 21), 'text-anchor': 'middle', direction: 'ltr',
         fill: AXIS, 'font-size': 17, 'font-weight': 700, ...(clash ? CLEAR : {}),
       }, String(lab)));
     }
@@ -244,7 +249,7 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
     } else if (lab !== null && lab !== undefined) {
       const clash = onYAxis.has(y);
       svg.append(el('text', {
-        x: X(0) - (clash ? 18 : 12), y: Y(y) + 5, 'text-anchor': 'end', direction: 'ltr',
+        x: X(0) - (clash ? 25 : 12), y: Y(y) + 5, 'text-anchor': 'end', direction: 'ltr',
         fill: AXIS, 'font-size': 17, 'font-weight': 700, ...(clash ? CLEAR : {}),
       }, String(lab)));
     }

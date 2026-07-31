@@ -1,6 +1,6 @@
 import type { WorkbookPageContent } from '../types';
 import { sheet, blank, ltr, pair, colorGrid, wordBank, wordBlank } from '../authoring';
-import { decodeTargets } from '../../../games/colorDecode';
+import { decodeTargets, decodeXMax, decodeYMax } from '../../../games/colorDecode';
 
 /* פענוח צבעוני — הגרסה המודפסת. הדף הזה החליף שעשועון מקוון שבו צובעים תאים
    בלחיצה: יניב — „אנחנו רק דפים להדפסה ולא מתוקשב!!" (31.07.2026, כמו
@@ -22,7 +22,7 @@ export const COLOR_DECODE_PRINT: WorkbookPageContent = sheet({
 <section class="q-card">
 <h3>א. צבעו את התאים שברשימה.</h3>
 <p>צבעו את התאים: ${ltr(listText)}</p>
-${colorGrid(6, 5)}
+${colorGrid(decodeXMax, decodeYMax)}
 ${wordBank(['וי', 'איקס', 'משולש'])}
 <p>הסמל שהתגלה הוא ${wordBlank('short', 'concept', 'מקום להשלמת שם הסמל שהתגלה')}.</p>
 </section>
