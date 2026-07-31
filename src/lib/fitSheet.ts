@@ -67,6 +67,10 @@ export function fitSheet(sheet: HTMLElement): void {
   const canSpace = box.childElementCount >= 2 && stacked(box);
   const kids = [...box.children] as HTMLElement[];
   for (const k of kids) k.style.paddingTop = '';
+  /* Grid rows can be given air too (see the spare-height step below); a rerun
+     must measure the sheet as authored, so the gap resets with everything else. */
+  const airGrids = [...content.querySelectorAll<HTMLElement>('.error-grid, .choice-grid, .cols-2, .cols-3')];
+  for (const g of airGrids) g.style.rowGap = '';
 
   /* Safe to run twice: anything this function resized remembers the height it
      started at, so a second pass measures the sheet as authored rather than
@@ -190,6 +194,21 @@ export function fitSheet(sheet: HTMLElement): void {
   while (air > 0 && room() < 0) {
     air -= 3;
     for (const li of writable) li.style.paddingBlock = air > 0 ? `${air}px` : '';
+  }
+
+  /* A page whose cards sit in a GRID (the error-spotting page, choice pages)
+     is not "stacked", so the padding path below cannot reach it — and page 47
+     ended at 70% with a band of white underneath. The spare height goes into
+     the grid's row gaps instead, a step at a time on top of the gap the CSS
+     gave, capped so the page reads as airy rather than scattered. */
+  if (airGrids.length) {
+    const baseGap = new Map(airGrids.map((g) => [g, parseFloat(getComputedStyle(g).rowGap) || 0]));
+    let extraGap = 0;
+    while (extraGap < 34 && room() > 40) {
+      extraGap += 4;
+      for (const g of airGrids) g.style.rowGap = `${(baseGap.get(g) ?? 0) + extraGap}px`;
+    }
+    if (room() < 0) for (const g of airGrids) g.style.rowGap = '';
   }
 
   const leftover = room();

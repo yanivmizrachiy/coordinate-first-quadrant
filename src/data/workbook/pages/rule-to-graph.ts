@@ -28,7 +28,7 @@ export const RULE_TO_GRAPH: WorkbookPageContent = sheet({
 </tbody>
 </table>
 <ul class="tasks compact">
-<li>כתבו את ארבע הנקודות מהטבלה: <span class="pair math-ltr" dir="ltr">(0,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">(1,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">(2,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">(3,<span class="pair-blank"></span>)</span></li>
+<li>כתבו את ארבע הנקודות מהטבלה: <span class="pair math-ltr" dir="ltr">(0,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">(1,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">(2,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">(3,<span class="pair-blank"></span>)</span>.</li>
 <li>סמנו את ארבע הנקודות על מערכת הצירים.</li>
 </ul>
 ${grid({ size: 'md', label: 'מערכת צירים ריקה לסימון הנקודות של הכלל' })}

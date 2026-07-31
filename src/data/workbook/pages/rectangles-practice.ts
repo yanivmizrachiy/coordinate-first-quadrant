@@ -31,7 +31,7 @@ ${grid({
 <li>ה<b>אורך</b> של מלבן הוא הצלע הארוכה, וה<b>רוחב</b> שלו הוא הצלע ה${blank(6, 'property')}.</li>
 <li>במלבן ${ltr('PQRS')} האורך הוא הצלע ${blank(4, 'letter')}, והרוחב הוא הצלע ${ltr('QR')}.</li>
 </ul>
-<div class="calc-box"><b>דרך החישוב:</b>
+<div class="calc-box">
 ${exercise('PQ')}
 ${exercise('QR')}
 ${exercise('P')}
@@ -44,7 +44,7 @@ ${exercise('S', 'יח"ר')}
 <li>סמנו על הסרטוט שלמעלה מלבן ${ltr('ABCD')} שצלעותיו מקבילות לצירים, והאורך שלו גדול מהרוחב.</li>
 <li>הקודקודים שבחרתם: ${pair('A')} ${pair('B')} ${pair('C')} ${pair('D')}</li>
 </ul>
-<div class="calc-box"><b>דרך החישוב:</b>
+<div class="calc-box">
 ${exercise('AB')}
 ${exercise('BC')}
 ${exercise('P')}

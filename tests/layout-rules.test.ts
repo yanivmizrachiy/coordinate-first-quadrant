@@ -478,6 +478,33 @@ describe('a calculation gets units and room to work', () => {
     }
   });
 
+  /* Yaniv, 31.07.2026: „צריך משבצת של מקום לתרגיל באופן נוח וכתוב ברור,
+     ומתחתיה תשובה סופית". Two finals crushed onto one line rendered as
+     „יחשטח" — so the working sits in a slot of its own, and every final
+     answer stands on a row of its own. */
+  it('every final answer stands on a row of its own', () => {
+    for (const p of WORKBOOK) {
+      for (const f of p.html.matchAll(/<div class="calc-final">([\s\S]*?)<\/div>\s*<\/div>/g)) {
+        const rows = f[1]!.split('calc-final__row').length - 1;
+        const answers = (f[1]!.match(/[SP] =/g) ?? []).length;
+        expect(rows, `page ${p.n}: a calc box with finals but no answer rows`).toBeGreaterThan(0);
+        expect(answers, `page ${p.n}: two final answers share one row`).toBeLessThanOrEqual(rows);
+      }
+      for (const box of p.html.split('<div class="calc-box">').slice(1)) {
+        expect(
+          /calc-work|calc-ltr/.test(box.slice(0, 400)),
+          `page ${p.n}: a calculation without its working slot`,
+        ).toBe(true);
+      }
+      /* „תמחק את המילים דרך החישוב" — the only labels a calc box may carry are
+         the tool's own תרגיל/תשובה, so a hand-written heading cannot drift. */
+      expect(p.html, `page ${p.n}: a hand-written calc-box label`).not.toMatch(
+        /<div class="calc-box"><b(?! class="calc-label")/,
+      );
+      expect(p.html.replace(/<[^>]+>/g, ' '), `page ${p.n} still says דרך החישוב`).not.toContain('דרך החישוב');
+    }
+  });
+
   /* USER_MEMORY §10. A rectangle has an אורך and a רוחב — the longer side and
      the shorter one. „הצלע האופקית” describes the picture, not the shape. */
   it('a rectangle is described by its אורך and רוחב, not by which way it points', () => {

@@ -139,12 +139,26 @@ export const mixed = (whole: number, num: number, den: number): string =>
    `S` is area and `P` is perimeter, the letters an Israeli textbook uses. */
 export const calcBox = (o: { lines?: number; perimeter?: boolean; area?: boolean }): string => {
   const rules = '<div class="answer-line"></div>'.repeat(o.lines ?? 2);
+  /* Yaniv, 31.07.2026: „צריך משבצת של מקום לתרגיל באופן נוח וכתוב ברור,
+     ומתחתיה תשובה סופית" — the working gets a clear slot of its own, and every
+     final answer stands on a LINE of its own. Two finals crushed onto one line
+     rendered as „יחשטח" — not how a textbook writes. `P = ____` is pinned LTR
+     as one unit so the equals sign can never wander in the Hebrew line. */
+  const row = (label: string, letter: string, unit: string): string =>
+    '<div class="calc-final__row">' +
+    `<span class="calc-final__label">${label}:</span>` +
+    `<span class="calc-final__math" dir="ltr">${letter} = ${blank(4, 'number')}</span>` +
+    `<span class="calc-final__unit">${unit}</span>` +
+    '</div>';
   const finals: string[] = [];
-  if (o.perimeter) finals.push(`ההיקף: ${ltr('P')} = ${blank(4, 'number')} יח'`);
-  if (o.area) finals.push(`השטח: ${ltr('S')} = ${blank(4, 'number')} יח"ר`);
+  if (o.perimeter) finals.push(row('ההיקף', 'P', "יח'"));
+  if (o.area) finals.push(row('השטח', 'S', 'יח"ר'));
+  /* Yaniv, 31.07.2026: „תמחק את המילים דרך החישוב — צריך שיהיה כתוב תרגיל
+     ומתחת לזה תשובה". The labels a textbook uses, nothing else. */
   return (
-    '<div class="calc-box"><b>דרך החישוב:</b>' + rules +
-    (finals.length ? `<div class="calc-final">${finals.map((f) => `<span>${f}</span>`).join('')}</div>` : '') +
+    '<div class="calc-box"><b class="calc-label">תרגיל:</b>' +
+    `<div class="calc-work">${rules}</div>` +
+    (finals.length ? `<b class="calc-label">תשובה:</b><div class="calc-final">${finals.join('')}</div>` : '') +
     '</div>'
   );
 };

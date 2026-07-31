@@ -22,6 +22,8 @@ body.bw-print .sheet .note-box { background: #f2f2f2 !important; border-right-co
 body.bw-print .sheet .word-bank { background: #f4f4f4 !important; border-color: #333 !important; }
 body.bw-print .sheet .word-bank__item { border-color: #666 !important; }
 body.bw-print .sheet .calc-box { background: #fafafa !important; border-color: #666 !important; }
+body.bw-print .sheet .calc-work { background: #fff !important; border-color: #777 !important; }
+body.bw-print .sheet .calc-final__row + .calc-final__row { border-top-color: #999 !important; }
 body.bw-print .sheet .work-table th { background: #d9d9d9 !important; }
 body.bw-print .sheet .work-table td,
 body.bw-print .sheet .work-table th,

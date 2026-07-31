@@ -930,7 +930,7 @@ test('the origin is never labelled twice', async ({ page }, testInfo) => {
 
 /* עמוד 16 לימד: הפוסטר מילא את כל ה-A4 ודחף את השורה השנייה של הכותרת
    התחתונה אל מחוץ לגיליון. כלל ברזל — כותרת תחתית אחידה ושלמה בכל עמוד —
-   נמדד עכשיו על כל 76 הגיליונות, מסך והדפסה. */
+   נמדד עכשיו על כל 79 הגיליונות, מסך והדפסה. */
 test('the canonical footer sits whole — and in the SAME place — on every sheet', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
   await page.goto('/#/print');
@@ -967,7 +967,7 @@ test('the canonical footer sits whole — and in the SAME place — on every she
 });
 
 /* עמודים 13, 21 ו-45 הראו את אותה תקלה: שרטוט שגדל מעבר לכרטיס שלו ונמרח על
-   השכן — „עמוד על עמוד". הבדיקה הזו עוברת על כל 74 העמודים: שרטוט לעולם לא
+   השכן — „עמוד על עמוד". הבדיקה הזו עוברת על כל 77 העמודים: שרטוט לעולם לא
    רחב מהכרטיס שהוא יושב בו, ושני שרטוטים לעולם לא נוגעים זה בזה. */
 test('no drawing escapes its card and no two drawings overlap', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
