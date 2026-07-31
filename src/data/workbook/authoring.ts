@@ -148,7 +148,7 @@ export const calcBox = (o: { lines?: number; perimeter?: boolean; area?: boolean
      answer away). Two quantities still sit side by side. */
   const rows = o.lines ?? 2;
   const shape = o.shape ?? 'המלבן';
-  const section = (heading: string, letter: string, word: string, unit: string): string =>
+  const slot = (heading: string, letter: string, word: string): string =>
     '<div class="calc-sec">' +
     `<b class="calc-label">${heading}</b>` +
     `<div class="calc-work calc-squared" style="--calc-rows:${rows}">` +
@@ -158,19 +158,24 @@ export const calcBox = (o: { lines?: number; perimeter?: boolean; area?: boolean
     '<span class="calc-squared__eq">=</span>' +
     '</span>' +
     '</div>' +
-    `<div class="calc-final"><div class="calc-final__row">${word} ${shape} הוא ${blank(6, 'number')} ${unit}.</div></div>` +
     '</div>';
-  const parts: string[] = [];
-  if (o.perimeter) parts.push(section('חישוב ההיקף:', 'P', 'היקף', "יח'"));
-  if (o.area) parts.push(section('חישוב השטח:', 'S', 'שטח', 'יח"ר'));
+  /* התשובה — שורה אחת רצופה, כמו בספר לימוד. בתוך עמודת-חצי צרה המשפט נשבר
+     לטור מילים, ולכן התשובות יושבות מתחת לזוג המשבצות, ברוחב המלא של התיבה. */
+  const answer = (word: string, unit: string): string =>
+    `<div class="calc-final__row">${word} ${shape} הוא ${blank(6, 'number')} ${unit}.</div>`;
+  const slots: string[] = [];
+  const answers: string[] = [];
+  if (o.perimeter) { slots.push(slot('חישוב היקף המלבן:', 'P', 'היקף')); answers.push(answer('היקף', "יח'")); }
+  if (o.area) { slots.push(slot('חישוב שטח המלבן:', 'S', 'שטח')); answers.push(answer('שטח', 'יח"ר')); }
   /* A box with neither quantity is a plain squared slot („תרגיל:"). */
-  if (!parts.length) {
-    parts.push(`<b class="calc-label">תרגיל:</b><div class="calc-work calc-squared" style="--calc-rows:${rows}"></div>`);
+  if (!slots.length) {
+    slots.push(`<b class="calc-label">תרגיל:</b><div class="calc-work calc-squared" style="--calc-rows:${rows}"></div>`);
   }
-  /* Both quantities sit SIDE BY SIDE — „חישוב ההיקף" beside „חישוב השטח" — so
+  /* Both quantities sit SIDE BY SIDE — „חישוב היקף המלבן" beside „חישוב שטח המלבן" — so
      the box uses the sheet's width instead of doubling its height. */
-  const body = parts.length === 2 ? `<div class="calc-cols">${parts.join('')}</div>` : parts.join('');
-  return `<div class="calc-box">${body}</div>`;
+  const body = slots.length === 2 ? `<div class="calc-cols">${slots.join('')}</div>` : slots.join('');
+  const finals = answers.length ? `<div class="calc-final">${answers.join('')}</div>` : '';
+  return `<div class="calc-box">${body}${finals}</div>`;
 };
 
 /* An exercise is written the way it is worked: LEFT to right. „BC = תרגיל =
