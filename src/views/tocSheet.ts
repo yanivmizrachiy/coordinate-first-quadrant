@@ -15,6 +15,7 @@ import '@fontsource/frank-ruhl-libre/300.css';
 import '@fontsource/frank-ruhl-libre/400.css';
 import '@fontsource/cormorant-garamond/400.css';
 import '@fontsource/cormorant-garamond/500.css';
+import '@fontsource/cormorant-garamond/700.css';
 import { elem } from '../lib/dom';
 import { navigate } from '../router';
 /* The contents Yaniv asked for: five chapters, named by him, each opening the
@@ -66,10 +67,11 @@ export function renderTocSheet(): HTMLElement {
       style: `--toc-colour:${colour}`,
       'aria-label': `${topic.title}, מתחיל בעמוד ${first}`,
     },
-      /* The row reads right-to-left: the chapter name, its big colour number,
-         then the page it starts on. The reader is looking for a chapter. */
-      elem('span', { class: 'toc-btn__name', text: topic.title }),
+      /* The row reads right-to-left: the big bold colour number leads at the
+         right edge of the page, then the chapter name, then the page it starts
+         on at the left. „את המספרים הצבעוניים… מימין למלל בצד ימין של העמוד". */
       elem('span', { class: 'toc-btn__index', dir: 'ltr', 'aria-hidden': 'true', text: String(i + 1) }),
+      elem('span', { class: 'toc-btn__name', text: topic.title }),
       elem('span', { class: 'toc-btn__page' },
         elem('span', { class: 'toc-btn__page-word', text: 'עמוד' }),
         elem('span', { class: 'toc-btn__no', dir: 'ltr', text: String(first) }),

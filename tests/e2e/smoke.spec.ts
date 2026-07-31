@@ -247,19 +247,19 @@ test('the contents sheet lists every chapter and each button reaches its page', 
   const ranged = await buttons.evaluateAll((els) => els.filter((e) => /[–-]/.test(e.textContent ?? '')).length);
   expect(ranged, 'a chip still shows a page range instead of the starting page').toBe(0);
 
-  /* The row reads name-then-page: in RTL the chapter name sits to the RIGHT of
-     the page number, with the big colour index between them. The reader is
-     looking for a chapter, not for a number. */
+  /* The row reads index-name-page from right to left: the big colour number
+     leads at the right edge of the page, then the chapter name, then the page
+     number at the left. „מימין למלל בצד ימין של העמוד". */
   const wrongWayRound = await buttons.evaluateAll((els) =>
     els.filter((e) => {
       const name = e.querySelector('.toc-btn__name')?.getBoundingClientRect();
       const index = e.querySelector('.toc-btn__index')?.getBoundingClientRect();
       const no = e.querySelector('.toc-btn__no')?.getBoundingClientRect();
       return !name || !index || !no ||
-        name.left < index.left || index.left < no.left;
+        index.left <= name.left || name.left <= no.left;
     }).length,
   );
-  expect(wrongWayRound, 'the row does not read name, index, page from right to left').toBe(0);
+  expect(wrongWayRound, 'the row does not read index, name, page from right to left').toBe(0);
 
   /* „תגדיל מספרי העמודים ותגדיל כתב של שמות הפרקים" (31.07.2026) — the page
      number and the chapter name are LARGE, not the sheet's 13px body size. */
