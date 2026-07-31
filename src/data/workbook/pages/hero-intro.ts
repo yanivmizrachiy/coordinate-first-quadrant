@@ -3,8 +3,8 @@ import { sheet } from '../authoring';
 
 export const HERO_INTRO: WorkbookPageContent = sheet({
   sectionClass: "sheet guided dense",
-  title: "מערכת הצירים והזוג הסדור",
-  subtitle: "ערך x מצד שמאל, שיעור y מצד ימין",
+  title: "הרביע הראשון — מושגים בסיסיים",
+  subtitle: "מערכת צירים, נקודות וזוגות סדורים",
   content: `
 <div class="rule-box completion-intro">
 <div class="completion-sentence">כל נקודה נכתבת כ<b>זוג סדור</b> בתוך סוגריים: <span class="math-ltr" dir="ltr">(x,y)</span>.
