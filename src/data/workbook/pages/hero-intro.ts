@@ -1,14 +1,15 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet } from '../authoring';
+import { sheet, wordBank } from '../authoring';
 
 export const HERO_INTRO: WorkbookPageContent = sheet({
   sectionClass: "sheet guided dense",
-  title: "הרביע הראשון — מושגים בסיסיים",
-  subtitle: "מערכת צירים, נקודות וזוגות סדורים",
+  title: "מערכת הצירים והזוג הסדור",
+  subtitle: "ערך x מצד שמאל, שיעור y מצד ימין",
   content: `
 <div class="rule-box completion-intro">
 <div class="completion-sentence">כל נקודה נכתבת כ<b>זוג סדור</b> בתוך סוגריים: <span class="math-ltr" dir="ltr">(x,y)</span>.
 </div>
+${wordBank(['סדור', 'ימין', 'x'])}
 <div class="completion-sentence">ערך <span class="word-blank word-short" aria-label="מקום להשלמת האות x"></span> נכתב מצד שמאל, ושיעור <span class="math-ltr" dir="ltr">y</span> נכתב מצד <span class="word-blank word-short" aria-label="מקום להשלמת המילה ימין"></span>.
 </div>
 <div class="completion-sentence">מכיוון שיש סֵדֶר, קוראים לזה זוג <span class="word-blank word-medium" aria-label="מקום להשלמת המילה סדור"></span>.
