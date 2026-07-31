@@ -138,7 +138,12 @@ export const mixed = (whole: number, num: number, den: number): string =>
    לוותר על הכתיבה של הדרך”, and the answer is not an answer without its unit.
    `S` is area and `P` is perimeter, the letters an Israeli textbook uses. */
 export const calcBox = (o: { lines?: number; perimeter?: boolean; area?: boolean; name?: string }): string => {
-  const rules = '<div class="answer-line"></div>'.repeat(o.lines ?? 2);
+  /* `lines` is the box's whole budget: with two quantities each working slot
+     takes its share, so the box keeps the height it always had and the A4 does
+     not overflow — the sheet-clipping test measures this. */
+  const quantities = (o.perimeter ? 1 : 0) + (o.area ? 1 : 0);
+  const per = Math.max(1, Math.floor((o.lines ?? 2) / Math.max(1, quantities)));
+  const rules = '<div class="answer-line"></div>'.repeat(per);
   /* Yaniv, 31.07.2026 — the textbook format, per quantity: a heading
      („חישוב ההיקף:"), a working slot that OPENS with the large letter a real
      textbook uses — P big, the rectangle's name small beside it, and the word
