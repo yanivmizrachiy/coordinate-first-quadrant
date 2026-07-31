@@ -22,12 +22,15 @@ import { navigate } from '../router';
    page he named. It is NOT derived from BOOK any more — he wants a reader's
    map, not an index of every section, and „כל השאר תמחק מהתוכן".
    A test checks that every page number here exists. */
+/* הפרקים בשמות שיניב נתן (31.07.2026) — הכותרת בתוכן זהה מילה במילה לכותרת
+   האחידה שעל דפי הפרק. */
 export const CONTENTS: ReadonlyArray<{ title: string; page: number }> = [
   { title: 'הרביע הראשון — מושגים בסיסיים', page: 1 },
-  { title: 'נקודות במערכת הצירים', page: 12 },
-  { title: 'קטעים מקבילים לצירים', page: 29 },
-  { title: 'שטחים והיקפים במערכת הצירים', page: 51 },
-  { title: 'קריאת גרפים ברביע הראשון', page: 64 },
+  { title: 'נקודות ברביע הראשון', page: 4 },
+  { title: 'נקודות שעל הצירים', page: 15 },
+  { title: 'קטעים מקבילים לצירים', page: 46 },
+  { title: 'המלבן ברביע הראשון', page: 51 },
+  { title: 'קריאת גרפים ברביע הראשון', page: 65 },
 ];
 import { DISTRICT_BADGE } from '../data/cover';
 

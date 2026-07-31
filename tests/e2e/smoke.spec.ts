@@ -244,7 +244,7 @@ test('the contents sheet lists every chapter and each button reaches its page', 
   const buttons = page.locator('.toc-sheet .toc-btn');
   const topics = await page.evaluate(() => document.querySelectorAll('.toc-sheet .toc-btn').length);
   /* Five chapters, named by Yaniv, and no others: „כל השאר תמחק מהתוכן". */
-  expect(topics, 'the contents sheet does not list the five chapters').toBe(5);
+  expect(topics, 'the contents sheet does not list the six chapters').toBe(6);
 
   /* „לא צריך כפל מספרים" (31.07.2026): ONE number per row — the big colour
      number IS the page number. Five chapters, five distinct colours. */
@@ -262,7 +262,7 @@ test('the contents sheet lists every chapter and each button reaches its page', 
   const starts = await buttons.evaluateAll((els) =>
     els.map((e) => Number((e.getAttribute('aria-label') ?? '').match(/בעמוד (\d+)/)?.[1] ?? 0)),
   );
-  expect(starts, 'the contents point at the wrong pages').toEqual([1, 12, 29, 51, 64]);
+  expect(starts, 'the contents point at the wrong pages').toEqual([1, 4, 15, 46, 51, 65]);
   const ranged = await buttons.evaluateAll((els) => els.filter((e) => /[–-]/.test(e.textContent ?? '')).length);
   expect(ranged, 'a chip still shows a page range instead of the starting page').toBe(0);
 
@@ -310,7 +310,7 @@ test('the contents sheet lists every chapter and each button reaches its page', 
   expect(faint, `a page number is too faint to read: ${faint.join(', ')}`).toEqual([]);
 
   /* Every chip opens the page it names, straight away. */
-  for (const [i, n] of [1, 12, 29, 51, 64].entries()) {
+  for (const [i, n] of [1, 4, 15, 46, 51, 65].entries()) {
     await page.goto('/#/print');
     await page.waitForTimeout(3500);
     await page.locator('.toc-btn').nth(i).click();
@@ -571,7 +571,7 @@ test('a picker preset chooses a whole chapter', async ({ page }) => {
   await expect(page.locator('.pick__grid')).toBeVisible();
   // the first chapter runs from page 1 up to the second chapter's start
   await page.locator('.pick__chip', { hasText: 'מושגים בסיסיים' }).click();
-  await expect(page.locator('.pick__count')).toHaveText('נבחרו 11 עמודים');
+  await expect(page.locator('.pick__count')).toHaveText('נבחרו 3 עמודים');
   await page.locator('.pick__chip', { hasText: 'כל החוברת' }).click();
   await expect(page.locator('.pick__count')).toHaveText('נבחרו 78 עמודים');
   await page.locator('.pick__chip', { hasText: 'ניקוי הבחירה' }).click();
