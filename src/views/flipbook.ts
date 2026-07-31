@@ -22,7 +22,11 @@ import type { ViewContext } from './context';
 
 const SHEET_W = 794; // 210 מ"מ בפיקסלים של CSS
 const SHEET_H = 1123; // 297 מ"מ
-const STORAGE_KEY = 'quadrant:lxbook:pos';
+/* „התחל" פותח תמיד את תוכן העניינים — לעולם לא את הדף האחרון שביקרת בו
+   (יניב, 31.07.2026). זיכרון-המיקום הישן (quadrant:lxbook:pos) בוטל: הוא
+   דרס כל כניסה מהעמוד הראשי. הדגל החד-פעמי הזה אומר לחוברת להיפתח ישר
+   על כפולת תוכן העניינים. */
+const OPEN_KEY = 'quadrant:lxbook:open';
 const FLIP_MS = 900;
 const COVER_MS = 1000;
 
@@ -244,7 +248,6 @@ export function flipbook({ outlet, setTitle }: ViewContext): (() => void) | void
     syncHalves();
     applyBookBase();
     syncChrome();
-    savePos();
   };
 
   const animateTo = (f: Flip, target: 0 | 1, easing: (x: number) => number, baseMs: number): void => {
@@ -277,7 +280,6 @@ export function flipbook({ outlet, setTitle }: ViewContext): (() => void) | void
     syncHalves();
     applyBookBase();
     syncChrome();
-    savePos();
     window.clearTimeout(fadeTimer);
     fadeTimer = window.setTimeout(() => { fade = false; book.classList.remove('lx-book--fadeswap'); }, 380);
   };
@@ -636,10 +638,6 @@ export function flipbook({ outlet, setTitle }: ViewContext): (() => void) | void
     pagesLabel.textContent = label;
   }
 
-  const savePos = (): void => {
-    try { window.localStorage.setItem(STORAGE_KEY, String(pos)); } catch { /* private mode */ }
-  };
-
   /* ---- מדידת הבמה --------------------------------------------------------- */
   const measure = (): void => {
     const cs = window.getComputedStyle(viewport);
@@ -677,10 +675,13 @@ export function flipbook({ outlet, setTitle }: ViewContext): (() => void) | void
     if (host && g) cleanups.push(g.mount(host));
   }
 
-  // שחזור הדף השמור
+  /* „התחל" מהעמוד הראשי → ישר אל כפולת תוכן העניינים. כל כניסה אחרת
+     מתחילה מהכריכה — אף פעם לא מהדף האחרון שביקרת בו. */
   try {
-    const saved = Number(window.localStorage.getItem(STORAGE_KEY));
-    if (Number.isFinite(saved) && saved > 1) pos = clampPos(saved, MODEL_TOTAL);
+    const intent = window.sessionStorage.getItem(OPEN_KEY);
+    window.sessionStorage.removeItem(OPEN_KEY);
+    if (intent === 'toc') pos = clampPos(2, MODEL_TOTAL);
+    window.localStorage.removeItem('quadrant:lxbook:pos'); // המפתח הישן — מנוקה
   } catch { /* private mode */ }
 
   measure();

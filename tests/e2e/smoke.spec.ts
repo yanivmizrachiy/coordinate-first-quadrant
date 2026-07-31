@@ -130,6 +130,21 @@ test('the flipbook opens from the cover to the first spread', async ({ page }) =
   await expect(page.locator('.lx-toolbar')).toBeVisible();
 });
 
+/* „אם בעמוד הראשי לוחצים על כפתור התחל צריך שייפתח… תוכן העניינים, ולא…
+   העמוד האחרון שהייתי בו" (31.07.2026). זיכרון-המיקום בוטל; התחל = תוכן
+   העניינים, תמיד. */
+test('התחל opens the contents, never the remembered page', async ({ page }) => {
+  await page.goto('/#/');
+  // שריד של הזיכרון הישן לא קובע כלום — ומנוקה בכניסה
+  await page.evaluate(() => window.localStorage.setItem('quadrant:lxbook:pos', '40'));
+  await page.locator('.ls-pdfframe__start').click();
+  await expect(page).toHaveURL(/#\/book$/);
+  await expect(page.locator('.lxbook')).toHaveAttribute('data-open', 'true');
+  await expect(page.locator('.lx-half .toc-sheet')).toHaveCount(1);
+  const leftover = await page.evaluate(() => window.localStorage.getItem('quadrant:lxbook:pos'));
+  expect(leftover, 'the old position key was not wiped').toBeNull();
+});
+
 test('the flipbook top bar carries the way back, the reader, the download and the picker', async ({ page }) => {
   await page.goto('/#/book');
   const acts = page.locator('.lx-topbar__acts');
