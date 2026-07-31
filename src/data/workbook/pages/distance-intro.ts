@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, exerciseGiven } from '../authoring';
+import { sheet, exerciseGiven, wordBank } from '../authoring';
 
 export const DISTANCE_INTRO: WorkbookPageContent = sheet({
   sectionClass: "sheet guided ultra-dense",
@@ -11,6 +11,7 @@ export const DISTANCE_INTRO: WorkbookPageContent = sheet({
 <div class="completion-sentence">כדי להגיע אל ציר <span class="math-ltr" dir="ltr">y</span> משנים את ערך <span class="math-ltr" dir="ltr">x</span> ל־<span class="word-blank word-short" data-missing="number" aria-label="מקום להשלמת המספר אפס"></span>.</div>
 <div class="completion-sentence">כדי להגיע אל ציר <span class="word-blank word-short" data-missing="letter" aria-label="מקום להשלמת האות x"></span> משנים את שיעור <span class="math-ltr" dir="ltr">y</span> ל־0.</div>
 </div>
+${wordBank(['x', '0'])}
 <div aria-label="מערכת צירים ברביע הראשון" class="coordinate-grid grid-sm" data-arrows='[{"from": [6, 4], "to": [0, 4], "label": "6 שמאלה"}, {"from": [6, 4], "to": [6, 0], "label": "4 למטה"}]' data-labelboxes="[]" data-points='[{"x": 6, "y": 4, "label": "P"}, {"x": 0, "y": 4, "label": ""}, {"x": 6, "y": 0, "label": ""}]' data-polygons="[]" data-segments="[]" role="img">
 </div>
 </div>
@@ -28,7 +29,7 @@ export const DISTANCE_INTRO: WorkbookPageContent = sheet({
 </section>
 <section class="q-card">
 <h3>ב. לאיזה ציר קרובה יותר כל נקודה?</h3>
-<div class="task-grid">
+<div class="task-grid task-grid--row">
 <div>A: 
 <div class="choice-row"><span class="choice">ציר x</span><span class="choice">ציר y</span><span class="choice">מרחקים זהים</span>
 </div>
@@ -64,20 +65,14 @@ ${exerciseGiven('AB', '7 − 2')}
 ${exerciseGiven('CD', '6 − 1')}
 <ul class="tasks compact">
 <li>כתבו שתי נקודות משלכם שיש להן שיעור <span class="math-ltr" dir="ltr">x</span> זהה: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> ו־<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>.</li>
-</ul>
-</section>
-</div>
-<section class="q-card">
-<h3>ה. אורי חישב את המרחק בין <span class="math-ltr" dir="ltr">(2,5)</span> ובין <span class="math-ltr" dir="ltr">(7,5)</span> וקיבל 9.</h3>
-<ul class="tasks compact">
-<li>אורי <span class="blank" data-missing="relation" style="--blank-width:5ch"></span> את שני ערכי ה־<span class="math-ltr" dir="ltr">x</span> במקום לחסר אותם.</li>
-<li>זהו תרגיל החיסור הנכון, והתוצאה שלו היא המרחק:</li>
+<li><b>אורי</b> חישב את המרחק בין <span class="math-ltr" dir="ltr">(2,5)</span> ובין <span class="math-ltr" dir="ltr">(7,5)</span> וקיבל 9 — הוא <span class="blank" data-missing="relation" style="--blank-width:5ch"></span> את שני ערכי ה־<span class="math-ltr" dir="ltr">x</span> במקום לחסר אותם. תרגיל החיסור הנכון:</li>
 </ul>
 ${exerciseGiven('', '7 − 2')}
 <ul class="tasks compact">
-<li>ההסבר: <span class="blank" data-missing="relation" style="--blank-width:24ch"></span>.</li>
 </ul>
 </section>
+</div>
+
 <section class="q-card">
 <h3>ו. נקודה שמרחקה זהה משני הצירים - מה אפשר לומר על שיעוריה?</h3>
 <ul class="tasks compact">

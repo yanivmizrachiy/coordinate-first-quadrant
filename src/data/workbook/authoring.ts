@@ -174,7 +174,11 @@ export const calcBox = (o: { lines?: number; perimeter?: boolean; area?: boolean
   /* Both quantities sit SIDE BY SIDE — „חישוב היקף המלבן" beside „חישוב שטח המלבן" — so
      the box uses the sheet's width instead of doubling its height. */
   const body = slots.length === 2 ? `<div class="calc-cols">${slots.join('')}</div>` : slots.join('');
-  const finals = answers.length ? `<div class="calc-final">${answers.join('')}</div>` : '';
+  /* „השטח שיופיע מתחת לשטח ולא מתחת להיקף" (31.07.2026): שתי התשובות יושבות
+     באותה רשת-עמודות כמו המשבצות, כך שכל תשובה נוחתת בדיוק מתחת לתיבה שלה. */
+  const finals = answers.length
+    ? `<div class="calc-final${answers.length === 2 ? ' calc-cols' : ''}">${answers.join('')}</div>`
+    : '';
   return `<div class="calc-box">${body}${finals}</div>`;
 };
 

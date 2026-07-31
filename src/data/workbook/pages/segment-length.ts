@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, blank, wordBlank, ltr, pair, grid, exerciseGiven, exercise } from '../authoring';
+import { sheet, blank, wordBlank, ltr, pair, grid, exerciseGiven, exercise, wordBank } from '../authoring';
 
 /* The gap this fills: the booklet asked for lengths and never said how to get
    one. A child counted squares. The length of a segment parallel to an axis is
@@ -14,6 +14,7 @@ export const SEGMENT_LENGTH: WorkbookPageContent = sheet({
 <div class="completion-sentence">בקטע המקביל לציר ${ltr('x')}, האורך הוא ה־${ltr('x')} הימני <b>פחות</b> ה־${ltr('x')} השמאלי, והתוצאה נקראת ה${wordBlank('medium', 'concept', 'מקום להשלמת המילה הפרש')}.</div>
 <div class="completion-sentence">בקטע המקביל לציר ${ltr('y')}, האורך הוא ה־${ltr('y')} הגבוה <b>פחות</b> ה־${ltr('y')} ה${wordBlank('medium', 'property', 'מקום להשלמת המילה נמוך')}.</div>
 </div>
+${wordBank(['נמוך', 'אורך'])}
 <section class="q-card">
 <h3>א. השלימו לפי הסרטוט.</h3>
 ${grid({

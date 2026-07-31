@@ -86,6 +86,9 @@
   padding: 1px 8px; font-weight: 700;
 }
 .math-ltr { direction: ltr; unicode-bidi: isolate; font-family: var(--font-math); font-weight: 700; }
+/* „תרווח בשורה הזאת את המלל — הכל צמוד ולא נוח" (31.07.2026): זוג סדור בתוך
+   משפט מקבל אוויר משני צדדיו, בכל החוברת. */
+li .pair, p .pair, .completion-sentence .pair { margin-inline: 3px; }
 .blank {
   display: inline-block;
   /* requested width, but never wider than the line — avoids overflow at ~320px */
@@ -145,7 +148,7 @@
 }
 .work-table th { background: #f1f4f8; font-weight: 800; }
 .work-table.center td, .work-table.center th { text-align: center; }
-.work-table td:empty { height: 30px; }
+.work-table td:empty { height: 26px; }
 .work-table .tall { height: 65px; }
 .tf-table td:last-child { width: 34%; text-align: center; font-weight: 700; }
 /* The drawing keeps its own proportions inside the box, so a box wider than
@@ -177,6 +180,8 @@
 .compact-top { align-items: center; }
 .span-2 { grid-column: 1 / -1; }
 .choice-row { display: flex; gap: 6px; flex-wrap: wrap; margin: 4px 0; }
+/* עמוד 38: שלוש שאלות הציר-הקרוב יושבות בשורה אחת, לא זו מתחת לזו. */
+.task-grid--row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .choice { border: 1px solid #9da9b8; border-radius: 999px; padding: 3px 9px; background: #fff; display: inline-block; }
 .choice-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; text-align: center; }
 .choice-grid .coordinate-grid { margin-top: 2px; }
@@ -259,7 +264,7 @@
    keeps its margins via the inline padding. */
 .gz-footer {
   position: absolute; right: 0; left: 0; bottom: 5mm; margin: 0;
-  padding: 3px 14mm 0; border-top: 1px solid #1d4ed8;
+  padding: 3px 14mm 0; border-top: 1px solid var(--ink); /* כחול כהה — כקו הכותרות */
   display: flex; align-items: center; justify-content: center; gap: 9px;
   line-height: 1.2; background: #fff;
 }
@@ -313,7 +318,12 @@
 .tf-option input { appearance: none; -webkit-appearance: none; width: 18px; height: 18px; margin: 0; border: 1.8px solid #334155; border-radius: 3px; background: #fff; display: grid; place-content: center; flex: 0 0 auto; }
 .tf-option input:checked::after { content: "✓"; font-size: 15px; line-height: 1; font-weight: 900; color: #111827; transform: translateY(-1px); }
 .tf-table td:last-child { width: 38%; min-width: 170px; padding-inline: 8px; }
-.mist-head > .tf-options { display: flex; min-width: auto; gap: 8px; font-size: 13px; font-weight: 700; }
+/* „לא נוח שזה מאוזן" (31.07.2026): מתחת לטענה, זו מתחת לזו — לא בשורה איתה. */
+.mist-head { display: block; }
+.mist-head > .tf-options {
+  display: flex; flex-direction: column; align-items: flex-start;
+  min-width: auto; gap: 6px; margin-top: 6px; font-size: 13px; font-weight: 700;
+}
 .mist-head > .tf-options .tf-option { gap: 3px; }
 .mist-head > .tf-options input { width: 15px; height: 15px; }
 
@@ -476,7 +486,7 @@
 /* An exercise reads left to right, whatever the sheet's direction is. */
 /* The exercise and the value under it are one block: they are read together and
    must never be split across a column or a page. */
-.calc-pair { margin: 3px 0 5px; }
+.calc-pair { margin: 2px 0 3px; }
 .calc-pair .calc-ltr { margin: 1px 0; }
 /* A given subtraction is one line, so it needs no block spacing around it. */
 .calc-pair:has(> .calc-ltr:only-child) { margin: 2px 0; }
@@ -538,28 +548,26 @@ td > .calc-pair, td .calc-pair { margin: 2px 0; }
 .toc-buttons .toc-btn:last-child { border-bottom: 1px solid #ddd3bd; }
 /* שם הפרק — סריף גדול. „תגדיל כתב של שמות הפרקים". */
 .toc-btn__name {
-  flex: 1 1 auto; min-width: 0;
+  /* השם תופס רק את רוחבו — הקו המנוקד ממלא את השאר עד המספר. */
+  flex: 0 1 auto; min-width: 0;
   color: #241f14; font-family: 'Frank Ruhl Libre', serif;
   font-size: 30px; font-weight: 400; line-height: 1.2;
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
-/* ספרת הפרק — מובילה בקצה הימני, גדולה, עבה ובולטת, בצבע הפרק. הצבע דוהק דיו
-   כדי לעבור 4.5:1 על השמנת. משקל 700 ורוחב קבוע כדי שכל הספרות יתיישרו. */
-.toc-btn__index {
-  flex: none; order: -1; min-width: 1.1em; text-align: center;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 72px; font-weight: 700; line-height: .82; color: var(--toc-colour);
+/* הקו המנוקד — מוביל את העין מהכותרת אל מספר העמוד בשמאל, כמו בתוכן
+   עניינים של ספר אמיתי (31.07.2026). */
+.toc-btn__leader {
+  flex: 1 1 auto; min-width: 28px; align-self: center;
+  border-bottom: 3px dotted #b9ac8b; transform: translateY(9px);
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
-/* מספר העמוד — מוגדל, בדיו כהה שנקרא היטב. „תגדיל מספרי העמודים". */
-.toc-btn__page {
-  flex: none; display: flex; align-items: baseline; gap: 8px;
-  min-width: 118px; justify-content: flex-start;
-}
-.toc-btn__page-word { color: #8f8467; font-size: 15px; font-family: 'Frank Ruhl Libre', serif; }
+/* מספר אחד בלבד: המספר הצבעוני הגדול הוא מספר העמוד, בקצה השמאלי, בצבע
+   הפרק. הצבע דוהק דיו כדי לעבור 4.5:1 על השמנת; רוחב מזערי קבוע כדי שכל
+   המספרים יתיישרו בטור. */
 .toc-btn__no {
-  color: #241f14; font-family: 'Cormorant Garamond', serif;
-  font-size: 36px; font-weight: 500; line-height: .9;
+  flex: none; min-width: 1.6em; text-align: left;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 60px; font-weight: 700; line-height: .85; color: var(--toc-colour);
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
 .toc-btn:hover { background: #00000008; transform: translateX(-3px); }
@@ -571,11 +579,10 @@ td > .calc-pair, td .calc-pair { margin: 2px 0; }
 .toc-sheet .gz-footer .f2 { color: #6b6349; }
 /* black-and-white print: the cream lifts to white, the colours to measured ink */
 body.bw-print .sheet.toc-sheet { background: #fff; border-color: #dfe4ec; }
-body.bw-print .toc-head__kicker, body.bw-print .toc-head__sub,
-body.bw-print .toc-btn__page-word { color: #555 !important; }
+body.bw-print .toc-head__kicker, body.bw-print .toc-head__sub { color: #555 !important; }
 body.bw-print .toc-sheet h1.toc-head__title,
 body.bw-print .toc-btn__name, body.bw-print .toc-btn__no { color: #111 !important; }
-body.bw-print .toc-btn__index { color: #333 !important; }
+body.bw-print .toc-btn__leader { border-bottom-color: #888 !important; }
 body.bw-print .toc-head__frame::before, body.bw-print .toc-head__frame::after { background: #999; }
 body.bw-print .toc-btn { border-top-color: #ccc; }
 body.bw-print .toc-buttons .toc-btn:last-child { border-bottom-color: #ccc; }

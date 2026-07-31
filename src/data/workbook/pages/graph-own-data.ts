@@ -7,7 +7,7 @@ import { sheet, blank, ltr, pair, grid } from '../authoring';
 export const GRAPH_OWN_DATA: WorkbookPageContent = sheet({
   sectionClass: 'sheet practice',
   title: 'קריאת גרפים ברביע הראשון',
-  subtitle: 'הנתונים שלכם — אוספים, מסמנים, ואז משלימים עליהם',
+  subtitle: 'הנתונים שלכם — אוספים, מסמנים ומשלימים את החסר',
   content: `
 <section class="q-card">
 <h3>א. סמנו את הנתונים שלכם על הגרף.</h3>

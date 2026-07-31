@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet } from '../authoring';
+import { sheet, wordBank } from '../authoring';
 
 export const ON_AXES_INTRO: WorkbookPageContent = sheet({
   sectionClass: "sheet guided dense",
@@ -11,6 +11,7 @@ export const ON_AXES_INTRO: WorkbookPageContent = sheet({
 <div class="rule-box completion-intro"><div class="completion-sentence">בכל נקודה שממוקמת על ציר <span class="word-blank word-short" data-missing="letter" aria-label="מקום להשלמת האות y"></span> ערך ה־<span class="math-ltr" dir="ltr">x</span> הוא 0.</div></div>
 <div class="rule-box completion-intro"><div class="completion-sentence">ראשית הצירים נכתבת <span class="pair math-ltr" dir="ltr">O(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>.</div></div>
 </div>
+${wordBank(['y', '0'])}
 <section class="q-card">
 <h3>א. סמנו על הסרטוט את הנקודות <span class="math-ltr" dir="ltr">A(4,0)</span>, <span class="math-ltr" dir="ltr">B(0,5)</span>, <span class="math-ltr" dir="ltr">C(7,0)</span>, <span class="math-ltr" dir="ltr">D(0,2)</span>, <span class="math-ltr" dir="ltr">O(0,0)</span> ו־<span class="math-ltr" dir="ltr">E(3,4)</span>.</h3>
 <div aria-label="נקודות על הצירים וברביע" class="coordinate-grid grid-lg" data-arrows="[]" data-labelboxes="[]" data-points='[{"x": 4, "y": 0, "label": "A"}, {"x": 0, "y": 5, "label": "B"}, {"x": 7, "y": 0, "label": "C"}, {"x": 0, "y": 2, "label": "D"}, {"x": 0, "y": 0, "label": "O"}, {"x": 3, "y": 4, "label": "E"}]' data-polygons="[]" data-segments="[]" role="img">

@@ -94,7 +94,7 @@ describe('completions ask for something different each time', () => {
            numbers — the subtraction, its result, and the side's value. That is
            not a lack of variety, so calculations are not counted here. */
         const body = card
-          .replace(/<div class="calc-final">[\s\S]*?<\/div>\s*<\/div>/g, ' ')
+          .replace(/<div class="calc-final[^"]*">[\s\S]*?<\/div>\s*<\/div>/g, ' ')
           .replace(/<div class="calc-pair">[\s\S]*?<\/div><\/div><\/div>/g, ' ')
           .replace(/<div class="calc-ltr"[\s\S]*?<\/div>/g, ' ');
         const kinds = [...body.matchAll(/data-missing="(\w+)"/g)].map((m) => m[1]);
@@ -640,7 +640,7 @@ describe('a calculation gets units and room to work', () => {
          אינה משנה את הצורה” is a relation, not an answer, and stays. The
          canonical completion — „ההיקף הוא ____ יח'.” — lives inside the
          calc-final row, so the finals are stripped before looking for strays. */
-      const outside = p.html.replace(/<div class="calc-final">[\s\S]*?<\/div>\s*<\/div>/g, ' ');
+      const outside = p.html.replace(/<div class="calc-final[^"]*">[\s\S]*?<\/div>\s*<\/div>/g, ' ');
       expect(
         outside,
         `page ${p.n}: „היקף/שטח: ____ יח'” outside a calculation block`,
@@ -938,5 +938,28 @@ describe('no demo copy anywhere', () => {
       for (const phrase of banned) if (text.includes(phrase)) hits.push(`${f}: ${phrase}`);
     }
     expect(hits, hits.join(' | ')).toEqual([]);
+  });
+});
+
+/* „חובה שיהיה במקרה כזה מחסן מילים" (31.07.2026): השלמות-פתיח מושגיות בלי
+   מחסן השאירו את הלומד לנחש מילים. כל עמוד עם קופסת השלמות נושא מחסן. */
+describe('a completion box always brings its word bank', () => {
+  it('every completion-intro page carries a word bank', () => {
+    const bad = WORKBOOK
+      .filter((p) => p.html.includes('completion-intro') && !p.html.includes('word-bank'))
+      .map((p) => `page ${p.n} (${p.title})`);
+    expect(bad, bad.join(', ')).toEqual([]);
+  });
+});
+
+/* „לא איקס של E אלא של הנקודה E" (31.07.2026): אות של נקודה לעולם לא עומדת
+   לבדה אחרי „של" — תמיד „של הנקודה E". */
+describe('a point letter never stands bare after של', () => {
+  it('every "של X" is written "של הנקודה X"', () => {
+    const bare = /(?<!הנקודה )(?<!הנקודות )של ה?<span class="math-ltr" dir="ltr">[A-Z]<\/span>/;
+    const bad = WORKBOOK
+      .filter((p) => bare.test(p.html))
+      .map((p) => `page ${p.n}`);
+    expect(bad, bad.join(', ')).toEqual([]);
   });
 });

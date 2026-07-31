@@ -16,6 +16,8 @@ export interface GridPoint {
   dx?: number;
   dy?: number;
   anchor?: 'start' | 'middle' | 'end';
+  /** ציור וקטורי קטן על הנקודה — מפת הפארק: כל מילה עם ציור מתאים ומדויק. */
+  icon?: 'gate' | 'bench' | 'fountain' | 'swing' | 'tree' | 'exit' | 'lamp';
 }
 export interface GridSegment {
   from: [number, number];
@@ -118,6 +120,46 @@ function el(tag: string, attrs: Attrs = {}, text = ''): SVGElement {
   return node;
 }
 
+/* ציורי המפה — קו נקי בצבעי השרטוט, ~24px, יושבים מעל-ומימין לנקודה כך
+   שהנקודה עצמה (הדיוק המתמטי) נשארת גלויה. עמוד מפת-הפארק: „כל מילה צריכה
+   באמת להיות עם ציור מתאים ומדויק". */
+function pointIcon(kind: NonNullable<GridPoint['icon']>, px: number, py: number): SVGElement {
+  /* גדול וקריא: קופסת 40 יחידות, ממורכזת מעל הנקודה; נקודה שיושבת על ציר y
+     נדחפת ימינה כדי שהציור לא ירכב על הציר. הקו מתעבה עם ההגדלה. */
+  const nudge = px <= L + 2 ? 18 : 0;
+  const g = el('g', {
+    transform: `translate(${px - 20 + nudge}, ${py - 48}) scale(1.8)`,
+    'aria-hidden': 'true',
+  });
+  const S = (attrs: Attrs, d: string): SVGElement => el('path', { d, fill: 'none', stroke: AXIS, 'stroke-width': 1.7, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', ...attrs });
+  const halo = el('rect', { x: -2, y: -2, width: 26, height: 26, rx: 6, fill: '#fff', opacity: 0.85 });
+  g.append(halo);
+  switch (kind) {
+    case 'gate': // שני עמודים וקשת
+      g.append(S({}, 'M3 22V8M19 22V8'), S({}, 'M1 9 Q11 -2 21 9'), S({ 'stroke-width': 1.2 }, 'M3 22H19'));
+      break;
+    case 'bench': // מושב, משענת ורגליים
+      g.append(S({}, 'M2 13H20'), S({}, 'M3 13V21M19 13V21'), S({}, 'M4 13V6M18 13V6'), S({ 'stroke-width': 1.2 }, 'M4 8H18'));
+      break;
+    case 'fountain': // אגן וסילונים
+      g.append(S({}, 'M3 17 H19 L17 22 H5 Z'), S({}, 'M11 16V9'), S({ stroke: BLUE }, 'M11 9 Q7 6 5 9'), S({ stroke: BLUE }, 'M11 9 Q15 6 17 9'), S({ stroke: BLUE }, 'M11 9 Q11 4 11 3'));
+      break;
+    case 'swing': // מסגרת ומושב תלוי
+      g.append(S({}, 'M2 22 L6 4 H16 L20 22'), S({ 'stroke-width': 1.2 }, 'M8 5V15M14 5V15'), S({}, 'M7 15H15'));
+      break;
+    case 'tree': // גזע וצמרת
+      g.append(S({}, 'M11 22V13'), el('circle', { cx: 11, cy: 8, r: 6.5, fill: 'none', stroke: AXIS, 'stroke-width': 1.7 }), el('circle', { cx: 11, cy: 8, r: 3, fill: 'none', stroke: AXIS, 'stroke-width': 1 }));
+      break;
+    case 'exit': // דלת וחץ יוצא
+      g.append(S({}, 'M4 3 H14 V22 H4 Z'), S({ stroke: BLUE }, 'M14 12 H22'), S({ stroke: BLUE }, 'M19 9 L22 12 L19 15'));
+      break;
+    case 'lamp': // פנס — עמוד וראש מאיר
+      g.append(S({}, 'M11 22V9'), el('circle', { cx: 11, cy: 6, r: 3.4, fill: 'none', stroke: AXIS, 'stroke-width': 1.7 }), S({ 'stroke-width': 1.1 }, 'M6 2 L8 4 M16 2 L14 4'));
+      break;
+  }
+  return g;
+}
+
 /** Render a coordinate grid from a typed spec. Returns a standalone <svg>. */
 export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
   setRange(spec.xmax ?? 8, spec.ymax ?? 6);
@@ -170,6 +212,13 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
   const pts = spec.points ?? [];
   const onXAxis = new Set(pts.filter((p) => p.y === 0).map((p) => p.x));
   const onYAxis = new Set(pts.filter((p) => p.x === 0).map((p) => p.y));
+  /* ראש חץ שנוחת על הציר מסתיר את הספרה בדיוק כמו נקודה — אותה התחמקות. */
+  for (const a of spec.arrows ?? []) {
+    for (const [ax, ay] of [a.from, a.to]) {
+      if (ay === 0) onXAxis.add(ax);
+      if (ax === 0) onYAxis.add(ay);
+    }
+  }
   const CLEAR = { 'paint-order': 'stroke', stroke: '#fff', 'stroke-width': 4.5 };
 
   for (let x = 1; x <= XM; x++) {
@@ -276,7 +325,10 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
     }));
   }
 
-  // Arrows (movement) with optional labels
+  // Arrows (movement) with optional labels.
+  // עמוד 72 לימד: תווית של חץ אופקי שרוע על ציר x נחתה על מספרי הציר, ותווית
+  // של חץ אנכי נחתכה על הקו של עצמה. חץ אופקי — התווית מעליו (ומורמת יותר
+  // כשהוא על הציר); חץ אנכי — התווית לצידו, לעולם לא עליו.
   for (const a of spec.arrows ?? []) {
     svg.append(el('line', {
       x1: X(a.from[0]), y1: Y(a.from[1]), x2: X(a.to[0]), y2: Y(a.to[1]),
@@ -286,12 +338,26 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
     if (a.label) {
       const mx = (X(a.from[0]) + X(a.to[0])) / 2;
       const my = (Y(a.from[1]) + Y(a.to[1])) / 2;
-      svg.append(el('text', { x: mx, y: my - 8, 'text-anchor': 'middle', fill: BLUE, 'font-size': 12, 'font-weight': 800, 'paint-order': 'stroke', stroke: '#fff', 'stroke-width': 4 }, a.label));
+      const vertical = a.from[0] === a.to[0];
+      const halo = { 'paint-order': 'stroke', stroke: '#fff', 'stroke-width': 4.5 } as const;
+      if (vertical) {
+        svg.append(el('text', {
+          x: mx + 9, y: my + 4, 'text-anchor': anchorFor(a.label, 9, false),
+          fill: BLUE, 'font-size': 12, 'font-weight': 800, ...halo,
+        }, a.label));
+      } else {
+        const onAxis = a.from[1] === 0 && a.to[1] === 0;
+        svg.append(el('text', {
+          x: mx, y: my - (onAxis ? 12 : 9), 'text-anchor': 'middle',
+          fill: BLUE, 'font-size': 12, 'font-weight': 800, ...halo,
+        }, a.label));
+      }
     }
   }
 
   // Points with labels
   for (const [pi, p] of (spec.points ?? []).entries()) {
+    if (p.icon) svg.append(pointIcon(p.icon, X(p.x), Y(p.y)));
     /* A point ON an axis sits on top of the axis line and the ray drawn along
        it, and all three are the same weight — „לא ברור בדיוק איפה נמצאת נקודה
        A”. The white ring cuts the line underneath so the mark reads as a mark. */

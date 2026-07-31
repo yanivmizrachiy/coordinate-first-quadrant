@@ -78,6 +78,7 @@ import {
   RULE_TO_GRAPH,
   SHAPES_CLAIMS,
   LIFE_PARK_MAP,
+  LIFE_PARK_ROUTE,
 } from './pages';
 import { GAMES, type GameDefinition } from '../../games';
 import { FOOTER } from './authoring';
@@ -119,7 +120,14 @@ function gamePage(g: GameDefinition, n: number): WorkbookPageContent {
     `<section aria-labelledby="title-${n}" class="sheet game-sheet" id="page-${n}">` +
     `<header class="sheet-header"><div><h1 id="title-${n}">${g.icon} ${g.title}</h1><p>${g.short}</p></div>` +
     `<div aria-label="עמוד ${n}" class="sheet-number">${n}</div></header>` +
-    `<main class="sheet-content"><div class="game-host" data-game-host="${g.id}"></div></main>` +
+    `<main class="sheet-content"><div class="game-host" data-game-host="${g.id}"></div>${
+      g.id === 'coordinate-maze'
+        ? '<div class="q-card"><h3>גם על הנייר.</h3><ul class="tasks compact">' +
+          '<li>המסלול מתחיל בנקודה <span class="math-ltr" dir="ltr">(0,0)</span> ומסתיים בנקודה <span class="math-ltr" dir="ltr">(6,4)</span>. כתבו שתי נקודות נוספות שהמסלול שלכם עובר דרכן: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>.</li>' +
+          '<li>הצעד הראשון במסלול שלכם הוא יחידה אחת <span class="blank" data-missing="direction" style="--blank-width:5ch"></span>.</li>' +
+          '</ul></div>'
+        : ''
+    }</main>` +
     FOOTER_HTML +
     '</section>';
   return {
@@ -184,13 +192,13 @@ const BOOK: { id: string; title: string; slots: Slot[] }[] = [
     SHAPES_CLAIMS,
   ] },
   { id: 'life', title: 'מערכת צירים בחיים שלנו', slots: [
-    LIFE_PHONE_SCREEN, LIFE_HALL_SEATS, LIFE_PIXEL_ART, LIFE_DELIVERY_ROUTE, LIFE_PARK_MAP,
+    LIFE_PHONE_SCREEN, LIFE_HALL_SEATS, LIFE_PIXEL_ART, LIFE_DELIVERY_ROUTE, LIFE_PARK_MAP, LIFE_PARK_ROUTE,
   ] },
   { id: 'graphs', title: 'קריאת גרפים ברביע הראשון', slots: [
     GRAPH_READING_INTRO, GRAPH_YEARS, GRAPH_SQUARE_AREA,
     GRAPH_CONSTANT_RATE, GRAPH_TWO_SERIES, GRAPH_OWN_DATA,
   ] },
-  { id: 'rightangle', title: 'מקביל, מאונך וזווית ישרה', slots: [
+  { id: 'rightangle', title: 'קטעים מקבילים ומאונכים', slots: [
     PARALLEL_PERPENDICULAR, RIGHT_ANGLE_INTRO, RIGHT_ANGLE_PRACTICE, RIGHT_ANGLE_BUILD, RAYS_RIGHT_ANGLE, RAYS_BUILD_RIGHT_ANGLE, RAYS_VERTEX_OFF_ORIGIN, RAYS_CLAIMS, RIGHT_ANGLE_SUMMARY,
   ] },
 ];

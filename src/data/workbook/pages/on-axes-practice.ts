@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet } from '../authoring';
+import { sheet, wordBank } from '../authoring';
 
 export const ON_AXES_PRACTICE: WorkbookPageContent = sheet({
   sectionClass: "sheet practice",
@@ -13,6 +13,7 @@ export const ON_AXES_PRACTICE: WorkbookPageContent = sheet({
 <div class="completion-sentence">בכל נקודה שממוקמת על ציר <span class="math-ltr" dir="ltr">x</span> שיעור ה־<span class="math-ltr" dir="ltr">y</span> הוא <span class="blank" data-missing="number" style="--blank-width:3ch"></span>.</div>
 <div class="completion-sentence">בכל נקודה שממוקמת על ציר <span class="blank" data-missing="letter" style="--blank-width:3ch"></span> ערך ה־<span class="math-ltr" dir="ltr">x</span> הוא 0.</div>
 </div>
+${wordBank(['y', '0'])}
 <ul class="tasks">
 <li>לכן כל הנקודות שממוקמות על ציר <span class="math-ltr" dir="ltr">x</span> הן מהצורה <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,0)</span>.</li>
 <li>וכל הנקודות שממוקמות על ציר <span class="math-ltr" dir="ltr">y</span> הן מהצורה <span class="pair math-ltr" dir="ltr">(0,<span class="pair-blank"></span>)</span>.</li>

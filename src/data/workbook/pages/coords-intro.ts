@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, blank, wordBlank, ltr, pair, grid } from '../authoring';
+import { sheet, blank, wordBlank, ltr, pair, grid, wordBank } from '../authoring';
 
 export const COORDS_INTRO: WorkbookPageContent = sheet({
   sectionClass: 'sheet guided dense',
@@ -10,6 +10,7 @@ export const COORDS_INTRO: WorkbookPageContent = sheet({
 <div class="completion-sentence">שיעור ${ltr('x')} מתאר את המיקום ה${wordBlank('medium', 'property', 'מקום להשלמת המילה אופקי')}, והוא גם ה<b>מרחק</b> של הנקודה מציר ${ltr('y')}.</div>
 <div class="completion-sentence">שיעור ${ltr('y')} מתאר את המיקום האנכי, והוא גם ה<b>מרחק</b> של הנקודה מציר ${wordBlank('short', 'letter', 'מקום להשלמת האות x')}.</div>
 </div>
+${wordBank(['x', 'אופקי'])}
 <section class="q-card">
 <h3>א. דוגמה: הנקודה ${ltr('A(4,3)')}.</h3>
 ${grid({

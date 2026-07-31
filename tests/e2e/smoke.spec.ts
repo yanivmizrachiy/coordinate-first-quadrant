@@ -246,35 +246,41 @@ test('the contents sheet lists every chapter and each button reaches its page', 
   /* Five chapters, named by Yaniv, and no others: „כל השאר תמחק מהתוכן". */
   expect(topics, 'the contents sheet does not list the five chapters').toBe(5);
 
-  /* Each chapter carries a colour of its own — the big chapter number wears it.
-     Five chapters, five distinct colours. */
+  /* „לא צריך כפל מספרים" (31.07.2026): ONE number per row — the big colour
+     number IS the page number. Five chapters, five distinct colours. */
   const colours = await buttons.evaluateAll((els) =>
-    els.map((e) => getComputedStyle(e.querySelector('.toc-btn__index')!).color),
+    els.map((e) => getComputedStyle(e.querySelector('.toc-btn__no')!).color),
   );
   expect(new Set(colours).size, 'the chapters are not colour-coded').toBe(5);
+  const doubled = await buttons.evaluateAll((els) =>
+    els.filter((e) => ((e.textContent ?? '').match(/\d+/g) ?? []).length !== 1).length,
+  );
+  expect(doubled, 'a row carries more than one number').toBe(0);
 
   /* Each chip carries the page its chapter STARTS on, and nothing else. The
      chapters must run in order and start at page 1. */
   const starts = await buttons.evaluateAll((els) =>
     els.map((e) => Number((e.getAttribute('aria-label') ?? '').match(/בעמוד (\d+)/)?.[1] ?? 0)),
   );
-  expect(starts, 'the contents point at the wrong pages').toEqual([1, 12, 29, 51, 63]);
+  expect(starts, 'the contents point at the wrong pages').toEqual([1, 12, 29, 51, 64]);
   const ranged = await buttons.evaluateAll((els) => els.filter((e) => /[–-]/.test(e.textContent ?? '')).length);
   expect(ranged, 'a chip still shows a page range instead of the starting page').toBe(0);
 
-  /* The row reads index-name-page from right to left: the big colour number
-     leads at the right edge of the page, then the chapter name, then the page
-     number at the left. „מימין למלל בצד ימין של העמוד". */
+  /* The row reads like a real book's contents: the chapter name at the right,
+     a dotted leader running left, and the colour page number at the LEFT edge.
+     „יהיה קו נקודתי שיוביל מהמשפט לשמאל הדף". */
   const wrongWayRound = await buttons.evaluateAll((els) =>
     els.filter((e) => {
       const name = e.querySelector('.toc-btn__name')?.getBoundingClientRect();
-      const index = e.querySelector('.toc-btn__index')?.getBoundingClientRect();
+      const leader = e.querySelector('.toc-btn__leader')?.getBoundingClientRect();
       const no = e.querySelector('.toc-btn__no')?.getBoundingClientRect();
-      return !name || !index || !no ||
-        index.left <= name.left || name.left <= no.left;
+      return !name || !leader || !no ||
+        name.left <= no.right ||          // השם מימין למספר
+        leader.width < 20 ||              // הקו באמת נמתח
+        leader.left < no.right - 2 || leader.right > name.left + 2; // ובין שניהם
     }).length,
   );
-  expect(wrongWayRound, 'the row does not read index, name, page from right to left').toBe(0);
+  expect(wrongWayRound, 'the row does not read name, dotted leader, page number').toBe(0);
 
   /* „תגדיל מספרי העמודים ותגדיל כתב של שמות הפרקים" (31.07.2026) — the page
      number and the chapter name are LARGE, not the sheet's 13px body size. */
@@ -304,7 +310,7 @@ test('the contents sheet lists every chapter and each button reaches its page', 
   expect(faint, `a page number is too faint to read: ${faint.join(', ')}`).toEqual([]);
 
   /* Every chip opens the page it names, straight away. */
-  for (const [i, n] of [1, 12, 29, 51, 63].entries()) {
+  for (const [i, n] of [1, 12, 29, 51, 64].entries()) {
     await page.goto('/#/print');
     await page.waitForTimeout(3500);
     await page.locator('.toc-btn').nth(i).click();
@@ -444,7 +450,10 @@ test('every sheet keeps its body text at 13px', async ({ page }) => {
           el.classList.contains('frac__d') ||
           // P and S are written LARGE, the way a real textbook writes them —
           // „האותיות P S מקובל לכתוב אותן יותר גדולות" (31.07.2026)
-          el.classList.contains('calc-sym__math');
+          !!el.closest('.calc-sym__math') || // the symbol AND its <sub> name
+          // the „=" that opens the squared exercise is part of the same
+          // approved textbook opener — sized with the letter, not body text
+          el.classList.contains('calc-squared__eq');
         if (!allowed) out.push(`page ${n}: ${el.tagName.toLowerCase()} at ${px}px`);
       }
     }
@@ -564,7 +573,7 @@ test('a picker preset chooses a whole chapter', async ({ page }) => {
   await page.locator('.pick__chip', { hasText: 'מושגים בסיסיים' }).click();
   await expect(page.locator('.pick__count')).toHaveText('נבחרו 11 עמודים');
   await page.locator('.pick__chip', { hasText: 'כל החוברת' }).click();
-  await expect(page.locator('.pick__count')).toHaveText('נבחרו 77 עמודים');
+  await expect(page.locator('.pick__count')).toHaveText('נבחרו 78 עמודים');
   await page.locator('.pick__chip', { hasText: 'ניקוי הבחירה' }).click();
   await expect(page.locator('.pick__count')).toHaveText('לא נבחרו עמודים');
 });
@@ -586,7 +595,7 @@ test('the reading bars speak the zaviyot button language', async ({ page }) => {
   expect(navy, 'the bar lost the navy of the zaviyot bars').toBe('rgb(22, 35, 63)');
 
   await page.goto('/#/workbook/5');
-  await expect(page.locator('.wsbar__title')).toHaveText('דף עבודה מספר 5 מתוך 77');
+  await expect(page.locator('.wsbar__title')).toHaveText('דף עבודה מספר 5 מתוך 78');
   await expect(page.locator('.wsbar__nav .btn')).toHaveCount(2);
   // the way to the next page lives at the BOTTOM too — under the thumb
   await expect(page.locator('.pagenav .btn', { hasText: 'הבא' })).toBeVisible();
@@ -1021,4 +1030,30 @@ test('no drawing escapes its card and no two drawings overlap', async ({ page },
     return [...new Set(out)];
   });
   expect(faults, faults.join(' | ')).toHaveLength(0);
+});
+
+/* כלל הברזל של ניצול העמוד, סוף-סוף נאכף: עמוד 69 נשאר עם פס לבן ענק למרות
+   כל מנגנוני הריווח, כי אף בדיקה לא מדדה. עכשיו נמדדת השארית שבין תחתית
+   התוכן לכותרת התחתונה על כל גיליון — יותר מ-120px היא עמוד שלא נוצל. */
+test('no sheet leaves a band of white above its footer', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
+  await page.goto('/#/print');
+  await page.waitForTimeout(9000);
+  const bands = await page.evaluate(() =>
+    [...document.querySelectorAll('.book > .sheet')].flatMap((sheet) => {
+      if (sheet.classList.contains('cover-sheet') || sheet.classList.contains('poster-sheet')) return [];
+      const n = sheet.querySelector('.sheet-number')?.textContent?.trim() ?? '(cover)';
+      const f = sheet.querySelector('.gz-footer');
+      const content = sheet.querySelector('.sheet-content');
+      if (!f || !content) return [];
+      let lowest = 0;
+      for (const el of content.querySelectorAll('*')) {
+        const r = el.getBoundingClientRect();
+        if (r.height && r.bottom > lowest) lowest = r.bottom;
+      }
+      const gap = f.getBoundingClientRect().top - lowest;
+      return gap > 120 ? [`page ${n}: ${Math.round(gap)}px of unused page`] : [];
+    }),
+  );
+  expect(bands, bands.join(' | ')).toEqual([]);
 });

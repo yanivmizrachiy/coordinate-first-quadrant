@@ -27,7 +27,7 @@ export const CONTENTS: ReadonlyArray<{ title: string; page: number }> = [
   { title: 'נקודות במערכת הצירים', page: 12 },
   { title: 'קטעים מקבילים לצירים', page: 29 },
   { title: 'שטחים והיקפים במערכת הצירים', page: 51 },
-  { title: 'קריאת גרפים ברביע הראשון', page: 63 },
+  { title: 'קריאת גרפים ברביע הראשון', page: 64 },
 ];
 import { DISTRICT_BADGE } from '../data/cover';
 
@@ -67,15 +67,12 @@ export function renderTocSheet(): HTMLElement {
       style: `--toc-colour:${colour}`,
       'aria-label': `${topic.title}, מתחיל בעמוד ${first}`,
     },
-      /* The row reads right-to-left: the big bold colour number leads at the
-         right edge of the page, then the chapter name, then the page it starts
-         on at the left. „את המספרים הצבעוניים… מימין למלל בצד ימין של העמוד". */
-      elem('span', { class: 'toc-btn__index', dir: 'ltr', 'aria-hidden': 'true', text: String(i + 1) }),
+      /* מספר אחד בלבד — „לא צריך כפל מספרים" (31.07.2026): המספר הצבעוני
+         הגדול הוא מספר העמוד, בקצה השמאלי, וקו מנוקד מוביל אליו מהכותרת —
+         כמו בתוכן עניינים של ספר אמיתי. */
       elem('span', { class: 'toc-btn__name', text: topic.title }),
-      elem('span', { class: 'toc-btn__page' },
-        elem('span', { class: 'toc-btn__page-word', text: 'עמוד' }),
-        elem('span', { class: 'toc-btn__no', dir: 'ltr', text: String(first) }),
-      ),
+      elem('span', { class: 'toc-btn__leader', 'aria-hidden': 'true' }),
+      elem('span', { class: 'toc-btn__no', dir: 'ltr', text: String(first) }),
     );
     btn.addEventListener('click', () => navigate(`#/workbook/${first}`));
     list.append(btn);

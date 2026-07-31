@@ -67,3 +67,4 @@ export { GRAPH_OWN_DATA } from './graph-own-data';
 export { RULE_TO_GRAPH } from './rule-to-graph';
 export { SHAPES_CLAIMS } from './shapes-claims';
 export { LIFE_PARK_MAP } from './life-park-map';
+export { LIFE_PARK_ROUTE } from './life-park-route';

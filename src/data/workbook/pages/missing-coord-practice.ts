@@ -46,6 +46,9 @@ export const MISSING_COORD_PRACTICE: WorkbookPageContent = sheet({
 <p>כתבו את שלוש הנקודות הבאות:</p>
 <ul class="tasks compact">
 <li><span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp; <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> &nbsp; <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>בדפוס שבסעיף הראשון, ההפרש בין שיעורי ה־<span class="math-ltr" dir="ltr">y</span> של שתי נקודות סמוכות הוא בהכרח <span class="blank" data-missing="number" style="--blank-width:2ch"></span>.</li>
+<li>כתבו את הנקודה שתופיע בטבלה במקום השישי: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>.</li>
+<li>בסדרה שבטבלה, שיעור ה־<span class="math-ltr" dir="ltr">y</span> של כל הנקודות הוא בהכרח <span class="blank" data-missing="number" style="--blank-width:2ch"></span>.</li>
 </ul>
 </section>
 </div>

@@ -48,6 +48,8 @@ ${calcBox({ perimeter: true, area: true, shape: 'הריבוע' })}
 <ul class="tasks compact">
 <li><span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> → <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> → <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> → <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
 <li>מהי נקודת הסיום? <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>אורך המסלול כולו הוא בהכרח <span class="blank" data-missing="number" style="--blank-width:2ch"></span> יחידות.</li>
+<li>שיעור ה־<span class="math-ltr" dir="ltr">x</span> של נקודת הסיום גדול משיעור ה־<span class="math-ltr" dir="ltr">x</span> של הנקודה <span class="math-ltr" dir="ltr">P</span> ב־<span class="blank" data-missing="number" style="--blank-width:2ch"></span>.</li>
 </ul>
 </section>
 </div>

@@ -18,7 +18,10 @@ import { normaliseGridText } from './coordinateGrid';
    airy, it may not look broken. */
 
 const BASE = 0;
-const MAX = 44;
+/* הועלה מ-44 (31.07.2026): יניב — „יש המון שטח לא מנוצל… תרווח את הסעיפים".
+   פס לבן גדול מפר את כלל הברזל; ביקורת e2e מודדת עכשיו את השארית על כל
+   גיליון, אז עמוד שעדיין נשאר ריק מדי ייתפס — והתיקון שם הוא תוכן, לא אוויר. */
+const MAX = 110;
 /** How much taller a single drawing may get, at most. */
 const GRID_GROWTH = 120;
 /** How much air a task item the learner writes in may gain, top and bottom. */

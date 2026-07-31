@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, grid } from '../authoring';
+import { sheet, grid, wordBank } from '../authoring';
 
 export const RIGHT_ANGLE_INTRO: WorkbookPageContent = sheet({
   sectionClass: "sheet guided dense",
@@ -10,6 +10,7 @@ export const RIGHT_ANGLE_INTRO: WorkbookPageContent = sheet({
 <div class="completion-intro">
 <div class="completion-title">השלימו את המשפטים
 </div>
+${wordBank(['ישרה', 'אנכי', 'אופקי'])}
 <div class="completion-sentence">קטע המקביל לציר x הוא קטע <span class="word-blank word-medium"></span>.
 </div>
 <div class="completion-sentence">קטע המקביל לציר y הוא קטע <span class="word-blank word-medium"></span>.

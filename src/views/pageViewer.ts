@@ -62,11 +62,13 @@ export function pageViewer(n: number): (ctx: ViewContext) => (() => void) | void
     pageInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') jump(); });
 
     /* חצים גדולים, בכיוון הדפדוף העברי: הקודם חוזר ימינה, הבא ממשיך שמאלה. */
-    const prevB = elem('button', { class: 'btn btn--ghost btn--sm btn--nav', type: 'button' },
+    /* סגול וירוק מהפלטה של יניב — „צבעים אחרים לכפתורים אלה… מתאימים לצבעי
+       הפרויקט" — והחצים מובלטים (24px, במשקל מלא). */
+    const prevB = elem('button', { class: 'btn btn--sm btn--nav btn--prev', type: 'button' },
       elem('span', { class: 'btn__arrow', 'aria-hidden': 'true', text: '→' }),
       elem('span', { text: 'הקודם' }),
     ) as HTMLButtonElement;
-    const nextB = elem('button', { class: 'btn btn--gold btn--sm btn--nav', type: 'button' },
+    const nextB = elem('button', { class: 'btn btn--sm btn--nav btn--next', type: 'button' },
       elem('span', { text: 'הבא' }),
       elem('span', { class: 'btn__arrow', 'aria-hidden': 'true', text: '←' }),
     ) as HTMLButtonElement;
