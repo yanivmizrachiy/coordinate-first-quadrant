@@ -21,9 +21,11 @@
 }
 .sheet h1 { font-size: 27px; line-height: 1.15; margin: 3px 0 4px; }
 .sheet-header p { margin: 0; color: var(--muted); font-size: 13px; }
+/* מספר העמוד בגובה זהה לגובה הכותרות (שורה 1+2) — „הגובה של מספר העמוד
+   חייב להיות זהה לגובה של המלל כולל 2 השורות של הכותרות" (31.07.2026). */
 .sheet-number {
-  width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center;
-  background: var(--ink); color: white; font-size: 20px; font-weight: 900; flex: none;
+  width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--ink); color: white; font-size: 28px; font-weight: 900; flex: none;
 }
 .sheet-content { padding-bottom: 12mm; }
 .sheet-footer {
@@ -242,10 +244,10 @@
   margin: 0;
 }
 .sheet-number {
-  width: 32px; height: 32px;
+  width: 54px; height: 54px;
   border: 2px solid #1d4ed8; color: #1d4ed8; background: #fff;
   border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  font-size: 16px; font-weight: 400; flex: 0 0 auto;
+  font-size: 28px; font-weight: 600; flex: 0 0 auto;
 }
 .sheet { width: 210mm; min-height: 297mm; height: 297mm; padding: 10mm 18mm; overflow: hidden; }
 .sheet-content { padding-bottom: 17mm; }
@@ -383,7 +385,7 @@
   .sheet-header { padding-bottom: 2.5mm; margin-bottom: 2.5mm; }
   .sheet-header h1 { font-size: 23px; }
   .sheet-header p { font-size: 13px; }
-  .sheet-number { width: 36px; height: 36px; font-size: 17px; }
+  .sheet-number { width: 54px; height: 54px; font-size: 28px; }
   .two-col > .q-card { font-size: 13px; margin-bottom: 6px; }
   .q-card { padding: 7px 9px; border-radius: 8px; }
   .q-card h3 { margin: -7px -9px 6px; padding: 5px 8px; font-size: 13px; }
@@ -427,7 +429,9 @@
 /* התשובות הסופיות — שורה נפרדת לכל גודל, כמו בספר לימוד. שתי תשובות על שורה
    אחת נמעכו זו לתוך זו („יחשטח") — יניב, 31.07.2026. */
 .calc-final { margin-top: 6px; font-weight: 700; }
-.calc-final__row { display: flex; align-items: baseline; gap: 6px; padding: 1px 0; }
+/* שורה אחת רצופה — „היקף המלבן הוא ____ יח'." זורם כמשפט, כמו בספר לימוד.
+   flex פירק את המשפט לטור מילים בתוך עמודה צרה (31.07.2026). */
+.calc-final__row { display: block; padding: 1px 0; white-space: nowrap; }
 .calc-final__row + .calc-final__row { border-top: 1px solid #e3e8f0; }
 .calc-final__math { direction: ltr; unicode-bidi: isolate; display: inline-flex; align-items: baseline; gap: 4px; }
 /* מחברת משבצות אמיתית (31.07.2026): „לא שורות אלא משבצות, כמו מחברת
