@@ -29,6 +29,24 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
+      # „הבדיקות הן השער." The unit tests cannot see a page that cuts its own
+      # content off, a drawing shrunk to a thumbnail or a Hebrew label printed
+      # backwards — only a real render can. Publishing without them meant the
+      # gate was open on exactly the faults Yaniv reports most. ~2 minutes on a
+      # manual, infrequent deploy is a cheap price for never publishing one.
+      - name: Install browser
+        run: npx playwright install --with-deps chromium
+      - name: Measured checks (A4 layout, sizes, Hebrew direction, 13px)
+        run: npm run test:visual
+      - name: Keep the failure trace
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-playwright-report
+          path: |
+            playwright-report
+            test-results
+          retention-days: 7
       # ONE link only — the ORIGINAL address Yaniv already gave people carries
       # the FULL site (his ruling of 31.07.2026 replaced the booklet-only split).
       - run: npm run build
