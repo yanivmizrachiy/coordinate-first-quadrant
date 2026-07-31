@@ -348,7 +348,7 @@
     border-left: 0; border-right: 0; overflow: visible;
   }
   .two-col > .q-card, .two-col > .span-2 { display: block; width: 100%; margin-left: 0; }
-  .cols-2, .cols-3, .choice-grid, .error-grid { grid-template-columns: 1fr; }
+  .cols-2, .cols-3, .choice-grid, .error-grid, .calc-cols { grid-template-columns: 1fr; }
   .span-2 { grid-column: auto; }
   .gz-footer { position: static; margin-top: 14px; }
   .sheet-content { padding-bottom: 0; }
@@ -443,6 +443,9 @@
 }
 .calc-sym__math sub { font-size: 13px; font-weight: 700; }
 .calc-sym__hint { font-size: 13px; color: var(--muted); }
+/* היקף ושטח זה לצד זה — התיבה מנצלת את רוחב העמוד במקום להכפיל את גובהו. */
+.calc-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 12px; }
+.calc-sec { min-width: 0; }
 .calc-box .answer-line { margin: 5px 0; }
 
 /* An exercise reads left to right, whatever the sheet's direction is. */

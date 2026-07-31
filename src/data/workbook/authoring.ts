@@ -138,12 +138,10 @@ export const mixed = (whole: number, num: number, den: number): string =>
    לוותר על הכתיבה של הדרך”, and the answer is not an answer without its unit.
    `S` is area and `P` is perimeter, the letters an Israeli textbook uses. */
 export const calcBox = (o: { lines?: number; perimeter?: boolean; area?: boolean; name?: string }): string => {
-  /* `lines` is the box's whole budget: with two quantities each working slot
-     takes its share, so the box keeps the height it always had and the A4 does
-     not overflow — the sheet-clipping test measures this. */
-  const quantities = (o.perimeter ? 1 : 0) + (o.area ? 1 : 0);
-  const per = Math.max(1, Math.floor((o.lines ?? 2) / Math.max(1, quantities)));
-  const rules = '<div class="answer-line"></div>'.repeat(per);
+  /* Two quantities sit side by side (see below), so each working slot can keep
+     the full `lines` budget without doubling the box's height — the
+     sheet-clipping test measures the A4 bottom. */
+  const rules = '<div class="answer-line"></div>'.repeat(o.lines ?? 2);
   /* Yaniv, 31.07.2026 — the textbook format, per quantity: a heading
      („חישוב ההיקף:"), a working slot that OPENS with the large letter a real
      textbook uses — P big, the rectangle's name small beside it, and the word
@@ -151,13 +149,15 @@ export const calcBox = (o: { lines?: number; perimeter?: boolean; area?: boolean
      completion: „ההיקף הוא ____ יח'." No „תשובה:" block and no second P = ____;
      „אחרי שכותבים תשובה בסוף התרגיל זה מספיק". */
   const section = (heading: string, letter: string, word: string, unit: string): string =>
+    '<div class="calc-sec">' +
     `<b class="calc-label">${heading}</b>` +
     '<div class="calc-work">' +
     `<span class="calc-sym"><span class="calc-sym__math" dir="ltr">${letter}${o.name ? `<sub>${o.name}</sub>` : ''}</span>` +
     `<span class="calc-sym__hint">${word}</span></span>` +
     `<div class="calc-work__lines">${rules}</div>` +
     '</div>' +
-    `<div class="calc-final"><div class="calc-final__row">ה${word} הוא ${blank(6, 'number')} ${unit}.</div></div>`;
+    `<div class="calc-final"><div class="calc-final__row">ה${word} הוא ${blank(6, 'number')} ${unit}.</div></div>` +
+    '</div>';
   const parts: string[] = [];
   if (o.perimeter) parts.push(section('חישוב ההיקף:', 'P', 'היקף', "יח'"));
   if (o.area) parts.push(section('חישוב השטח:', 'S', 'שטח', 'יח"ר'));
@@ -165,7 +165,10 @@ export const calcBox = (o: { lines?: number; perimeter?: boolean; area?: boolean
   if (!parts.length) {
     parts.push(`<b class="calc-label">תרגיל:</b><div class="calc-work"><div class="calc-work__lines">${rules}</div></div>`);
   }
-  return `<div class="calc-box">${parts.join('')}</div>`;
+  /* Both quantities sit SIDE BY SIDE — „חישוב ההיקף" beside „חישוב השטח" — so
+     the box uses the sheet's width instead of doubling its height. */
+  const body = parts.length === 2 ? `<div class="calc-cols">${parts.join('')}</div>` : parts.join('');
+  return `<div class="calc-box">${body}</div>`;
 };
 
 /* An exercise is written the way it is worked: LEFT to right. „BC = תרגיל =
