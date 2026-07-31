@@ -21,6 +21,7 @@ import {
   SHAPE_MOVE,
   READ_PAIRS,
   SECRET_WORD_PRINT,
+  HIDDEN_DRAWING_PRINT,
   READ_FROM_DRAWING,
   ORDERED_PAIR_DRILL,
   PARALLEL_PERPENDICULAR,
@@ -184,7 +185,7 @@ const BOOK: { id: string; title: string; chapterTitle?: string; slots: Slot[] }[
     ON_AXES_INTRO, ON_AXES_PRACTICE,
   ] },
   { id: 'plot', title: 'סימון נקודות ויישומים', slots: [
-    PLOT_B, PLOT_PRACTICE, POSTER_SECRET_PICTURE, game('hidden-drawing'),
+    PLOT_B, PLOT_PRACTICE, POSTER_SECRET_PICTURE, HIDDEN_DRAWING_PRINT,
     POSTER_SECRET_WORD, SECRET_WORD_PRINT, GRAPH_REAL,
   ] },
   { id: 'language', title: 'שפה של מיקום', slots: [

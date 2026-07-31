@@ -5,12 +5,12 @@ import { encryptedRouteGame } from './encryptedRoute';
 import { sameAxisGame } from './sameAxis';
 import { suspectPointGame } from './suspectPoint';
 import { coordinateSafeGame } from './coordinateSafe';
-import { hiddenDrawingGame } from './hiddenDrawing';
 import { coordinateMazeGame } from './coordinateMaze';
 import { colorDecodeGame } from './colorDecode';
 
+/* „ציור נסתר" יצא מהשעשועונים המקוונים — הוא עכשיו דף עבודה מודפס
+   (`HIDDEN_DRAWING_PRINT`), כי „המשימות שלנו הן להדפסה" (31.07.2026). */
 export const GAMES: GameDefinition[] = [
-  hiddenDrawingGame,
   encryptedRouteGame,
   suspectPointGame,
   sameAxisGame,

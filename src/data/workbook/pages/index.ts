@@ -10,6 +10,7 @@ export { PLOT_PRACTICE } from './plot-practice';
 export { READ_INTRO } from './read-intro';
 export { READ_PRACTICE } from './read-practice';
 export { SECRET_WORD_PRINT } from './secret-word-print';
+export { HIDDEN_DRAWING_PRINT } from './hidden-drawing-print';
 export { ON_AXES_INTRO } from './on-axes-intro';
 export { ON_AXES_PRACTICE } from './on-axes-practice';
 export { POSITION_LANGUAGE_INTRO } from './position-language-intro';
