@@ -190,7 +190,7 @@ const BOOK: { id: string; title: string; chapterTitle?: string; slots: Slot[] }[
     POSTER_SECRET_WORD, SECRET_WORD_PRINT, GRAPH_REAL,
   ] },
   { id: 'language', title: 'שפה של מיקום', slots: [
-    POSITION_LANGUAGE_INTRO, POSITION_LANGUAGE_OWN, POSITION_LANGUAGE_PRACTICE, game('color-decode'),
+    POSITION_LANGUAGE_INTRO, POSITION_LANGUAGE_OWN, POSITION_LANGUAGE_PRACTICE, COLOR_DECODE_PRINT,
   ] },
   { id: 'relations', title: 'יחסים בין שיעורים', slots: [
     RELATIONS_INTRO, RELATIONS_PRACTICE,

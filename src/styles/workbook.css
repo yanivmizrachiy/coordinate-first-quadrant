@@ -75,6 +75,26 @@
 .frac__d { padding: 0 2px; border-top: 1.3px solid currentColor; }
 .mixed { font-family: var(--font-math); font-weight: 700; white-space: nowrap; }
 
+/* רשת תאים לצביעה — הגרסה המודפסת של „פענוח צבעוני". תאים ריקים שהתלמיד
+   צובע בעיפרון, עם תוויות ציר כמו במשחק; RTL כדי ש-x=0 יישב מימין ו-y יעלה
+   כלפי מעלה. print-color-adjust שומר על הקווים גם בנייר. */
+.color-grid {
+  direction: rtl;
+  display: grid;
+  grid-template-columns: 22px repeat(var(--cg-cols, 7), 1fr);
+  gap: 4px; max-width: 388px; margin: 8px auto 4px;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.cg-cell {
+  aspect-ratio: 1; min-height: 30px;
+  border: 1.4px solid #9fb0cc; border-radius: 6px; background: #fff;
+}
+.cg-lab {
+  display: grid; place-items: center;
+  font-weight: 800; color: var(--muted); font-size: 13px;
+}
+.cg-lab--y { justify-self: end; }
+
 /* מחסן מילים — the words to choose from, so the task needs no explaining. */
 .word-bank {
   border: 1.5px dashed var(--blue); border-radius: 8px; background: #fbfcff;

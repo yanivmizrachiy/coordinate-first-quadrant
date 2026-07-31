@@ -20,6 +20,7 @@ body.bw-print .sheet .q-card h3 { background: #e2e2e2 !important; color: #111 !i
 body.bw-print .sheet .rule-box { background: #e6e6e6 !important; border-right-color: #222 !important; }
 body.bw-print .sheet .note-box { background: #f2f2f2 !important; border-right-color: #666 !important; }
 body.bw-print .sheet .word-bank { background: #f4f4f4 !important; border-color: #333 !important; }
+body.bw-print .sheet .cg-cell { border-color: #555 !important; background: #fff !important; }
 body.bw-print .sheet .word-bank__item { border-color: #666 !important; }
 body.bw-print .sheet .calc-box { background: #fafafa !important; border-color: #666 !important; }
 body.bw-print .sheet .calc-work.calc-squared {
