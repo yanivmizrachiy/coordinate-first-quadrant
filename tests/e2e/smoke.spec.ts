@@ -404,6 +404,10 @@ test('every sheet keeps its body text at 13px', async ({ page }) => {
   const offenders = await page.evaluate(() => {
     const out: string[] = [];
     for (const s of document.querySelectorAll('.sheet')) {
+      /* The contents sheet is the reader's designed opening page — Yaniv asked
+         for LARGE chapter names and page numbers there (31.07.2026), and its
+         own test pins those sizes. The 13px rule holds for every worksheet. */
+      if (s.classList.contains('toc-sheet')) continue;
       const n = s.querySelector('.sheet-number')?.textContent?.trim() ?? 'cover';
       for (const el of s.querySelectorAll('*')) {
         if (el.closest('svg')) continue; // drawings scale as a unit
@@ -785,6 +789,33 @@ test('every calculation really is painted left to right', async ({ page }, testI
       const text = (d as HTMLElement).innerText.replace(/\s+/g, ' ').trim();
       if (first >= last) out.push(`page ${n}: „${text}” is painted right to left`);
     }
+    return [...new Set(out)];
+  });
+  expect(faults.length, faults.join(' | ')).toBe(0);
+});
+
+/* Yaniv, 31.07.2026: two final answers crushed onto one line rendered as
+   „יחשטח", and the box was headed „דרך החישוב" instead of the textbook's
+   תרגיל/תשובה. Each final answer must be PAINTED on a line of its own,
+   below the working slot. */
+test('each final answer sits on its own painted line', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
+  await page.goto('/#/print');
+  await page.waitForTimeout(9000);
+  const faults = await page.evaluate(() => {
+    const out: string[] = [];
+    let seen = 0;
+    for (const fin of document.querySelectorAll('.sheet .calc-final')) {
+      const n = fin.closest('.sheet')?.querySelector('.sheet-number')?.textContent?.trim() ?? '?';
+      const rows = [...fin.querySelectorAll('.calc-final__row')].map((r) => r.getBoundingClientRect());
+      seen += rows.length;
+      for (let i = 1; i < rows.length; i++) {
+        if (rows[i]!.top < rows[i - 1]!.bottom - 1) out.push(`page ${n}: two final answers share a line`);
+      }
+      const work = fin.closest('.calc-box')?.querySelector('.calc-work')?.getBoundingClientRect();
+      if (work && rows.length && rows[0]!.top < work.bottom - 1) out.push(`page ${n}: the answer is not under the working slot`);
+    }
+    if (!seen) out.push('no final-answer rows were found at all');
     return [...new Set(out)];
   });
   expect(faults.length, faults.join(' | ')).toBe(0);
