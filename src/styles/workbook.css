@@ -134,6 +134,8 @@
 
 .calc-box { border: 1px dashed #9aa6b6; border-radius: 8px; padding: 7px 10px 5px; margin: 7px 0; background: #fbfcfe; }
 .calc-box > b { display: block; margin-bottom: 3px; color: #40506a; }
+.calc-box > .calc-label + .calc-final { margin-top: 2px; }
+.calc-box > .calc-work + .calc-label { margin-top: 6px; }
 .calc-box .answer-line { border-bottom-style: dashed; }
 .work-table, .tf-table { width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 13px; }
 .work-table th, .work-table td, .tf-table td {
@@ -414,8 +416,14 @@
 
 /* The final answer of a calculation, with the letter and the unit the answer is
    not an answer without. „האות S מסמנת שטח, האות P מסמנת היקף.” */
-.calc-final { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 5px; font-weight: 700; }
-.calc-final > span { display: inline-flex; align-items: baseline; gap: 4px; }
+/* התשובות הסופיות — שורה נפרדת לכל גודל, כמו בספר לימוד. שתי תשובות על שורה
+   אחת נמעכו זו לתוך זו („יחשטח") — יניב, 31.07.2026. */
+.calc-final { margin-top: 6px; font-weight: 700; }
+.calc-final__row { display: flex; align-items: baseline; gap: 6px; padding: 2px 0; }
+.calc-final__row + .calc-final__row { border-top: 1px solid #e3e8f0; }
+.calc-final__math { direction: ltr; unicode-bidi: isolate; display: inline-flex; align-items: baseline; gap: 4px; }
+/* משבצת הכתיבה של הדרך — מקום נוח, מסומן וברור. */
+.calc-work { border: 1px dashed #b6c1d0; border-radius: 6px; background: #fff; padding: 2px 8px 7px; }
 .calc-box .answer-line { margin: 5px 0; }
 
 /* An exercise reads left to right, whatever the sheet's direction is. */
@@ -433,104 +441,95 @@ td > .calc-pair, td .calc-pair { margin: 2px 0; }
 .calc-ltr__unit { color: var(--muted); font-weight: 600; }
 
 /* ---- the contents sheet ---------------------------------------------------
-   עמוד תוכן העניינים — יוקרה (31.07.2026, מחליף את „משבצות צבע רוקדות").
-   הבחירה של יניב: שילוב הטיפוגרפיה הממורכזת של שאנל (מספור N° עם ריווח
-   אותיות) עם רקע ליל־הדיו של סרט הרכבת ורשת מערכת־צירים מוזהבת עדינה.
-   הצבעים הם מתכות אצילות — פלטינה, שמפניה, זהב ורוד, נחושת, זהב עתיק —
-   מתכת לפרק. מספרי העמודים ושמות הפרקים גדולים, וחמשת הפרקים נפרשים
-   על מלוא גובה העמוד. הסריפים: Frank Ruhl Libre לעברית, Cormorant לספרות —
-   ארוזים מקומית (@fontsource), בלי fetch חיצוני בזמן ריצה. */
+   עמוד תוכן העניינים — „דף עיזבון על נייר" (31.07.2026, מחליף את גרסת ליל־הדיו).
+   הבחירה של יניב (אפשרות 2, בהשראת Hermès/Aesop): נייר שמנת חם, כותרת סריף
+   ממורכזת, וכל פרק בשורה משלו — שם הפרק בכתב סריף גדול מצד ימין, ספרת הפרק
+   הגדולה בצבע משלה, ומספר העמוד („עמוד N") מצד שמאל, גם הוא מוגדל.
+   „תגדיל מספרי העמודים ותגדיל כתב של שמות הפרקים, יותר רווחים כדי לנצל כל
+   העמוד כל הזמן": הטיפוגרפיה גדולה, וחמשת הפרקים נפרשים על מלוא גובה ה־A4.
+   הסריפים: Frank Ruhl Libre לעברית, Cormorant לספרות — ארוזים מקומית
+   (@fontsource), בלי fetch חיצוני בזמן ריצה. */
 .toc-sheet {
   display: flex; flex-direction: column;
-  background:
-    repeating-linear-gradient(0deg, transparent, transparent 45px, #c2a24e12 45px, #c2a24e12 46px),
-    repeating-linear-gradient(90deg, transparent, transparent 45px, #c2a24e12 45px, #c2a24e12 46px),
-    #121016;
-  border-color: #2a2530;
+  background: #f5efe3; border-color: #e6ddca;
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
-.toc-head { text-align: center; padding-top: 8mm; }
+.toc-head { text-align: center; padding-top: 6mm; }
+.toc-head__frame {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 8px;
+}
+.toc-head__frame::before, .toc-head__frame::after {
+  content: ''; height: 1px; flex: 1; background: #c3b696;
+}
 .toc-head__kicker {
-  margin: 0 0 12px; color: #b8a988; font-size: 13px; font-weight: 400;
-  letter-spacing: .5em; text-indent: .5em;
+  margin: 0; color: #8f8467; font-size: 13px; font-weight: 400;
+  letter-spacing: .4em; text-indent: .4em; white-space: nowrap;
   font-family: 'Frank Ruhl Libre', serif;
 }
 .toc-sheet h1.toc-head__title {
-  margin: 0; color: #f5f1e8; font-size: 42px; font-weight: 300; line-height: 1.15;
+  margin: 0; color: #241f14; font-size: 46px; font-weight: 300; line-height: 1.1;
   font-family: 'Frank Ruhl Libre', serif;
 }
-/* the small gold diamond between two hairlines, under the title */
-.toc-head__gem {
-  display: flex; align-items: center; justify-content: center; gap: 12px;
-  margin-top: 16px;
+.toc-head__sub {
+  margin: 4px 0 0; color: #8f8467; font-size: 15px; font-style: italic;
+  font-family: 'Frank Ruhl Libre', serif;
 }
-.toc-head__gem::before, .toc-head__gem::after {
-  content: ''; height: 1px; width: 52px; background: #b8a98866;
-}
-.toc-head__gem-dot {
-  width: 6px; height: 6px; background: #b8a988; transform: rotate(45deg);
-  -webkit-print-color-adjust: exact; print-color-adjust: exact;
-}
-.toc-sheet .sheet-content { flex: 1; display: flex; padding-bottom: 18mm; }
+/* the five chapters fill the whole height of the page */
+.toc-sheet .sheet-content { flex: 1; display: flex; padding-bottom: 16mm; }
 .toc-buttons {
   flex: 1; display: flex; flex-direction: column;
   justify-content: space-evenly; align-items: stretch;
 }
-/* each chapter is a centred column: N°, the name, then the LARGE page number,
-   then its metal divider. The button is transparent — the night is the page. */
+/* one chapter per row: name (right) · big colour index · page (left).
+   The name flexes, so the row always spans the full width of the sheet. */
 .toc-btn {
-  display: flex; flex-direction: column; align-items: center; gap: 7px;
-  width: 100%; padding: 10px 8px; border: 0; border-radius: 10px;
-  background: transparent; cursor: pointer; font: inherit; text-align: center;
+  display: flex; align-items: center; gap: 22px;
+  width: 100%; padding: 14px 6px; border: 0; border-top: 1px solid #ddd3bd;
+  background: transparent; cursor: pointer; font: inherit; text-align: start;
   transition: background var(--dur-quick) ease, transform var(--dur-quick) var(--ease);
 }
-.toc-btn__kicker {
-  color: #b8a988; font-family: 'Cormorant Garamond', serif;
-  font-size: 20px; font-weight: 400; letter-spacing: .22em; line-height: 1;
-  -webkit-print-color-adjust: exact; print-color-adjust: exact;
-}
-.toc-btn__kicker sup { font-size: 12px; }
+.toc-buttons .toc-btn:last-child { border-bottom: 1px solid #ddd3bd; }
+/* שם הפרק — סריף גדול. „תגדיל כתב של שמות הפרקים". */
 .toc-btn__name {
-  color: #f5f1e8; font-family: 'Frank Ruhl Libre', serif;
-  font-size: 26px; font-weight: 300; line-height: 1.25;
+  flex: 1 1 auto; min-width: 0;
+  color: #241f14; font-family: 'Frank Ruhl Libre', serif;
+  font-size: 30px; font-weight: 400; line-height: 1.2;
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
-.toc-btn__page { display: flex; align-items: baseline; gap: 9px; }
-.toc-btn__page-word { color: #b8a988; font-size: 14px; font-family: 'Frank Ruhl Libre', serif; }
-/* מספר העמוד — גדול, במתכת של הפרק. „תגדיל מספרי העמודים". */
+/* ספרת הפרק — גדולה מאוד, בצבע הפרק. הצבע דוהק דיו כדי לעבור 4.5:1 על השמנת. */
+.toc-btn__index {
+  flex: none; font-family: 'Cormorant Garamond', serif;
+  font-size: 60px; font-weight: 500; line-height: .85; color: var(--toc-colour);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+/* מספר העמוד — מוגדל, בדיו כהה שנקרא היטב. „תגדיל מספרי העמודים". */
+.toc-btn__page {
+  flex: none; display: flex; align-items: baseline; gap: 8px;
+  min-width: 118px; justify-content: flex-start;
+}
+.toc-btn__page-word { color: #8f8467; font-size: 15px; font-family: 'Frank Ruhl Libre', serif; }
 .toc-btn__no {
-  color: var(--toc-metal); font-family: 'Cormorant Garamond', serif;
-  font-size: 40px; font-weight: 500; line-height: .9;
+  color: #241f14; font-family: 'Cormorant Garamond', serif;
+  font-size: 36px; font-weight: 500; line-height: .9;
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
-/* the metal divider — a softly glowing dot between two hairlines */
-.toc-btn__rule {
-  display: flex; align-items: center; gap: 9px; margin-top: 3px;
-}
-.toc-btn__rule::before, .toc-btn__rule::after {
-  content: ''; height: 1px; width: 30px;
-  background: color-mix(in srgb, var(--toc-metal) 40%, transparent);
-}
-.toc-btn__dot {
-  width: 8px; height: 8px; border-radius: 50%; background: var(--toc-metal);
-  box-shadow: 0 0 10px color-mix(in srgb, var(--toc-metal) 70%, transparent);
-  -webkit-print-color-adjust: exact; print-color-adjust: exact;
-}
-.toc-btn:hover { background: #ffffff0a; transform: translateY(-2px); }
-.toc-btn:active { transform: translateY(0); transition-duration: var(--dur-press); }
-.toc-btn:focus-visible { outline: 2px solid #b8a988; outline-offset: 4px; }
-/* the canonical footer keeps its place; on the night page its ink turns light */
-.toc-sheet .gz-footer { background: transparent; border-top-color: #b8a98859; }
-.toc-sheet .gz-footer .f1 { color: #e8e2d2; }
-.toc-sheet .gz-footer .f2 { color: #b8ac93; }
-/* black-and-white print: the night lifts, the metals become measured greys */
+.toc-btn:hover { background: #00000008; transform: translateX(-3px); }
+.toc-btn:active { transform: translateX(0); transition-duration: var(--dur-press); }
+.toc-btn:focus-visible { outline: 2px solid #8f8467; outline-offset: 3px; }
+/* the canonical footer keeps its place; on the cream page its rule warms up */
+.toc-sheet .gz-footer { background: transparent; border-top-color: #c3b696; }
+.toc-sheet .gz-footer .f1 { color: #2a2417; }
+.toc-sheet .gz-footer .f2 { color: #6b6349; }
+/* black-and-white print: the cream lifts to white, the colours to measured ink */
 body.bw-print .sheet.toc-sheet { background: #fff; border-color: #dfe4ec; }
-body.bw-print .toc-head__kicker, body.bw-print .toc-btn__kicker,
+body.bw-print .toc-head__kicker, body.bw-print .toc-head__sub,
 body.bw-print .toc-btn__page-word { color: #555 !important; }
-body.bw-print .toc-sheet h1.toc-head__title, body.bw-print .toc-btn__name { color: #111 !important; }
-body.bw-print .toc-btn__no { color: #333 !important; }
-body.bw-print .toc-head__gem::before, body.bw-print .toc-head__gem::after { background: #999; }
-body.bw-print .toc-btn__rule::before, body.bw-print .toc-btn__rule::after { background: #999; }
+body.bw-print .toc-sheet h1.toc-head__title,
+body.bw-print .toc-btn__name, body.bw-print .toc-btn__no { color: #111 !important; }
+body.bw-print .toc-btn__index { color: #333 !important; }
+body.bw-print .toc-head__frame::before, body.bw-print .toc-head__frame::after { background: #999; }
+body.bw-print .toc-btn { border-top-color: #ccc; }
+body.bw-print .toc-buttons .toc-btn:last-child { border-bottom-color: #ccc; }
 body.bw-print .toc-sheet .gz-footer { border-top-color: #1d4ed8; }
 body.bw-print .toc-sheet .gz-footer .f1 { color: #1f2a44; }
 body.bw-print .toc-sheet .gz-footer .f2 { color: #475569; }

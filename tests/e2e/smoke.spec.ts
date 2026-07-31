@@ -225,10 +225,10 @@ test('the contents sheet lists every chapter and each button reaches its page', 
   /* Five chapters, named by Yaniv, and no others: „כל השאר תמחק מהתוכן". */
   expect(topics, 'the contents sheet does not list the five chapters').toBe(5);
 
-  /* Each chapter carries a noble metal of its own — the dot in its divider and
-     its large page number wear it. Five chapters, five distinct metals. */
+  /* Each chapter carries a colour of its own — the big chapter number wears it.
+     Five chapters, five distinct colours. */
   const colours = await buttons.evaluateAll((els) =>
-    els.map((e) => getComputedStyle(e.querySelector('.toc-btn__dot')!).backgroundColor),
+    els.map((e) => getComputedStyle(e.querySelector('.toc-btn__index')!).color),
   );
   expect(new Set(colours).size, 'the chapters are not colour-coded').toBe(5);
 
@@ -241,20 +241,19 @@ test('the contents sheet lists every chapter and each button reaches its page', 
   const ranged = await buttons.evaluateAll((els) => els.filter((e) => /[–-]/.test(e.textContent ?? '')).length);
   expect(ranged, 'a chip still shows a page range instead of the starting page').toBe(0);
 
-  /* The entry reads top-to-bottom, chapter before page: the N° kicker above
-     the name, the name above the LARGE page number, the metal divider last.
-     The reader is looking for a chapter, not for a number. */
+  /* The row reads name-then-page: in RTL the chapter name sits to the RIGHT of
+     the page number, with the big colour index between them. The reader is
+     looking for a chapter, not for a number. */
   const wrongWayRound = await buttons.evaluateAll((els) =>
     els.filter((e) => {
-      const kicker = e.querySelector('.toc-btn__kicker')?.getBoundingClientRect();
       const name = e.querySelector('.toc-btn__name')?.getBoundingClientRect();
+      const index = e.querySelector('.toc-btn__index')?.getBoundingClientRect();
       const no = e.querySelector('.toc-btn__no')?.getBoundingClientRect();
-      const rule = e.querySelector('.toc-btn__rule')?.getBoundingClientRect();
-      return !kicker || !name || !no || !rule ||
-        kicker.top >= name.top || name.top >= no.top || no.top >= rule.top;
+      return !name || !index || !no ||
+        name.left < index.left || index.left < no.left;
     }).length,
   );
-  expect(wrongWayRound, 'the entry does not read No, name, page, divider').toBe(0);
+  expect(wrongWayRound, 'the row does not read name, index, page from right to left').toBe(0);
 
   /* „תגדיל מספרי העמודים ותגדיל כתב של שמות הפרקים" (31.07.2026) — the page
      number and the chapter name are LARGE, not the sheet's 13px body size. */
