@@ -453,17 +453,20 @@ describe('a calculation gets units and room to work', () => {
     }
   });
 
-  /* USER_MEMORY §10. „הדרך חשובה מאוד מאוד” — a calculation gets room to work
-     in and then an answer that carries its unit, written with the letters an
-     Israeli textbook uses: S for area, P for perimeter. */
-  it('every area or perimeter answer is S or P, with its unit and room to work', () => {
+  /* USER_MEMORY §10 (31.07.2026 — replaces the „S = ____” final): the textbook
+     letters P and S stand LARGE at the head of the working slot, the rectangle's
+     name small beside them and the word היקף/שטח small underneath; the final
+     answer is written ONCE, as a completion — „ההיקף הוא ____ יח'.” A second
+     „P = ____” under the working wrote the same answer twice. */
+  it('every area or perimeter answer is a completion with its unit, and P/S lead the working', () => {
     for (const p of WORKBOOK) {
       const text = p.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
       if (!/שטח|היקף/.test(text)) continue;
       for (const f of p.html.matchAll(/<div class="calc-final">([\s\S]*?)<\/div>\s*<\/div>/g)) {
         const plain = f[1]!.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
-        expect(plain, `page ${p.n}: a final answer without S or P`).toMatch(/[SP] =/);
+        expect(plain, `page ${p.n}: a final answer that is not the „ה… הוא” completion`).toMatch(/ה(היקף|שטח) הוא/);
         expect(plain, `page ${p.n}: a final answer without its unit`).toMatch(/יח/);
+        expect(plain, `page ${p.n}: the answer written twice — P/S belong to the working slot`).not.toMatch(/[SP] =/);
       }
       /* Room to work means ruled lines OR the named exercise lines that replaced
          them — „PQ = ____ = ____ יח'”, written left to right. Either is room; a
@@ -474,6 +477,10 @@ describe('a calculation gets units and room to work', () => {
           /answer-line|calc-ltr/.test(head),
           `page ${p.n}: a calculation with no room to write the working`,
         ).toBe(true);
+      }
+      /* And wherever a perimeter/area is computed, the LARGE letter leads. */
+      if (/חישוב ההיקף|חישוב השטח/.test(text)) {
+        expect(p.html, `page ${p.n}: no large textbook letter at the working slot`).toContain('calc-sym__math');
       }
     }
   });
@@ -569,7 +576,11 @@ describe('a calculation gets units and room to work', () => {
   it('no sheet leaves an open line that is not the working of a calculation', () => {
     for (const p of WORKBOOK) {
       const open = (p.html.match(/<div class="answer-line">/g) ?? []).length;
-      const inCalc = (p.html.match(/calc-box/g) ?? []).length * 2;
+      /* The lines a calculation is allowed are the ones its working slots hold —
+         counted where they actually live, so a box with two quantities (each
+         with its own slot) is measured honestly, not by a per-box guess. */
+      const inCalc = [...p.html.matchAll(/<div class="calc-work__lines">((?:<div class="answer-line"><\/div>)+)/g)]
+        .reduce((n, m) => n + (m[1]!.match(/answer-line/g) ?? []).length, 0);
       expect(open, `page ${p.n}: ${open - inCalc} open line(s) with no guidance`).toBeLessThanOrEqual(inCalc);
     }
   });
@@ -624,9 +635,12 @@ describe('a calculation gets units and room to work', () => {
          perimeter off a graph („ההיקף הוא ___ יח'”) has nothing to show. */
       if (!p.html.includes('calc-box')) continue;
       /* An ANSWER is a blank followed by its unit. „ההיקף והשטח ____, כי הזזה
-         אינה משנה את הצורה” is a relation, not an answer, and stays. */
+         אינה משנה את הצורה” is a relation, not an answer, and stays. The
+         canonical completion — „ההיקף הוא ____ יח'.” — lives inside the
+         calc-final row, so the finals are stripped before looking for strays. */
+      const outside = p.html.replace(/<div class="calc-final">[\s\S]*?<\/div>\s*<\/div>/g, ' ');
       expect(
-        p.html,
+        outside,
         `page ${p.n}: „היקף/שטח: ____ יח'” outside a calculation block`,
       ).not.toMatch(/(היקף|שטח)[^<]{0,16}<span class="blank"[^>]*><\/span>\s*יח/);
     }

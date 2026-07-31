@@ -432,6 +432,17 @@
 .calc-final__math { direction: ltr; unicode-bidi: isolate; display: inline-flex; align-items: baseline; gap: 4px; }
 /* משבצת הכתיבה של הדרך — מקום נוח, מסומן וברור. */
 .calc-work { border: 1px dashed #b6c1d0; border-radius: 6px; background: #fff; padding: 2px 8px 4px; }
+/* המשבצת נפתחת באות של הגודל — P או S — גדולה כמו בספר לימוד אמיתי, שם המלבן
+   קטן לצידה, והמילה היקף/שטח קטנה מתחתיה כעזרה לתלמיד (31.07.2026). */
+.calc-work { display: flex; align-items: center; gap: 12px; }
+.calc-work__lines { flex: 1 1 auto; min-width: 0; }
+.calc-sym { flex: none; display: inline-flex; flex-direction: column; align-items: center; gap: 1px; }
+.calc-sym__math {
+  font-family: var(--font-math); font-weight: 700; font-size: 24px; line-height: 1;
+  direction: ltr; unicode-bidi: isolate; color: var(--blue);
+}
+.calc-sym__math sub { font-size: 13px; font-weight: 700; }
+.calc-sym__hint { font-size: 13px; color: var(--muted); }
 .calc-box .answer-line { margin: 5px 0; }
 
 /* An exercise reads left to right, whatever the sheet's direction is. */

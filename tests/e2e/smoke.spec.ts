@@ -426,7 +426,10 @@ test('every sheet keeps its body text at 13px', async ({ page }) => {
           el.classList.contains('sheet-number') ||  // the numbered circle
           el.classList.contains('reveal') ||        // a game's result display
           el.classList.contains('frac__n') ||       // fraction — two digits in one line
-          el.classList.contains('frac__d');
+          el.classList.contains('frac__d') ||
+          // P and S are written LARGE, the way a real textbook writes them —
+          // „האותיות P S מקובל לכתוב אותן יותר גדולות" (31.07.2026)
+          el.classList.contains('calc-sym__math');
         if (!allowed) out.push(`page ${n}: ${el.tagName.toLowerCase()} at ${px}px`);
       }
     }

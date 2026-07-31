@@ -137,30 +137,30 @@ export const mixed = (whole: number, num: number, den: number): string =>
 /* Room to work, and then the answer — Yaniv's rule: „הדרך חשובה מאוד מאוד, לא
    לוותר על הכתיבה של הדרך”, and the answer is not an answer without its unit.
    `S` is area and `P` is perimeter, the letters an Israeli textbook uses. */
-export const calcBox = (o: { lines?: number; perimeter?: boolean; area?: boolean }): string => {
+export const calcBox = (o: { lines?: number; perimeter?: boolean; area?: boolean; name?: string }): string => {
   const rules = '<div class="answer-line"></div>'.repeat(o.lines ?? 2);
-  /* Yaniv, 31.07.2026: „צריך משבצת של מקום לתרגיל באופן נוח וכתוב ברור,
-     ומתחתיה תשובה סופית" — the working gets a clear slot of its own, and every
-     final answer stands on a LINE of its own. Two finals crushed onto one line
-     rendered as „יחשטח" — not how a textbook writes. `P = ____` is pinned LTR
-     as one unit so the equals sign can never wander in the Hebrew line. */
-  const row = (label: string, letter: string, unit: string): string =>
-    '<div class="calc-final__row">' +
-    `<span class="calc-final__label">${label}:</span>` +
-    `<span class="calc-final__math" dir="ltr">${letter} = ${blank(4, 'number')}</span>` +
-    `<span class="calc-final__unit">${unit}</span>` +
-    '</div>';
-  const finals: string[] = [];
-  if (o.perimeter) finals.push(row('ההיקף', 'P', "יח'"));
-  if (o.area) finals.push(row('השטח', 'S', 'יח"ר'));
-  /* Yaniv, 31.07.2026: „תמחק את המילים דרך החישוב — צריך שיהיה כתוב תרגיל
-     ומתחת לזה תשובה". The labels a textbook uses, nothing else. */
-  return (
-    '<div class="calc-box"><b class="calc-label">תרגיל:</b>' +
-    `<div class="calc-work">${rules}</div>` +
-    (finals.length ? `<b class="calc-label">תשובה:</b><div class="calc-final">${finals.join('')}</div>` : '') +
-    '</div>'
-  );
+  /* Yaniv, 31.07.2026 — the textbook format, per quantity: a heading
+     („חישוב ההיקף:"), a working slot that OPENS with the large letter a real
+     textbook uses — P big, the rectangle's name small beside it, and the word
+     היקף/שטח small underneath as help — and then the answer written ONCE, as a
+     completion: „ההיקף הוא ____ יח'." No „תשובה:" block and no second P = ____;
+     „אחרי שכותבים תשובה בסוף התרגיל זה מספיק". */
+  const section = (heading: string, letter: string, word: string, unit: string): string =>
+    `<b class="calc-label">${heading}</b>` +
+    '<div class="calc-work">' +
+    `<span class="calc-sym"><span class="calc-sym__math" dir="ltr">${letter}${o.name ? `<sub>${o.name}</sub>` : ''}</span>` +
+    `<span class="calc-sym__hint">${word}</span></span>` +
+    `<div class="calc-work__lines">${rules}</div>` +
+    '</div>' +
+    `<div class="calc-final"><div class="calc-final__row">ה${word} הוא ${blank(6, 'number')} ${unit}.</div></div>`;
+  const parts: string[] = [];
+  if (o.perimeter) parts.push(section('חישוב ההיקף:', 'P', 'היקף', "יח'"));
+  if (o.area) parts.push(section('חישוב השטח:', 'S', 'שטח', 'יח"ר'));
+  /* A box with neither quantity is a plain working slot („תרגיל:"). */
+  if (!parts.length) {
+    parts.push(`<b class="calc-label">תרגיל:</b><div class="calc-work"><div class="calc-work__lines">${rules}</div></div>`);
+  }
+  return `<div class="calc-box">${parts.join('')}</div>`;
 };
 
 /* An exercise is written the way it is worked: LEFT to right. „BC = תרגיל =
@@ -172,18 +172,16 @@ export const sideValue = (name: string, unit = "יח'"): string =>
   `<span class="calc-ltr__name">${name}</span><span class="calc-ltr__eq">=</span>` +
   `${blank(4, 'number')}<span class="calc-ltr__unit" dir="rtl">${unit}</span></div>`;
 
-/* Yaniv's format is TWO lines, and they may never come apart: „יש תרגיל ותשובה
-   מתחת… וצריך מספיק מקום לכל תרגיל ולכתוב תשובה בשורה מתחת." So one call emits
-   both — the working, with room to write it, and the value on the line below.
-   Splitting them into two calls is how page 74 ended up with exercises and no
-   answers under them. */
+/* ONE line per exercise — „לא צריך לכתוב פעמיים את התשובה! אחרי שכותבים תשובה
+   בסוף התרגיל זה מספיק" (31.07.2026, מחליף את פורמט שתי-השורות): the learner
+   writes the working and its result on the same pinned line, with the unit at
+   its end. The separate value line underneath repeated the same answer. */
 export const exercise = (name: string, unit = "יח'"): string =>
   '<div class="calc-pair">' +
   '<div class="calc-ltr" dir="ltr">' +
   `<span class="calc-ltr__name">${name}</span><span class="calc-ltr__eq">=</span>` +
   `${blank(16, 'number')}<span class="calc-ltr__eq">=</span>${blank(5, 'number')}` +
   `<span class="calc-ltr__unit" dir="rtl">${unit}</span></div>` +
-  sideValue(name, unit) +
   '</div>';
 
 /* The unit („יח'”, „יח\"ר”) is a Hebrew word, and the geresh at its end is a
