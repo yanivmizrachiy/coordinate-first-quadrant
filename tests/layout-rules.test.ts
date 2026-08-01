@@ -579,12 +579,14 @@ describe('a calculation gets units and room to work', () => {
   it('no sheet leaves an open line that is not the working of a calculation', () => {
     for (const p of WORKBOOK) {
       const open = (p.html.match(/<div class="answer-line">/g) ?? []).length;
-      /* The lines a calculation is allowed are the ones its working slots hold —
-         counted where they actually live, so a box with two quantities (each
-         with its own slot) is measured honestly, not by a per-box guess. */
-      const inCalc = [...p.html.matchAll(/<div class="calc-work__lines">((?:<div class="answer-line"><\/div>)+)/g)]
-        .reduce((n, m) => n + (m[1]!.match(/answer-line/g) ?? []).length, 0);
-      expect(open, `page ${p.n}: ${open - inCalc} open line(s) with no guidance`).toBeLessThanOrEqual(inCalc);
+      /* אין יותר שורות מסורגלות בחוברת: משבצת החישוב היא משטח משבצות
+         (`calc-squared`), וכל השלמה אחרת היא תיבה בתוך משפט. לכן כל
+         `answer-line` שיופיע היום הוא בדיוק מה שהכלל אוסר — שורה פתוחה
+         שאיש לא הוביל אליה. (עד 02.08.2026 נספרו כאן שורות בתוך
+         `calc-work__lines`, מחלקה שכבר לא קיימת, ולכן הצד המתיר של
+         ההשוואה היה מת. אם פורמט השורות יחזור — להתיר אותן שוב, אבל רק
+         בתוך `calc-box`.) */
+      expect(open, `page ${p.n}: ${open} open ruled line(s) with no guidance`).toBe(0);
     }
   });
 
