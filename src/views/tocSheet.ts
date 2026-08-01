@@ -9,13 +9,16 @@
    spacing so the entries fill the whole A4 page — „תגדיל מספרי העמודים ותגדיל
    כתב של שמות הפרקים, יותר רווחים כדי לנצל כל העמוד".
    Serif faces are bundled locally (no runtime fetch). */
+/* רק תת-הקבוצות והמשקלים שבאמת בשימוש. הייבוא הכללי (`400.css`) מושך את כל
+   תת-הקבוצות — כולל קירילית וּויאטנמית — ומכניס 30 קובצי Cormorant לבנייה
+   כדי לצייר ספרות. Frank Ruhl נדרש לעברית במשקלים 300 (הכותרת) ו-400 (השאר),
+   ו-latin לספרות/אותיות לועזיות שעשויות להופיע בשם פרק. Cormorant משמש רק
+   למספרי העמודים — משקל 700, לטינית בלבד. (02.08.2026) */
 import '@fontsource/frank-ruhl-libre/hebrew-300.css';
 import '@fontsource/frank-ruhl-libre/hebrew-400.css';
-import '@fontsource/frank-ruhl-libre/300.css';
-import '@fontsource/frank-ruhl-libre/400.css';
-import '@fontsource/cormorant-garamond/400.css';
-import '@fontsource/cormorant-garamond/500.css';
-import '@fontsource/cormorant-garamond/700.css';
+import '@fontsource/frank-ruhl-libre/latin-300.css';
+import '@fontsource/frank-ruhl-libre/latin-400.css';
+import '@fontsource/cormorant-garamond/latin-700.css';
 import { elem } from '../lib/dom';
 import { navigate } from '../router';
 /* The contents Yaniv asked for: the chapters he named, each opening the page he
