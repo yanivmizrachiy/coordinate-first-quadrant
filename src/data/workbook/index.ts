@@ -113,10 +113,10 @@ type Slot = WorkbookPageContent;
 /* כותרת פרק אחידה — „הכותרת היא אחידה בכל העמודים שאמרתי כאן" (31.07.2026,
    מרחיב את תקדים פרק הגרפים): בפרק עם `chapterTitle` כל דף עבודה נושא את
    כותרת הפרק ככותרת הראשית, ושמו-שלו יורד לכותרת המשנה. נחתם כאן, במקום
-   אחד, כמו המספור — דף שזז לפרק אחר מקבל את הכותרת הנכונה מעצמו. דפי
-   שעשועון ופוסטר שומרים על זהותם. */
+   אחד, כמו המספור — דף שזז לפרק אחר מקבל את הכותרת הנכונה מעצמו. דף
+   פוסטר שומר על זהותו. */
 function rechapter(page: WorkbookPageContent, chapterTitle: string): WorkbookPageContent {
-  if (page.title === chapterTitle || page.sectionClass.includes('poster-sheet') || page.gameId) return page;
+  if (page.title === chapterTitle || page.sectionClass.includes('poster-sheet')) return page;
   const oldSub = page.subtitle ? `<p>${page.subtitle}</p>` : '';
   const html = page.html.replace(
     `>${page.title}</h1>${oldSub}`,

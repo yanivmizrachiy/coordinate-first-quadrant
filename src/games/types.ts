@@ -1,17 +1,7 @@
-/* Game contracts. A game renders itself into a host element and returns a
-   cleanup function that the router calls when the learner navigates away. */
+/* Puzzle data contracts. The games themselves are gone — every page is printed
+   („המשימות שלנו הן להדפסה", 31.07.2026) — but the puzzle DATA lives on here and
+   feeds the printed sheets, so these shapes and their tests stay. */
 import type { GridSpec } from '../lib/coordinateGrid';
-
-export interface GameDefinition {
-  id: string;
-  title: string;
-  icon: string;
-  /** One-line description for the games hub. */
-  short: string;
-  /** The skill the game practices (shown as a tag). */
-  skill: string;
-  mount(root: HTMLElement): () => void;
-}
 
 /** Answer kinds shared by data-driven games. */
 export type AnswerKind = 'text' | 'point' | 'choice';
