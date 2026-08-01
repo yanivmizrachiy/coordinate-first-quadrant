@@ -443,9 +443,9 @@ test('every sheet keeps its body text at 13px', async ({ page }) => {
         if (px === 13) continue;
         const allowed =
           el.tagName === 'H1' ||                    // page title
-          el.tagName === 'H2' ||                    // game title
           el.classList.contains('sheet-number') ||  // the numbered circle
-          el.classList.contains('reveal') ||        // a game's result display
+          // („כותרת משחק h2" ו־„.reveal" הוסרו מהרשימה ב־31.07.2026 —
+          //  אין יותר שעשועונים, ולכן אין מי שיפיק אותם.)
           el.classList.contains('frac__n') ||       // fraction — two digits in one line
           el.classList.contains('frac__d') ||
           // P and S are written LARGE, the way a real textbook writes them —
