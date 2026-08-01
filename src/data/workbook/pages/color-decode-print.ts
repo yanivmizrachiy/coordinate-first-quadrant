@@ -1,6 +1,6 @@
 import type { WorkbookPageContent } from '../types';
 import { sheet, blank, ltr, pair, colorGrid, wordBank, wordBlank } from '../authoring';
-import { decodeTargets, decodeXMax, decodeYMax } from '../../../games/colorDecode';
+import { decodeTargets, decodeXMax, decodeYMax } from '../../colorDecode';
 
 /* פענוח צבעוני — הגרסה המודפסת. הדף הזה החליף שעשועון מקוון שבו צובעים תאים
    בלחיצה: יניב — „אנחנו רק דפים להדפסה ולא מתוקשב!!" (31.07.2026, כמו
