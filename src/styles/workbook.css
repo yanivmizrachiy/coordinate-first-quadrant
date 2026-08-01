@@ -533,7 +533,7 @@ td > .calc-pair, td .calc-pair { margin: 2px 0; }
   margin: 4px 0 0; color: #8f8467; font-size: 15px; font-style: italic;
   font-family: 'Frank Ruhl Libre', serif;
 }
-/* the five chapters fill the whole height of the page */
+/* the chapters fill the whole height of the page */
 .toc-sheet .sheet-content { flex: 1; display: flex; padding-bottom: 16mm; }
 .toc-buttons {
   flex: 1; display: flex; flex-direction: column;

@@ -21,7 +21,6 @@ export const drawingStrokes: Point[][] = [
 
 /** Every point in plotting order — what the learner is asked for, one at a time. */
 export const drawingPlan: Point[] = drawingStrokes.flat();
-export const drawingTitle = 'מפרשית';
 
 /** Exposed for tests: every stroke stays in the first quadrant, the outline that
     encloses the hull closes on itself, and no stroke is a single stray point. */

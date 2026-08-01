@@ -4,10 +4,10 @@
 
    The design Yaniv chose (31.07.2026): „דף עיזבון על נייר" — the Hermès/Aesop
    estate page. Warm cream paper, a centred serif title, and one chapter per
-   row: the chapter name in a large serif on the right, its big colour number,
-   and the page it starts on („עמוד N") on the left, also enlarged. Large type
-   and generous spacing so the five entries fill the whole A4 page — „תגדיל
-   מספרי העמודים ותגדיל כתב של שמות הפרקים, יותר רווחים כדי לנצל כל העמוד".
+   row: the chapter name in a large serif on the right, a dotted leader, and the
+   page it starts on as a big colour number on the left. Large type and generous
+   spacing so the entries fill the whole A4 page — „תגדיל מספרי העמודים ותגדיל
+   כתב של שמות הפרקים, יותר רווחים כדי לנצל כל העמוד".
    Serif faces are bundled locally (no runtime fetch). */
 import '@fontsource/frank-ruhl-libre/hebrew-300.css';
 import '@fontsource/frank-ruhl-libre/hebrew-400.css';
@@ -18,9 +18,9 @@ import '@fontsource/cormorant-garamond/500.css';
 import '@fontsource/cormorant-garamond/700.css';
 import { elem } from '../lib/dom';
 import { navigate } from '../router';
-/* The contents Yaniv asked for: five chapters, named by him, each opening the
-   page he named. It is NOT derived from BOOK any more — he wants a reader's
-   map, not an index of every section, and „כל השאר תמחק מהתוכן".
+/* The contents Yaniv asked for: the chapters he named, each opening the page he
+   named. It is NOT derived from BOOK any more — he wants a reader's map, not an
+   index of every section, and „כל השאר תמחק מהתוכן".
    A test checks that every page number here exists. */
 /* הפרקים בשמות שיניב נתן (31.07.2026) — הכותרת בתוכן זהה מילה במילה לכותרת
    האחידה שעל דפי הפרק. */
@@ -41,9 +41,6 @@ import { DISTRICT_BADGE } from '../data/cover';
 const CHAPTER_COLOURS = [
   '#1A4FD1', '#1B6E36', '#9C4A0A', '#A312C0', '#0A6FA8',
 ] as const;
-
-/** The cream the whole sheet sits on. Exported for the contrast test. */
-export const TOC_PAPER = '#f5efe3';
 
 export function renderTocSheet(): HTMLElement {
   const section = elem('section', {

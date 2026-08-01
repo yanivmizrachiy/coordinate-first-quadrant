@@ -243,11 +243,11 @@ test('the contents sheet lists every chapter and each button reaches its page', 
   await page.waitForTimeout(4000);
   const buttons = page.locator('.toc-sheet .toc-btn');
   const topics = await page.evaluate(() => document.querySelectorAll('.toc-sheet .toc-btn').length);
-  /* Five chapters, named by Yaniv, and no others: „כל השאר תמחק מהתוכן". */
+  /* The chapters Yaniv named, and no others: „כל השאר תמחק מהתוכן". */
   expect(topics, 'the contents sheet does not list the six chapters').toBe(6);
 
   /* „לא צריך כפל מספרים" (31.07.2026): ONE number per row — the big colour
-     number IS the page number. Five chapters, five distinct colours. */
+     number IS the page number. Each chapter carries a colour of its own. */
   const colours = await buttons.evaluateAll((els) =>
     els.map((e) => getComputedStyle(e.querySelector('.toc-btn__no')!).color),
   );

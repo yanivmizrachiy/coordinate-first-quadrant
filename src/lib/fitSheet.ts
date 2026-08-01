@@ -45,10 +45,6 @@ export function fitSheet(sheet: HTMLElement): void {
   const content = sheet.querySelector<HTMLElement>('.sheet-content');
   const footer = sheet.querySelector<HTMLElement>('.gz-footer');
   if (!content || !footer) return;
-  /* A game sheet grows with its board, so its DRAWINGS must not be stretched —
-     but it now carries printed questions under the grid, and those deserve the
-     same room to write in as anywhere else. */
-  const isGame = sheet.classList.contains('game-sheet');
 
   /* The page viewer shrinks the sheet to fit the screen. getBoundingClientRect
      reports those shrunken pixels, but `style.height` is written in unscaled
@@ -104,7 +100,7 @@ export function fitSheet(sheet: HTMLElement): void {
        one drawing painted over another;
      - the box must stay the DRAWING's shape. Once max-width binds, more height
        is only empty bands above and below the drawing, not a bigger drawing. */
-  const grids = isGame ? [] : [...content.querySelectorAll<HTMLElement>('.coordinate-grid')];
+  const grids = [...content.querySelectorAll<HTMLElement>('.coordinate-grid')];
   const RATIO = 560 / 380;
   const wasted = (g: HTMLElement): boolean => {
     const r = g.getBoundingClientRect();
