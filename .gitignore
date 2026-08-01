@@ -35,6 +35,6 @@ _CLAUDE_INPUT/
 # `git add -A` לא מבחין. בדיקת גישוש נקראת `tests/zz-*` ונמחקת אחרי השימוש.
 *audittmp*
 tests/zz-*
-probe-out/
+probe-out*/
 
 .vercel
