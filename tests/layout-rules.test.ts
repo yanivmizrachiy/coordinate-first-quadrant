@@ -463,7 +463,7 @@ describe('a calculation gets units and room to work', () => {
     for (const p of WORKBOOK) {
       const text = p.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
       if (!/שטח|היקף/.test(text)) continue;
-      for (const f of p.html.matchAll(/<div class="calc-final">([\s\S]*?)<\/div>\s*<\/div>/g)) {
+      for (const f of p.html.matchAll(/<div class="calc-final[^"]*">([\s\S]*?)<\/div>\s*<\/div>/g)) {
         const plain = f[1]!.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
         /* „לא לכתוב ההיקף הוא — לכתוב היקף המלבן הוא" (31.07.2026): the
            answer names the figure, in the construct form a textbook uses. */
@@ -494,7 +494,7 @@ describe('a calculation gets units and room to work', () => {
      answer stands on a row of its own. */
   it('every final answer stands on a row of its own', () => {
     for (const p of WORKBOOK) {
-      for (const f of p.html.matchAll(/<div class="calc-final">([\s\S]*?)<\/div>\s*<\/div>/g)) {
+      for (const f of p.html.matchAll(/<div class="calc-final[^"]*">([\s\S]*?)<\/div>\s*<\/div>/g)) {
         const rows = f[1]!.split('calc-final__row').length - 1;
         const answers = (f[1]!.match(/[SP] =/g) ?? []).length;
         expect(rows, `page ${p.n}: a calc box with finals but no answer rows`).toBeGreaterThan(0);
@@ -754,10 +754,11 @@ describe('a calculation is written left to right', () => {
      geresh fix reached every calculation except the two on the page that had
      been written by hand. */
   it('no page writes the calculation markup by hand', () => {
-    const inline = WORKBOOK.filter((p) => /class="calc-ltr__name"/.test(p.html) === false && false).map(() => '');
+    /* המרקאפ שנכתב ביד מזוהה לפי היעדר `dir="rtl"` על יחידת המידה — התיקון
+       של הגרש הגיע רק דרך הכלי. (היה כאן גם משתנה `inline` עם `&& false`
+       בתנאי, כלומר תמיד ריק ותמיד עובר — הוסר, 02.08.2026.) */
     const handmade = WORKBOOK.filter((p) => /<span class="calc-ltr__unit">/.test(p.html));
     expect(handmade.map((p) => `page ${p.n}`), 'calc markup written by hand — use exercise()/exerciseGiven()/sideValue()').toEqual([]);
-    expect(inline).toEqual([]);
   });
 
   /* „יש תרגיל ותשובה מתחת… וצריך מספיק מקום לכל תרגיל ולכתוב תשובה בשורה
