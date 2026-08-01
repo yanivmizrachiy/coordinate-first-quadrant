@@ -20,7 +20,7 @@ export const ERRORS_PRACTICE: WorkbookPageContent = sheet({
 </section>
 <section class="q-card">
 <h3>טעות בצירים</h3>
-<p>נועה אמרה: “כל נקודה על ציר <span class="math-ltr" dir="ltr">x</span> מקיימת <span class="math-ltr" dir="ltr">x=0</span>”.</p>
+<p>נועה אמרה: „כל נקודה על ציר <span class="math-ltr" dir="ltr">x</span> מקיימת <span class="math-ltr" dir="ltr">x=0</span>”.</p>
 <p>תקנו את המשפט:</p>
 <ul class="tasks compact">
 <li>המשפט הנכון: כל נקודה שעל ציר <span class="math-ltr" dir="ltr">x</span> מקיימת <span class="math-ltr" dir="ltr">y</span> שווה <span class="blank" data-missing="number" style="--blank-width:3ch"></span>.</li>
@@ -65,7 +65,7 @@ export const ERRORS_PRACTICE: WorkbookPageContent = sheet({
 </section>
 <section class="q-card span-2">
 <h3>בודקים ניסוח</h3>
-<p>החליפו את הביטוי הלא מדויק “שיעור <span class="math-ltr" dir="ltr">y</span> קטן פי 2” בניסוח חד־משמעי:</p>
+<p>החליפו את הביטוי הלא מדויק „שיעור <span class="math-ltr" dir="ltr">y</span> קטן פי 2” בניסוח חד־משמעי:</p>
 <ul class="tasks compact">
 <li><span class="blank" style="--blank-width:32ch"></span></li>
 </ul>

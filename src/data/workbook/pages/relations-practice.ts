@@ -17,7 +17,7 @@ export const RELATIONS_PRACTICE: WorkbookPageContent = sheet({
 </section>
 <section class="q-card">
 <h3>גדול פי ומחצית</h3>
-<div class="note-box"><b>דיוק:</b> במקום “קטן פי 2” נכתוב “מחצית ממנו”.
+<div class="note-box"><b>דיוק:</b> במקום „קטן פי 2” נכתוב „מחצית ממנו”.
 </div>
 <ul class="tasks">
 <li>הנקודה <span class="math-ltr" dir="ltr">P(2,3)</span>. שיעור <span class="math-ltr" dir="ltr">x</span> של הנקודה <span class="math-ltr" dir="ltr">Q</span> גדול פי 3, ושיעור <span class="math-ltr" dir="ltr">y</span> זהה. <span class="blank" style="--blank-width:10ch"></span></li>
