@@ -2,10 +2,10 @@
    Workbook model — the single ordered list of pages plus the topic map used by
    the table of contents.
 
-   Every numbered page is a printed worksheet — „המשימות שלנו הן להדפסה (31.07.2026),
-   so the last five interactive games became printed pages too and nothing here
-   mounts a widget. Page numbers are assigned by POSITION, so a page can be
-   inserted, split or reordered without hand-editing the number baked into it.
+   Every numbered page is a printed worksheet — „המשימות שלנו הן להדפסה"
+   (31.07.2026), so the last five interactive games became printed pages too and
+   nothing here mounts a widget. Page numbers are assigned by POSITION, so a page
+   can be inserted, split or reordered without hand-editing the number baked in.
    =========================================================================== */
 import {
   AXES_IDENTIFY,
@@ -87,15 +87,9 @@ import {
   LIFE_PARK_MAP,
   LIFE_PARK_ROUTE,
 } from './pages';
-import { FOOTER } from './authoring';
 import type { WorkbookPageContent, WorkbookTopic } from './types';
 
 export type { WorkbookPageContent, WorkbookTopic } from './types';
-
-/* The one footer, from the one place that builds it. It used to be copied out
-   here, and the copy is exactly why the eight game sheets had no badge on them
-   when the badge was added to the original. */
-const FOOTER_HTML = FOOTER;
 
 /** Re-stamp a sheet with its final page number (id, aria, visible number, tf group names). */
 function renumber(page: WorkbookPageContent, n: number): WorkbookPageContent {

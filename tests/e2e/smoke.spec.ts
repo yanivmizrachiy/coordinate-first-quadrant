@@ -462,35 +462,31 @@ test('every sheet keeps its body text at 13px', async ({ page }) => {
   expect(offenders, offenders.join(', ')).toHaveLength(0);
 });
 
-test('a game sheet reveals its answer when solved correctly', async ({ page }) => {
-  /* Find the sheet by what it hosts, never by its number — page numbers come
-     from the position in BOOK and move whenever a page is added or split. */
+/* יניב, 31.07.2026: „המשימות שלנו הן להדפסה!!" — כל שבעת השעשועונים המקוונים
+   הוחלפו בדפי עבודה מודפסים. הבדיקה הקודמת כאן פתרה שעשועון בלחיצות; במקומה
+   באה השמירה על הכלל עצמו: אין בחוברת עמוד שמארח ווידג'ט, ואין בו פקד
+   שעיפרון לא יכול לענות עליו. תיבות נכון/לא־נכון נשארות — עיפרון מסמן אותן. */
+test('no numbered page hosts a widget — the booklet is answerable in pencil', async ({ page }) => {
   await page.goto('/#/print');
-  await page.waitForTimeout(4000);
-  const n = await page.evaluate(() => {
-    const host = document.querySelector('[data-game-host="coordinate-safe"]');
-    return host?.closest('.sheet')?.querySelector('.sheet-number')?.textContent?.trim() ?? '';
-  });
-  expect(n, 'the coordinate-safe game is not on any sheet').not.toBe('');
-  await page.goto(`/#/workbook/${n}`);
-  /* the viewer re-fits the sheet ~420ms after mount (fitSheet settle) — a
-     click aimed before that lands where the button USED to be */
-  await page.waitForTimeout(900);
-  const answers = ['4', '7', '0', '5'];
-  const rows = page.locator('.game__board .game__row');
-  const count = await rows.count();
-  for (let i = 0; i < count; i++) {
-    const input = rows.nth(i).locator('input.answer-input');
-    if (await input.count()) {
-      /* centre the row first — the app bar above and the page navigator below
-         are sticky, and a row scrolled to an EDGE sits under one of them.
-         A person looks at the row mid-screen; the test should too. */
-      await rows.nth(i).evaluate((el) => el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }));
-      await input.fill(answers[i] ?? '');
-      await rows.nth(i).locator('button', { hasText: 'בדקו' }).click();
+  await page.waitForTimeout(9000);
+  const faults = await page.evaluate(() => {
+    const out: string[] = [];
+    for (const s of document.querySelectorAll('.sheet')) {
+      /* עמוד ממוספר בלבד. דף תוכן העניינים אינו ממוספר, והכפתורים שבו הם
+         ניווט בין פרקים על המסך — בהדפסה הם שורות טקסט, לא משימה. */
+      const n = s.querySelector('.sheet-number')?.textContent?.trim() ?? '';
+      if (!n) continue;
+      if (s.querySelector('[data-game-host]')) out.push(`page ${n}: hosts an interactive game`);
+      for (const el of s.querySelectorAll('button, select, textarea, input')) {
+        const type = (el as HTMLInputElement).type;
+        // a checkbox/radio is a box a pencil ticks — that stays
+        if (el.tagName === 'INPUT' && (type === 'checkbox' || type === 'radio')) continue;
+        out.push(`page ${n}: has a <${el.tagName.toLowerCase()}> a pencil cannot answer`);
+      }
     }
-  }
-  await expect(page.locator('.reveal').last()).toContainText('4705');
+    return [...new Set(out)];
+  });
+  expect(faults, faults.join(' | ')).toHaveLength(0);
 });
 
 /* The screen always shows colour. Black and white exists only as a choice at
