@@ -5,7 +5,6 @@ import { fitSheets } from '../lib/fitSheet';
 import { readerBar } from './wsbar';
 import { pageByNumber, TOTAL_PAGES, topicOfPage } from '../data/workbook';
 import { lastPage, sheetZoom } from '../lib/storage';
-import { gameById } from '../games';
 import type { ViewContext } from './context';
 import { goToContents } from './tocSheet';
 
@@ -31,11 +30,6 @@ export function pageViewer(n: number): (ctx: ViewContext) => (() => void) | void
       sheetWrap.append(fromHTML(data.html));
       hydrateGrids(sheetWrap);
     fitSheets(sheetWrap);
-      if (data.gameId) {
-        const host = sheetWrap.querySelector<HTMLElement>('[data-game-host]');
-        const g = gameById(data.gameId);
-        if (host && g) cleanup = g.mount(host);
-      }
     } else {
       sheetWrap.append(elem('div', { class: 'empty-note', text: 'העמוד לא נמצא.' }));
     }

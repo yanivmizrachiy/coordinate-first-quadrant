@@ -2,7 +2,6 @@ import { elem, fromHTML } from '../lib/dom';
 import { hydrateGrids } from '../lib/coordinateGrid';
 import { fitSheets } from '../lib/fitSheet';
 import { WORKBOOK, TOTAL_PAGES } from '../data/workbook';
-import { gameById } from '../games';
 import { renderCoverSheet } from './coverSheet';
 import { renderTocSheet, CONTENTS } from './tocSheet';
 import { openActionChooser } from './printChoice';
@@ -668,12 +667,6 @@ export function flipbook({ outlet, setTitle }: ViewContext): (() => void) | void
   // הדפים נמדדים כשהם בעץ מוצג (המחסן מוסתר ב-visibility, לא ב-display).
   hydrateGrids(store);
   fitSheets(store);
-  for (const page of WORKBOOK) {
-    if (!page.gameId) continue;
-    const host = store.querySelector<HTMLElement>(`#${page.id} [data-game-host]`);
-    const g = gameById(page.gameId);
-    if (host && g) cleanups.push(g.mount(host));
-  }
 
   /* „התחל" מהעמוד הראשי → ישר אל כפולת תוכן העניינים. כל כניסה אחרת
      מתחילה מהכריכה — אף פעם לא מהדף האחרון שביקרת בו. */
