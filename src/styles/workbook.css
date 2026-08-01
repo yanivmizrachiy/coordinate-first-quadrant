@@ -147,14 +147,9 @@ li .pair, p .pair, .completion-sentence .pair { margin-inline: 3px; }
 .poster-number { position: absolute; left: 3mm; top: 3mm; }
 /* אין דריסה — הכותרת התחתונה נשארת מוצמדת, כמו בכל עמוד. */
 
-.sheet.game-sheet { height: auto; min-height: 297mm; overflow: visible; }
-.sheet.game-sheet .sheet-content { display: block; }
-/* גם על דף שעשועון שגדל מעבר ל-A4 הכותרת מוצמדת לתחתית הדף — אותו מקום,
-   אותם שוליים; הריפוד שומר שהלוח לא ירוץ מתחתיה. */
-.sheet.game-sheet { padding-bottom: 20mm; }
-.game-host { min-height: 150mm; }
-.game-host > * { max-width: 100%; }
-/* No sub-13px text anywhere on a sheet, including game-rendered markup. */
+/* אין יותר דף שעשועון: כל עמוד הוא דף מודפס בגובה A4 („המשימות שלנו הן
+   להדפסה", 31.07.2026), ולכן כללי `.game-sheet`/`.game-host` נמחקו. */
+/* No sub-13px text anywhere on a sheet. */
 .sheet small, .mist-card small { font-size: 13px; }
 
 .calc-box { border: 1px dashed #9aa6b6; border-radius: 8px; padding: 7px 10px 5px; margin: 7px 0; background: #fbfcfe; }

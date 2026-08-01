@@ -38,7 +38,6 @@ export interface SheetSpec {
   content: string;
   /** `main` on most sheets; a few legacy sheets use `div`. */
   contentTag?: 'main' | 'div';
-  gameId?: string;
 }
 
 export function sheet(spec: SheetSpec): WorkbookPageContent {
@@ -58,7 +57,6 @@ export function sheet(spec: SheetSpec): WorkbookPageContent {
     sectionClass: spec.sectionClass,
     title: spec.title,
     subtitle: spec.subtitle ?? '',
-    ...(spec.gameId === undefined ? {} : { gameId: spec.gameId }),
     html,
   };
 }

@@ -33,17 +33,17 @@ describe('drawings stay big and readable', () => {
 });
 
 describe('nothing is silently cut off the page', () => {
-  it('game sheets grow instead of clipping their board', () => {
-    // `.sheet` is re-declared further down the file; a single-class override
-    // loses on source order and the board gets cut mid-question.
-    expect(css).toContain('.sheet.game-sheet { height: auto;');
-    expect(css).not.toMatch(/^\.game-sheet \{/m);
-    /* הכותרת התחתונה מוצמדת בכל סוג עמוד — „כמו ספר לימוד" (31.07.2026).
-       דריסת static על שעשועונים/פוסטרים היא בדיוק מה שיצר את חוסר האחידות
-       בעמודים 22–23, ואסור שתחזור. הריפוד התחתון שומר על הלוח מתחתיה. */
-    expect(css).not.toContain('.sheet.game-sheet .gz-footer');
+  /* הכותרת התחתונה מוצמדת בכל סוג עמוד — „כמו ספר לימוד" (31.07.2026).
+     דריסת static על עמוד פוסטר היא בדיוק מה שיצר את חוסר האחידות בעמודים
+     22–23, ואסור שתחזור. (כללי `.game-sheet` נמחקו עם השעשועונים —
+     31.07.2026 — ולכן אין יותר מה לבדוק עליהם.) */
+  it('a poster sheet keeps the footer pinned like every other page', () => {
     expect(css).not.toContain('.sheet.poster-sheet .gz-footer { position: static');
-    expect(css).toContain('.sheet.game-sheet { padding-bottom:');
+    expect(css).toContain('.sheet.poster-sheet { padding:');
+    /* והכללים מתקופת הווידג'טים נמחקו — נבדק על כלל אמיתי (סלקטור ואחריו
+       סוגר), כדי שהערה שמזכירה אותם בשמם לא תיחשב כאילו הם חזרו. */
+    expect(css).not.toMatch(/\.game-host\s*[{,>]/);
+    expect(css).not.toMatch(/\.sheet\.game-sheet\s*[{,]/);
   });
 });
 
