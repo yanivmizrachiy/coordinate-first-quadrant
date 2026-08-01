@@ -7,7 +7,7 @@ export const PLOT_A: WorkbookPageContent = sheet({
   subtitle: "מראשית הצירים: ימינה לפי שיעור x, למעלה לפי שיעור y",
   content: `
 <div class="cols-2 compact-top">
-<div class="rule-box"><b>הדגמה:</b> כדי לסמן נקודה <span class="math-ltr" dir="ltr">A(3,4)</span> מתחילים בראשית הצירים, זזים 3 יחידות ימינה (שיעור <span class="math-ltr" dir="ltr">x</span>) ואז 4 יחידות למעלה (שיעור <span class="math-ltr" dir="ltr">y</span>).
+<div class="rule-box"><b>הדגמה:</b> כדי לסמן נקודה <span class="math-ltr" dir="ltr">M(3,4)</span> מתחילים בראשית הצירים, זזים 3 יחידות ימינה (שיעור <span class="math-ltr" dir="ltr">x</span>) ואז 4 יחידות למעלה (שיעור <span class="math-ltr" dir="ltr">y</span>).
 </div>
 <div aria-label="הדגמת סימון הנקודה A שלוש ארבע" class="coordinate-grid grid-md" data-arrows="[]" data-labelboxes="[]" data-points='[{"x": 3, "y": 4, "label": "A"}]' data-polygons="[]" data-segments='[{"from": [0, 0], "to": [3, 0], "dashed": true, "type": "guide"}, {"from": [3, 0], "to": [3, 4], "dashed": true, "type": "guide"}]' role="img">
 </div>

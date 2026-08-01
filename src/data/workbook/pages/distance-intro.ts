@@ -48,10 +48,10 @@ ${wordBank(['x', '0'])}
 <section class="q-card">
 <h3>ג. מרחק אופקי בין שתי נקודות.</h3>
 <ul class="tasks compact">
-<li>לשתי הנקודות <span class="math-ltr" dir="ltr">A(2,5)</span> ו־<span class="math-ltr" dir="ltr">B(7,5)</span> יש שיעור <span class="blank" data-missing="letter" style="--blank-width:3ch"></span> <b>זהה</b>.</li>
+<li>לשתי הנקודות <span class="math-ltr" dir="ltr">E(2,5)</span> ו־<span class="math-ltr" dir="ltr">F(7,5)</span> יש שיעור <span class="blank" data-missing="letter" style="--blank-width:3ch"></span> <b>זהה</b>.</li>
 <li>זהו תרגיל החיסור, והתוצאה שלו היא המרחק בין שתי הנקודות:</li>
 </ul>
-${exerciseGiven('AB', '7 − 2')}
+${exerciseGiven('EF', '7 − 2')}
 <ul class="tasks compact">
 <li>כתבו שתי נקודות משלכם שיש להן שיעור <span class="math-ltr" dir="ltr">y</span> זהה: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> ו־<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>.</li>
 </ul>
@@ -59,10 +59,10 @@ ${exerciseGiven('AB', '7 − 2')}
 <section class="q-card">
 <h3>ד. מרחק אנכי בין שתי נקודות.</h3>
 <ul class="tasks compact">
-<li>לשתי הנקודות <span class="math-ltr" dir="ltr">C(4,1)</span> ו־<span class="math-ltr" dir="ltr">D(4,6)</span> יש שיעור <span class="blank" data-missing="letter" style="--blank-width:3ch"></span> זהה, ולכן הקטע <span class="math-ltr" dir="ltr">CD</span> מקביל לציר <span class="math-ltr" dir="ltr">y</span>.</li>
+<li>לשתי הנקודות <span class="math-ltr" dir="ltr">G(4,1)</span> ו־<span class="math-ltr" dir="ltr">H(4,6)</span> יש שיעור <span class="blank" data-missing="letter" style="--blank-width:3ch"></span> זהה, ולכן הקטע <span class="math-ltr" dir="ltr">GH</span> מקביל לציר <span class="math-ltr" dir="ltr">y</span>.</li>
 <li>ה־<span class="math-ltr" dir="ltr">y</span> הגבוה פחות ה־<span class="math-ltr" dir="ltr">y</span> הנמוך:</li>
 </ul>
-${exerciseGiven('CD', '6 − 1')}
+${exerciseGiven('GH', '6 − 1')}
 <ul class="tasks compact">
 <li>כתבו שתי נקודות משלכם שיש להן שיעור <span class="math-ltr" dir="ltr">x</span> זהה: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span> ו־<span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>.</li>
 <li><b>אורי</b> חישב את המרחק בין <span class="math-ltr" dir="ltr">(2,5)</span> ובין <span class="math-ltr" dir="ltr">(7,5)</span> וקיבל 9 — הוא <span class="blank" data-missing="relation" style="--blank-width:5ch"></span> את שני ערכי ה־<span class="math-ltr" dir="ltr">x</span> במקום לחסר אותם. תרגיל החיסור הנכון:</li>
@@ -74,7 +74,7 @@ ${exerciseGiven('', '7 − 2')}
 </div>
 
 <section class="q-card">
-<h3>ו. נקודה שמרחקה זהה משני הצירים - מה אפשר לומר על שיעוריה?</h3>
+<h3>ה. נקודה שמרחקה זהה משני הצירים - מה אפשר לומר על שיעוריה?</h3>
 <ul class="tasks compact">
 <li>ההסבר: <span class="blank" data-missing="relation" style="--blank-width:24ch"></span>.</li>
 </ul>
