@@ -102,8 +102,7 @@ export type Missing =
   | 'direction' // כיוון: ימינה / למעלה
   | 'concept'   // מושג: ראשית הצירים
   | 'number'    // מספר
-  | 'relation'  // מה קורה: גדלים / קטנים / זהה
-  | 'pair';     // זוג סדור
+  | 'relation'; // מה קורה: גדלים / קטנים / זהה
 
 /** A line for the learner to write on: `blank(4, 'number')` → four wide. */
 export const blank = (width = 4, missing?: Missing): string =>

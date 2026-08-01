@@ -17,7 +17,7 @@ export interface GridPoint {
   dy?: number;
   anchor?: 'start' | 'middle' | 'end';
   /** ציור וקטורי קטן על הנקודה — מפת הפארק: כל מילה עם ציור מתאים ומדויק. */
-  icon?: 'gate' | 'bench' | 'fountain' | 'swing' | 'tree' | 'exit' | 'lamp';
+  icon?: 'gate' | 'bench' | 'fountain' | 'swing' | 'tree' | 'exit';
 }
 export interface GridSegment {
   from: [number, number];
@@ -25,7 +25,6 @@ export interface GridSegment {
   dashed?: boolean;
   type?: 'guide' | 'shape';
   color?: string;
-  arrow?: boolean;
 }
 export interface GridArrow {
   from: [number, number];
@@ -35,7 +34,6 @@ export interface GridArrow {
 }
 export interface GridPolygon {
   points: [number, number][];
-  type?: 'shape';
 }
 export interface GridLabelBox {
   text: string;
@@ -155,9 +153,6 @@ function pointIcon(kind: NonNullable<GridPoint['icon']>, px: number, py: number)
       break;
     case 'exit': // דלת וחץ יוצא
       g.append(S({}, 'M4 3 H14 V22 H4 Z'), S({ stroke: BLUE }, 'M14 12 H22'), S({ stroke: BLUE }, 'M19 9 L22 12 L19 15'));
-      break;
-    case 'lamp': // פנס — עמוד וראש מאיר
-      g.append(S({}, 'M11 22V9'), el('circle', { cx: 11, cy: 6, r: 3.4, fill: 'none', stroke: AXIS, 'stroke-width': 1.7 }), S({ 'stroke-width': 1.1 }, 'M6 2 L8 4 M16 2 L14 4'));
       break;
   }
   return g;
@@ -325,7 +320,6 @@ export function renderCoordinateGrid(spec: GridSpec): SVGSVGElement {
       stroke: g.color || (g.type === 'guide' ? GUIDE : BLUE),
       'stroke-width': g.type === 'guide' ? 1.7 : 3.4,
       'stroke-dasharray': g.dashed ? '7 5' : '',
-      'marker-end': g.arrow ? `url(#${id})` : '',
       'vector-effect': 'non-scaling-stroke',
     }));
   }
