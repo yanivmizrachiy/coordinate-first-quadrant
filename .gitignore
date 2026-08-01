@@ -10,6 +10,7 @@
 *.secret
 *.secret.*
 *.tmp
+*.tmp.*
 .DS_Store
 .env
 .env.*
@@ -28,5 +29,12 @@ test-results/
 
 # תיקיית קלט זמנית של יניב — תוצרים מפרויקט אחר, לא קוד של הריפו
 _CLAUDE_INPUT/
+
+# קובצי גישוש זמניים. פעמיים כבר נסחף קובץ כזה לתוך קומיט ונאלצנו להסיר
+# אותו בקומיט נפרד (`tsconfig.audittmp.json`, `toc_rule.tmp.py`), כי
+# `git add -A` לא מבחין. בדיקת גישוש נקראת `tests/zz-*` ונמחקת אחרי השימוש.
+*audittmp*
+tests/zz-*
+probe-out/
 
 .vercel
