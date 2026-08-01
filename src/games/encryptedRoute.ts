@@ -1,7 +1,6 @@
 /* המסלול המוצפן — start at a point, follow the movement instructions, and name
    the station you reach. Each station reveals one letter of the secret word. */
 import type { RevealPuzzle } from './types';
-import { createRevealGame } from './revealEngine';
 import { applyPath, type Move, type Point } from '../lib/coordinateMath';
 
 interface RouteLeg {
@@ -43,4 +42,5 @@ export const encryptedRoutePuzzle: RevealPuzzle = {
   }),
 };
 
-export const encryptedRouteGame = createRevealGame(encryptedRoutePuzzle);
+/* השעשועון המקוון הוסר (31.07.2026) — הדף הוא עכשיו `ENCRYPTED_ROUTE_PRINT`.
+   הנתונים למעלה הם מקור האמת של הדף המודפס ושל הבדיקות. */

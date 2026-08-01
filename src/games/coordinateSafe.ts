@@ -1,7 +1,6 @@
 /* כספת הקואורדינטות — four short coordinate tasks. Each answer is one digit of
    the safe's code, read in order. */
 import type { RevealPuzzle } from './types';
-import { createRevealGame } from './revealEngine';
 
 export const coordinateSafePuzzle: RevealPuzzle = {
   id: 'coordinate-safe',
@@ -20,4 +19,5 @@ export const coordinateSafePuzzle: RevealPuzzle = {
   ],
 };
 
-export const coordinateSafeGame = createRevealGame(coordinateSafePuzzle);
+/* השעשועון המקוון הוסר (31.07.2026) — הדף הוא עכשיו `COORDINATE_SAFE_PRINT`.
+   הנתונים למעלה הם מקור האמת של הדף המודפס ושל הבדיקות. */

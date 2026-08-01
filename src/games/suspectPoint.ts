@@ -1,10 +1,6 @@
 /* הנקודה החשודה — several clues; exactly one candidate point satisfies all of
    them. Find it in each round to reveal a letter. Clues carry predicates so the
    test suite can prove each round has a unique solution. */
-import type { GameDefinition } from './types';
-import { renderCoordinateGrid, type GridPoint } from '../lib/coordinateGrid';
-import { elem, clear } from '../lib/dom';
-
 export interface Candidate { label: string; x: number; y: number; }
 export interface Clue { text: string; test: (p: Candidate) => boolean; }
 export interface SuspectRound { candidates: Candidate[]; clues: Clue[]; token: string; }
@@ -43,74 +39,5 @@ export function suspectsOf(round: SuspectRound): Candidate[] {
 
 export const suspectSolution = suspectRounds.map((r) => r.token).join('');
 
-export const suspectPointGame: GameDefinition = {
-  id: 'suspect-point',
-  title: 'הנקודה החשודה',
-  icon: '🔎',
-  short: 'לפי כמה רמזים מוצאים את הנקודה היחידה המתאימה.',
-  skill: 'ניתוח שיעורים, אי-שוויונים וקווים',
-  mount(root) {
-    const solved = new Array<boolean>(suspectRounds.length).fill(false);
-    const wrap = elem('div', { class: 'game' });
-    wrap.append(elem('div', { class: 'game__intro' },
-      elem('h2', { text: 'איזו נקודה אינה מתאימה?' }),
-      elem('p', { text: 'בכל סיבוב יש כמה רמזים. רק נקודה אחת מתאימה לכל הרמזים יחד. בחרו אותה כדי לחשוף אות.' }),
-    ));
-
-    const slots = suspectRounds.map(() => elem('div', { class: 'word-slot' }, ''));
-    const slotRow = elem('div', { class: 'game__row no-print' }, elem('span', { class: 'game__prompt', text: 'המילה:' }));
-    const slotWrap = elem('div', { class: 'word-slots' });
-    slots.forEach((s) => slotWrap.append(s));
-    slotRow.append(slotWrap);
-    wrap.append(slotRow);
-
-    const finalMsg = elem('div', { class: 'reveal reveal--pending no-print', text: 'מצאו את כל הנקודות החשודות כדי לגלות את המילה.' });
-    const board = elem('div', { class: 'game__board' });
-    suspectRounds.forEach((round, i) => board.append(renderRound(round, i, (ok) => {
-      solved[i] = ok;
-      if (ok && slots[i]) { slots[i]!.textContent = round.token; slots[i]!.classList.add('is-filled'); }
-      if (solved.every(Boolean)) { finalMsg.className = 'reveal'; finalMsg.textContent = `המילה: ${suspectSolution}`; }
-    })));
-    wrap.append(board, finalMsg);
-
-    clear(root);
-    root.append(wrap);
-    return () => clear(root);
-  },
-};
-
-function renderRound(round: SuspectRound, index: number, onResult: (ok: boolean) => void): HTMLElement {
-  const answer = suspectsOf(round)[0]!;
-  const card = elem('div', { class: 'game__row' });
-  const body = elem('div', { style: 'flex:1 1 auto;min-width:0' });
-  body.append(elem('p', { class: 'game__prompt', text: `סיבוב ${index + 1}: מי הנקודה החשודה?` }));
-
-  const clueList = elem('ul', { class: 'game__hintlist' });
-  round.clues.forEach((c) => clueList.append(elem('li', { text: c.text })));
-  body.append(clueList);
-
-  const gridPoints: GridPoint[] = round.candidates.map((p) => ({ x: p.x, y: p.y, label: p.label }));
-  const holder = elem('div', { class: 'coordinate-grid grid-sm', style: 'max-width:360px' });
-  holder.append(renderCoordinateGrid({ points: gridPoints, ariaLabel: `נקודות חשודות בסיבוב ${index + 1}` }));
-  body.append(holder);
-
-  const feedback = elem('span', { class: 'game__prompt' });
-  const chipRow = elem('div', { class: 'choice-row' });
-  const chips = round.candidates.map((p) => {
-    const chip = elem('button', { class: 'chip-choice', type: 'button', 'aria-pressed': 'false', text: `${p.label} (${p.x},${p.y})` });
-    chip.addEventListener('click', () => {
-      const ok = p.label === answer.label;
-      chips.forEach((c) => c.setAttribute('aria-pressed', 'false'));
-      chip.setAttribute('aria-pressed', 'true');
-      chip.classList.toggle('is-correct', ok);
-      chip.classList.toggle('is-wrong', !ok);
-      feedback.textContent = ok ? '✓ נכון' : '✗ נסו שוב';
-      onResult(ok);
-    });
-    return chip;
-  });
-  chips.forEach((c) => chipRow.append(c));
-  body.append(chipRow, elem('div', { class: 'choice-row' }, feedback));
-  card.append(body);
-  return card;
-}
+/* השעשועון המקוון הוסר (31.07.2026) — הדף הוא עכשיו `SUSPECT_POINT_PRINT`.
+   הנתונים למעלה הם מקור האמת של הדף המודפס ושל הבדיקות. */
