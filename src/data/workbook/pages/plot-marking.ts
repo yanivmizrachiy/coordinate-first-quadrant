@@ -21,13 +21,15 @@ export const PLOT_A: WorkbookPageContent = sheet({
 <section class="q-card">
 <h3>ב. סמנו את הנקודות לפי השיעורים, וכתבו כל אחת כזוג סדור.</h3>
 <div class="cols-2">
-<div aria-label="מערכת צירים לסימון הנקודות F G H" class="coordinate-grid grid-md" data-arrows="[]" data-labelboxes="[]" data-points="[]" data-polygons="[]" data-segments="[]" role="img">
+<div aria-label="מערכת צירים לסימון הנקודות F G H K L" class="coordinate-grid grid-md" data-arrows="[]" data-labelboxes="[]" data-points="[]" data-polygons="[]" data-segments="[]" role="img">
 </div>
 <div>
 <ul class="tasks compact">
 <li>נקודה <span class="math-ltr" dir="ltr">F</span>: שיעור <span class="math-ltr" dir="ltr">x = 4</span>, שיעור <span class="math-ltr" dir="ltr">y = 2</span> &nbsp;←&nbsp; <span class="pair math-ltr" dir="ltr">F(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
 <li>נקודה <span class="math-ltr" dir="ltr">G</span>: שיעור <span class="math-ltr" dir="ltr">x = 1</span>, שיעור <span class="math-ltr" dir="ltr">y = 5</span> &nbsp;←&nbsp; <span class="pair math-ltr" dir="ltr">G(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
 <li>נקודה <span class="math-ltr" dir="ltr">H</span>: שיעור <span class="math-ltr" dir="ltr">x = 8</span>, שיעור <span class="math-ltr" dir="ltr">y = 3</span> &nbsp;←&nbsp; <span class="pair math-ltr" dir="ltr">H(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>נקודה <span class="math-ltr" dir="ltr">K</span>: שיעור <span class="math-ltr" dir="ltr">x = 0</span>, שיעור <span class="math-ltr" dir="ltr">y = 4</span> &nbsp;←&nbsp; <span class="pair math-ltr" dir="ltr">K(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>נקודה <span class="math-ltr" dir="ltr">L</span>: שיעור <span class="math-ltr" dir="ltr">x = 6</span>, שיעור <span class="math-ltr" dir="ltr">y = 0</span> &nbsp;←&nbsp; <span class="pair math-ltr" dir="ltr">L(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
 </ul>
 </div>
 </div>
