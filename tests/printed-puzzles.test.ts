@@ -146,7 +146,7 @@ describe('אותו x או אותו y — הנקודות שמוקפות מרכי�
     });
   }
 
-  it('the four circled letters spell זהים, and the word bank offers it', () => {
+  it('the four circled letters spell זהים, and the page never prints it for them', () => {
     const word = SECTIONS.flatMap((sec, i) => {
       const g = grids[i]!;
       const target = g.find((p) => p.label === sec.marked)!;
@@ -157,7 +157,13 @@ describe('אותו x או אותו y — הנקודות שמוקפות מרכי�
         .map((p) => p.label!);
     }).join('');
     expect(word).toBe('זהים');
-    expect(readable(html), 'the word bank no longer offers זהים').toContain('זהים');
+    /* The reveal is the exercise. A word bank listing „זהים” above it turned
+       four letters the learner works out into a one-of-three guess, so the
+       bank went (02.08.2026) — and the page must not hand the answer over
+       anywhere else either. Tokenised, because the old check passed on the
+       „זהים” buried inside the heading „ד. מזהים בלי סרטוט”. */
+    const words = readable(html).replace(/[^֐-׿\s]/g, ' ').trim().split(/\s+/);
+    expect(words, 'the page prints the very word it asks the learner to find').not.toContain('זהים');
   });
 
   it('each drawing carries a decoy that shares the OTHER coordinate', () => {

@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, blank, ltr, pair, colorGrid, wordBank, wordBlank } from '../authoring';
+import { sheet, blank, ltr, pair, colorGrid, wordBlank } from '../authoring';
 import { decodeTargets, decodeXMax, decodeYMax } from '../../colorDecode';
 
 /* פענוח צבעוני — הגרסה המודפסת. הדף הזה החליף שעשועון מקוון שבו צובעים תאים
@@ -23,8 +23,7 @@ export const COLOR_DECODE_PRINT: WorkbookPageContent = sheet({
 <h3>א. רשימת התאים.</h3>
 <p>${ltr(listText)}</p>
 ${colorGrid(decodeXMax, decodeYMax)}
-${wordBank(['וי', 'איקס', 'משולש'])}
-<p>הסמל שהתגלה הוא ${wordBlank('short', 'concept', 'מקום להשלמת שם הסמל שהתגלה')}.</p>
+<p>מה קיבלתם? ${wordBlank('medium', 'concept', 'מקום להשלמת שם הסמל שהתגלה')}</p>
 </section>
 <section class="q-card">
 <h3>ב. אחרי שהסמל התגלה — השלימו עליו.</h3>

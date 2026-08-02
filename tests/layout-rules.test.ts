@@ -441,6 +441,18 @@ describe('a calculation gets units and room to work', () => {
     return found;
   };
 
+  /* USER_MEMORY §8: „מחסן המילים למעלה מיותר… צריך לשאול בסיום מה קיבלתם?"
+     (02.08.2026, עמוד 20). On a reveal page the reveal IS the exercise: the
+     learner connects the points and sees what appears. A word bank sitting
+     above it — מפרשית / מטוס / בית — turns that into a one-of-three guess and
+     spoils the surprise before they have drawn a line. */
+  it('a page that asks מה קיבלתם? does not list the answer above the question', () => {
+    for (const p of WORKBOOK) {
+      if (!p.html.includes('מה קיבלתם?')) continue;
+      expect(p.html, `page ${p.n}: the reveal is offered from a word bank`).not.toContain('word-bank');
+    }
+  });
+
   it('a rule box and the heading under it do not give the same order twice', () => {
     const strip = (s: string): string => s.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
     for (const p of WORKBOOK) {

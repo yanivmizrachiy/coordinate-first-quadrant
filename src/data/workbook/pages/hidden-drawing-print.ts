@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, blank, ltr, pair, grid, wordBank, wordBlank } from '../authoring';
+import { sheet, blank, ltr, pair, grid, wordBlank } from '../authoring';
 
 /* ציור נסתר — הגרסה המודפסת. הדף הזה החליף שעשועון מקוון עם שדה הקלדה
    וכפתור „סמנו": יניב — „המשימות שלנו הן להדפסה!!" (31.07.2026, כמו
@@ -26,8 +26,7 @@ ${grid({
   size: 'lg',
   label: 'מערכת צירים ריקה לסימון הציור הנסתר',
 })}
-${wordBank(['מפרשית', 'מטוס', 'בית'])}
-<p>הציור שהתגלה הוא ${wordBlank('medium', 'concept', 'מקום להשלמת שם הציור שהתגלה')}.</p>
+<p>מה קיבלתם? ${wordBlank('medium', 'concept', 'מקום להשלמת שם הציור שהתגלה')}</p>
 </section>
 <section class="q-card">
 <h3>ב. אחרי שהציור התגלה — השלימו עליו.</h3>

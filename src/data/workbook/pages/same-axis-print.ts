@@ -1,5 +1,5 @@
 import type { WorkbookPageContent } from '../types';
-import { sheet, blank, ltr, pair, grid, wordBank, wordBlank } from '../authoring';
+import { sheet, blank, ltr, pair, grid, wordBlank } from '../authoring';
 
 /* אותו x או אותו y — הגרסה המודפסת. הדף הזה החליף שעשועון מקוון שבו בוחרים
    נקודות בלחיצה ולוחצים „בדקו": יניב — „המשימות שלנו הן להדפסה" (31.07.2026,
@@ -68,10 +68,9 @@ ${grid({
 </div>
 <section class="q-card">
 <h3>ג. מרכיבים את המילה.</h3>
-${wordBank(['שונים', 'זהים', 'רחוקים'])}
 <ul class="tasks compact">
 <li>כתבו את ארבע האותיות שהקפתם לפי סדר הסעיפים, מימין לשמאל: ${blank(10, 'concept')}.</li>
-<li>המילה שהתגלתה היא ${wordBlank('short', 'concept', 'מקום להשלמת המילה שהתגלתה')}.</li>
+<li>מה קיבלתם? ${wordBlank('medium', 'concept', 'מקום להשלמת המילה שהתגלתה')}</li>
 <li>לשתי הנקודות שהקפתם בסעיף ב יש שיעור ${ltr('y')} זהה, ולכן הקטע שביניהן מקביל לציר ${blank(3, 'letter')}.</li>
 </ul>
 </section>
