@@ -446,6 +446,22 @@ describe('a calculation gets units and room to work', () => {
      learner connects the points and sees what appears. A word bank sitting
      above it — מפרשית / מטוס / בית — turns that into a one-of-three guess and
      spoils the surprise before they have drawn a line. */
+  /* USER_MEMORY §5: „כאן להשתמש במילה מייצג — שיעור איקס מייצג…" (02.08.2026,
+     עמוד 23). „שיעור x הוא המשקל" אומר שהמספר 3 הוא שלושה קילו. הוא לא —
+     הוא מייצג אותם. זה בדיוק הבלבול שגורם לתלמיד לחבר שיעור עם שיעור ולקבל
+     „7 ק"ג ועוד 5 ₪". השיעור מייצג את הגודל, ואינו הגודל עצמו. */
+  it('a coordinate represents a real-world quantity, it is not that quantity', () => {
+    for (const p of WORKBOOK) {
+      const prose = p.html.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ');
+      for (const m of prose.matchAll(/(שיעור|ערך)\s+ה?[־-]?\s*[xy]\s+(הוא|היא)\s+ה\S+/g)) {
+        expect(
+          m[0],
+          `page ${p.n}: „${m[0]}” — a coordinate represents the quantity, it is not the quantity`,
+        ).toBe('');
+      }
+    }
+  });
+
   it('a page that asks מה קיבלתם? does not list the answer above the question', () => {
     for (const p of WORKBOOK) {
       if (!p.html.includes('מה קיבלתם?')) continue;

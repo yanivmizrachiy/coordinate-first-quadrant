@@ -1209,3 +1209,68 @@ test('the footer rule is the same blue as the heading rule, on every sheet', asy
   });
   expect(off.slice(0, 4), off.join(' | ')).toEqual([]);
 });
+
+/* Every poster ships twice — a .png and a .webp twin — and `posterSheet()`
+   derives the webp path at runtime, so a browser that speaks webp (all of
+   them) shows the TWIN, never the png. On 02.08.2026 that cost Yaniv a wrong
+   page: the poster's dot at (7,7) was repaired in the png, the webp was left
+   at its old build, and page 21 kept printing the dot half a square off — a
+   fix reported as done that no reader could see. Timestamps do not survive
+   git, so the twins are compared as pictures. */
+test('every poster and its webp twin show the same picture', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'one decode of every poster is enough');
+  const { readdirSync } = await import('node:fs');
+  const posters = readdirSync('public/assets/games')
+    .filter((f) => f.endsWith('.png'))
+    .map((f) => `/assets/games/${f}`);
+  expect(posters.length, 'no posters found to compare').toBeGreaterThan(0);
+  await page.goto('/#/');
+  const drifted = await page.evaluate(async (paths: string[]) => {
+    const load = (src: string): Promise<HTMLImageElement> =>
+      new Promise((ok, no) => {
+        const img = new Image();
+        img.onload = () => ok(img);
+        img.onerror = () => no(new Error(`cannot load ${src}`));
+        img.src = src;
+      });
+    const pixels = async (src: string, w: number, h: number): Promise<Uint8ClampedArray> => {
+      const img = await load(src);
+      const c = document.createElement('canvas');
+      c.width = w;
+      c.height = h;
+      c.getContext('2d')!.drawImage(img, 0, 0, w, h);
+      return c.getContext('2d')!.getImageData(0, 0, w, h).data;
+    };
+    const bad: string[] = [];
+    const BLOCK = 32;
+    for (const png of paths) {
+      const twin = png.replace(/\.png$/, '.webp');
+      const img = await load(png);
+      const W = img.naturalWidth;
+      const H = img.naturalHeight;
+      const [a, b] = [await pixels(png, W, H), await pixels(twin, W, H)];
+      /* Measured over the WHOLE picture this defect is invisible: one moved
+         dot reads 1.62 against 1.53 for a clean re-encode, because webp's own
+         noise is spread everywhere and the dot is 200 pixels out of 1.5
+         million. Per 32px block it is unmissable — a stale twin peaks at 50
+         where every in-sync poster stays under 15. */
+      let worst = 0;
+      for (let by = 0; by + BLOCK <= H; by += BLOCK) {
+        for (let bx = 0; bx + BLOCK <= W; bx += BLOCK) {
+          let sum = 0;
+          for (let y = by; y < by + BLOCK; y++) {
+            for (let x = bx; x < bx + BLOCK; x++) {
+              const i = (y * W + x) * 4;
+              sum += Math.abs(a[i]! - b[i]!) + Math.abs(a[i + 1]! - b[i + 1]!) + Math.abs(a[i + 2]! - b[i + 2]!);
+            }
+          }
+          const mean = sum / (BLOCK * BLOCK * 3);
+          if (mean > worst) worst = mean;
+        }
+      }
+      if (worst > 25) bad.push(`${png}: twin drifted — worst 32px block differs by ${worst.toFixed(0)}/255`);
+    }
+    return bad;
+  }, posters);
+  expect(drifted, drifted.join(' | ')).toEqual([]);
+});
