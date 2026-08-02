@@ -1130,3 +1130,62 @@ describe('the origin is always named in full', () => {
     expect(bad, bad.join(', ')).toEqual([]);
   });
 });
+
+/* Every drawing's geometry, validated against the axis range it is drawn in.
+   graph-years marked a point at (8,7) inside a grid that defaulted to ymax 6,
+   so the point fell outside the axes („הנקודה יצאה מהמערכת", 02.08.2026). This
+   sweeps all 94 drawings: no point, segment end, arrow end or polygon vertex
+   ever sits outside its own system, and no letter labels two different points. */
+describe('every drawing keeps its geometry inside the system', () => {
+  type Pt = { x: number; y: number; label?: string };
+  const grids = (html: string): string[] =>
+    [...html.matchAll(/class="[^"]*coordinate-grid[^"]*"[\s\S]*?role="img"/g)].map((m) => m[0]);
+  const attrNum = (g: string, a: string, d: number): number => {
+    const m = g.match(new RegExp(`data-${a}="(\d+)"`));
+    return m ? Number(m[1]) : d;
+  };
+  const attrJson = (g: string, a: string): any[] => {
+    const m = g.match(new RegExp(`data-${a}='([^']*)'`));
+    if (!m) return [];
+    try { return JSON.parse(m[1]!.replace(/&#39;/g, "'")); } catch { return []; }
+  };
+
+  it('no point, endpoint or vertex is drawn outside its own axes', () => {
+    const bad: string[] = [];
+    for (const p of WORKBOOK) {
+      for (const g of grids(p.html)) {
+        const xmax = attrNum(g, 'xmax', 8);
+        const ymax = attrNum(g, 'ymax', 6);
+        const inRange = (x: number, y: number): boolean => x >= 0 && y >= 0 && x <= xmax && y <= ymax;
+        for (const pt of attrJson(g, 'points') as Pt[])
+          if (!inRange(pt.x, pt.y)) bad.push(`page ${p.n}: point ${pt.label ?? ''}(${pt.x},${pt.y}) outside ${xmax}×${ymax}`);
+        for (const s of [...attrJson(g, 'segments'), ...attrJson(g, 'arrows')] as { from: number[]; to: number[] }[])
+          for (const e of [s.from, s.to])
+            if (e && !inRange(e[0]!, e[1]!)) bad.push(`page ${p.n}: endpoint (${e[0]},${e[1]}) outside ${xmax}×${ymax}`);
+        for (const poly of attrJson(g, 'polygons') as ({ points: number[][] } | number[][])[]) {
+          const verts = Array.isArray(poly) ? poly : poly.points;
+          for (const v of verts ?? [])
+            if (!inRange(v[0]!, v[1]!)) bad.push(`page ${p.n}: polygon vertex (${v[0]},${v[1]}) outside ${xmax}×${ymax}`);
+        }
+      }
+    }
+    expect(bad, bad.join(' | ')).toEqual([]);
+  });
+
+  it('within one drawing a letter never labels two different points', () => {
+    const bad: string[] = [];
+    for (const p of WORKBOOK) {
+      for (const g of grids(p.html)) {
+        const seen = new Map<string, string>();
+        for (const pt of attrJson(g, 'points') as Pt[]) {
+          if (!pt.label) continue;
+          const at = `${pt.x},${pt.y}`;
+          const prev = seen.get(pt.label);
+          if (prev && prev !== at) bad.push(`page ${p.n}: "${pt.label}" at (${at}) and (${prev})`);
+          seen.set(pt.label, at);
+        }
+      }
+    }
+    expect(bad, bad.join(' | ')).toEqual([]);
+  });
+});
