@@ -1184,3 +1184,28 @@ test('a spread instruction line was nearly full before it was stretched', async 
   });
   expect(thin, thin.join(' | ')).toEqual([]);
 });
+
+/* „הקו של הכותרת התחתונה צריך להיות כחול כמו הכותרות הראשיות של האתר"
+   (02.08.2026). הקו היה `var(--ink)` — כחול־דיו כהה שנקרא כמעט שחור ליד
+   הכחול של קו הכותרת, ושני הקווים על אותו עמוד לא דיברו באותו צבע. */
+test('the footer rule is the same blue as the heading rule, on every sheet', async ({ page }) => {
+  await page.goto('/#/print');
+  await page.locator('.sheet').first().waitFor();
+  await page.waitForTimeout(2500);
+  const off = await page.evaluate(() => {
+    const bad: string[] = [];
+    document.querySelectorAll('.sheet').forEach((s, i) => {
+      const foot = s.querySelector('.gz-footer');
+      const head = s.querySelector('.sheet-header');
+      if (!foot || !head) return;
+      /* התוכן ומספר העמוד מודפסים על נייר שמנת עם מבטאי זהב — קו כחול שם
+         היה זר לעיצוב שיניב אישר, ולכן הוא נמדד מול הכותרת שלו עצמו. */
+      if (s.classList.contains('toc-sheet')) return;
+      const f = getComputedStyle(foot).borderTopColor;
+      const h = getComputedStyle(head).borderBottomColor;
+      if (f !== h) bad.push(`sheet ${i}: footer ${f} vs heading ${h}`);
+    });
+    return bad;
+  });
+  expect(off.slice(0, 4), off.join(' | ')).toEqual([]);
+});

@@ -273,7 +273,12 @@ li .pair, p .pair, .completion-sentence .pair { margin-inline: 3px; }
    keeps its margins via the inline padding. */
 .gz-footer {
   position: absolute; right: 0; left: 0; bottom: 5mm; margin: 0;
-  padding: 3px 14mm 0; border-top: 1px solid var(--ink); /* כחול כהה — כקו הכותרות */
+  /* „הקו של הכותרת התחתונה צריך להיות כחול כמו הכותרות הראשיות של האתר"
+     (02.08.2026). היה `var(--ink)` — #1f2a44, כחול־דיו כהה שנקרא כמעט שחור
+     ליד הכחול של קו הכותרת. עכשיו אותו `--brand` בדיוק (#1d4ed8) שבו צבוע
+     `border-bottom` של `.sheet-header`. נשאר 1px רגיל ולא 4px כפול — כותרת
+     תחתונה לא אמורה לגבור על הכותרת הראשית, רק לדבר באותו צבע. */
+  padding: 3px 14mm 0; border-top: 1px solid var(--brand);
   display: flex; align-items: center; justify-content: center; gap: 9px;
   line-height: 1.2; background: #fff;
 }
