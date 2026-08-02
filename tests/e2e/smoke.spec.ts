@@ -1274,3 +1274,17 @@ test('every poster and its webp twin show the same picture', async ({ page }, te
   }, posters);
   expect(drifted, drifted.join(' | ')).toEqual([]);
 });
+
+/* A missing </div> once nested error-case 9 inside error-case 8's box on the
+   error-correction pages (02.08.2026): the grid showed 8 cards with the ninth
+   stuffed inside the eighth. Every .mist-card is a direct child of its
+   .error-grid — none is ever nested inside another. */
+test('no error-correction card is nested inside another', async ({ page }) => {
+  await page.goto('/#/print');
+  await page.locator('.sheet').first().waitFor();
+  await page.waitForTimeout(2000);
+  const nested = await page.evaluate(() =>
+    document.querySelectorAll('.mist-card .mist-card').length,
+  );
+  expect(nested, `${nested} error card(s) render nested inside another card`).toBe(0);
+});

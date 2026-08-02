@@ -13,7 +13,7 @@ export const ON_AXES_INTRO: WorkbookPageContent = sheet({
 </div>
 <section class="q-card">
 <h3 class="spread">א. סמנו על הסרטוט את הנקודות <span class="math-ltr" dir="ltr">A(4,0)</span>, <span class="math-ltr" dir="ltr">B(0,5)</span>, <span class="math-ltr" dir="ltr">C(7,0)</span>, <span class="math-ltr" dir="ltr">D(0,2)</span>, <span class="math-ltr" dir="ltr">O(0,0)</span> ו־<span class="math-ltr" dir="ltr">E(3,4)</span>.</h3>
-<div aria-label="נקודות על הצירים וברביע" class="coordinate-grid grid-lg" data-arrows="[]" data-labelboxes="[]" data-points='[{"x": 4, "y": 0, "label": "A"}, {"x": 0, "y": 5, "label": "B"}, {"x": 7, "y": 0, "label": "C"}, {"x": 0, "y": 2, "label": "D"}, {"x": 0, "y": 0, "label": "O"}, {"x": 3, "y": 4, "label": "E"}]' data-polygons="[]" data-segments="[]" role="img">
+<div aria-label="מערכת צירים ריקה לסימון נקודות על הצירים וברביע" class="coordinate-grid grid-lg" data-arrows="[]" data-labelboxes="[]" data-points="[]" data-polygons="[]" data-segments="[]" role="img">
 </div>
 </section>
 <section class="q-card">

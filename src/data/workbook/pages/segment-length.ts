@@ -14,7 +14,7 @@ export const SEGMENT_LENGTH: WorkbookPageContent = sheet({
 <div class="completion-sentence">בקטע המקביל לציר ${ltr('x')}, האורך הוא ה־${ltr('x')} הימני <b>פחות</b> ה־${ltr('x')} השמאלי, והתוצאה נקראת ה${wordBlank('medium', 'concept', 'מקום להשלמת המילה הפרש')}.</div>
 <div class="completion-sentence">בקטע המקביל לציר ${ltr('y')}, האורך הוא ה־${ltr('y')} הגבוה <b>פחות</b> ה־${ltr('y')} ה${wordBlank('medium', 'property', 'מקום להשלמת המילה נמוך')}.</div>
 </div>
-${wordBank(['נמוך', 'אורך'])}
+${wordBank(['נמוך', 'הפרש'])}
 <section class="q-card">
 <h3>א. השלימו לפי הסרטוט.</h3>
 ${grid({

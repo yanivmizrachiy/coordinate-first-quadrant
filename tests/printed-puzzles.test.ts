@@ -317,3 +317,45 @@ describe('ציור נסתר — התוכנית המודפסת סוגרת צור�
     for (const s of STROKES) expect(s.length).toBeGreaterThanOrEqual(2);
   });
 });
+
+describe('מילת הצופן — סדר השאלות מרכיב „נקודה"', () => {
+  /* עמוד 22. הבדיקה נולדה מתקלה אמיתית (02.08.2026): ההוראה „כתבו את חמש
+     האותיות לפי סדר השאלות" — אבל סדר השאלות היה נ,ו,ד,ה,ק, שמרכיב „נודהק".
+     כאן קוראים את חמש שאלות סעיף ב, מזהים את האות של כל אחת (לפי הנקודה
+     שהיא מצביעה עליה, או לפי האות המודגשת), ומוודאים שברצף הן „נקודה". */
+  const { html } = pageByTitle('קוראים נקודות, מזהים תכונות — ומפענחים מילה');
+  const pts = pointsOf(html).flat();
+  const letterAt = (x: number, y: number): string => {
+    const p = pts.find((q) => q.x === x && q.y === y);
+    if (!p?.label) throw new Error(`no lettered point at (${x},${y})`);
+    return p.label;
+  };
+
+  it('the five questions of section ב, read in order, spell נקודה', () => {
+    const card = html.split('מפענחים אות')[1]!.split('</section>')[0]!;
+    const items = [...card.matchAll(/<li>([\s\S]*?)<\/li>/g)].map((m) => m[1]!);
+    expect(items.length, 'section ב should carry exactly five questions').toBe(5);
+    const letters = items.map((li) => {
+      const pt = li.match(/\((\d),\s*(\d)\)/);
+      if (pt && /האות שממוקמת בנקודה/.test(li)) return letterAt(+pt[1]!, +pt[2]!);
+      const strong = li.match(/<strong>([^<]+)<\/strong>/);
+      if (strong) return strong[1]!.trim();
+      throw new Error(`cannot tell which letter this question is about: ${li.slice(0, 50)}`);
+    });
+    expect(letters.join(''), `by question order the word assembles as „${letters.join('')}"`).toBe('נקודה');
+  });
+
+  it('the sheet really does tell the student to assemble by the order of the questions', () => {
+    expect(readable(html)).toContain('לפי סדר השאלות');
+  });
+
+  it('the same point ד is never asked for the same superlative twice', () => {
+    // ד(7,1) is BOTH the rightmost and the lowest, so two bare „ה___ ביותר”
+    // questions about it would have no single answer. Each must carry a cue.
+    const supers = [...html.matchAll(/של האות <strong>ד<\/strong>[^<]*?ה<span class="blank"[^>]*data-missing="property"[^>]*><\/span> ביותר/g)];
+    for (const m of supers) {
+      const tail = html.slice(m.index! + m[0].length, m.index! + m[0].length + 80);
+      expect(tail.trimStart().startsWith('במערכת — '), 'a superlative about ד must carry a distinguishing cue').toBe(true);
+    }
+  });
+});

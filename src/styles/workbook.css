@@ -198,7 +198,7 @@ li .pair, p .pair, .completion-sentence .pair { margin-inline: 3px; }
 .pair-blank { display: inline-block; width: 20px; height: 17px; border-bottom: 1.5px solid #1f2a44; }
 .match { display: grid; grid-template-columns: 1fr 1fr; gap: 35%; line-height: 2.2; padding: 4px 12%; }
 .mc-stack > div { margin: 5px 0; border-bottom: 1px dashed #d8dee8; padding-bottom: 3px; }
-.error-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.error-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 .mist-card { border: 1px solid #cbd3df; border-radius: 8px; padding: 7px 9px; break-inside: avoid; }
 .mist-card p { margin: 5px 0; font-size: 13px; }
 .mist-card small { color: #5f6b7a; }
