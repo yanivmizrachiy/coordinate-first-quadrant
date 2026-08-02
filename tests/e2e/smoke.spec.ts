@@ -826,6 +826,41 @@ test('every calculation really is painted left to right', async ({ page }, testI
   expect(faults.length, faults.join(' | ')).toBe(0);
 });
 
+/* יניב, 02.08.2026, על עמוד 14: „יש כאן בעיה בכתיבה מתמטית". „שיעור x = 4"
+   יצא „4 = x", כי המספר נשאר מחוץ לתיבה הנעוצה ולכן קיבל את כיוון הפסקה.
+   הבדיקה שלמעלה מודדת רק שורות `.calc-ltr`, ומתמטיקה בתוך משפט חמקה ממנה.
+   כאן נמדד מה שנצבע בפועל: אחרי אי-שוויון או פעולה, האופרנד חייב לשבת
+   מימין לה על המסך — אחרת המשוואה נקראת הפוך. */
+test('inline maths reads left to right where it is painted', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'measured on the A4 sheet');
+  await page.goto('/#/print');
+  await page.waitForTimeout(9000);
+  const faults = await page.evaluate(() => {
+    const out: string[] = [];
+    const R = (el: Element) => el.getBoundingClientRect();
+    for (const span of document.querySelectorAll('.sheet .math-ltr')) {
+      const txt = (span.textContent ?? '').trim();
+      if (!/[=+−-]$/.test(txt)) continue;              // ends on an operator
+      const next = span.nextSibling;
+      if (!next || next.nodeType !== Node.TEXT_NODE) continue;
+      const after = (next.textContent ?? '').trim();
+      const m = after.match(/^[0-9(]+/);
+      if (!m) continue;
+      // measure where that operand actually landed
+      const rng = document.createRange();
+      const start = (next.textContent ?? '').indexOf(m[0]);
+      rng.setStart(next, start); rng.setEnd(next, start + m[0].length);
+      const ob = rng.getBoundingClientRect(); const sb = R(span);
+      if (ob.width && ob.left < sb.right - 2) {
+        const n = span.closest('.sheet')?.querySelector('.sheet-number')?.textContent?.trim() ?? '?';
+        out.push(`page ${n}: „${txt} ${m[0]}” is painted „${m[0]} ${txt}”`);
+      }
+    }
+    return [...new Set(out)];
+  });
+  expect(faults.length, faults.join(' | ')).toBe(0);
+});
+
 /* Yaniv, 31.07.2026: two final answers crushed onto one line rendered as
    „יחשטח", and the box was headed „דרך החישוב" instead of the textbook's
    תרגיל/תשובה. Each final answer must be PAINTED on a line of its own,

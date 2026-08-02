@@ -25,9 +25,9 @@ export const PLOT_A: WorkbookPageContent = sheet({
 </div>
 <div>
 <ul class="tasks compact">
-<li>נקודה <span class="math-ltr" dir="ltr">F</span>: שיעור <span class="math-ltr" dir="ltr">x =</span> 4, שיעור <span class="math-ltr" dir="ltr">y =</span> 2 &nbsp;←&nbsp; <span class="pair math-ltr" dir="ltr">F(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
-<li>נקודה <span class="math-ltr" dir="ltr">G</span>: שיעור <span class="math-ltr" dir="ltr">x =</span> 1, שיעור <span class="math-ltr" dir="ltr">y =</span> 5 &nbsp;←&nbsp; <span class="pair math-ltr" dir="ltr">G(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
-<li>נקודה <span class="math-ltr" dir="ltr">H</span>: שיעור <span class="math-ltr" dir="ltr">x =</span> 8, שיעור <span class="math-ltr" dir="ltr">y =</span> 3 &nbsp;←&nbsp; <span class="pair math-ltr" dir="ltr">H(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>נקודה <span class="math-ltr" dir="ltr">F</span>: שיעור <span class="math-ltr" dir="ltr">x = 4</span>, שיעור <span class="math-ltr" dir="ltr">y = 2</span> &nbsp;←&nbsp; <span class="pair math-ltr" dir="ltr">F(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>נקודה <span class="math-ltr" dir="ltr">G</span>: שיעור <span class="math-ltr" dir="ltr">x = 1</span>, שיעור <span class="math-ltr" dir="ltr">y = 5</span> &nbsp;←&nbsp; <span class="pair math-ltr" dir="ltr">G(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
+<li>נקודה <span class="math-ltr" dir="ltr">H</span>: שיעור <span class="math-ltr" dir="ltr">x = 8</span>, שיעור <span class="math-ltr" dir="ltr">y = 3</span> &nbsp;←&nbsp; <span class="pair math-ltr" dir="ltr">H(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span></li>
 </ul>
 </div>
 </div>

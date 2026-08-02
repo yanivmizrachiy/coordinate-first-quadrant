@@ -526,6 +526,25 @@ describe('a calculation gets units and room to work', () => {
   });
 
   /* An exercise is worked left to right, whatever direction the sheet runs. */
+  /* יניב, 02.08.2026, על עמוד 14: „יש כאן בעיה בכתיבה מתמטית". הדף כתב
+     `<span dir="ltr">x =</span> 4` — הסימן והאות ננעצו משמאל-לימין, אבל
+     **המספר נשאר בחוץ**, בזרימה העברית, ולכן נצבע משמאלם והמשוואה נקראה
+     „4 = x". משוואה חייבת להיות **יחידה אחת** בתוך התיבה הנעוצה. */
+  it('a pinned maths island never leaves its operand outside', () => {
+    const bad: string[] = [];
+    for (const p of WORKBOOK) {
+      // an island that ENDS on an operator, with the number left behind it
+      for (const m of p.html.matchAll(/<span[^>]*dir="ltr"[^>]*>([^<]*[=+−-])\s*<\/span>\s*([0-9(])/g)) {
+        bad.push(`page ${p.n}: „${m[1]!.trim()}” is pinned but „${m[2]}” was left outside it`);
+      }
+      // …and the mirror image: the number outside, the operator pinned after it
+      for (const m of p.html.matchAll(/([0-9])\s*<span[^>]*dir="ltr"[^>]*>\s*([=+−-])/g)) {
+        bad.push(`page ${p.n}: „${m[1]}” sits outside the island that opens with „${m[2]}”`);
+      }
+    }
+    expect([...new Set(bad)], bad.join(' | ')).toEqual([]);
+  });
+
   it('an exercise line is pinned left to right', () => {
     for (const p of WORKBOOK) {
       for (const m of p.html.matchAll(/<div class="calc-ltr"([^>]*)>/g)) {
