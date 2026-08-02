@@ -1141,3 +1141,46 @@ test('every sheet keeps its A4 shape on a phone exactly as on a desktop', async 
     expect(overflow, `${route} scrolls sideways by ${overflow}px`).toBeLessThanOrEqual(1);
   }
 });
+
+/* `.spread` מותחת שורת הוראה על כל רוחב הכרטיס (‎text-align-last: justify‎).
+   על שורה שממילא כמעט מלאה זו התאמה עדינה — אבל על שורה שממלאת רק שליש
+   מהרוחב המתיחה יוצרת פערי ענק בין המילים, וזה נראה גרוע יותר מהחלל
+   שבאנו לתקן. הבדיקה מודדת כמה השורה האחרונה מלאה **לפני** המתיחה. */
+test('a spread instruction line was nearly full before it was stretched', async ({ page }) => {
+  await page.goto('/#/print');
+  await page.locator('.sheet').first().waitFor();
+  await page.waitForTimeout(2500);
+  const thin = await page.evaluate(() => {
+    const bad: string[] = [];
+    document.querySelectorAll<HTMLElement>('.sheet .spread').forEach((el) => {
+      /* בטלפון הגיליון מוקטן ב-transform, ולכן ‎getBoundingClientRect‎ מחזיר
+         מידות מוקטנות בעוד הפריסה עצמה נשארת בגודל A4 מלא. המדידה נעשית
+         ב-‎offsetWidth‎ (מרחב הפריסה), והמלבנים מנורמלים חזרה לפיו. */
+      const w = el.offsetWidth;
+      const scale = w ? el.getBoundingClientRect().width / w : 1;
+      if (!w || !scale) return;
+      const copy = el.cloneNode(true) as HTMLElement;
+      copy.style.cssText = `position:absolute;left:-9999px;top:0;width:${w}px;text-align:start;text-align-last:auto`;
+      el.parentElement!.appendChild(copy);
+      const range = document.createRange();
+      range.selectNodeContents(copy);
+      const lines = new Map<number, { l: number; r: number }>();
+      for (const r of range.getClientRects()) {
+        if (r.width < 0.5) continue;
+        const key = Math.round(r.top / 2);
+        const line = lines.get(key) ?? { l: Infinity, r: -Infinity };
+        lines.set(key, { l: Math.min(line.l, r.left), r: Math.max(line.r, r.right) });
+      }
+      const keys = [...lines.keys()].sort((a, b) => a - b);
+      const lastKey = keys[keys.length - 1];
+      const last = lastKey === undefined ? undefined : lines.get(lastKey);
+      copy.remove();
+      if (!last) return;
+      const fill = Math.round((((last.r - last.l) / scale) / w) * 100);
+      const n = el.closest('.sheet')?.querySelector('.sheet-number')?.textContent?.trim() ?? '?';
+      if (fill < 45) bad.push(`page ${n}: last line fills ${fill}% — „${el.textContent!.trim().slice(0, 40)}”`);
+    });
+    return bad;
+  });
+  expect(thin, thin.join(' | ')).toEqual([]);
+});

@@ -9,7 +9,7 @@ export const PLOT_PRACTICE: WorkbookPageContent = sheet({
 <div class="two-col">
 <section class="q-card">
 <h3>מסמנים ארבע נקודות</h3>
-<p class="spread">סמנו במערכת את ארבע הנקודות: <span class="math-ltr" dir="ltr">A(1,1), B(4,1), C(4,4), D(1,4)</span>.</p>
+<p>סמנו במערכת: <span class="math-ltr" dir="ltr">A(1,1), B(4,1), C(4,4), D(1,4)</span>.</p>
 <div aria-label="מערכת צירים ריקה לסימון הנקודות A B C D" class="coordinate-grid grid-large" data-arrows="[]" data-points="[]" data-polygons="[]" data-segments="[]" role="img">
 </div>
 <p>חברו את הנקודות לפי הסדר <span class="math-ltr" dir="ltr">A-B-C-D-A</span>.</p>
@@ -23,7 +23,7 @@ export const PLOT_PRACTICE: WorkbookPageContent = sheet({
 </section>
 <section class="q-card span-2">
 <h3>מסמנים ובודקים</h3>
-<p class="spread">סמנו במערכת הצירים את שלוש הנקודות שלפניכם: <span class="math-ltr" dir="ltr">P(2,5), Q(7,3), R(5,6)</span>.</p>
+<p class="spread">סמנו במערכת הצירים שלפניכם את שלוש הנקודות, וכתבו את שם הנקודה ליד כל סימון: <span class="math-ltr" dir="ltr">P(2,5), Q(7,3), R(5,6)</span>.</p>
 <div aria-label="מערכת צירים ריקה לסימון הנקודות P Q R" class="coordinate-grid grid-large" data-arrows="[]" data-points="[]" data-polygons="[]" data-segments="[]" role="img">
 </div>
 <ul class="tasks compact">

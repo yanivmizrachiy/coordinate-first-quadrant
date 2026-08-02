@@ -22,7 +22,7 @@ ${wordBank(['y', '0'])}
 </section>
 <section class="q-card">
 <h3>ממיינים נקודות</h3>
-<p class="spread">מיינו את הנקודות שלפניכם בטבלה: <span class="math-ltr" dir="ltr">(3,0), (0,5), (4,2), (0,0), (8,0), (0,1)</span>.</p>
+<p>מיינו את הנקודות שלפניכם בטבלה: <span class="math-ltr" dir="ltr">(3,0), (0,5), (4,2), (0,0), (8,0), (0,1)</span>.</p>
 <table class="work-table">
 <tbody>
 <tr><th>על ציר <span class="math-ltr" dir="ltr">x</span></th><th>על ציר <span class="math-ltr" dir="ltr">y</span></th><th>לא על ציר</th></tr>
