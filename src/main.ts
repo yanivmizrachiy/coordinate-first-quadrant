@@ -5,6 +5,7 @@ import './styles/landing.css';
 import './styles/actions.css';
 import './styles/flipbook.css';
 import './styles/workbook.css';
+import './styles/print-aids.css';
 import './styles/grayscale.css';
 
 import { startRouter, navigate, type RouteMatch } from './router';
@@ -15,6 +16,7 @@ import { menu } from './views/menu';
 import { pageViewer } from './views/pageViewer';
 import { book } from './views/book';
 import { flipbook } from './views/flipbook';
+import { printAids } from './views/printAids';
 import { ensureFreshBuild } from './lib/freshBuild';
 
 const app = document.getElementById('app');
@@ -53,6 +55,7 @@ function resolve(match: RouteMatch): View {
     case 'page': return pageViewer(Number(match.params['n'] ?? '1'));
     case 'book': return flipbook;
     case 'print': return book;
+    case 'aids': return printAids;
   }
 }
 

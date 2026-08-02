@@ -56,6 +56,7 @@ export function menu({ outlet, setTitle }: ViewContext): void {
     act('act--view', '📖', 'תצוגה', 'החוברת הנפתחת', () => navigate('#/book')),
     act('act--download', '⬇️', 'הורדה', 'הכול או דפים · צבע או שחור-לבן', () => openActionChooser('download')),
     act('act--print', '🖨️', 'הדפסה', 'הכול או דפים · צבע או שחור-לבן', () => openActionChooser('print')),
+    act('act--aids', '📐', 'המחשות', 'דפי צירים להדפסה', () => navigate('#/print-aids')),
   );
 
   const wa = elem('a', {

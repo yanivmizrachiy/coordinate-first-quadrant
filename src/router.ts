@@ -10,7 +10,7 @@
    the legacy #/games both land on the flipbook, where that page lives.
 */
 export interface RouteMatch {
-  name: 'home' | 'menu' | 'page' | 'book' | 'print';
+  name: 'home' | 'menu' | 'page' | 'book' | 'print' | 'aids';
   params: Record<string, string>;
 }
 
@@ -21,6 +21,7 @@ export function parseHash(hash: string): RouteMatch {
   if (head === 'menu') return { name: 'menu', params: {} };
   if (head === 'workbook') return sub ? { name: 'page', params: { n: sub } } : { name: 'book', params: {} };
   if (head === 'book') return { name: 'book', params: {} };
+  if (head === 'print-aids') return { name: 'aids', params: {} };
   if (head === 'print') return { name: 'print', params: {} };
   if (head === 'games') return { name: 'book', params: {} };
   return { name: 'home', params: {} };
