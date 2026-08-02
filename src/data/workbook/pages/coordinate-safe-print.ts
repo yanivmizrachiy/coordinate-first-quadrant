@@ -22,7 +22,7 @@ export const COORDINATE_SAFE_PRINT: WorkbookPageContent = sheet({
 התוצאה של תרגיל ${blank(5, 'concept')}.
 </div>
 <section class="q-card">
-<h3>א. ארבע משימות, וכל אחת נותנת ספרה.</h3>
+<h3>א. ארבע המשימות.</h3>
 ${grid({
   size: 'lg',
   label: 'מערכת צירים ובה שש נקודות: A(1,2), B(5,2), C(7,3), D(0,5), E(2,1) ו־F(2,6), ושני קווים מקווקווים שמראים את שתי ההזזות',

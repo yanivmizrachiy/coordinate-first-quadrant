@@ -20,8 +20,8 @@ export const COLOR_DECODE_PRINT: WorkbookPageContent = sheet({
 יתגלה סמל.
 </div>
 <section class="q-card">
-<h3>א. צבעו את התאים שברשימה.</h3>
-<p>צבעו את התאים: ${ltr(listText)}</p>
+<h3>א. רשימת התאים.</h3>
+<p>${ltr(listText)}</p>
 ${colorGrid(decodeXMax, decodeYMax)}
 ${wordBank(['וי', 'איקס', 'משולש'])}
 <p>הסמל שהתגלה הוא ${wordBlank('short', 'concept', 'מקום להשלמת שם הסמל שהתגלה')}.</p>

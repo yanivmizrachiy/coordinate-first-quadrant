@@ -19,7 +19,7 @@ export const HIDDEN_DRAWING_PRINT: WorkbookPageContent = sheet({
 מתגלה ציור.
 </div>
 <section class="q-card">
-<h3>א. סמנו וחברו לפי התוכנית.</h3>
+<h3>א. התוכנית.</h3>
 <p>קו 1: ${ltr('(1,2) → (7,2) → (6,1) → (2,1) → (1,2)')}</p>
 <p>קו 2: ${ltr('(4,2) → (4,6) → (7,3) → (4,3)')}</p>
 ${grid({

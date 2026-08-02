@@ -410,6 +410,70 @@ describe('a calculation gets units and room to work', () => {
     }
   });
 
+  /* USER_MEMORY §5: „לא כותבים כפול את ההוראות — פעם אחת, ברור, מרוכז
+     ומסודר". Yaniv reported it on page 20: the rule box said „סמנו את
+     הנקודות… וחברו בסרגל”, and the card heading right under it said „סמנו
+     וחברו לפי התוכנית”. A learner who reads the same order twice starts
+     skipping headings — which is where the pages that DO carry a new
+     instruction lose them. The box holds the instruction; the heading names
+     the section. A worked example is exempt: it demonstrates, then the
+     heading instructs, and those are two different things. */
+  const SAME_VERB: Array<[RegExp, string]> = [
+    [/^ו?סמנו$|^מסמנים$|^לסמן$/, 'סמן'],
+    [/^ו?חברו$|^מחברים$|^לחבר$/, 'חבר'],
+    [/^ו?צבעו$|^צובעים$|^לצבוע$/, 'צבע'],
+    [/^ו?כתבו$|^כותבים$|^לכתוב$/, 'כתב'],
+    [/^ו?השלימו$|^משלימים$|^להשלים$/, 'שלם'],
+    [/^ו?בצעו$|^מבצעים$|^לבצע$/, 'בצע'],
+    [/^ו?מיינו$|^ממיינים$|^למיין$/, 'מיין'],
+    [/^ו?הקיפו$|^מקיפים$|^להקיף$/, 'הקף'],
+    [/^ו?פתרו$|^פותרים$|^לפתור$/, 'פתר'],
+    [/^ו?מצאו$|^מוצאים$|^למצוא$/, 'מצא'],
+    [/^ו?מתחו$|^מותחים$|^למתוח$/, 'מתח'],
+    [/^ו?קראו$|^קוראים$|^לקרוא$/, 'קרא'],
+    [/^ו?השוו$|^משווים$|^להשוות$/, 'שווה'],
+  ];
+  const instructionVerbs = (text: string): Set<string> => {
+    const found = new Set<string>();
+    for (const word of text.replace(/[^֐-׿\s]/g, ' ').split(/\s+/)) {
+      for (const [form, root] of SAME_VERB) if (form.test(word)) found.add(root);
+    }
+    return found;
+  };
+
+  it('a rule box and the heading under it do not give the same order twice', () => {
+    const strip = (s: string): string => s.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    for (const p of WORKBOOK) {
+      for (const chunk of p.html.split('<div class="rule-box').slice(1)) {
+        const openTag = chunk.slice(0, chunk.indexOf('>'));
+        if (openTag.includes('completion-intro')) continue; // sentences to fill in, not an order
+        /* Cut the box at its OWN closing tag, counting nested <div>s. Splitting
+           on the first `</div>` truncates a box that wraps its lines; splitting
+           on the section swallowed the card underneath, and page 28's heading
+           was then read as part of its own rule box. */
+        const rest = chunk.slice(chunk.indexOf('>') + 1);
+        let depth = 1;
+        let end = rest.length;
+        for (const tag of rest.matchAll(/<(\/?)div\b/g)) {
+          depth += tag[1] ? -1 : 1;
+          if (depth === 0) { end = tag.index!; break; }
+        }
+        const box = strip(rest.slice(0, end));
+        if (/^(הדגמה|דוגמה)/.test(box)) continue;
+        const boxVerbs = instructionVerbs(box);
+        if (!boxVerbs.size) continue;
+        for (const m of p.html.matchAll(/<h3[^>]*>(.*?)<\/h3>/gs)) {
+          const head = strip(m[1]!);
+          const twice = [...instructionVerbs(head)].filter((v) => boxVerbs.has(v));
+          expect(
+            twice,
+            `page ${p.n}: „${head.slice(0, 44)}” repeats an order the rule box already gave — „${box.slice(0, 52)}”`,
+          ).toEqual([]);
+        }
+      }
+    }
+  });
+
   /* USER_MEMORY §9. A box that floats loose is a box the learner has to guess
      at — Yaniv reported it twice, on two different drawings. Every label on a
      drawing states which point, tick or line it belongs to. */
