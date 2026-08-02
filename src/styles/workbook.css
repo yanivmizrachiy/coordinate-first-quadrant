@@ -362,29 +362,33 @@ li .pair, p .pair, .completion-sentence .pair { margin-inline: 3px; }
 .cover-placeholder__file { font-family: var(--font-math); font-weight: 800; color: var(--ink); background: var(--surface-2); border: 1px solid var(--hairline); border-radius: 8px; padding: 6px 12px; display: inline-block; }
 .cover-placeholder__hint { margin-top: 10px; font-size: 13px; }
 
-/* ---- Responsive (screen, phones) ---- */
+/* ---- Responsive (screen, phones) ----
+   „תצוגת הנייד — שהכל יתאים אם פותחים בטלפון או במחשב בהתאמה אוטומטית”
+   (02.08.2026). עד כאן הגיליון נפרס מחדש לרוחב הטלפון (width:100%;
+   height:auto), וזה יצר בנייד מסמך אחר לגמרי מזה שיוצא מהמדפסת: הטורים
+   נערמו זה על זה, יחס העמוד קפץ מ-1:1.414 ל-1:4.4, והכותרת התחתונה
+   (position:absolute) עלתה לאמצע הדף והשאירה רבע עמוד לבן. החוברת היא
+   מוצר מודפס — ולכן הגיליון שומר על A4 אמיתי ומוקטן כמו תצלום: מה
+   שרואים בטלפון הוא בדיוק מה שמודפס, רק קטן יותר.
+     • ‎#/workbook/:n‎ — מקטין בעצמו (‎--sheet-scale‎ ב-pageViewer)
+     • ‎#/book‎        — במת הפליפבוק מקטינה
+     • ‎#/print‎       — כאן, ב-transform */
 @media (max-width: 850px) {
-  .sheet {
-    width: 100%; min-height: auto; height: auto; margin: 0 0 14px; padding: 18px 15px;
-    border-left: 0; border-right: 0; overflow: visible;
+  .book { padding-inline: 0; display: flex; flex-direction: column; align-items: center; }
+  .book > .sheet {
+    /* ‎transform‎ ולא ‎zoom‎: ‎zoom‎ מחשב את הפריסה מחדש בגודל שברי, והעיגול
+       התת-פיקסלי דחף את תחתית עמוד 16 אל מחוץ לגיליון (‎-2px‎). ‎transform‎
+       הוא הקטנה חזותית בלבד — הפריסה בטלפון זהה לחלוטין לזו של המחשב
+       ושל המדפסת. */
+    transform: scale(var(--sheet-fit, 1));
+    transform-origin: top center;
+    /* ‎transform‎ אינו מקטין את תיבת-הפריסה: היא נשארת 210mm על 297mm, וכך
+       גלשה מהמסך ואף מנעה מ-flex למרכז אותה. המרווחים השליליים מצמצמים את
+       טביעת-הרגל בדיוק למידה שאחרי ההקטנה — הגיליון ממורכז, אין גלילה
+       אופקית, ובין גיליון לגיליון נשארים 18px. */
+    margin-inline: calc(210mm * (var(--sheet-fit, 1) - 1) / 2);
+    margin-block: 0 calc(297mm * (var(--sheet-fit, 1) - 1) + 18px);
   }
-  .two-col > .q-card, .two-col > .span-2 { display: block; width: 100%; margin-left: 0; }
-  .cols-2, .cols-3, .choice-grid, .error-grid, .calc-cols { grid-template-columns: 1fr; }
-  .span-2 { grid-column: auto; }
-  .gz-footer { position: static; margin-top: 14px; }
-  .sheet-content { padding-bottom: 0; }
-  .axis-answer-box { margin-inline: 0 !important; }
-  .tf-table td:last-child { min-width: 0; width: 43%; }
-  .tf-options { min-width: 0; grid-template-columns: 1fr; gap: 4px; }
-  /* narrow-screen hardening: break long LTR coordinate strings and shrink tables */
-  .math-ltr { overflow-wrap: anywhere; word-break: break-word; }
-  .work-table { table-layout: fixed; }
-  .work-table td, .work-table th, .tf-table td { overflow-wrap: anywhere; }
-  .pair { flex-wrap: wrap; }
-}
-@media (max-width: 720px) {
-  .completion-sentence { font-size: 13px; }
-  .word-long { min-width: 12ch; }
 }
 
 /* ---- Print (A4) ---- */

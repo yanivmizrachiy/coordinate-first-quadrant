@@ -24,11 +24,22 @@ export function book({ outlet, setTitle }: ViewContext): (() => void) | void {
     bookEl.append(fromHTML(page.html));
   }
   hydrateGrids(bookEl);
-    fitSheets(bookEl);
+  fitSheets(bookEl);
+
+  /* בטלפון אין 794px לרוחב גיליון A4, והפתרון הישן היה לפרוס את העמוד מחדש —
+     מה שיצר מסמך שונה מזה שמודפס. במקום זה מוסרים ל-CSS את יחס ההקטנה והוא
+     מכווץ את הגיליון כמו תצלום. 210mm = 794px ב-96dpi. */
+  const fitToScreen = (): void => {
+    const room = document.documentElement.clientWidth;
+    bookEl.style.setProperty('--sheet-fit', Math.min(1, (room - 8) / 794).toFixed(4));
+  };
+  fitToScreen();
+  window.addEventListener('resize', fitToScreen);
 
   /* אין יותר מה להטעין: „המשימות שלנו הן להדפסה" (31.07.2026) — כל עמוד
      בחוברת הוא דף מודפס, ואין עמוד שמארח שעשועון. */
   c.append(bookEl);
   outlet.append(c);
   window.scrollTo({ top: 0 });
+  return () => window.removeEventListener('resize', fitToScreen);
 }

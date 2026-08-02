@@ -179,10 +179,16 @@
 .pageviewer__sheetwrap {
   display: flex; justify-content: center;
   --sheet-scale: 1;
+  /* הגיליון שומר על A4 אמיתי גם בטלפון ורק מוקטן, ולכן תיבת-הפריסה שלו רחבה
+     מהמסך בזמן שהציור עצמו מוקטן ומרוכז בתוכה. החיתוך מסתיר את העודף הריק
+     ומונע גלילה אופקית — הכלל הוא בלי גלילה אופקית באף מסך קריאה. */
+  overflow: hidden;
 }
 .pageviewer__sheetwrap > .sheet {
   transform: scale(var(--sheet-scale));
   transform-origin: top center;
+  /* בלי זה ה-flex היה מכווץ את ה-A4 לרוחב הטלפון ומחזיר את הפריסה-מחדש. */
+  flex: 0 0 auto;
 }
 @media print {
   .pageviewer__sheetwrap { height: auto !important; }

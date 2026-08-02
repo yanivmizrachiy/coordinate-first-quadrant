@@ -1111,3 +1111,33 @@ test('no sheet leaves a band of white above its footer', async ({ page }, testIn
   );
   expect(bands, bands.join(' | ')).toEqual([]);
 });
+
+/* „תצוגת הנייד — שהכל יתאים אם פותחים בטלפון או במחשב בהתאמה אוטומטית”
+   (02.08.2026). הגיליון נפרס פעם מחדש לרוחב הטלפון, ואז יחס העמוד קפץ
+   מ-1:1.414 ל-1:4.4: הטורים נערמו, הציורים התכווצו והכותרת התחתונה עלתה
+   לאמצע הדף. החוברת היא מוצר מודפס — בטלפון רואים את אותו עמוד A4, מוקטן.
+   הבדיקה רצה גם ב-desktop וגם ב-mobile, ולכן היא נופלת ברגע שמישהו יחזיר
+   פריסה-מחדש כלשהי. */
+test('every sheet keeps its A4 shape on a phone exactly as on a desktop', async ({ page }) => {
+  for (const route of ['/#/print', '/#/workbook/18']) {
+    await page.goto(route);
+    await page.locator('.sheet').first().waitFor();
+    await page.waitForTimeout(600);
+    const off = await page.evaluate(() => {
+      const bad: string[] = [];
+      document.querySelectorAll('.sheet').forEach((el, i) => {
+        const r = el.getBoundingClientRect();
+        if (r.width < 50) return;
+        const ratio = r.height / r.width;
+        if (Math.abs(ratio - 1.414) > 0.03) bad.push(`sheet ${i}: ${ratio.toFixed(2)} instead of 1.41`);
+      });
+      return bad;
+    });
+    expect(off.slice(0, 5), `${route}: ${off.length} sheets lost their A4 shape — ${off.slice(0, 5).join(' | ')}`).toEqual([]);
+    // ובלי גלילה אופקית: הגיליון מוקטן, לא נדחף אל מחוץ למסך.
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    );
+    expect(overflow, `${route} scrolls sideways by ${overflow}px`).toBeLessThanOrEqual(1);
+  }
+});
