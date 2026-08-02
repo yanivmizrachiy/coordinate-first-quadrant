@@ -22,7 +22,7 @@ ${wordBank(['y', '0'])}
 </section>
 <section class="q-card">
 <h3>ממיינים נקודות</h3>
-<p>מיינו את הנקודות: <span class="math-ltr" dir="ltr">(3,0), (0,5), (4,2), (0,0), (8,0), (0,1)</span>.</p>
+<p class="spread">מיינו את הנקודות שלפניכם בטבלה: <span class="math-ltr" dir="ltr">(3,0), (0,5), (4,2), (0,0), (8,0), (0,1)</span>.</p>
 <table class="work-table">
 <tbody>
 <tr><th>על ציר <span class="math-ltr" dir="ltr">x</span></th><th>על ציר <span class="math-ltr" dir="ltr">y</span></th><th>לא על ציר</th></tr>
@@ -32,7 +32,7 @@ ${wordBank(['y', '0'])}
 </section>
 <section class="q-card span-2">
 <h3>מסמנים על הצירים</h3>
-<p>סמנו <span class="math-ltr" dir="ltr">A(2,0), B(0,3), C(7,0), D(0,6), O(0,0)</span>.</p>
+<p class="spread">סמנו על הסרטוט את הנקודות <span class="math-ltr" dir="ltr">A(2,0), B(0,3), C(7,0), D(0,6), O(0,0)</span>.</p>
 <div aria-label="מערכת צירים ריקה לסימון נקודות על הצירים" class="coordinate-grid grid-large" data-arrows="[]" data-points="[]" data-polygons="[]" data-segments="[]" role="img">
 </div>
 </section>

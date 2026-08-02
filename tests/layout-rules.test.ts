@@ -967,11 +967,27 @@ describe('no demo copy anywhere', () => {
 /* „חובה שיהיה במקרה כזה מחסן מילים" (31.07.2026): השלמות-פתיח מושגיות בלי
    מחסן השאירו את הלומד לנחש מילים. כל עמוד עם קופסת השלמות נושא מחסן. */
 describe('a completion box always brings its word bank', () => {
+  /* חריג יחיד ומכוון (יניב, 02.08.2026: „באופן חד פעמי מחסן המילים מיותר").
+     בעמוד „מתי x=0 ומתי y=0" שלוש קופסאות ההשלמה עונות זו על זו: הקופסה
+     השנייה כתוב בה „ערך ה־x הוא 0", והראשונה מבקשת בדיוק את ה-0 הזה; המילה
+     „y" מודפסת בקופסה השנייה עצמה. מחסן שחוזר על מה שכבר כתוב מעל הוא רעש,
+     לא עזרה. מזוהה לפי כותרת המשנה, שהיא ייחודית לעמוד הזה בלבד. */
+  const BANK_NOT_NEEDED = new Set(['מתי x=0 ומתי y=0']);
+
   it('every completion-intro page carries a word bank', () => {
     const bad = WORKBOOK
       .filter((p) => p.html.includes('completion-intro') && !p.html.includes('word-bank'))
+      .filter((p) => !BANK_NOT_NEEDED.has(p.subtitle))
       .map((p) => `page ${p.n} (${p.title})`);
     expect(bad, bad.join(', ')).toEqual([]);
+  });
+
+  it('the one page excused from a word bank is still the page we excused', () => {
+    for (const sub of BANK_NOT_NEEDED) {
+      const p = WORKBOOK.find((x) => x.subtitle === sub);
+      expect(p, `the excused page „${sub}" is gone — drop it from the list`).toBeDefined();
+      expect(p!.html, `„${sub}" grew a word bank — the exception is stale`).not.toContain('word-bank');
+    }
   });
 });
 
