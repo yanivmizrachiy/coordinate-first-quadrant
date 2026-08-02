@@ -377,8 +377,14 @@ li .pair, p .pair, .completion-sentence .pair { margin-inline: 3px; }
    שרואים בטלפון הוא בדיוק מה שמודפס, רק קטן יותר.
      • ‎#/workbook/:n‎ — מקטין בעצמו (‎--sheet-scale‎ ב-pageViewer)
      • ‎#/book‎        — במת הפליפבוק מקטינה
-     • ‎#/print‎       — כאן, ב-transform */
-@media (max-width: 850px) {
+     • ‎#/print‎       — כאן, ב-transform
+
+   ‎screen and‎ — חובה! ב-‎page.pdf()‎ הדפדפן מפריס לרוחב A4 (~794px < 850px),
+   ולכן בלי ‎screen‎ החוקים האלה חלים גם על ה-PDF: ‎margin-block: 0 18px‎ נוסף
+   לכל גיליון, וה-‎break-after: page‎ דחף את ה-18px לעמוד חדש — ‎40 עמודים ריקים
+   בחוברת המודפסת (‎total‎ קפץ מ-80 ל-120). ההקטנה למובייל היא ‎screen‎ בלבד;
+   המדפסת מקבלת A4 מלא בלי שוליים נוספים. */
+@media screen and (max-width: 850px) {
   .book { padding-inline: 0; display: flex; flex-direction: column; align-items: center; }
   .book > .sheet {
     /* ‎transform‎ ולא ‎zoom‎: ‎zoom‎ מחשב את הפריסה מחדש בגודל שברי, והעיגול
