@@ -27,8 +27,12 @@ export const PLOT_PRACTICE: WorkbookPageContent = sheet({
 <div aria-label="מערכת צירים ריקה לסימון הנקודות P Q R" class="coordinate-grid grid-large" data-arrows="[]" data-points="[]" data-polygons="[]" data-segments="[]" role="img">
 </div>
 <ul class="tasks compact">
-<li>מי מהנקודות הגבוהה ביותר? <span class="blank" style="--blank-width:5ch"></span></li>
-<li>מי הימנית ביותר? <span class="blank" style="--blank-width:5ch"></span></li>
+<li>מי הנקודה הגבוהה ביותר? <span class="blank" data-missing="letter" style="--blank-width:5ch"></span></li>
+<li>מי הנקודה הימנית ביותר? <span class="blank" data-missing="letter" style="--blank-width:5ch"></span></li>
+<li>מי הנקודה השמאלית ביותר? <span class="blank" data-missing="letter" style="--blank-width:5ch"></span></li>
+<li>הנקודה הנמוכה ביותר היא <span class="blank" data-missing="letter" style="--blank-width:5ch"></span>, ושיעור ה־<span class="math-ltr" dir="ltr">y</span> שלה הוא <span class="blank" data-missing="number" style="--blank-width:4ch"></span>.</li>
+<li>הנקודה <span class="math-ltr" dir="ltr">R</span> רחוקה מציר <span class="math-ltr" dir="ltr">x</span> <span class="blank" data-missing="number" style="--blank-width:4ch"></span> יחידות, כי זה שיעור ה־<span class="math-ltr" dir="ltr">y</span> שלה.</li>
+<li>סמנו על הסרטוט נקודה <span class="math-ltr" dir="ltr">S</span> משלכם שממוקמת מימין לנקודה <span class="math-ltr" dir="ltr">P</span> ומתחת לנקודה <span class="math-ltr" dir="ltr">R</span>, וכתבו את שיעוריה: <span class="pair math-ltr" dir="ltr">(<span class="pair-blank"></span>,<span class="pair-blank"></span>)</span>.</li>
 </ul>
 </section>
 </div>

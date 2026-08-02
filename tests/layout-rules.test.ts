@@ -545,6 +545,25 @@ describe('a calculation gets units and room to work', () => {
     expect([...new Set(bad)], bad.join(' | ')).toEqual([]);
   });
 
+  /* יניב, 02.08.2026: „תוסיף את המילה הנקודה — מי הנקודה הימנית ביותר, ולא
+     מי הימנית ביותר". שאלת „הכי" בלי שם העצם נשענת על ההקשר, והתלמיד צריך
+     לנחש על מה נשאל. */
+  it('a superlative question names what it is asking about', () => {
+    const bad: string[] = [];
+    for (const p of WORKBOOK) {
+      const t = p.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+      // „מי הימנית ביותר" — an adjective straight after מי/איזו, with no noun
+      for (const m of t.matchAll(/(?:מי|איזו)\s+ה(ימנית|שמאלית|גבוהה|נמוכה|ארוכה|קצרה|קרובה|רחוקה)\s+ביותר/g)) {
+        bad.push(`page ${p.n}: „${m[0]}" — say „מי הנקודה ה${m[1]} ביותר"`);
+      }
+      // „מי מהנקודות הגבוהה ביותר" — the partitive reads as a list, not a point
+      for (const m of t.matchAll(/מי\s+מהנקודות\s+ה\S+\s+ביותר/g)) {
+        bad.push(`page ${p.n}: „${m[0]}" — say „מי הנקודה …"`);
+      }
+    }
+    expect([...new Set(bad)], bad.join(' | ')).toEqual([]);
+  });
+
   it('an exercise line is pinned left to right', () => {
     for (const p of WORKBOOK) {
       for (const m of p.html.matchAll(/<div class="calc-ltr"([^>]*)>/g)) {
