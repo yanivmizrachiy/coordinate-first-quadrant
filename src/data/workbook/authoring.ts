@@ -222,9 +222,11 @@ export const exerciseGiven = (name: string, calc: string, unit = "יח'"): strin
   '</div>';
 
 /** A labelled cell grid the learner COLOURS by hand — the printable stand-in
-    for the colour-decode game. Columns x:0..xmax, rows y:0..ymax, RTL so x=0
-    sits on the right and y climbs upward, like the axes. Plain spans, never a
-    <button>: „המשימות שלנו הן להדפסה", and a printed page carries no widget. */
+    for the colour-decode game. Columns x:0..xmax, rows y:0..ymax. `.color-grid`
+    is `direction: ltr` so the origin sits bottom-LEFT and x grows to the right,
+    exactly like every coordinate drawing in the booklet — the first quadrant,
+    not a mirror of it. Plain spans, never a <button>: „המשימות שלנו הן
+    להדפסה", and a printed page carries no widget. */
 export const colorGrid = (xmax: number, ymax: number): string => {
   const cols = xmax + 1;
   let body = '';

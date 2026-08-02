@@ -76,10 +76,12 @@
 .mixed { font-family: var(--font-math); font-weight: 700; white-space: nowrap; }
 
 /* רשת תאים לצביעה — הגרסה המודפסת של „פענוח צבעוני". תאים ריקים שהתלמיד
-   צובע בעיפרון, עם תוויות ציר כמו במשחק; RTL כדי ש-x=0 יישב מימין ו-y יעלה
-   כלפי מעלה. print-color-adjust שומר על הקווים גם בנייר. */
+   צובע בעיפרון. „זה לא הצירים הנכונים!!" (יניב, 02.08.2026): הרשת היתה RTL
+   ו-x=0 ישב מימין וגדל שמאלה — הפוך מכל סרטוט אחר בחוברת. עכשיו `ltr`, כמו
+   הרביע הראשון: ראשית הצירים בפינה שמאל־תחתונה, x גדל ימינה, y עולה למעלה.
+   print-color-adjust שומר על הקווים גם בנייר. */
 .color-grid {
-  direction: rtl;
+  direction: ltr;
   display: grid;
   grid-template-columns: 22px repeat(var(--cg-cols, 7), 1fr);
   gap: 4px; max-width: 388px; margin: 8px auto 4px;

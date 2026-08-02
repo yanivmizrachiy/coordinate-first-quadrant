@@ -10,9 +10,26 @@ import { isFirstQuadrant, type Point } from '../lib/coordinateMath';
 export const decodeXMax = 6;
 export const decodeYMax = 5;
 
-/** Cells that, when coloured, reveal a check mark (וי). */
+/** התאים שמצביעים על חץ מעלה — סמל שמראה את כיוון הרביע הראשון: מראשית
+    הצירים כלפי מעלה, ככל ששיעור ה־y גדל. הצורה סימטרית סביב הקו x=3:
+    גזע דק (x=3) שעולה מ־y=0, ומעליו ראש משולש רחב (y=3) שמתכנס לחוד (3,5).
+
+        y=5            ■ (3,5)
+        y=4          ■ ■ ■
+        y=3        ■ ■ ■ ■ ■
+        y=2            ■
+        y=1            ■
+        y=0            ■
+             0 1 2 3 4 5 6                                              */
 export const decodeTargets: Point[] = [
-  { x: 1, y: 4 }, { x: 2, y: 3 }, { x: 3, y: 2 }, { x: 4, y: 3 }, { x: 5, y: 4 }, { x: 6, y: 5 },
+  // הגזע — קו אנכי על x=3
+  { x: 3, y: 0 }, { x: 3, y: 1 }, { x: 3, y: 2 },
+  // בסיס הראש — קו אופקי על y=3
+  { x: 1, y: 3 }, { x: 2, y: 3 }, { x: 3, y: 3 }, { x: 4, y: 3 }, { x: 5, y: 3 },
+  // אמצע הראש
+  { x: 2, y: 4 }, { x: 3, y: 4 }, { x: 4, y: 4 },
+  // החוד
+  { x: 3, y: 5 },
 ];
 
 const keyOf = (p: Point): string => `${p.x},${p.y}`;
