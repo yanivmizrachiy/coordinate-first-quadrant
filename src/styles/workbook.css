@@ -1,7 +1,5 @@
 /* ===========================================================================
-   Workbook sheet styles — a faithful port of the original 34-page booklet
-   layout, so pages 1–30 render pixel-identical. The parabula-next remote
-   iframe hacks are intentionally removed; pages 31–34 are now native sheets.
+   Canonical workbook sheet styles for the current printable A4 workbook.
    The cascade (including the later "override" blocks) is preserved on purpose.
    =========================================================================== */
 
@@ -11,7 +9,7 @@
   width: 210mm; min-height: 297mm; margin: 0 auto 18px; padding: 13mm 14mm 11mm;
   background: var(--paper); box-shadow: 0 8px 28px #1f2a4425; border: 1px solid #dfe4ec;
   display: block; position: relative; break-after: page; page-break-after: always;
-  /* Body text is 13px on EVERY sheet variant (practice/guided/dense/game). */
+  /* Body text is 13px on EVERY sheet variant (practice/guided/dense/poster). */
   font-size: 13px;
 }
 .sheet:last-child { break-after: auto; page-break-after: auto; }
@@ -62,8 +60,8 @@
 /* `vertical-align: middle` centres the fraction on the whole number, so a
    mixed number reads as ONE number. Anything baseline-relative drops the
    fraction below the digit and it looks like a second line. */
-/* A button a game draws inside a sheet is sheet text, and sheet text is 13px.
-   (The app toolbar outside the sheet keeps its own size.) */
+/* Any icon button inside a sheet uses the canonical sheet text size.
+   The app toolbar outside the sheet keeps its own size. */
 .sheet .iconbtn { font-size: 13px; }
 
 .frac {
