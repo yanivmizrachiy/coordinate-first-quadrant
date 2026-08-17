@@ -1,6 +1,7 @@
 import { topicOfSource, workbookPageOfSource } from '../workbook';
 import { SOLUTION_SPECS as SOLUTION_SPECS_1_16 } from './registry';
 import { SOLUTION_SPECS_17_29 } from './registry-17-29';
+import { SOLUTION_SPECS_30_38 } from './registry-30-38';
 import type { ResolvedSolutionPage } from './types';
 
 export type { ExerciseSolution, SolutionPageSpec, ResolvedSolutionPage } from './types';
@@ -8,6 +9,7 @@ export type { ExerciseSolution, SolutionPageSpec, ResolvedSolutionPage } from '.
 export const SOLUTION_SPECS = [
   ...SOLUTION_SPECS_1_16,
   ...SOLUTION_SPECS_17_29,
+  ...SOLUTION_SPECS_30_38,
 ];
 
 /**
