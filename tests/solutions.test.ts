@@ -11,6 +11,11 @@ function gitBlobSha(path: string): string {
 }
 
 describe('dynamic solutions', () => {
+  it('covers every canonical workbook page exactly once', () => {
+    expect(SOLUTION_SPECS).toHaveLength(WORKBOOK.length);
+    expect(new Set(SOLUTION_SPECS.map((spec) => spec.source)).size).toBe(WORKBOOK.length);
+  });
+
   it('resolves every solution from the canonical WORKBOOK instead of a stored page number', () => {
     for (const entry of SOLUTION_PAGES) {
       expect(WORKBOOK.includes(entry.page)).toBe(true);
@@ -27,9 +32,12 @@ describe('dynamic solutions', () => {
     }
   });
 
-  it('fails when a solved worksheet source changes without re-verifying its answers', () => {
+  it('fails when a solved worksheet source or visible poster asset changes without re-verifying its answers', () => {
     for (const spec of SOLUTION_SPECS) {
       expect(gitBlobSha(spec.sourceFile), spec.sourceFile).toBe(spec.sourceBlobSha);
+      for (const asset of spec.sourceAssets ?? []) {
+        expect(gitBlobSha(asset.path), asset.path).toBe(asset.blobSha);
+      }
     }
   });
 
