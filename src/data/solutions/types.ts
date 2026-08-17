@@ -11,6 +11,13 @@ export interface ExerciseSolution {
   method?: string;
 }
 
+export interface SolutionSourceAsset {
+  /** Binary/static asset whose visible content the answer depends on. */
+  path: string;
+  /** Git blob SHA when the asset was visually verified. */
+  blobSha: string;
+}
+
 export interface SolutionPageSpec {
   /** The actual authored page object. Its current number is resolved from BOOK. */
   source: WorkbookPageContent;
@@ -18,6 +25,8 @@ export interface SolutionPageSpec {
   sourceFile: string;
   /** Git blob SHA of sourceFile when these solutions were verified. */
   sourceBlobSha: string;
+  /** Optional image/static sources; every one is freshness-guarded too. */
+  sourceAssets?: SolutionSourceAsset[];
   exercises: ExerciseSolution[];
 }
 
