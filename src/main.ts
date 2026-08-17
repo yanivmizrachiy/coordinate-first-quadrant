@@ -7,12 +7,14 @@ import './styles/flipbook.css';
 import './styles/workbook.css';
 import './styles/print-aids.css';
 import './styles/grayscale.css';
+import './styles/solutions.css';
 
 import { startRouter, navigate, type RouteMatch } from './router';
 import { elem, clear } from './lib/dom';
 import type { View, ViewContext } from './views/context';
 import { home } from './views/home';
 import { menu } from './views/menu';
+import { solutions } from './views/solutions';
 import { pageViewer } from './views/pageViewer';
 import { book } from './views/book';
 import { flipbook } from './views/flipbook';
@@ -52,6 +54,7 @@ function resolve(match: RouteMatch): View {
   switch (match.name) {
     case 'home': return home;
     case 'menu': return menu;
+    case 'solutions': return solutions;
     case 'page': return pageViewer(Number(match.params['n'] ?? '1'));
     case 'book': return flipbook;
     case 'print': return book;
