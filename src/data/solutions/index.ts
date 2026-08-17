@@ -8,6 +8,7 @@ import { SOLUTION_SPECS_51_58 } from './registry-51-58';
 import { SOLUTION_SPECS_59_64 } from './registry-59-64';
 import { SOLUTION_SPECS_65_70 } from './registry-65-70';
 import { SOLUTION_SPECS_RIGHT_ANGLE } from './registry-right-angle';
+import { SOLUTION_SPECS_POSTERS } from './registry-posters';
 import type { ResolvedSolutionPage } from './types';
 
 export type { ExerciseSolution, SolutionPageSpec, ResolvedSolutionPage } from './types';
@@ -22,6 +23,7 @@ export const SOLUTION_SPECS = [
   ...SOLUTION_SPECS_59_64,
   ...SOLUTION_SPECS_65_70,
   ...SOLUTION_SPECS_RIGHT_ANGLE,
+  ...SOLUTION_SPECS_POSTERS,
 ];
 
 /**
