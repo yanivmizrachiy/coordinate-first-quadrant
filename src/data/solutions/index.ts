@@ -4,6 +4,7 @@ import { SOLUTION_SPECS_17_29 } from './registry-17-29';
 import { SOLUTION_SPECS_30_38 } from './registry-30-38';
 import { SOLUTION_SPECS_39_45 } from './registry-39-45';
 import { SOLUTION_SPECS_46_50 } from './registry-46-50';
+import { SOLUTION_SPECS_51_58 } from './registry-51-58';
 import type { ResolvedSolutionPage } from './types';
 
 export type { ExerciseSolution, SolutionPageSpec, ResolvedSolutionPage } from './types';
@@ -14,6 +15,7 @@ export const SOLUTION_SPECS = [
   ...SOLUTION_SPECS_30_38,
   ...SOLUTION_SPECS_39_45,
   ...SOLUTION_SPECS_46_50,
+  ...SOLUTION_SPECS_51_58,
 ];
 
 /**
