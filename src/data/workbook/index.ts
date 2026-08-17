@@ -215,9 +215,22 @@ export const TOPICS: WorkbookTopic[] = (() => {
 })();
 
 const byNumber = new Map(WORKBOOK.map((p) => [p.n, p]));
+const sourceIndex = new Map(ORDER.map(({ slot }, i) => [slot, i]));
 
 export const pageByNumber = (n: number): WorkbookPageContent | undefined => byNumber.get(n);
 
 export function topicOfPage(n: number): WorkbookTopic | undefined {
   return TOPICS.find((t) => t.pages.includes(n));
+}
+
+/** Resolve an authored page object to its current canonical workbook page. */
+export function workbookPageOfSource(source: WorkbookPageContent): WorkbookPageContent | undefined {
+  const index = sourceIndex.get(source);
+  return index === undefined ? undefined : WORKBOOK[index];
+}
+
+/** Resolve an authored page object to its current topic, without hard-coded numbering. */
+export function topicOfSource(source: WorkbookPageContent): WorkbookTopic | undefined {
+  const page = workbookPageOfSource(source);
+  return page ? topicOfPage(page.n) : undefined;
 }
