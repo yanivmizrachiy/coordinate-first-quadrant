@@ -1,9 +1,14 @@
 import { topicOfSource, workbookPageOfSource } from '../workbook';
-import { SOLUTION_SPECS } from './registry';
+import { SOLUTION_SPECS as SOLUTION_SPECS_1_16 } from './registry';
+import { SOLUTION_SPECS_17_29 } from './registry-17-29';
 import type { ResolvedSolutionPage } from './types';
 
 export type { ExerciseSolution, SolutionPageSpec, ResolvedSolutionPage } from './types';
-export { SOLUTION_SPECS } from './registry';
+
+export const SOLUTION_SPECS = [
+  ...SOLUTION_SPECS_1_16,
+  ...SOLUTION_SPECS_17_29,
+];
 
 /**
  * Resolve current page number/title/chapter from the canonical workbook.
