@@ -38,7 +38,7 @@ export function menu({ outlet, setTitle }: ViewContext): void {
     ),
   );
 
-  /* ---- the four things you can do ---- */
+  /* ---- the things you can do ---- */
   const actions = elem('div', { class: 'act-row' });
 
   const act = (cls: string, icon: string, label: string, note: string, onClick: () => void): HTMLElement => {
@@ -54,6 +54,7 @@ export function menu({ outlet, setTitle }: ViewContext): void {
 
   actions.append(
     act('act--view', '📖', 'תצוגה', 'החוברת הנפתחת', () => navigate('#/book')),
+    act('act--view', '✓', 'פתרונות', 'לפי עמוד ותרגיל', () => navigate('#/solutions')),
     act('act--download', '⬇️', 'הורדה', 'הכול או דפים · צבע או שחור-לבן', () => openActionChooser('download')),
     act('act--print', '🖨️', 'הדפסה', 'הכול או דפים · צבע או שחור-לבן', () => openActionChooser('print')),
     act('act--aids', '📐', 'המחשות', 'דפי צירים להדפסה', () => navigate('#/print-aids')),
