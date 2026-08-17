@@ -2,6 +2,7 @@
    server rewrites. Routes:
      #/                  the landing site — the tram film is its front page
      #/menu              everything you can do
+     #/solutions         dynamic learner solutions
      #/workbook/:n       single page viewer
      #/book              the digital flipbook — the way the booklet is READ
      #/print             continuous full booklet — the way the booklet PRINTS
@@ -10,7 +11,7 @@
    the legacy #/games both land on the flipbook, where that page lives.
 */
 export interface RouteMatch {
-  name: 'home' | 'menu' | 'page' | 'book' | 'print' | 'aids';
+  name: 'home' | 'menu' | 'solutions' | 'page' | 'book' | 'print' | 'aids';
   params: Record<string, string>;
 }
 
@@ -19,6 +20,7 @@ export function parseHash(hash: string): RouteMatch {
   const parts = path.split('/').filter(Boolean);
   const [head, sub] = parts;
   if (head === 'menu') return { name: 'menu', params: {} };
+  if (head === 'solutions') return { name: 'solutions', params: {} };
   if (head === 'workbook') return sub ? { name: 'page', params: { n: sub } } : { name: 'book', params: {} };
   if (head === 'book') return { name: 'book', params: {} };
   if (head === 'print-aids') return { name: 'aids', params: {} };
