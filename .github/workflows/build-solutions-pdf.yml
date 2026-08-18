@@ -74,6 +74,22 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
+      - name: Bootstrap verified PDF into main
+        if: github.event_name == 'pull_request' && github.head_ref == 'agent/publish-solutions-pdf-now'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          base64 -w0 public/solutions.pdf > /tmp/solutions.b64
+          existing_sha="$(gh api "repos/${GITHUB_REPOSITORY}/contents/public/solutions.pdf?ref=main" --jq .sha 2>/dev/null || true)"
+          if [ -n "$existing_sha" ]; then
+            jq -n --rawfile content /tmp/solutions.b64 --arg sha "$existing_sha" '{message:"build: publish verified print-only solutions PDF",content:$content,branch:"main",sha:$sha}' > /tmp/payload.json
+          else
+            jq -n --rawfile content /tmp/solutions.b64 '{message:"build: publish verified print-only solutions PDF",content:$content,branch:"main"}' > /tmp/payload.json
+          fi
+          gh api --method PUT "repos/${GITHUB_REPOSITORY}/contents/public/solutions.pdf" --input /tmp/payload.json
+
       - name: Commit generated PDF
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         shell: bash
