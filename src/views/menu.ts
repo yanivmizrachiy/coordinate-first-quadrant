@@ -54,7 +54,7 @@ export function menu({ outlet, setTitle }: ViewContext): void {
 
   actions.append(
     act('act--view', '📖', 'תצוגה', 'החוברת הנפתחת', () => navigate('#/book')),
-    act('act--view', '✓', 'פתרונות', 'לפי עמוד ותרגיל', () => navigate('#/solutions')),
+    act('act--view', '✓', 'תשובות', 'חוברת להדפסה בלבד', () => navigate('#/solutions')),
     act('act--download', '⬇️', 'הורדה', 'הכול או דפים · צבע או שחור-לבן', () => openActionChooser('download')),
     act('act--print', '🖨️', 'הדפסה', 'הכול או דפים · צבע או שחור-לבן', () => openActionChooser('print')),
     act('act--aids', '📐', 'המחשות', 'דפי צירים להדפסה', () => navigate('#/print-aids')),
