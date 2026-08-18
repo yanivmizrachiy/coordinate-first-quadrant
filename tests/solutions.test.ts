@@ -23,6 +23,12 @@ describe('dynamic solutions', () => {
     }
   });
 
+  it('prints the solution booklet in canonical page order 1 through 78', () => {
+    expect(SOLUTION_PAGES.map((entry) => entry.page.n)).toEqual(
+      Array.from({ length: WORKBOOK.length }, (_, index) => index + 1),
+    );
+  });
+
   it('has no duplicate page sources or exercise ids', () => {
     expect(new Set(SOLUTION_SPECS.map((spec) => spec.source)).size).toBe(SOLUTION_SPECS.length);
     for (const spec of SOLUTION_SPECS) {
