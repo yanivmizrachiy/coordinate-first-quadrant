@@ -1,5 +1,4 @@
 import { SOLUTION_PAGES } from '../data/solutions';
-import { TOTAL_PAGES } from '../data/workbook';
 import { elem } from '../lib/dom';
 import { navigate } from '../router';
 import type { ViewContext } from './context';
@@ -7,48 +6,38 @@ import type { ViewContext } from './context';
 const normalize = (value: string): string => value.trim().toLocaleLowerCase('he');
 
 export function solutions({ outlet, setTitle }: ViewContext): void {
-  setTitle('פתרונות — מערכת צירים');
+  setTitle('תשובות לחוברת — הרביע הראשון');
 
   const root = elem('div', { class: 'container solutions' });
-  const head = elem('header', { class: 'solutions__head' },
-    elem('div', {},
-      elem('h1', { class: 'solutions__title', text: 'פתרונות לחוברת — הרביע הראשון' }),
-      elem('p', {
-        class: 'solutions__sub',
-        text: `הפתרונות מחוברים ישירות לסדר החוברת · ${SOLUTION_PAGES.length} מתוך ${TOTAL_PAGES} עמודים מאומתים כעת`,
-      }),
-    ),
-  );
 
   const search = elem('input', {
     class: 'solutions__search',
     type: 'search',
-    placeholder: 'חיפוש לפי עמוד, נושא, תרגיל או תשובה',
-    'aria-label': 'חיפוש בפתרונות',
+    placeholder: 'חיפוש לפי עמוד, תרגיל או תשובה',
+    'aria-label': 'חיפוש בתשובות',
   }) as HTMLInputElement;
 
   const pageSelect = elem('select', {
     class: 'solutions__select',
-    'aria-label': 'מעבר לעמוד פתרונות',
+    'aria-label': 'מעבר לעמוד תשובות',
   }) as HTMLSelectElement;
-  pageSelect.append(elem('option', { value: '', text: 'מעבר מהיר לעמוד…' }) as HTMLOptionElement);
+  pageSelect.append(elem('option', { value: '', text: 'מעבר לעמוד…' }) as HTMLOptionElement);
   for (const entry of SOLUTION_PAGES) {
     pageSelect.append(elem('option', {
       value: String(entry.page.n),
-      text: `תשובות לעמוד ${entry.page.n} — ${entry.page.subtitle || entry.page.title}`,
+      text: `עמוד ${entry.page.n}`,
     }) as HTMLOptionElement);
   }
 
   const tools = elem('div', { class: 'solutions__tools' }, search, pageSelect);
   const results = elem('div', { class: 'solutions__results', 'aria-live': 'polite' });
-  const empty = elem('p', { class: 'solutions__empty', text: 'לא נמצאו פתרונות מתאימים לחיפוש.' });
+  const empty = elem('p', { class: 'solutions__empty', text: 'לא נמצאו תשובות מתאימות לחיפוש.' });
 
   const render = (): void => {
     const q = normalize(search.value);
     results.replaceChildren();
 
     let shown = 0;
-    let activeTopic = '';
     for (const entry of SOLUTION_PAGES) {
       const haystack = normalize([
         String(entry.page.n),
@@ -59,33 +48,30 @@ export function solutions({ outlet, setTitle }: ViewContext): void {
       ].join(' '));
       if (q && !haystack.includes(q)) continue;
 
-      if (entry.topic.id !== activeTopic) {
-        activeTopic = entry.topic.id;
-        results.append(elem('h2', { class: 'solutions__topic', text: entry.topic.title }));
-      }
-
       const exerciseList = elem('div', { class: 'solutions__exercises' });
       for (const exercise of entry.exercises) {
-        const answer = elem('div', { class: 'solutions__answer' },
+        const answer = elem('section', { class: 'solutions__answer' },
           elem('div', { class: 'solutions__exercise-label', text: `תרגיל ${exercise.label}` }),
-          elem('p', { class: 'solutions__answer-text', text: exercise.answer }),
+          elem('div', { class: 'solutions__answer-body' },
+            elem('p', { class: 'solutions__answer-text', text: exercise.answer }),
+            exercise.method
+              ? elem('p', { class: 'solutions__method' },
+                  elem('strong', { text: 'דרך פתרון: ' }),
+                  exercise.method,
+                )
+              : null,
+          ),
         );
-        if (exercise.method) {
-          answer.append(elem('p', { class: 'solutions__method', text: `דרך: ${exercise.method}` }));
-        }
         exerciseList.append(answer);
       }
 
       const card = elem('article', {
         class: 'solutions__page',
         id: `solution-page-${entry.page.n}`,
+        tabindex: '-1',
       },
         elem('header', { class: 'solutions__page-head' },
-          elem('div', { class: 'solutions__page-number', text: `תשובות לעמוד ${entry.page.n}` }),
-          elem('div', {},
-            elem('h3', { class: 'solutions__page-title', text: entry.page.subtitle || entry.page.title }),
-            entry.page.subtitle ? elem('p', { class: 'solutions__page-chapter', text: entry.page.title }) : null,
-          ),
+          elem('h2', { class: 'solutions__page-heading', text: `תשובות לעמוד ${entry.page.n}` }),
           elem('button', {
             class: 'solutions__open-page',
             type: 'button',
@@ -111,7 +97,7 @@ export function solutions({ outlet, setTitle }: ViewContext): void {
     target?.focus({ preventScroll: true });
   });
 
-  root.append(head, tools, results);
+  root.append(tools, results);
   outlet.append(root);
   render();
 }
