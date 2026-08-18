@@ -35,7 +35,7 @@ export function solutions({ outlet, setTitle }: ViewContext): void {
   for (const entry of SOLUTION_PAGES) {
     pageSelect.append(elem('option', {
       value: String(entry.page.n),
-      text: `עמוד ${entry.page.n} — ${entry.page.subtitle || entry.page.title}`,
+      text: `תשובות לעמוד ${entry.page.n} — ${entry.page.subtitle || entry.page.title}`,
     }) as HTMLOptionElement);
   }
 
@@ -81,7 +81,7 @@ export function solutions({ outlet, setTitle }: ViewContext): void {
         id: `solution-page-${entry.page.n}`,
       },
         elem('header', { class: 'solutions__page-head' },
-          elem('div', { class: 'solutions__page-number', text: `עמוד ${entry.page.n}` }),
+          elem('div', { class: 'solutions__page-number', text: `תשובות לעמוד ${entry.page.n}` }),
           elem('div', {},
             elem('h3', { class: 'solutions__page-title', text: entry.page.subtitle || entry.page.title }),
             entry.page.subtitle ? elem('p', { class: 'solutions__page-chapter', text: entry.page.title }) : null,
