@@ -1,0 +1,73 @@
+name: Build print-only solutions PDF
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/data/solutions/**'
+      - 'src/data/workbook/**'
+      - 'src/views/solutions.ts'
+      - 'src/styles/solutions.css'
+      - 'scripts/build-solutions-pdf.mjs'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'public/solutions/index.html'
+      - 'tests/solutions.test.ts'
+      - '.github/workflows/build-solutions-pdf.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: solutions-pdf-main
+  cancel-in-progress: true
+
+jobs:
+  build-solutions-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Verify solutions rules
+        run: npx vitest run tests/solutions.test.ts
+
+      - name: Build site
+        run: npm run build
+
+      - name: Build print-only PDF
+        run: npm run solutions:pdf
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: solutions-pdf
+          path: public/solutions.pdf
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Commit generated PDF
+        shell: bash
+        run: |
+          if git diff --quiet -- public/solutions.pdf; then
+            echo 'solutions.pdf is already current'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/solutions.pdf
+          git commit -m 'build: update print-only solutions PDF'
+          git push origin HEAD:main
