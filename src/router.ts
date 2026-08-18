@@ -2,7 +2,7 @@
    server rewrites. Routes:
      #/                  the landing site — the tram film is its front page
      #/menu              everything you can do
-     #/solutions         dynamic learner solutions
+     #/solutions         print-only solutions booklet
      #/workbook/:n       single page viewer
      #/book              the digital flipbook — the way the booklet is READ
      #/print             continuous full booklet — the way the booklet PRINTS
