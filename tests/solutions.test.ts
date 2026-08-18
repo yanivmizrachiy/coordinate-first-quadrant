@@ -52,10 +52,38 @@ describe('dynamic solutions', () => {
   it('keeps exactly one visible heading per solution page', () => {
     const view = readFileSync('src/views/solutions.ts', 'utf8');
     expect(view).toContain('text: `תשובות לעמוד ${entry.page.n}`');
+    expect((view.match(/elem\('h2'/g) ?? [])).toHaveLength(1);
+    expect(view).not.toContain("elem('h1'");
+    expect(view).not.toContain("elem('h3'");
     expect(view).not.toContain('solutions__topic');
     expect(view).not.toContain('solutions__page-number');
     expect(view).not.toContain('solutions__page-title');
     expect(view).not.toContain('solutions__page-chapter');
-    expect(view).not.toContain("text: 'פתרונות לחוברת — הרביע הראשון'");
+  });
+
+  it('keeps the solutions booklet print-only and non-interactive', () => {
+    const view = readFileSync('src/views/solutions.ts', 'utf8');
+    const css = readFileSync('src/styles/solutions.css', 'utf8');
+
+    expect(view).not.toContain("elem('button'");
+    expect(view).not.toContain("elem('input'");
+    expect(view).not.toContain("elem('select'");
+    expect(view).not.toContain("elem('a'");
+    expect(view).not.toContain('navigate(');
+    expect(view).not.toContain('addEventListener');
+    expect(view).not.toContain('solutions__tools');
+    expect(view).not.toContain('solutions__search');
+    expect(view).not.toContain('solutions__select');
+    expect(view).not.toContain('solutions__open-page');
+
+    expect(css).toContain('@page');
+    expect(css).toContain('size: A4 portrait');
+    expect(css).toContain('width: 210mm');
+    expect(css).toContain('min-height: 297mm');
+    expect(css).toContain('break-after: page');
+    expect(css).not.toContain('solutions__tools');
+    expect(css).not.toContain('solutions__search');
+    expect(css).not.toContain('solutions__select');
+    expect(css).not.toContain('solutions__open-page');
   });
 });
