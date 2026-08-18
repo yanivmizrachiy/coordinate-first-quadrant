@@ -86,4 +86,17 @@ describe('dynamic solutions', () => {
     expect(css).not.toContain('solutions__select');
     expect(css).not.toContain('solutions__open-page');
   });
+
+  it('publishes the external solutions entry as PDF only', () => {
+    const external = readFileSync('public/solutions/index.html', 'utf8');
+    const builder = readFileSync('scripts/build-solutions-pdf.mjs', 'utf8');
+    const pkg = JSON.parse(readFileSync('package.json', 'utf8')) as { scripts: Record<string, string> };
+
+    expect(external).toContain('../solutions.pdf');
+    expect(external).not.toContain('<iframe');
+    expect(external).not.toContain('#/solutions');
+    expect(builder).toContain("path: 'public/solutions.pdf'");
+    expect(builder).toContain('EXPECTED_PAGES = 78');
+    expect(pkg.scripts['solutions:pdf']).toBe('node scripts/build-solutions-pdf.mjs');
+  });
 });
