@@ -48,4 +48,14 @@ describe('dynamic solutions', () => {
       }
     }
   });
+
+  it('keeps exactly one visible heading per solution page', () => {
+    const view = readFileSync('src/views/solutions.ts', 'utf8');
+    expect(view).toContain('text: `תשובות לעמוד ${entry.page.n}`');
+    expect(view).not.toContain('solutions__topic');
+    expect(view).not.toContain('solutions__page-number');
+    expect(view).not.toContain('solutions__page-title');
+    expect(view).not.toContain('solutions__page-chapter');
+    expect(view).not.toContain("text: 'פתרונות לחוברת — הרביע הראשון'");
+  });
 });
