@@ -28,7 +28,9 @@ export const SOLUTION_SPECS = [
 
 /**
  * Resolve current page number/title/chapter from the canonical workbook.
- * Nothing in the solution registry owns a page number.
+ * Nothing in the solution registry owns a page number. The registries are split
+ * by maintenance concern (posters/right-angle/etc.), not by final print order,
+ * so the resolved booklet is always sorted by the canonical WORKBOOK number.
  */
 export const SOLUTION_PAGES: ResolvedSolutionPage[] = SOLUTION_SPECS.map((spec) => {
   const page = workbookPageOfSource(spec.source);
@@ -37,7 +39,7 @@ export const SOLUTION_PAGES: ResolvedSolutionPage[] = SOLUTION_SPECS.map((spec) 
     throw new Error(`Solution source is not present in BOOK: ${spec.sourceFile}`);
   }
   return { ...spec, page, topic };
-});
+}).sort((a, b) => a.page.n - b.page.n);
 
 export const solutionPageByNumber = (pageNumber: number): ResolvedSolutionPage | undefined =>
   SOLUTION_PAGES.find((entry) => entry.page.n === pageNumber);
