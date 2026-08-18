@@ -3,6 +3,19 @@ name: Build print-only solutions PDF
 
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'src/data/solutions/**'
+      - 'src/data/workbook/**'
+      - 'src/views/solutions.ts'
+      - 'src/styles/solutions.css'
+      - 'scripts/build-solutions-pdf.mjs'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'public/solutions/index.html'
+      - 'tests/solutions.test.ts'
+      - 'USER_MEMORY.md'
+      - '.github/workflows/build-solutions-pdf.yml'
   push:
     branches: [main]
     paths:
@@ -22,7 +35,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: solutions-pdf-main
+  group: solutions-pdf-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -62,6 +75,7 @@ jobs:
           retention-days: 7
 
       - name: Commit generated PDF
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         shell: bash
         run: |
           if git diff --quiet -- public/solutions.pdf; then
