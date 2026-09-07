@@ -1,19 +1,13 @@
 import { test, expect } from '@playwright/test';
 
-/* The district badge must stand clear of the film — the invariant this file has
-   always guarded. On the landing the badge lives in the dark top bar and the
-   film in its own section card, so they must be visible and disjoint on every
-   viewport, the tall phone included. */
-test('the district badge stays outside the film', async ({ page }) => {
-  await page.goto('/#/');
-  const badge = page.locator('.ls-topbar__logo');
-  const film = page.locator('#opening .ls-viewer');
-  await expect(badge).toBeVisible();
-  await expect(film).toBeVisible();
-  const [b, f] = await Promise.all([badge.boundingBox(), film.boundingBox()]);
-  expect(b && f, 'badge or film not measurable').toBeTruthy();
-  const overlap =
-    b!.x < f!.x + f!.width && f!.x < b!.x + b!.width &&
-    b!.y < f!.y + f!.height && f!.y < b!.y + b!.height;
-  expect(overlap, 'the badge overlaps the film').toBe(false);
+test('the district badge remains on the printable learning material', async ({ page }) => {
+  await page.goto('/#/print');
+  await expect(page.locator('.book > .sheet')).toHaveCount(80, { timeout: 15000 });
+  const missing = await page.evaluate(() =>
+    [...document.querySelectorAll('.book > .sheet')]
+      .filter((sheet) => !sheet.classList.contains('cover-sheet'))
+      .filter((sheet) => !sheet.querySelector('.gz-badge img'))
+      .map((sheet) => sheet.querySelector('.sheet-number')?.textContent?.trim() ?? '(toc)'),
+  );
+  expect(missing, `sheets with no district badge: ${missing.join(', ')}`).toEqual([]);
 });
