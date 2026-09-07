@@ -1,0 +1,104 @@
+.unified-media {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: clamp(12px, 3vw, 32px);
+}
+
+.unified-media__scrim {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(4, 10, 24, 0.72);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+}
+
+.unified-media__dialog {
+  position: relative;
+  z-index: 1;
+  width: min(980px, 96vw);
+  max-height: min(82dvh, 760px);
+  overflow: hidden;
+  border: 1px solid rgba(194, 162, 78, 0.42);
+  border-radius: 16px;
+  background: #0c1730;
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.5);
+  color: #f5f1e8;
+}
+
+.unified-media__head {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 9px 14px 9px 18px;
+  border-bottom: 1px solid rgba(194, 162, 78, 0.22);
+  font-family: "Heebo", "Rubik", system-ui, sans-serif;
+}
+
+.unified-media__head strong {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #dcc27a;
+}
+
+.unified-media__close {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: rgba(245, 241, 232, 0.82);
+  cursor: pointer;
+  min-height: 38px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.unified-media__close:hover,
+.unified-media__close:focus-visible {
+  color: #dcc27a;
+  background: rgba(194, 162, 78, 0.11);
+  outline: none;
+}
+
+.unified-media__body {
+  background: #050b18;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  max-height: calc(82dvh - 50px);
+}
+
+.unified-media__body iframe,
+.unified-media__body video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  object-fit: contain;
+  background: #000;
+}
+
+@media (max-width: 760px) {
+  .unified-media {
+    padding: max(8px, env(safe-area-inset-top)) 8px max(8px, env(safe-area-inset-bottom));
+  }
+
+  .unified-media__dialog {
+    width: 100%;
+    max-height: 78dvh;
+    border-radius: 12px;
+  }
+
+  .unified-media__head {
+    min-height: 44px;
+    padding: 7px 10px 7px 12px;
+  }
+
+  .unified-media__body {
+    max-height: calc(78dvh - 44px);
+  }
+}
