@@ -1,9 +1,10 @@
-# Manual-only deploy to GitHub Pages. This NEVER runs automatically — it fires
-# solely when a maintainer triggers it from the Actions tab (workflow_dispatch),
-# so nothing is published without an explicit human action.
-name: Deploy to GitHub Pages (manual)
+name: Deploy to GitHub Pages
 
+# The teacher-facing URL must never change. Every verified main update publishes
+# to the same GitHub Pages address; workflow_dispatch remains for recovery/manual reruns.
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -28,15 +29,13 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      - run: npm test
-      # „הבדיקות הן השער." The unit tests cannot see a page that cuts its own
-      # content off, a drawing shrunk to a thumbnail or a Hebrew label printed
-      # backwards — only a real render can. Publishing without them meant the
-      # gate was open on exactly the faults Yaniv reports most. ~2 minutes on a
-      # manual, infrequent deploy is a cheap price for never publishing one.
+      - name: Unit and content tests
+        run: npm test
+      - name: Typecheck
+        run: npm run typecheck
       - name: Install browser
         run: npx playwright install --with-deps chromium
-      - name: Measured checks (A4 layout, sizes, Hebrew direction, 13px)
+      - name: Measured checks (A4 layout, sizes, Hebrew direction, mobile)
         run: npm run test:visual
       - name: Keep the failure trace
         if: failure()
@@ -47,9 +46,8 @@ jobs:
             playwright-report
             test-results
           retention-days: 7
-      # ONE link only — the ORIGINAL address Yaniv already gave people carries
-      # the FULL site (his ruling of 31.07.2026 replaced the booklet-only split).
-      - run: npm run build
+      - name: Build
+        run: npm run build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
