@@ -8,7 +8,7 @@
 
 body { margin: 0; min-width: 320px; }
 
-button, input { font: inherit; }
+button, input, select { font: inherit; }
 
 #digital-next-app {
   width: min(100% - 24px, 980px);
@@ -41,17 +41,22 @@ button, input { font: inherit; }
 .digital-next-grid:focus-visible { outline: 4px solid #f3b700; outline-offset: 4px; border-radius: 16px; }
 
 .read-only-grid { pointer-events: none; }
-.fields-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.fields-row,
+.rectangle-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .number-field { display: grid; gap: 7px; font-weight: 700; margin: 10px 0; }
-.number-field input {
+.number-field input,
+.number-field select {
   width: 100%;
   min-height: 48px;
   border: 2px solid #b7c7da;
   border-radius: 12px;
   padding: 8px 12px;
-  direction: ltr;
-  text-align: center;
+  background: #fff;
 }
+.number-field input { direction: ltr; text-align: center; }
+.number-field select { direction: rtl; }
+.number-field input:focus-visible,
+.number-field select:focus-visible { outline: 4px solid #f3b700; outline-offset: 2px; }
 
 .primary-action {
   width: 100%;
@@ -69,6 +74,13 @@ button, input { font: inherit; }
 .feedback[data-state="error"] { color: #9b2c2c; }
 .coordinate-readout, .segment-data { direction: rtl; font-weight: 700; }
 .segment-data { font-size: 1.15rem; }
+
+@media (max-width: 480px) {
+  #digital-next-app { width: min(100% - 16px, 980px); padding-top: 12px; }
+  .prototype-header, .activity-card { border-radius: 16px; }
+  .prototype-header, .activity-card { padding: 16px; }
+  .rectangle-fields { grid-template-columns: 1fr; }
+}
 
 @media (min-width: 780px) {
   .activity-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
