@@ -1,4 +1,8 @@
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
+
+const rootDir = dirname(fileURLToPath(import.meta.url));
 
 // Relative base so the same build works when opened locally (file/preview)
 // and when served from a GitHub Pages project subpath
@@ -10,6 +14,14 @@ export default defineConfig({
     target: 'es2022',
     cssCodeSplit: false,
     sourcemap: false,
+    // The prototype is a separate build entry only. The canonical app keeps
+    // index.html and its router unchanged; nothing links to this entry.
+    rollupOptions: {
+      input: {
+        app: resolve(rootDir, 'index.html'),
+        'digital-next': resolve(rootDir, 'digital-next.html'),
+      },
+    },
   },
   server: {
     /* Two working sessions each start their own dev server on this repo; a
