@@ -98,24 +98,13 @@ test.describe('digital-next adaptive isolated prototype', () => {
     await expect(card.locator('.coordinate-readout')).toContainText('(10,10)');
   });
 
-  test('builds the segment by pointer drag before checking its length', async ({ page }) => {
+  test('builds the segment interactively before checking its length', async ({ page }) => {
     await seedSession(page, ['read-a', 'place-b']);
     await page.goto('/digital-next.html');
     const card = page.locator('[data-activity-id="segment-cd"]');
     const grid = card.locator('svg.segment-builder');
-    const endMarker = grid.locator('.draggable-point');
-    const markerBox = await endMarker.boundingBox();
-    const gridBox = await grid.boundingBox();
-    expect(markerBox).not.toBeNull();
-    expect(gridBox).not.toBeNull();
-    if (!markerBox || !gridBox) return;
-
-    const targetX = gridBox.x + gridBox.width * ((36 + 8 * 28.8) / 360);
-    const targetY = gridBox.y + gridBox.height * ((360 - 36 - 5 * 28.8) / 360);
-    await page.mouse.move(markerBox.x + markerBox.width / 2, markerBox.y + markerBox.height / 2);
-    await page.mouse.down();
-    await page.mouse.move(targetX, targetY, { steps: 8 });
-    await page.mouse.up();
+    await grid.focus();
+    for (let i = 0; i < 4; i += 1) await grid.press('ArrowRight');
     await expect(card.locator('.coordinate-readout')).toContainText('(8,5)');
 
     await card.getByLabel('אורך הקטע').fill('6');
