@@ -8,13 +8,22 @@ test.describe('digital-next isolated prototype', () => {
     await expect(page).toHaveURL(/digital-next\.html$/);
   });
 
-  test('diagnoses swapped coordinates', async ({ page }) => {
+  test('keeps the canonical app unchanged and separate', async ({ page }) => {
+    await page.goto('/');
+    await expect(page).not.toHaveURL(/digital-next\.html/);
+    await expect(page.locator('#digital-next-app')).toHaveCount(0);
+    await page.goto('/digital-next.html');
+    await expect(page.locator('#digital-next-app')).toHaveCount(1);
+  });
+
+  test('diagnoses swapped coordinates with targeted remediation', async ({ page }) => {
     await page.goto('/digital-next.html');
     const card = page.locator('[data-activity-id="read-a"]');
     await card.getByLabel('שיעור x').fill('7');
     await card.getByLabel('שיעור y').fill('3');
     await card.getByRole('button', { name: 'בדיקה' }).click();
     await expect(card.getByRole('status')).toContainText('החלפתם בין שיעור x לשיעור y');
+    await expect(card.getByRole('status')).toContainText('קראו קודם את שיעור x');
   });
 
   test('supports keyboard movement on the interactive grid', async ({ page }) => {
