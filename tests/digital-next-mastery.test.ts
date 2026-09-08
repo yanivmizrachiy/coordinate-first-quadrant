@@ -2,6 +2,9 @@ import { describe, expect, it } from 'vitest';
 import {
   guidanceForValidation,
   initialSkillState,
+  masteryStatus,
+  rankedSkills,
+  skillLabels,
   updateSkillState,
   weakestSkill,
 } from '../src/digital-next/mastery';
@@ -62,6 +65,21 @@ describe('digital-next adaptive mastery', () => {
       state = updateSkillState(state, { activityKind: 'segment-length', code: 'correct' });
     }
     expect(state['axis-segment-length']).toBe(3);
+  });
+
+  it('ranks skills and exposes user-facing mastery statuses', () => {
+    const state = {
+      ...initialSkillState,
+      'rectangle-area': 2,
+      'ordered-pair-order': -2,
+    };
+    const ranking = rankedSkills(state);
+    expect(ranking[0]?.skill).toBe('rectangle-area');
+    expect(ranking.at(-1)?.skill).toBe('ordered-pair-order');
+    expect(masteryStatus(2)).toBe('strong');
+    expect(masteryStatus(0)).toBe('developing');
+    expect(masteryStatus(-1)).toBe('reinforce');
+    expect(skillLabels['rectangle-area']).toContain('שטח');
   });
 
   it('provides targeted remediation text for common errors', () => {
