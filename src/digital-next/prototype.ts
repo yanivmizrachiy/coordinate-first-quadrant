@@ -125,6 +125,9 @@ function completeAndContinue(activity: Activity, result: ValidationResult, feedb
   updateHeader(activity);
   if (!result.ok) return;
 
+  const existing = feedback.parentElement?.querySelector<HTMLButtonElement>('.continue-action');
+  if (existing) return;
+
   const continueButton = actionButton('להמשך הפעילות המומלצת', () => renderCurrentActivity());
   continueButton.classList.add('continue-action');
   feedback.after(continueButton);
