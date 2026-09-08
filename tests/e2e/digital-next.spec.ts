@@ -141,4 +141,21 @@ test.describe('digital-next adaptive isolated prototype', () => {
     await expect(page.locator('.progress-text')).toContainText('הושלמו 1 מתוך 6');
     await expect(page.locator('[data-activity-id="place-b"]')).toHaveCount(1);
   });
+
+  test('exposes accessible numeric progress', async ({ page }) => {
+    await seedSession(page, ['read-a']);
+    await page.goto('/digital-next.html');
+    const progress = page.getByRole('progressbar', { name: 'התקדמות במסלול' });
+    await expect(progress).toHaveAttribute('aria-valuemin', '0');
+    await expect(progress).toHaveAttribute('aria-valuemax', '6');
+    await expect(progress).toHaveAttribute('aria-valuenow', '1');
+  });
+
+  test('shows all ten mastery skills after the prototype is completed', async ({ page }) => {
+    await seedSession(page, ['read-a', 'place-b', 'segment-cd', 'classify-e', 'compare-fg', 'rectangle-hijk']);
+    await page.goto('/digital-next.html');
+    await expect(page.getByRole('heading', { name: 'המסלול הושלם' })).toBeVisible();
+    await expect(page.locator('.mastery-summary li')).toHaveCount(10);
+    await expect(page.locator('.progress-text')).toContainText('הושלמו 6 מתוך 6');
+  });
 });
