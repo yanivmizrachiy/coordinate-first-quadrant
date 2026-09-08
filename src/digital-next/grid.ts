@@ -47,7 +47,7 @@ export function mountInteractiveGrid(
     viewBox: `0 0 ${SIZE} ${SIZE}`,
     role: 'application',
     tabindex: '0',
-    'aria-label': 'מערכת צירים אינטראקטיבית ברביע הראשון',
+    'aria-label': 'מערכת צירים אינטראקטיבית ברביע הראשון. הזיזו את הנקודה בעזרת החצים. Home מעביר לראשית ו-End לקצה העליון הימני.',
     class: 'digital-next-grid',
   });
 
@@ -83,9 +83,8 @@ export function mountInteractiveGrid(
   const point = svgEl('circle', {
     r: '10',
     class: 'draggable-point',
-    role: 'button',
-    tabindex: '0',
-    'aria-label': 'נקודה ניתנת להזזה',
+    'aria-hidden': 'true',
+    focusable: 'false',
   });
   svg.append(point);
   host.append(svg);
@@ -94,7 +93,10 @@ export function mountInteractiveGrid(
     const pos = toScreen(current);
     point.setAttribute('cx', `${pos.x}`);
     point.setAttribute('cy', `${pos.y}`);
-    point.setAttribute('aria-label', `הנקודה (${current.x},${current.y})`);
+    svg.setAttribute(
+      'aria-label',
+      `מערכת צירים אינטראקטיבית. הנקודה כעת (${current.x},${current.y}). הזיזו בעזרת החצים. Home מעביר לראשית ו-End לקצה העליון הימני.`,
+    );
   }
 
   function update(next: Point) {
@@ -108,6 +110,7 @@ export function mountInteractiveGrid(
   function onPointerDown(event: PointerEvent) {
     activePointerId = event.pointerId;
     svg.setPointerCapture(event.pointerId);
+    svg.focus({ preventScroll: true });
     update(toPoint(event.clientX, event.clientY, svg));
   }
 
@@ -129,6 +132,19 @@ export function mountInteractiveGrid(
       ArrowUp: { x: 0, y: 1 },
       ArrowDown: { x: 0, y: -1 },
     };
+
+    if (event.key === 'Home') {
+      event.preventDefault();
+      update({ x: 0, y: 0 });
+      return;
+    }
+
+    if (event.key === 'End') {
+      event.preventDefault();
+      update({ x: MAX, y: MAX });
+      return;
+    }
+
     const move = delta[event.key];
     if (!move) return;
     event.preventDefault();
