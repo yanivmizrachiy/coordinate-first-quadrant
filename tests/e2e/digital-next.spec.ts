@@ -110,8 +110,6 @@ test.describe('digital-next adaptive isolated prototype', () => {
     expect(gridBox).not.toBeNull();
     if (!markerBox || !gridBox) return;
 
-    // Drag from the actual rendered handle, then map D(8,5) through the SVG viewBox.
-    // This stays correct if the responsive SVG is scaled differently on CI or a device.
     const targetX = gridBox.x + gridBox.width * ((36 + 8 * 28.8) / 360);
     const targetY = gridBox.y + gridBox.height * ((360 - 36 - 5 * 28.8) / 360);
     await page.mouse.move(markerBox.x + markerBox.width / 2, markerBox.y + markerBox.height / 2);
@@ -131,6 +129,25 @@ test.describe('digital-next adaptive isolated prototype', () => {
     const card = page.locator('[data-activity-id="classify-e"]');
     await card.getByLabel('מיקום הנקודה').selectOption('y-axis');
     await card.getByRole('button', { name: 'בדיקה' }).click();
+    await expect(card.getByRole('status')).toContainText('נכון');
+  });
+
+  test('builds the rectangle before calculating its properties', async ({ page }) => {
+    await seedSession(page, ['read-a', 'place-b', 'segment-cd', 'classify-e', 'compare-fg']);
+    await page.goto('/digital-next.html');
+    const card = page.locator('[data-activity-id="rectangle-hijk"]');
+    const grid = card.locator('svg.rectangle-builder');
+    await expect(grid.locator('.built-rectangle')).toBeVisible();
+    await grid.focus();
+    for (let i = 0; i < 4; i += 1) await grid.press('ArrowRight');
+    for (let i = 0; i < 2; i += 1) await grid.press('ArrowUp');
+    await expect(card.locator('.rectangle-readout')).toContainText('(8,6)');
+
+    await card.getByLabel('אורך').fill('6');
+    await card.getByLabel('רוחב').fill('4');
+    await card.getByLabel('היקף P').fill('20');
+    await card.getByLabel('שטח S').fill('24');
+    await card.getByRole('button', { name: 'בדיקת המלבן' }).click();
     await expect(card.getByRole('status')).toContainText('נכון');
   });
 
