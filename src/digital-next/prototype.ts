@@ -1,10 +1,11 @@
 import './styles.css';
 import { prototypeActivities } from './content';
 import { mountInteractiveGrid } from './grid';
+import { stagedHint } from './hints';
 import { guidanceForValidation, updateSkillState } from './mastery';
 import { mountSegmentBuilder } from './segment-builder';
 import { explainRecommendation, nextActivity } from './sequencer';
-import { loadSession, recordAttempt, saveSession, type AdaptiveSession } from './session';
+import { loadSession, recordAttempt, recordHint, saveSession, type AdaptiveSession } from './session';
 import type { Activity, Point, PointRegion, ValidationResult } from './types';
 import {
   validateCoordinateComparison,
@@ -113,9 +114,34 @@ function applyAttempt(activity: Activity, result: ValidationResult) {
   persist();
 }
 
+function showStagedHint(activity: Activity, result: ValidationResult, feedback: HTMLElement) {
+  const parent = feedback.parentElement;
+  if (!parent) return;
+  const existing = parent.querySelector<HTMLElement>('.learning-hint');
+
+  if (result.ok) {
+    existing?.remove();
+    return;
+  }
+
+  const attemptNumber = session.attemptsByActivity[activity.id] ?? 0;
+  const hint = stagedHint(activity, result.code, attemptNumber);
+  if (!hint) return;
+
+  session = recordHint(session, activity.id);
+  persist();
+
+  const box = existing ?? document.createElement('aside');
+  box.className = `learning-hint ${hint.level}`;
+  box.setAttribute('aria-live', 'polite');
+  box.textContent = hint.text;
+  if (!existing) feedback.after(box);
+}
+
 function completeAndContinue(activity: Activity, result: ValidationResult, feedback: HTMLElement) {
   showFeedback(feedback, result);
   applyAttempt(activity, result);
+  showStagedHint(activity, result, feedback);
   updateHeader(activity);
   if (!result.ok) return;
   const existing = feedback.parentElement?.querySelector<HTMLButtonElement>('.continue-action');
