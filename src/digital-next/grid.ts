@@ -6,6 +6,11 @@ const PAD = 36;
 const SIZE = 360;
 const STEP = (SIZE - PAD * 2) / MAX;
 
+export type GridOptions = Readonly<{
+  interactive?: boolean;
+  ariaLabel?: string;
+}>;
+
 export type GridController = Readonly<{
   getPoint: () => Point;
   setPoint: (point: Point) => void;
@@ -39,17 +44,23 @@ export function mountInteractiveGrid(
   host: HTMLElement,
   initial: Point,
   onChange: (point: Point) => void,
+  options: GridOptions = {},
 ): GridController {
   host.replaceChildren();
   let current = initial;
+  const interactive = options.interactive ?? true;
 
   const svg = svgEl('svg', {
     viewBox: `0 0 ${SIZE} ${SIZE}`,
-    role: 'application',
-    tabindex: '0',
-    'aria-label': 'מערכת צירים אינטראקטיבית ברביע הראשון. הזיזו את הנקודה בעזרת החצים. Home מעביר לראשית ו-End לקצה העליון הימני.',
     class: 'digital-next-grid',
+    role: 'img',
+    'aria-label': options.ariaLabel ?? 'מערכת צירים ברביע הראשון',
   });
+
+  if (interactive) {
+    svg.setAttribute('role', 'application');
+    svg.setAttribute('tabindex', '0');
+  }
 
   const grid = svgEl('g', { class: 'grid-lines', 'aria-hidden': 'true' });
   for (let i = 0; i <= MAX; i += 1) {
@@ -80,9 +91,24 @@ export function mountInteractiveGrid(
     }),
   );
 
+  for (let i = 0; i <= MAX; i += 1) {
+    const x = PAD + i * STEP;
+    const y = SIZE - PAD - i * STEP;
+    const xLabel = svgEl('text', { x: `${x}`, y: `${SIZE - 14}`, class: 'axis-label', 'text-anchor': 'middle', 'aria-hidden': 'true' });
+    xLabel.textContent = String(i);
+    const yLabel = svgEl('text', { x: '18', y: `${y + 4}`, class: 'axis-label', 'text-anchor': 'middle', 'aria-hidden': 'true' });
+    yLabel.textContent = String(i);
+    svg.append(xLabel, yLabel);
+  }
+  const xName = svgEl('text', { x: `${SIZE - 14}`, y: `${SIZE - PAD - 10}`, class: 'axis-name', 'aria-hidden': 'true' });
+  xName.textContent = 'x';
+  const yName = svgEl('text', { x: `${PAD + 10}`, y: '18', class: 'axis-name', 'aria-hidden': 'true' });
+  yName.textContent = 'y';
+  svg.append(xName, yName);
+
   const point = svgEl('circle', {
     r: '10',
-    class: 'draggable-point',
+    class: interactive ? 'draggable-point' : 'static-point',
     'aria-hidden': 'true',
     focusable: 'false',
   });
@@ -95,19 +121,22 @@ export function mountInteractiveGrid(
     point.setAttribute('cy', `${pos.y}`);
     svg.setAttribute(
       'aria-label',
-      `מערכת צירים אינטראקטיבית. הנקודה כעת (${current.x},${current.y}). הזיזו בעזרת החצים. Home מעביר לראשית ו-End לקצה העליון הימני.`,
+      interactive
+        ? `מערכת צירים אינטראקטיבית. הנקודה כעת (${current.x},${current.y}). הזיזו בעזרת החצים. Home מעביר לראשית ו-End לקצה העליון הימני.`
+        : options.ariaLabel ?? `מערכת צירים עם נקודה בשיעורים (${current.x},${current.y}).`,
     );
   }
 
   function update(next: Point) {
     current = next;
     render();
-    onChange(current);
+    if (interactive) onChange(current);
   }
 
   let activePointerId: number | null = null;
 
   function onPointerDown(event: PointerEvent) {
+    if (!interactive) return;
     activePointerId = event.pointerId;
     svg.setPointerCapture(event.pointerId);
     svg.focus({ preventScroll: true });
@@ -115,17 +144,18 @@ export function mountInteractiveGrid(
   }
 
   function onPointerMove(event: PointerEvent) {
-    if (activePointerId !== event.pointerId || !svg.hasPointerCapture(event.pointerId)) return;
+    if (!interactive || activePointerId !== event.pointerId || !svg.hasPointerCapture(event.pointerId)) return;
     update(toPoint(event.clientX, event.clientY, svg));
   }
 
   function onPointerUp(event: PointerEvent) {
-    if (activePointerId !== event.pointerId) return;
+    if (!interactive || activePointerId !== event.pointerId) return;
     if (svg.hasPointerCapture(event.pointerId)) svg.releasePointerCapture(event.pointerId);
     activePointerId = null;
   }
 
   function onKeyDown(event: KeyboardEvent) {
+    if (!interactive) return;
     const delta: Record<string, Point> = {
       ArrowRight: { x: 1, y: 0 },
       ArrowLeft: { x: -1, y: 0 },
@@ -154,16 +184,21 @@ export function mountInteractiveGrid(
     });
   }
 
-  svg.addEventListener('pointerdown', onPointerDown);
-  svg.addEventListener('pointermove', onPointerMove);
-  svg.addEventListener('pointerup', onPointerUp);
-  svg.addEventListener('pointercancel', onPointerUp);
-  svg.addEventListener('keydown', onKeyDown);
+  if (interactive) {
+    svg.addEventListener('pointerdown', onPointerDown);
+    svg.addEventListener('pointermove', onPointerMove);
+    svg.addEventListener('pointerup', onPointerUp);
+    svg.addEventListener('pointercancel', onPointerUp);
+    svg.addEventListener('keydown', onKeyDown);
+  }
   render();
 
   return {
     getPoint: () => current,
-    setPoint: update,
+    setPoint: (next) => {
+      current = next;
+      render();
+    },
     destroy: () => {
       svg.removeEventListener('pointerdown', onPointerDown);
       svg.removeEventListener('pointermove', onPointerMove);
