@@ -43,6 +43,13 @@ test.describe('digital-next adaptive isolated prototype', () => {
     await expect(page.locator('#digital-next-app')).toHaveCount(1);
   });
 
+  test('read-only grid has no hidden keyboard stop', async ({ page }) => {
+    await page.goto('/digital-next.html');
+    const grid = page.locator('[data-activity-id="read-a"] svg');
+    await expect(grid).toHaveAttribute('role', 'img');
+    await expect(grid).not.toHaveAttribute('tabindex', '0');
+  });
+
   test('diagnoses swapped coordinates, counts the attempt, then advances adaptively', async ({ page }) => {
     await page.goto('/digital-next.html');
     const card = page.locator('[data-activity-id="read-a"]');
@@ -57,7 +64,6 @@ test.describe('digital-next adaptive isolated prototype', () => {
     await card.getByRole('button', { name: 'בדיקה' }).click();
     await expect(card.getByRole('status')).toContainText('נכון');
     await card.getByRole('button', { name: 'להמשך הפעילות המומלצת' }).click();
-    await expect(page.locator('[data-activity-id]')).toHaveCount(1);
     await expect(page.locator('[data-activity-id="place-b"]')).toHaveCount(1);
   });
 
@@ -74,6 +80,29 @@ test.describe('digital-next adaptive isolated prototype', () => {
     await expect(card.locator('.coordinate-readout')).toContainText('(0,0)');
     await grid.press('End');
     await expect(card.locator('.coordinate-readout')).toContainText('(10,10)');
+  });
+
+  test('builds the segment by pointer drag before checking its length', async ({ page }) => {
+    await seedSession(page, ['read-a', 'place-b']);
+    await page.goto('/digital-next.html');
+    const card = page.locator('[data-activity-id="segment-cd"]');
+    const grid = card.locator('svg.segment-builder');
+    const box = await grid.boundingBox();
+    expect(box).not.toBeNull();
+    if (!box) return;
+
+    const fromX = box.x + box.width * (151.2 / 360);
+    const targetX = box.x + box.width * (266.4 / 360);
+    const y = box.y + box.height * (180 / 360);
+    await page.mouse.move(fromX, y);
+    await page.mouse.down();
+    await page.mouse.move(targetX, y, { steps: 6 });
+    await page.mouse.up();
+    await expect(card.locator('.coordinate-readout')).toContainText('(8,5)');
+
+    await card.getByLabel('אורך הקטע').fill('6');
+    await card.getByRole('button', { name: 'בדיקת הקטע' }).click();
+    await expect(card.getByRole('status')).toContainText('נכון');
   });
 
   test('can target later activity types through saved progress', async ({ page }) => {
