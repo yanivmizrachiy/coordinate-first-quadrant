@@ -7,6 +7,7 @@ const LEGACY_STORAGE_KEY = 'coordinate-first-quadrant:digital-next:v1';
 
 export type AdaptiveSession = Readonly<{
   version: 3;
+  currentActivityId: string | null;
   completedIds: string[];
   attemptsByActivity: Record<string, number>;
   hintsUsedByActivity: Record<string, number>;
@@ -17,6 +18,7 @@ export type AdaptiveSession = Readonly<{
 export function emptySession(): AdaptiveSession {
   return {
     version: 3,
+    currentActivityId: null,
     completedIds: [],
     attemptsByActivity: {},
     hintsUsedByActivity: {},
@@ -43,11 +45,13 @@ function normalizeSession(parsed: Partial<AdaptiveSession>): AdaptiveSession | n
     !Array.isArray(parsed.completedIds) ||
     !isCounterMap(parsed.attemptsByActivity) ||
     !isCounterMap(parsed.hintsUsedByActivity) ||
-    !isSkillState(parsed.mastery)
+    !isSkillState(parsed.mastery) ||
+    !(typeof parsed.currentActivityId === 'string' || parsed.currentActivityId === null || parsed.currentActivityId === undefined)
   ) return null;
 
   return {
     version: 3,
+    currentActivityId: parsed.currentActivityId ?? null,
     completedIds: [...new Set(parsed.completedIds)],
     attemptsByActivity: { ...parsed.attemptsByActivity },
     hintsUsedByActivity: { ...parsed.hintsUsedByActivity },
@@ -85,6 +89,7 @@ export function loadSession(storage: Storage = localStorage): AdaptiveSession {
       ) {
         return {
           version: 3,
+          currentActivityId: null,
           completedIds: [...new Set(v2.completedIds)],
           attemptsByActivity: { ...v2.attemptsByActivity },
           hintsUsedByActivity: {},
@@ -146,4 +151,8 @@ export function recordHint(session: AdaptiveSession, activityId: string): Adapti
       [activityId]: (session.hintsUsedByActivity[activityId] ?? 0) + 1,
     },
   };
+}
+
+export function setCurrentActivity(session: AdaptiveSession, activityId: string | null): AdaptiveSession {
+  return { ...session, currentActivityId: activityId };
 }
