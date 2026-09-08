@@ -26,6 +26,36 @@ describe('digital-next adaptive mastery', () => {
     expect(next['y-reading']).toBe(1);
   });
 
+  it('tracks axes classification and coordinate comparison independently', () => {
+    const axes = updateSkillState(initialSkillState, {
+      activityKind: 'classify-point',
+      code: 'wrong-point-region',
+    });
+    expect(axes['axes-origin']).toBe(-1);
+
+    const comparison = updateSkillState(initialSkillState, {
+      activityKind: 'compare-coordinate',
+      code: 'wrong-coordinate-comparison',
+    });
+    expect(comparison['coordinate-comparison']).toBe(-1);
+  });
+
+  it('separates rectangle dimensions perimeter and area', () => {
+    const dimensions = updateSkillState(initialSkillState, {
+      activityKind: 'rectangle-properties',
+      code: 'wrong-rectangle-width',
+    });
+    expect(dimensions['rectangle-dimensions']).toBe(-1);
+    expect(dimensions['rectangle-perimeter']).toBe(0);
+    expect(dimensions['rectangle-area']).toBe(0);
+
+    const perimeter = updateSkillState(initialSkillState, {
+      activityKind: 'rectangle-properties',
+      code: 'wrong-rectangle-perimeter',
+    });
+    expect(perimeter['rectangle-perimeter']).toBe(-1);
+  });
+
   it('keeps skill scores bounded', () => {
     let state = initialSkillState;
     for (let i = 0; i < 10; i += 1) {
@@ -37,6 +67,8 @@ describe('digital-next adaptive mastery', () => {
   it('provides targeted remediation text for common errors', () => {
     expect(guidanceForValidation('wrong-x')).toContain('אופקי');
     expect(guidanceForValidation('wrong-y')).toContain('אנכי');
+    expect(guidanceForValidation('wrong-point-region')).toContain('שיעור 0');
+    expect(guidanceForValidation('wrong-rectangle-area')).toContain('S =');
     expect(guidanceForValidation('correct')).toBeNull();
   });
 });
