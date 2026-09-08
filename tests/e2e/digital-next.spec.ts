@@ -50,6 +50,22 @@ test.describe('digital-next adaptive isolated prototype', () => {
     await expect(grid).not.toHaveAttribute('tabindex', '0');
   });
 
+  test('escalates from a concise hint to guided support on the third mistake', async ({ page }) => {
+    await page.goto('/digital-next.html');
+    const card = page.locator('[data-activity-id="read-a"]');
+    await card.getByLabel('שיעור x').fill('7');
+    await card.getByLabel('שיעור y').fill('3');
+
+    await card.getByRole('button', { name: 'בדיקה' }).click();
+    await expect(card.locator('.learning-hint')).toHaveClass(/hint/);
+    await expect(card.locator('.learning-hint')).toContainText('קודם x ואז y');
+
+    await card.getByRole('button', { name: 'בדיקה' }).click();
+    await card.getByRole('button', { name: 'בדיקה' }).click();
+    await expect(card.locator('.learning-hint')).toHaveClass(/guided/);
+    await expect(card.locator('.learning-hint')).toContainText('המספר הראשון');
+  });
+
   test('diagnoses swapped coordinates, counts the attempt, then advances adaptively', async ({ page }) => {
     await page.goto('/digital-next.html');
     const card = page.locator('[data-activity-id="read-a"]');
