@@ -26,7 +26,7 @@ test.describe('digital-next isolated prototype', () => {
     await expect(card.getByRole('status')).toContainText('קראו קודם את שיעור x');
   });
 
-  test('supports keyboard movement on the interactive grid', async ({ page }) => {
+  test('supports keyboard movement and edge shortcuts on the interactive grid', async ({ page }) => {
     await page.goto('/digital-next.html');
     const card = page.locator('[data-activity-id="place-b"]');
     const grid = card.locator('svg');
@@ -34,6 +34,10 @@ test.describe('digital-next isolated prototype', () => {
     await grid.press('ArrowRight');
     await grid.press('ArrowUp');
     await expect(card.locator('.coordinate-readout')).toContainText('(2,2)');
+    await grid.press('Home');
+    await expect(card.locator('.coordinate-readout')).toContainText('(0,0)');
+    await grid.press('End');
+    await expect(card.locator('.coordinate-readout')).toContainText('(10,10)');
   });
 
   test('stores completed progress locally', async ({ page }) => {
