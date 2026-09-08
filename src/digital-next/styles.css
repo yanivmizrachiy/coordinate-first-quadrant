@@ -78,6 +78,17 @@ button, input, select { font: inherit; }
 .feedback { min-height: 28px; margin-top: 12px; font-weight: 700; }
 .feedback[data-state="ok"] { color: #126a3a; }
 .feedback[data-state="error"] { color: #9b2c2c; }
+.learning-hint {
+  margin-top: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border-inline-start: 5px solid currentColor;
+  background: #f7f9fc;
+  font-weight: 700;
+  line-height: 1.55;
+}
+.learning-hint.hint { color: #6b4d00; }
+.learning-hint.guided { color: #173f70; background: #edf4fc; }
 .coordinate-readout, .segment-data { direction: rtl; font-weight: 700; }
 .segment-data { font-size: 1.15rem; }
 
