@@ -5,9 +5,7 @@
 }
 
 * { box-sizing: border-box; }
-
 body { margin: 0; min-width: 320px; }
-
 button, input, select { font: inherit; }
 
 #digital-next-app {
@@ -28,19 +26,25 @@ button, input, select { font: inherit; }
 .prototype-header p { margin: 4px 0; }
 .eyebrow { font-weight: 800; }
 .progress-text { margin-top: 14px !important; font-weight: 700; }
+.recommendation-text { margin-top: 8px !important; font-weight: 700; }
 
-.activity-list { display: grid; gap: 18px; }
-.activity-card { padding: 20px; }
-.activity-card h2 { margin: 0 0 16px; font-size: clamp(1.15rem, 4vw, 1.5rem); }
+.adaptive-stage { display: grid; place-items: start center; }
+.activity-card { width: min(100%, 760px); padding: 20px; }
+.activity-card h2 { margin: 0 0 10px; font-size: clamp(1.15rem, 4vw, 1.5rem); }
+.attempt-count { margin: 0 0 14px; font-size: .95rem; }
 
-.grid-host { width: min(100%, 520px); margin: 0 auto 14px; touch-action: none; }
+.grid-host { width: min(100%, 540px); margin: 0 auto 14px; touch-action: none; }
 .digital-next-grid { width: 100%; display: block; touch-action: none; user-select: none; }
 .grid-lines line { stroke: #cbd8e7; stroke-width: 1; }
 .axis { stroke: #10233f; stroke-width: 3; }
+.axis-label { fill: #405873; font-size: 11px; }
+.axis-name { fill: #10233f; font-size: 17px; font-weight: 800; }
 .draggable-point { fill: #1259b2; stroke: #fff; stroke-width: 4; cursor: grab; }
+.static-point { fill: #1259b2; stroke: #fff; stroke-width: 4; }
+.fixed-point { fill: #10233f; stroke: #fff; stroke-width: 4; }
+.built-segment { stroke: #1259b2; stroke-width: 7; stroke-linecap: round; }
 .digital-next-grid:focus-visible { outline: 4px solid #f3b700; outline-offset: 4px; border-radius: 16px; }
 
-.read-only-grid { pointer-events: none; }
 .fields-row,
 .rectangle-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .number-field { display: grid; gap: 7px; font-weight: 700; margin: 10px 0; }
@@ -67,7 +71,9 @@ button, input, select { font: inherit; }
   color: #fff;
   font-weight: 800;
   cursor: pointer;
+  margin-top: 8px;
 }
+.continue-action { margin-top: 12px; }
 .primary-action:focus-visible { outline: 4px solid #f3b700; outline-offset: 3px; }
 .feedback { min-height: 28px; margin-top: 12px; font-weight: 700; }
 .feedback[data-state="ok"] { color: #126a3a; }
@@ -79,12 +85,7 @@ button, input, select { font: inherit; }
   #digital-next-app { width: min(100% - 16px, 980px); padding-top: 12px; }
   .prototype-header, .activity-card { border-radius: 16px; }
   .prototype-header, .activity-card { padding: 16px; }
-  .rectangle-fields { grid-template-columns: 1fr; }
-}
-
-@media (min-width: 780px) {
-  .activity-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .activity-card:last-child { grid-column: 1 / -1; }
+  .rectangle-fields, .fields-row { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
