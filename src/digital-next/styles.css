@@ -26,7 +26,22 @@ button, input, select { font: inherit; }
 .prototype-header p { margin: 4px 0; }
 .eyebrow { font-weight: 800; }
 .progress-text { margin-top: 14px !important; font-weight: 700; }
-.recommendation-text { margin-top: 8px !important; font-weight: 700; }
+.progress-track {
+  width: 100%;
+  height: 12px;
+  overflow: hidden;
+  margin-top: 9px;
+  border-radius: 999px;
+  background: #dbe5f1;
+}
+.progress-fill {
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: #1259b2;
+  transition: width 180ms ease;
+}
+.recommendation-text { margin-top: 10px !important; font-weight: 700; }
 
 .adaptive-stage { display: grid; place-items: start center; }
 .activity-card { width: min(100%, 760px); padding: 20px; }
@@ -92,11 +107,39 @@ button, input, select { font: inherit; }
 .coordinate-readout, .segment-data { direction: rtl; font-weight: 700; }
 .segment-data { font-size: 1.15rem; }
 
+.completion-card > p { line-height: 1.6; }
+.mastery-summary {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.mastery-summary li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid #d6e1ed;
+  border-radius: 12px;
+}
+.mastery-summary li strong { white-space: nowrap; }
+.mastery-summary li[data-mastery="strong"] { border-inline-start: 5px solid #126a3a; }
+.mastery-summary li[data-mastery="developing"] { border-inline-start: 5px solid #806000; }
+.mastery-summary li[data-mastery="reinforce"] { border-inline-start: 5px solid #9b2c2c; }
+
 @media (max-width: 480px) {
   #digital-next-app { width: min(100% - 16px, 980px); padding-top: 12px; }
   .prototype-header, .activity-card { border-radius: 16px; }
   .prototype-header, .activity-card { padding: 16px; }
   .rectangle-fields, .fields-row { grid-template-columns: 1fr; }
+  .mastery-summary li { align-items: flex-start; flex-direction: column; gap: 4px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress-fill { transition: none; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
