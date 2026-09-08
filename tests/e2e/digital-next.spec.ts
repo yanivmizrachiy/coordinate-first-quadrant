@@ -103,16 +103,20 @@ test.describe('digital-next adaptive isolated prototype', () => {
     await page.goto('/digital-next.html');
     const card = page.locator('[data-activity-id="segment-cd"]');
     const grid = card.locator('svg.segment-builder');
-    const box = await grid.boundingBox();
-    expect(box).not.toBeNull();
-    if (!box) return;
+    const endMarker = grid.locator('.draggable-point');
+    const markerBox = await endMarker.boundingBox();
+    const gridBox = await grid.boundingBox();
+    expect(markerBox).not.toBeNull();
+    expect(gridBox).not.toBeNull();
+    if (!markerBox || !gridBox) return;
 
-    const fromX = box.x + box.width * (151.2 / 360);
-    const targetX = box.x + box.width * (266.4 / 360);
-    const y = box.y + box.height * (180 / 360);
-    await page.mouse.move(fromX, y);
+    // Drag from the actual rendered handle, then map D(8,5) through the SVG viewBox.
+    // This stays correct if the responsive SVG is scaled differently on CI or a device.
+    const targetX = gridBox.x + gridBox.width * ((36 + 8 * 28.8) / 360);
+    const targetY = gridBox.y + gridBox.height * ((360 - 36 - 5 * 28.8) / 360);
+    await page.mouse.move(markerBox.x + markerBox.width / 2, markerBox.y + markerBox.height / 2);
     await page.mouse.down();
-    await page.mouse.move(targetX, y, { steps: 6 });
+    await page.mouse.move(targetX, targetY, { steps: 8 });
     await page.mouse.up();
     await expect(card.locator('.coordinate-readout')).toContainText('(8,5)');
 
