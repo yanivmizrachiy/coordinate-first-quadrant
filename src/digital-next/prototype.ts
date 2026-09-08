@@ -3,6 +3,7 @@ import { prototypeActivities } from './content';
 import { mountInteractiveGrid } from './grid';
 import { stagedHint } from './hints';
 import { guidanceForValidation, masteryStatus, rankedSkills, skillLabels, updateSkillState } from './mastery';
+import { mountRectangleBuilder } from './rectangle-builder';
 import { mountSegmentBuilder } from './segment-builder';
 import { explainRecommendation, nextActivity } from './sequencer';
 import { loadSession, recordAttempt, recordHint, saveSession, setCurrentActivity, type AdaptiveSession } from './session';
@@ -272,9 +273,23 @@ function renderActivity(activity: Activity) {
   }
 
   if (activity.kind === 'rectangle-properties') {
-    const data = document.createElement('p');
-    data.className = 'segment-data';
-    data.textContent = `H${pointText(activity.bottomLeft)}  ·  J${pointText(activity.topRight)}`;
+    const instruction = document.createElement('p');
+    instruction.className = 'segment-data';
+    instruction.textContent = `בנו מלבן מהפינה H${pointText(activity.bottomLeft)} עד הפינה J${pointText(activity.topRight)}, ואז חשבו את הגדלים.`;
+    const visual = document.createElement('div');
+    visual.className = 'grid-host';
+    let currentTopRight: Point = {
+      x: Math.min(10, activity.bottomLeft.x + 2),
+      y: Math.min(10, activity.bottomLeft.y + 2),
+    };
+    const readout = document.createElement('p');
+    readout.className = 'coordinate-readout rectangle-readout';
+    readout.textContent = `הפינה J כעת ${pointText(currentTopRight)}`;
+    mountRectangleBuilder(visual, activity.bottomLeft, currentTopRight, (point) => {
+      currentTopRight = point;
+      readout.textContent = `הפינה J כעת ${pointText(point)}`;
+    });
+
     const fields = document.createElement('div');
     fields.className = 'rectangle-fields';
     const length = inputNumber('אורך');
@@ -283,16 +298,24 @@ function renderActivity(activity: Activity) {
     const area = inputNumber('שטח S');
     fields.append(length.wrapper, width.wrapper, perimeter.wrapper, area.wrapper);
     const check = actionButton('בדיקת המלבן', () => {
+      if (currentTopRight.x !== activity.topRight.x || currentTopRight.y !== activity.topRight.y) {
+        completeAndContinue(activity, {
+          ok: false,
+          code: 'wrong-rectangle-length',
+          message: `בנו קודם את המלבן עד J${pointText(activity.topRight)}. הפינה הימנית העליונה עדיין אינה במקומה.`,
+        }, feedback);
+        return;
+      }
       const checks = [
-        validateRectangleMeasure(activity.bottomLeft, activity.topRight, 'length', Number(length.input.value)),
-        validateRectangleMeasure(activity.bottomLeft, activity.topRight, 'width', Number(width.input.value)),
-        validateRectangleMeasure(activity.bottomLeft, activity.topRight, 'perimeter', Number(perimeter.input.value)),
-        validateRectangleMeasure(activity.bottomLeft, activity.topRight, 'area', Number(area.input.value)),
+        validateRectangleMeasure(activity.bottomLeft, currentTopRight, 'length', Number(length.input.value)),
+        validateRectangleMeasure(activity.bottomLeft, currentTopRight, 'width', Number(width.input.value)),
+        validateRectangleMeasure(activity.bottomLeft, currentTopRight, 'perimeter', Number(perimeter.input.value)),
+        validateRectangleMeasure(activity.bottomLeft, currentTopRight, 'area', Number(area.input.value)),
       ];
-      const result = checks.find((item) => !item.ok) ?? { ok: true, code: 'correct' as const, message: 'נכון. כל ארבעת הגדלים חושבו מהשיעורים.' };
+      const result = checks.find((item) => !item.ok) ?? { ok: true, code: 'correct' as const, message: 'נכון. בניתם את המלבן וחישבתם את כל ארבעת הגדלים מהשיעורים.' };
       completeAndContinue(activity, result, feedback);
     });
-    card.append(data, fields, check, feedback);
+    card.append(instruction, visual, readout, fields, check, feedback);
   }
 
   return card;
