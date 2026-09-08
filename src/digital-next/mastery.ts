@@ -19,6 +19,19 @@ export type AttemptEvent = Readonly<{
   code: ValidationCode;
 }>;
 
+export const skillLabels: Readonly<Record<SkillId, string>> = {
+  'ordered-pair-order': 'סדר x ואז y',
+  'x-reading': 'קריאת שיעור x',
+  'y-reading': 'קריאת שיעור y',
+  'point-placement': 'מיקום נקודה לפי זוג סדור',
+  'axis-segment-length': 'אורך קטע באמצעות הפרש שיעורים',
+  'axes-origin': 'נקודות על הצירים ובראשית',
+  'coordinate-comparison': 'השוואת שיעורים',
+  'rectangle-dimensions': 'אורך ורוחב של מלבן מהשיעורים',
+  'rectangle-perimeter': 'היקף מלבן',
+  'rectangle-area': 'שטח מלבן',
+};
+
 export const initialSkillState: SkillState = {
   'ordered-pair-order': 0,
   'x-reading': 0,
@@ -84,6 +97,18 @@ export function weakestSkill(state: SkillState): SkillId {
   return (Object.entries(state) as [SkillId, number][]).reduce((weakest, current) =>
     current[1] < weakest[1] ? current : weakest,
   )[0];
+}
+
+export function rankedSkills(state: SkillState): readonly { skill: SkillId; score: number }[] {
+  return (Object.entries(state) as [SkillId, number][])
+    .map(([skill, score]) => ({ skill, score }))
+    .sort((a, b) => b.score - a.score || skillLabels[a.skill].localeCompare(skillLabels[b.skill], 'he'));
+}
+
+export function masteryStatus(score: number): 'strong' | 'developing' | 'reinforce' {
+  if (score > 0) return 'strong';
+  if (score < 0) return 'reinforce';
+  return 'developing';
 }
 
 export function guidanceForValidation(code: ValidationCode): string | null {
