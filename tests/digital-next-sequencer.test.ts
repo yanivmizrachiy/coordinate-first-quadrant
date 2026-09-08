@@ -5,8 +5,12 @@ import { explainRecommendation, nextActivity, skillsForActivity } from '../src/d
 
 describe('digital-next adaptive sequencer', () => {
   it('maps activities to explicit skills', () => {
-    expect(skillsForActivity(prototypeActivities[0])).toContain('ordered-pair-order');
-    expect(skillsForActivity(prototypeActivities[5])).toContain('rectangle-area');
+    const read = prototypeActivities.find((activity) => activity.id === 'read-a');
+    const rectangle = prototypeActivities.find((activity) => activity.id === 'rectangle-hijk');
+    expect(read).toBeDefined();
+    expect(rectangle).toBeDefined();
+    expect(skillsForActivity(read!)).toContain('ordered-pair-order');
+    expect(skillsForActivity(rectangle!)).toContain('rectangle-area');
   });
 
   it('targets the weakest skill among remaining activities', () => {
