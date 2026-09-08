@@ -2,8 +2,14 @@ import './styles.css';
 import { prototypeActivities } from './content';
 import { mountInteractiveGrid } from './grid';
 import { guidanceForValidation } from './mastery';
-import type { Point, PrototypeProgress, ValidationResult } from './types';
-import { validatePointAnswer, validateSegmentLength } from './validators';
+import type { Point, PointRegion, PrototypeProgress, ValidationResult } from './types';
+import {
+  validateCoordinateComparison,
+  validatePointAnswer,
+  validatePointRegion,
+  validateRectangleMeasure,
+  validateSegmentLength,
+} from './validators';
 
 const STORAGE_KEY = 'coordinate-first-quadrant:digital-next:v1';
 
@@ -31,7 +37,7 @@ function pointText(point: Point) {
   return `(${point.x},${point.y})`;
 }
 
-function inputNumber(label: string) {
+function inputNumber(label: string, max = 100) {
   const wrapper = document.createElement('label');
   wrapper.className = 'number-field';
   const span = document.createElement('span');
@@ -39,10 +45,26 @@ function inputNumber(label: string) {
   const input = document.createElement('input');
   input.type = 'number';
   input.min = '0';
-  input.max = '10';
+  input.max = String(max);
   input.inputMode = 'numeric';
   wrapper.append(span, input);
   return { wrapper, input };
+}
+
+function selectField<T extends string>(label: string, options: readonly { value: T; label: string }[]) {
+  const wrapper = document.createElement('label');
+  wrapper.className = 'number-field';
+  const span = document.createElement('span');
+  span.textContent = label;
+  const select = document.createElement('select');
+  for (const option of options) {
+    const element = document.createElement('option');
+    element.value = option.value;
+    element.textContent = option.label;
+    select.append(element);
+  }
+  wrapper.append(span, select);
+  return { wrapper, select };
 }
 
 function feedbackBox() {
@@ -79,7 +101,7 @@ header.className = 'prototype-header';
 header.innerHTML = `
   <p class="eyebrow">אב־טיפוס מבודד — אינו חלק מהאתר הפעיל</p>
   <h1>מערכת צירים — הרביע הראשון</h1>
-  <p>שלוש פעילויות ראשונות לבדיקת אינטראקציה, משוב ומגע.</p>
+  <p>שש פעילויות לבדיקת אינטראקציה, משוב אדפטיבי, מגע ומקלדת.</p>
 `;
 
 const progressText = document.createElement('p');
@@ -112,23 +134,18 @@ for (const activity of prototypeActivities) {
 
   if (activity.kind === 'read-point') {
     const visual = document.createElement('div');
-    visual.className = 'grid-host';
+    visual.className = 'grid-host read-only-grid';
     const grid = mountInteractiveGrid(visual, activity.point, () => undefined);
-    visual.classList.add('read-only-grid');
-
     const fields = document.createElement('div');
     fields.className = 'fields-row';
-    const x = inputNumber('שיעור x');
-    const y = inputNumber('שיעור y');
+    const x = inputNumber('שיעור x', 10);
+    const y = inputNumber('שיעור y', 10);
     fields.append(x.wrapper, y.wrapper);
-
     const check = actionButton('בדיקה', () => {
-      const actual = { x: Number(x.input.value), y: Number(y.input.value) };
-      const result = validatePointAnswer(activity.point, actual);
+      const result = validatePointAnswer(activity.point, { x: Number(x.input.value), y: Number(y.input.value) });
       showFeedback(feedback, result);
       if (result.ok) markComplete(activity.id);
     });
-
     card.append(visual, fields, check, feedback);
     grid.setPoint(activity.point);
   }
@@ -137,21 +154,18 @@ for (const activity of prototypeActivities) {
     const visual = document.createElement('div');
     visual.className = 'grid-host';
     let current: Point = { x: 1, y: 1 };
+    const coords = document.createElement('p');
+    coords.className = 'coordinate-readout';
+    coords.textContent = `הנקודה כעת ${pointText(current)}`;
     mountInteractiveGrid(visual, current, (point) => {
       current = point;
       coords.textContent = `הנקודה כעת ${pointText(point)}`;
     });
-
-    const coords = document.createElement('p');
-    coords.className = 'coordinate-readout';
-    coords.textContent = `הנקודה כעת ${pointText(current)}`;
-
     const check = actionButton('בדיקה', () => {
       const result = validatePointAnswer(activity.target, current);
       showFeedback(feedback, result);
       if (result.ok) markComplete(activity.id);
     });
-
     card.append(visual, coords, check, feedback);
   }
 
@@ -159,19 +173,76 @@ for (const activity of prototypeActivities) {
     const instruction = document.createElement('p');
     instruction.className = 'segment-data';
     instruction.textContent = `C${pointText(activity.start)}  ·  D${pointText(activity.end)}`;
-
     const field = inputNumber('אורך הקטע');
     const check = actionButton('בדיקה', () => {
-      const result = validateSegmentLength(
-        activity.start,
-        activity.end,
-        Number(field.input.value),
-      );
+      const result = validateSegmentLength(activity.start, activity.end, Number(field.input.value));
       showFeedback(feedback, result);
       if (result.ok) markComplete(activity.id);
     });
-
     card.append(instruction, field.wrapper, check, feedback);
+  }
+
+  if (activity.kind === 'classify-point') {
+    const data = document.createElement('p');
+    data.className = 'segment-data';
+    data.textContent = `E${pointText(activity.point)}`;
+    const field = selectField<PointRegion>('מיקום הנקודה', [
+      { value: 'first-quadrant', label: 'בתוך הרביע הראשון' },
+      { value: 'x-axis', label: 'על ציר x' },
+      { value: 'y-axis', label: 'על ציר y' },
+      { value: 'origin', label: 'בראשית הצירים' },
+    ]);
+    const check = actionButton('בדיקה', () => {
+      const result = validatePointRegion(activity.point, field.select.value as PointRegion);
+      showFeedback(feedback, result);
+      if (result.ok) markComplete(activity.id);
+    });
+    card.append(data, field.wrapper, check, feedback);
+  }
+
+  if (activity.kind === 'compare-coordinate') {
+    const data = document.createElement('p');
+    data.className = 'segment-data';
+    data.textContent = `F${pointText(activity.first)}  ·  G${pointText(activity.second)}`;
+    const field = selectField<'<' | '=' | '>'>('סימן ההשוואה', [
+      { value: '<', label: '<' },
+      { value: '=', label: '=' },
+      { value: '>', label: '>' },
+    ]);
+    const check = actionButton('בדיקה', () => {
+      const result = validateCoordinateComparison(activity.first, activity.second, activity.axis, field.select.value as '<' | '=' | '>');
+      showFeedback(feedback, result);
+      if (result.ok) markComplete(activity.id);
+    });
+    card.append(data, field.wrapper, check, feedback);
+  }
+
+  if (activity.kind === 'rectangle-properties') {
+    const data = document.createElement('p');
+    data.className = 'segment-data';
+    data.textContent = `H${pointText(activity.bottomLeft)}  ·  J${pointText(activity.topRight)}`;
+    const fields = document.createElement('div');
+    fields.className = 'rectangle-fields';
+    const length = inputNumber('אורך');
+    const width = inputNumber('רוחב');
+    const perimeter = inputNumber('היקף P');
+    const area = inputNumber('שטח S');
+    fields.append(length.wrapper, width.wrapper, perimeter.wrapper, area.wrapper);
+    const check = actionButton('בדיקת המלבן', () => {
+      const checks = [
+        validateRectangleMeasure(activity.bottomLeft, activity.topRight, 'length', Number(length.input.value)),
+        validateRectangleMeasure(activity.bottomLeft, activity.topRight, 'width', Number(width.input.value)),
+        validateRectangleMeasure(activity.bottomLeft, activity.topRight, 'perimeter', Number(perimeter.input.value)),
+        validateRectangleMeasure(activity.bottomLeft, activity.topRight, 'area', Number(area.input.value)),
+      ];
+      const firstError = checks.find((result) => !result.ok);
+      if (firstError) showFeedback(feedback, firstError);
+      else {
+        showFeedback(feedback, { ok: true, code: 'correct', message: 'נכון. כל ארבעת הגדלים חושבו מהשיעורים.' });
+        markComplete(activity.id);
+      }
+    });
+    card.append(data, fields, check, feedback);
   }
 
   list.append(card);
