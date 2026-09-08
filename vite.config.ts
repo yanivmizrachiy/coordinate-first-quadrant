@@ -1,3 +1,4 @@
+import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 
 // Relative base so the same build works when opened locally (file/preview)
@@ -10,6 +11,14 @@ export default defineConfig({
     target: 'es2022',
     cssCodeSplit: false,
     sourcemap: false,
+    // The prototype is a separate build entry only. The canonical app keeps
+    // index.html and its router unchanged; nothing links to this entry.
+    rollupOptions: {
+      input: {
+        app: resolve(__dirname, 'index.html'),
+        'digital-next': resolve(__dirname, 'digital-next.html'),
+      },
+    },
   },
   server: {
     /* Two working sessions each start their own dev server on this repo; a
