@@ -58,6 +58,13 @@ button, input, select { font: inherit; }
 .static-point { fill: #1259b2; stroke: #fff; stroke-width: 4; }
 .fixed-point { fill: #10233f; stroke: #fff; stroke-width: 4; }
 .built-segment { stroke: #1259b2; stroke-width: 7; stroke-linecap: round; }
+.built-rectangle {
+  fill: rgb(18 89 178 / 13%);
+  stroke: #1259b2;
+  stroke-width: 5;
+  vector-effect: non-scaling-stroke;
+}
+.rectangle-builder .draggable-point { cursor: nwse-resize; }
 .digital-next-grid:focus-visible { outline: 4px solid #f3b700; outline-offset: 4px; border-radius: 16px; }
 
 .fields-row,
@@ -106,6 +113,7 @@ button, input, select { font: inherit; }
 .learning-hint.guided { color: #173f70; background: #edf4fc; }
 .coordinate-readout, .segment-data { direction: rtl; font-weight: 700; }
 .segment-data { font-size: 1.15rem; }
+.rectangle-readout { margin-top: -4px; text-align: center; }
 
 .completion-card > p { line-height: 1.6; }
 .mastery-summary {
