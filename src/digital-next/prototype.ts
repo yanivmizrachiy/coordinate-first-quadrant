@@ -2,6 +2,7 @@ import './styles.css';
 import { prototypeActivities } from './content';
 import { mountInteractiveGrid } from './grid';
 import { guidanceForValidation, updateSkillState } from './mastery';
+import { mountSegmentBuilder } from './segment-builder';
 import { explainRecommendation, nextActivity } from './sequencer';
 import { loadSession, recordAttempt, saveSession, type AdaptiveSession } from './session';
 import type { Activity, Point, PointRegion, ValidationResult } from './types';
@@ -93,25 +94,18 @@ const stage = document.createElement('main');
 stage.className = 'adaptive-stage';
 app.append(header, stage);
 
-function persist() {
-  saveSession(session);
-}
+function persist() { saveSession(session); }
 
 function updateHeader(activity: Activity | null) {
   progressText.textContent = `הושלמו ${session.completedIds.length} מתוך ${prototypeActivities.length} פעילויות`;
-  recommendation.textContent = activity
-    ? explainRecommendation(activity, session.mastery)
-    : 'כל פעילויות האב־טיפוס הושלמו.';
+  recommendation.textContent = activity ? explainRecommendation(activity, session.mastery) : 'כל פעילויות האב־טיפוס הושלמו.';
 }
 
 function applyAttempt(activity: Activity, result: ValidationResult) {
   session = recordAttempt(session, activity.id);
   session = {
     ...session,
-    mastery: updateSkillState(session.mastery, {
-      activityKind: activity.kind,
-      code: result.code,
-    }),
+    mastery: updateSkillState(session.mastery, { activityKind: activity.kind, code: result.code }),
   };
   if (result.ok && !session.completedIds.includes(activity.id)) {
     session = { ...session, completedIds: [...session.completedIds, activity.id] };
@@ -124,10 +118,8 @@ function completeAndContinue(activity: Activity, result: ValidationResult, feedb
   applyAttempt(activity, result);
   updateHeader(activity);
   if (!result.ok) return;
-
   const existing = feedback.parentElement?.querySelector<HTMLButtonElement>('.continue-action');
   if (existing) return;
-
   const continueButton = actionButton('להמשך הפעילות המומלצת', () => renderCurrentActivity());
   continueButton.classList.add('continue-action');
   feedback.after(continueButton);
@@ -137,7 +129,6 @@ function renderActivity(activity: Activity) {
   const card = document.createElement('section');
   card.className = 'activity-card adaptive-card';
   card.dataset.activityId = activity.id;
-
   const title = document.createElement('h2');
   title.textContent = activity.prompt;
   const attemptCount = document.createElement('p');
@@ -145,24 +136,24 @@ function renderActivity(activity: Activity) {
   const currentAttempts = session.attemptsByActivity[activity.id] ?? 0;
   attemptCount.textContent = currentAttempts === 0 ? 'ניסיון ראשון' : `ניסיונות קודמים: ${currentAttempts}`;
   card.append(title, attemptCount);
-
   const feedback = feedbackBox();
 
   if (activity.kind === 'read-point') {
     const visual = document.createElement('div');
-    visual.className = 'grid-host read-only-grid';
-    const grid = mountInteractiveGrid(visual, activity.point, () => undefined);
+    visual.className = 'grid-host';
+    mountInteractiveGrid(visual, activity.point, () => undefined, {
+      interactive: false,
+      ariaLabel: `מערכת צירים עם הנקודה A בשיעורים ${pointText(activity.point)}`,
+    });
     const fields = document.createElement('div');
     fields.className = 'fields-row';
     const x = inputNumber('שיעור x', 10);
     const y = inputNumber('שיעור y', 10);
     fields.append(x.wrapper, y.wrapper);
     const check = actionButton('בדיקה', () => {
-      const result = validatePointAnswer(activity.point, { x: Number(x.input.value), y: Number(y.input.value) });
-      completeAndContinue(activity, result, feedback);
+      completeAndContinue(activity, validatePointAnswer(activity.point, { x: Number(x.input.value), y: Number(y.input.value) }), feedback);
     });
     card.append(visual, fields, check, feedback);
-    grid.setPoint(activity.point);
   }
 
   if (activity.kind === 'place-point') {
@@ -176,21 +167,37 @@ function renderActivity(activity: Activity) {
       current = point;
       coords.textContent = `הנקודה כעת ${pointText(point)}`;
     });
-    const check = actionButton('בדיקה', () => {
-      completeAndContinue(activity, validatePointAnswer(activity.target, current), feedback);
-    });
+    const check = actionButton('בדיקה', () => completeAndContinue(activity, validatePointAnswer(activity.target, current), feedback));
     card.append(visual, coords, check, feedback);
   }
 
   if (activity.kind === 'segment-length') {
     const instruction = document.createElement('p');
     instruction.className = 'segment-data';
-    instruction.textContent = `C${pointText(activity.start)}  ·  D${pointText(activity.end)}`;
-    const field = inputNumber('אורך הקטע');
-    const check = actionButton('בדיקה', () => {
-      completeAndContinue(activity, validateSegmentLength(activity.start, activity.end, Number(field.input.value)), feedback);
+    instruction.textContent = `בנו קטע מ־C${pointText(activity.start)} אל D${pointText(activity.end)}, ואז חשבו את אורכו.`;
+    const visual = document.createElement('div');
+    visual.className = 'grid-host';
+    let currentEnd: Point = { x: Math.min(10, activity.start.x + 2), y: activity.start.y };
+    const readout = document.createElement('p');
+    readout.className = 'coordinate-readout';
+    readout.textContent = `נקודת הקצה כעת ${pointText(currentEnd)}`;
+    mountSegmentBuilder(visual, activity.start, currentEnd, (point) => {
+      currentEnd = point;
+      readout.textContent = `נקודת הקצה כעת ${pointText(point)}`;
     });
-    card.append(instruction, field.wrapper, check, feedback);
+    const field = inputNumber('אורך הקטע');
+    const check = actionButton('בדיקת הקטע', () => {
+      if (currentEnd.x !== activity.end.x || currentEnd.y !== activity.end.y) {
+        completeAndContinue(activity, {
+          ok: false,
+          code: 'wrong-segment-length',
+          message: `בנו קודם את הקטע עד D${pointText(activity.end)}. נקודת הקצה עדיין אינה במקומה.`,
+        }, feedback);
+        return;
+      }
+      completeAndContinue(activity, validateSegmentLength(activity.start, currentEnd, Number(field.input.value)), feedback);
+    });
+    card.append(instruction, visual, readout, field.wrapper, check, feedback);
   }
 
   if (activity.kind === 'classify-point') {
@@ -203,9 +210,7 @@ function renderActivity(activity: Activity) {
       { value: 'y-axis', label: 'על ציר y' },
       { value: 'origin', label: 'בראשית הצירים' },
     ]);
-    const check = actionButton('בדיקה', () => {
-      completeAndContinue(activity, validatePointRegion(activity.point, field.select.value as PointRegion), feedback);
-    });
+    const check = actionButton('בדיקה', () => completeAndContinue(activity, validatePointRegion(activity.point, field.select.value as PointRegion), feedback));
     card.append(data, field.wrapper, check, feedback);
   }
 
@@ -214,17 +219,13 @@ function renderActivity(activity: Activity) {
     data.className = 'segment-data';
     data.textContent = `F${pointText(activity.first)}  ·  G${pointText(activity.second)}`;
     const field = selectField<'<' | '=' | '>'>('סימן ההשוואה', [
-      { value: '<', label: '<' },
-      { value: '=', label: '=' },
-      { value: '>', label: '>' },
+      { value: '<', label: '<' }, { value: '=', label: '=' }, { value: '>', label: '>' },
     ]);
-    const check = actionButton('בדיקה', () => {
-      completeAndContinue(
-        activity,
-        validateCoordinateComparison(activity.first, activity.second, activity.axis, field.select.value as '<' | '=' | '>'),
-        feedback,
-      );
-    });
+    const check = actionButton('בדיקה', () => completeAndContinue(
+      activity,
+      validateCoordinateComparison(activity.first, activity.second, activity.axis, field.select.value as '<' | '=' | '>'),
+      feedback,
+    ));
     card.append(data, field.wrapper, check, feedback);
   }
 
@@ -246,11 +247,7 @@ function renderActivity(activity: Activity) {
         validateRectangleMeasure(activity.bottomLeft, activity.topRight, 'perimeter', Number(perimeter.input.value)),
         validateRectangleMeasure(activity.bottomLeft, activity.topRight, 'area', Number(area.input.value)),
       ];
-      const result = checks.find((item) => !item.ok) ?? {
-        ok: true,
-        code: 'correct' as const,
-        message: 'נכון. כל ארבעת הגדלים חושבו מהשיעורים.',
-      };
+      const result = checks.find((item) => !item.ok) ?? { ok: true, code: 'correct' as const, message: 'נכון. כל ארבעת הגדלים חושבו מהשיעורים.' };
       completeAndContinue(activity, result, feedback);
     });
     card.append(data, fields, check, feedback);
@@ -263,7 +260,6 @@ function renderCurrentActivity() {
   const activity = nextActivity(prototypeActivities, session.mastery, session.completedIds);
   updateHeader(activity);
   stage.replaceChildren();
-
   if (!activity) {
     const done = document.createElement('section');
     done.className = 'activity-card completion-card';
@@ -271,7 +267,6 @@ function renderCurrentActivity() {
     stage.append(done);
     return;
   }
-
   stage.append(renderActivity(activity));
 }
 
