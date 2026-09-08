@@ -1,8 +1,10 @@
 import './styles.css';
 import { prototypeActivities } from './content';
 import { mountInteractiveGrid } from './grid';
-import { guidanceForValidation } from './mastery';
-import type { Point, PointRegion, PrototypeProgress, ValidationResult } from './types';
+import { guidanceForValidation, updateSkillState } from './mastery';
+import { explainRecommendation, nextActivity } from './sequencer';
+import { loadSession, recordAttempt, saveSession, type AdaptiveSession } from './session';
+import type { Activity, Point, PointRegion, ValidationResult } from './types';
 import {
   validateCoordinateComparison,
   validatePointAnswer,
@@ -10,28 +12,6 @@ import {
   validateRectangleMeasure,
   validateSegmentLength,
 } from './validators';
-
-const STORAGE_KEY = 'coordinate-first-quadrant:digital-next:v1';
-
-function loadProgress(): PrototypeProgress {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { completedIds: [], updatedAt: new Date(0).toISOString() };
-    const parsed = JSON.parse(raw) as PrototypeProgress;
-    if (!Array.isArray(parsed.completedIds)) throw new Error('invalid progress');
-    return parsed;
-  } catch {
-    return { completedIds: [], updatedAt: new Date(0).toISOString() };
-  }
-}
-
-function saveProgress(completedIds: string[]) {
-  const progress: PrototypeProgress = {
-    completedIds: [...new Set(completedIds)],
-    updatedAt: new Date().toISOString(),
-  };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-}
 
 function pointText(point: Point) {
   return `(${point.x},${point.y})`;
@@ -93,42 +73,75 @@ function actionButton(text: string, onClick: () => void) {
 const app = document.querySelector<HTMLElement>('#digital-next-app');
 if (!app) throw new Error('Missing #digital-next-app');
 
-const progress = loadProgress();
-let completed = [...progress.completedIds];
+let session: AdaptiveSession = loadSession();
 
 const header = document.createElement('header');
 header.className = 'prototype-header';
 header.innerHTML = `
   <p class="eyebrow">אב־טיפוס מבודד — אינו חלק מהאתר הפעיל</p>
   <h1>מערכת צירים — הרביע הראשון</h1>
-  <p>שש פעילויות לבדיקת אינטראקציה, משוב אדפטיבי, מגע ומקלדת.</p>
+  <p>מסלול למידה אדפטיבי: פעילות אחת בכל פעם, לפי המיומנות שזקוקה לחיזוק.</p>
 `;
 
 const progressText = document.createElement('p');
 progressText.className = 'progress-text';
-header.append(progressText);
+const recommendation = document.createElement('p');
+recommendation.className = 'recommendation-text';
+header.append(progressText, recommendation);
 
-const list = document.createElement('main');
-list.className = 'activity-list';
+const stage = document.createElement('main');
+stage.className = 'adaptive-stage';
+app.append(header, stage);
 
-function refreshProgress() {
-  progressText.textContent = `הושלמו ${completed.length} מתוך ${prototypeActivities.length} פעילויות`;
-  saveProgress(completed);
+function persist() {
+  saveSession(session);
 }
 
-function markComplete(id: string) {
-  if (!completed.includes(id)) completed.push(id);
-  refreshProgress();
+function updateHeader(activity: Activity | null) {
+  progressText.textContent = `הושלמו ${session.completedIds.length} מתוך ${prototypeActivities.length} פעילויות`;
+  recommendation.textContent = activity
+    ? explainRecommendation(activity, session.mastery)
+    : 'כל פעילויות האב־טיפוס הושלמו.';
 }
 
-for (const activity of prototypeActivities) {
+function applyAttempt(activity: Activity, result: ValidationResult) {
+  session = recordAttempt(session, activity.id);
+  session = {
+    ...session,
+    mastery: updateSkillState(session.mastery, {
+      activityKind: activity.kind,
+      code: result.code,
+    }),
+  };
+  if (result.ok && !session.completedIds.includes(activity.id)) {
+    session = { ...session, completedIds: [...session.completedIds, activity.id] };
+  }
+  persist();
+}
+
+function completeAndContinue(activity: Activity, result: ValidationResult, feedback: HTMLElement) {
+  showFeedback(feedback, result);
+  applyAttempt(activity, result);
+  updateHeader(activity);
+  if (!result.ok) return;
+
+  const continueButton = actionButton('להמשך הפעילות המומלצת', () => renderCurrentActivity());
+  continueButton.classList.add('continue-action');
+  feedback.after(continueButton);
+}
+
+function renderActivity(activity: Activity) {
   const card = document.createElement('section');
-  card.className = 'activity-card';
+  card.className = 'activity-card adaptive-card';
   card.dataset.activityId = activity.id;
 
   const title = document.createElement('h2');
   title.textContent = activity.prompt;
-  card.append(title);
+  const attemptCount = document.createElement('p');
+  attemptCount.className = 'attempt-count';
+  const currentAttempts = session.attemptsByActivity[activity.id] ?? 0;
+  attemptCount.textContent = currentAttempts === 0 ? 'ניסיון ראשון' : `ניסיונות קודמים: ${currentAttempts}`;
+  card.append(title, attemptCount);
 
   const feedback = feedbackBox();
 
@@ -143,8 +156,7 @@ for (const activity of prototypeActivities) {
     fields.append(x.wrapper, y.wrapper);
     const check = actionButton('בדיקה', () => {
       const result = validatePointAnswer(activity.point, { x: Number(x.input.value), y: Number(y.input.value) });
-      showFeedback(feedback, result);
-      if (result.ok) markComplete(activity.id);
+      completeAndContinue(activity, result, feedback);
     });
     card.append(visual, fields, check, feedback);
     grid.setPoint(activity.point);
@@ -162,9 +174,7 @@ for (const activity of prototypeActivities) {
       coords.textContent = `הנקודה כעת ${pointText(point)}`;
     });
     const check = actionButton('בדיקה', () => {
-      const result = validatePointAnswer(activity.target, current);
-      showFeedback(feedback, result);
-      if (result.ok) markComplete(activity.id);
+      completeAndContinue(activity, validatePointAnswer(activity.target, current), feedback);
     });
     card.append(visual, coords, check, feedback);
   }
@@ -175,9 +185,7 @@ for (const activity of prototypeActivities) {
     instruction.textContent = `C${pointText(activity.start)}  ·  D${pointText(activity.end)}`;
     const field = inputNumber('אורך הקטע');
     const check = actionButton('בדיקה', () => {
-      const result = validateSegmentLength(activity.start, activity.end, Number(field.input.value));
-      showFeedback(feedback, result);
-      if (result.ok) markComplete(activity.id);
+      completeAndContinue(activity, validateSegmentLength(activity.start, activity.end, Number(field.input.value)), feedback);
     });
     card.append(instruction, field.wrapper, check, feedback);
   }
@@ -193,9 +201,7 @@ for (const activity of prototypeActivities) {
       { value: 'origin', label: 'בראשית הצירים' },
     ]);
     const check = actionButton('בדיקה', () => {
-      const result = validatePointRegion(activity.point, field.select.value as PointRegion);
-      showFeedback(feedback, result);
-      if (result.ok) markComplete(activity.id);
+      completeAndContinue(activity, validatePointRegion(activity.point, field.select.value as PointRegion), feedback);
     });
     card.append(data, field.wrapper, check, feedback);
   }
@@ -210,9 +216,11 @@ for (const activity of prototypeActivities) {
       { value: '>', label: '>' },
     ]);
     const check = actionButton('בדיקה', () => {
-      const result = validateCoordinateComparison(activity.first, activity.second, activity.axis, field.select.value as '<' | '=' | '>');
-      showFeedback(feedback, result);
-      if (result.ok) markComplete(activity.id);
+      completeAndContinue(
+        activity,
+        validateCoordinateComparison(activity.first, activity.second, activity.axis, field.select.value as '<' | '=' | '>'),
+        feedback,
+      );
     });
     card.append(data, field.wrapper, check, feedback);
   }
@@ -235,18 +243,33 @@ for (const activity of prototypeActivities) {
         validateRectangleMeasure(activity.bottomLeft, activity.topRight, 'perimeter', Number(perimeter.input.value)),
         validateRectangleMeasure(activity.bottomLeft, activity.topRight, 'area', Number(area.input.value)),
       ];
-      const firstError = checks.find((result) => !result.ok);
-      if (firstError) showFeedback(feedback, firstError);
-      else {
-        showFeedback(feedback, { ok: true, code: 'correct', message: 'נכון. כל ארבעת הגדלים חושבו מהשיעורים.' });
-        markComplete(activity.id);
-      }
+      const result = checks.find((item) => !item.ok) ?? {
+        ok: true,
+        code: 'correct' as const,
+        message: 'נכון. כל ארבעת הגדלים חושבו מהשיעורים.',
+      };
+      completeAndContinue(activity, result, feedback);
     });
     card.append(data, fields, check, feedback);
   }
 
-  list.append(card);
+  return card;
 }
 
-app.append(header, list);
-refreshProgress();
+function renderCurrentActivity() {
+  const activity = nextActivity(prototypeActivities, session.mastery, session.completedIds);
+  updateHeader(activity);
+  stage.replaceChildren();
+
+  if (!activity) {
+    const done = document.createElement('section');
+    done.className = 'activity-card completion-card';
+    done.innerHTML = '<h2>המסלול הושלם</h2><p>כל שש פעילויות האב־טיפוס הושלמו. נתוני המיומנויות נשמרו במכשיר בלבד.</p>';
+    stage.append(done);
+    return;
+  }
+
+  stage.append(renderActivity(activity));
+}
+
+renderCurrentActivity();
