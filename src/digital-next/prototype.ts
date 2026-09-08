@@ -1,7 +1,8 @@
 import './styles.css';
 import { prototypeActivities } from './content';
 import { mountInteractiveGrid } from './grid';
-import type { Point, PrototypeProgress } from './types';
+import { guidanceForValidation } from './mastery';
+import type { Point, PrototypeProgress, ValidationResult } from './types';
 import { validatePointAnswer, validateSegmentLength } from './validators';
 
 const STORAGE_KEY = 'coordinate-first-quadrant:digital-next:v1';
@@ -50,6 +51,12 @@ function feedbackBox() {
   box.setAttribute('role', 'status');
   box.setAttribute('aria-live', 'polite');
   return box;
+}
+
+function showFeedback(box: HTMLElement, result: ValidationResult) {
+  const guidance = guidanceForValidation(result.code);
+  box.textContent = guidance ? `${result.message} ${guidance}` : result.message;
+  box.dataset.state = result.ok ? 'ok' : 'error';
 }
 
 function actionButton(text: string, onClick: () => void) {
@@ -118,8 +125,7 @@ for (const activity of prototypeActivities) {
     const check = actionButton('בדיקה', () => {
       const actual = { x: Number(x.input.value), y: Number(y.input.value) };
       const result = validatePointAnswer(activity.point, actual);
-      feedback.textContent = result.message;
-      feedback.dataset.state = result.ok ? 'ok' : 'error';
+      showFeedback(feedback, result);
       if (result.ok) markComplete(activity.id);
     });
 
@@ -142,8 +148,7 @@ for (const activity of prototypeActivities) {
 
     const check = actionButton('בדיקה', () => {
       const result = validatePointAnswer(activity.target, current);
-      feedback.textContent = result.message;
-      feedback.dataset.state = result.ok ? 'ok' : 'error';
+      showFeedback(feedback, result);
       if (result.ok) markComplete(activity.id);
     });
 
@@ -162,8 +167,7 @@ for (const activity of prototypeActivities) {
         activity.end,
         Number(field.input.value),
       );
-      feedback.textContent = result.message;
-      feedback.dataset.state = result.ok ? 'ok' : 'error';
+      showFeedback(feedback, result);
       if (result.ok) markComplete(activity.id);
     });
 
