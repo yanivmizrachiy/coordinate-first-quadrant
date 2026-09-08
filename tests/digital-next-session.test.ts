@@ -4,6 +4,7 @@ import {
   emptySession,
   loadSession,
   recordAttempt,
+  recordHint,
   saveSession,
   SESSION_STORAGE_KEY,
 } from '../src/digital-next/session';
@@ -21,10 +22,11 @@ function memoryStorage(seed: Record<string, string> = {}): Storage {
 }
 
 describe('digital-next adaptive session', () => {
-  it('starts with versioned empty mastery state', () => {
+  it('starts with versioned empty mastery and hint state', () => {
     const session = emptySession();
-    expect(session.version).toBe(2);
+    expect(session.version).toBe(3);
     expect(session.mastery).toEqual(initialSkillState);
+    expect(session.hintsUsedByActivity).toEqual({});
   });
 
   it('migrates completed ids from legacy v1 progress', () => {
@@ -37,16 +39,34 @@ describe('digital-next adaptive session', () => {
     expect(loadSession(storage).completedIds).toEqual(['read-a']);
   });
 
+  it('migrates v2 attempts and mastery into v3 without inventing hints', () => {
+    const storage = memoryStorage({
+      'coordinate-first-quadrant:digital-next:v2': JSON.stringify({
+        version: 2,
+        completedIds: ['read-a'],
+        attemptsByActivity: { 'read-a': 2 },
+        mastery: initialSkillState,
+        updatedAt: '2026-09-08T00:00:00.000Z',
+      }),
+    });
+    const loaded = loadSession(storage);
+    expect(loaded.version).toBe(3);
+    expect(loaded.attemptsByActivity['read-a']).toBe(2);
+    expect(loaded.hintsUsedByActivity).toEqual({});
+  });
+
   it('ignores corrupt state safely', () => {
     const storage = memoryStorage({ [SESSION_STORAGE_KEY]: '{broken' });
     expect(loadSession(storage).completedIds).toEqual([]);
   });
 
-  it('counts attempts per activity and persists a normalized snapshot', () => {
+  it('counts attempts and hints per activity and persists a normalized snapshot', () => {
     const storage = memoryStorage();
-    const session = recordAttempt(recordAttempt(emptySession(), 'read-a'), 'read-a');
+    let session = recordAttempt(recordAttempt(emptySession(), 'read-a'), 'read-a');
+    session = recordHint(recordHint(session, 'read-a'), 'read-a');
     saveSession(session, storage);
     const loaded = loadSession(storage);
     expect(loaded.attemptsByActivity['read-a']).toBe(2);
+    expect(loaded.hintsUsedByActivity['read-a']).toBe(2);
   });
 });
