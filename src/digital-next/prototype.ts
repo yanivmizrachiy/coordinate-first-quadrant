@@ -2,7 +2,7 @@ import './styles.css';
 import { prototypeActivities } from './content';
 import { mountInteractiveGrid } from './grid';
 import { stagedHint } from './hints';
-import { guidanceForValidation, updateSkillState } from './mastery';
+import { guidanceForValidation, masteryStatus, rankedSkills, skillLabels, updateSkillState } from './mastery';
 import { mountSegmentBuilder } from './segment-builder';
 import { explainRecommendation, nextActivity } from './sequencer';
 import { loadSession, recordAttempt, recordHint, saveSession, setCurrentActivity, type AdaptiveSession } from './session';
@@ -87,9 +87,18 @@ header.innerHTML = `
 
 const progressText = document.createElement('p');
 progressText.className = 'progress-text';
+const progressTrack = document.createElement('div');
+progressTrack.className = 'progress-track';
+progressTrack.setAttribute('role', 'progressbar');
+progressTrack.setAttribute('aria-label', 'התקדמות במסלול');
+progressTrack.setAttribute('aria-valuemin', '0');
+progressTrack.setAttribute('aria-valuemax', String(prototypeActivities.length));
+const progressFill = document.createElement('div');
+progressFill.className = 'progress-fill';
+progressTrack.append(progressFill);
 const recommendation = document.createElement('p');
 recommendation.className = 'recommendation-text';
-header.append(progressText, recommendation);
+header.append(progressText, progressTrack, recommendation);
 
 const stage = document.createElement('main');
 stage.className = 'adaptive-stage';
@@ -98,7 +107,10 @@ app.append(header, stage);
 function persist() { saveSession(session); }
 
 function updateHeader(activity: Activity | null) {
-  progressText.textContent = `הושלמו ${session.completedIds.length} מתוך ${prototypeActivities.length} פעילויות`;
+  const completedCount = session.completedIds.length;
+  progressText.textContent = `הושלמו ${completedCount} מתוך ${prototypeActivities.length} פעילויות`;
+  progressTrack.setAttribute('aria-valuenow', String(completedCount));
+  progressFill.style.width = `${(completedCount / prototypeActivities.length) * 100}%`;
   recommendation.textContent = activity ? explainRecommendation(activity, session.mastery) : 'כל פעילויות האב־טיפוס הושלמו.';
 }
 
@@ -286,6 +298,29 @@ function renderActivity(activity: Activity) {
   return card;
 }
 
+function renderCompletion() {
+  const done = document.createElement('section');
+  done.className = 'activity-card completion-card';
+  const title = document.createElement('h2');
+  title.textContent = 'המסלול הושלם';
+  const intro = document.createElement('p');
+  intro.textContent = 'כל שש פעילויות האב־טיפוס הושלמו. הנה תמונת המיומנויות שנבנתה מהניסיונות במסלול.';
+  const list = document.createElement('ul');
+  list.className = 'mastery-summary';
+
+  for (const item of rankedSkills(session.mastery)) {
+    const row = document.createElement('li');
+    const status = masteryStatus(item.score);
+    row.dataset.mastery = status;
+    const statusText = status === 'strong' ? 'חוזקה' : status === 'reinforce' ? 'כדאי לחזק' : 'בתהליך';
+    row.innerHTML = `<span>${skillLabels[item.skill]}</span><strong>${statusText}</strong>`;
+    list.append(row);
+  }
+
+  done.append(title, intro, list);
+  return done;
+}
+
 function renderCurrentActivity() {
   let activity = session.currentActivityId
     ? prototypeActivities.find((item) => item.id === session.currentActivityId) ?? null
@@ -301,10 +336,7 @@ function renderCurrentActivity() {
   updateHeader(activity);
   stage.replaceChildren();
   if (!activity) {
-    const done = document.createElement('section');
-    done.className = 'activity-card completion-card';
-    done.innerHTML = '<h2>המסלול הושלם</h2><p>כל שש פעילויות האב־טיפוס הושלמו. נתוני המיומנויות נשמרו במכשיר בלבד.</p>';
-    stage.append(done);
+    stage.append(renderCompletion());
     return;
   }
   stage.append(renderActivity(activity));
