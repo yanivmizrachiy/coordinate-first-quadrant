@@ -5,7 +5,7 @@ import { stagedHint } from './hints';
 import { guidanceForValidation, updateSkillState } from './mastery';
 import { mountSegmentBuilder } from './segment-builder';
 import { explainRecommendation, nextActivity } from './sequencer';
-import { loadSession, recordAttempt, recordHint, saveSession, type AdaptiveSession } from './session';
+import { loadSession, recordAttempt, recordHint, saveSession, setCurrentActivity, type AdaptiveSession } from './session';
 import type { Activity, Point, PointRegion, ValidationResult } from './types';
 import {
   validateCoordinateComparison,
@@ -146,7 +146,11 @@ function completeAndContinue(activity: Activity, result: ValidationResult, feedb
   if (!result.ok) return;
   const existing = feedback.parentElement?.querySelector<HTMLButtonElement>('.continue-action');
   if (existing) return;
-  const continueButton = actionButton('להמשך הפעילות המומלצת', () => renderCurrentActivity());
+  const continueButton = actionButton('להמשך הפעילות המומלצת', () => {
+    session = setCurrentActivity(session, null);
+    persist();
+    renderCurrentActivity();
+  });
   continueButton.classList.add('continue-action');
   feedback.after(continueButton);
 }
@@ -283,7 +287,17 @@ function renderActivity(activity: Activity) {
 }
 
 function renderCurrentActivity() {
-  const activity = nextActivity(prototypeActivities, session.mastery, session.completedIds);
+  let activity = session.currentActivityId
+    ? prototypeActivities.find((item) => item.id === session.currentActivityId) ?? null
+    : null;
+
+  if (activity && session.completedIds.includes(activity.id)) activity = null;
+  if (!activity) {
+    activity = nextActivity(prototypeActivities, session.mastery, session.completedIds);
+    session = setCurrentActivity(session, activity?.id ?? null);
+    persist();
+  }
+
   updateHeader(activity);
   stage.replaceChildren();
   if (!activity) {
