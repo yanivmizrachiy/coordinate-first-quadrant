@@ -1,5 +1,8 @@
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
+
+const rootDir = dirname(fileURLToPath(import.meta.url));
 
 // Relative base so the same build works when opened locally (file/preview)
 // and when served from a GitHub Pages project subpath
@@ -15,8 +18,8 @@ export default defineConfig({
     // index.html and its router unchanged; nothing links to this entry.
     rollupOptions: {
       input: {
-        app: resolve(__dirname, 'index.html'),
-        'digital-next': resolve(__dirname, 'digital-next.html'),
+        app: resolve(rootDir, 'index.html'),
+        'digital-next': resolve(rootDir, 'digital-next.html'),
       },
     },
   },
