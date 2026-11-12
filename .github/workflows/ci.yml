@@ -41,6 +41,14 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Measured checks (A4 layout, sizes, Hebrew direction, 13px)
         run: npm run test:visual
+      - name: Preserve A4 visual audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a4-visual-audit
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Keep the failure trace
         if: failure()
         uses: actions/upload-artifact@v4
