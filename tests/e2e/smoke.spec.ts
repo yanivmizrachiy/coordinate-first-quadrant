@@ -90,9 +90,11 @@ test('phone has no body-level horizontal overflow and scales identical A4', asyn
 
 test('direct worksheet link still shows the canonical page', async ({ page }) => {
   await page.goto('/#/workbook/3');
-  await expect(page.locator('.sheet')).toHaveCount(1);
-  expect(await page.locator('.coordinate-grid svg').count()).toBeGreaterThan(0);
-  await expect(page.locator('.appbar')).toBeVisible();
+  await expect(page.locator('.cr-reader')).toHaveCount(1);
+  await expect(page.locator('.cr-pages')).toHaveAttribute('data-view', 'single');
+  await expect(page.locator('.cr-cell:not([hidden])')).toHaveCount(1);
+  await expect(page.locator('.cr-cell[data-index="4"] .sheet-number')).toHaveText('3');
+  expect(await page.locator('.cr-cell[data-index="4"] .coordinate-grid svg').count()).toBeGreaterThan(0);
 });
 
 test('print surface preserves the full 80-sheet A4 book', async ({ page }) => {
