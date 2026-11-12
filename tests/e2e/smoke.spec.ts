@@ -8,7 +8,7 @@ test('one canonical white A4 reader replaces the old blue flipbook', async ({ pa
   await expect(page.locator('.lxbook, .lx-stage, .landing')).toHaveCount(0);
   await expect(page.locator('.cr-pages')).toHaveAttribute('data-view', 'scroll');
   const bg = await page.locator('.cr-reader').evaluate((el) => getComputedStyle(el).backgroundColor);
-  expect(bg).toBe('rgb(243, 244, 246)');
+  expect(bg).toBe('rgb(224, 224, 224)');
   const barDisplay = await page.locator('.appbar').evaluate((el) => getComputedStyle(el).display);
   expect(barDisplay).toBe('none');
 });
