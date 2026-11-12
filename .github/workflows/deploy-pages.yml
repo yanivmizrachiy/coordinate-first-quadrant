@@ -29,12 +29,20 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - name: Install browser
+        run: npx playwright install --with-deps chromium
+      - name: Compile the canonical pages before PDF generation
+        run: npm run build
+      - name: Regenerate both PDFs and page map from the exact deploy source
+        run: npm run pdf
+      - name: Package freshly generated PDFs into the site
+        run: npm run build
+      - name: Reject stale PDF or mismatched page content
+        run: npm run pdf:check
       - name: Unit and content tests
         run: npm test
       - name: Typecheck
         run: npm run typecheck
-      - name: Install browser
-        run: npx playwright install --with-deps chromium
       - name: Measured checks (A4 layout, sizes, Hebrew direction, mobile)
         run: npm run test:visual
       - name: Keep the failure trace
@@ -46,8 +54,6 @@ jobs:
             playwright-report
             test-results
           retention-days: 7
-      - name: Build
-        run: npm run build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

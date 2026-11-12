@@ -9,7 +9,7 @@
   --grid: #e7eaf1;
   --blue: #1d4ed8;
   --paper: #fff;
-  --screen: #eef1f5;
+  --screen: #e0e0e0;
   --border: #cbd3df;
   --soft: #f6f8fb;
 
@@ -24,13 +24,13 @@
   --ok: #15803d;
 
   /* Surfaces */
-  --bg: #eef2f8;
+  --bg: #e0e0e0;
   --surface: #ffffff;
   --surface-2: #f6f8fb;
   --hairline: #d8dfea;
 
   /* Type */
-  --font-he: "Noto Sans Hebrew", "Noto Sans", "Segoe UI", Arial, sans-serif;
+  --font-he: "Rubik", "Noto Sans Hebrew", "Noto Sans", "Segoe UI", Arial, sans-serif;
   --font-math: "Noto Sans", "Segoe UI", Arial, sans-serif;
 
   /* Radius & shadow */

@@ -1,7 +1,7 @@
 import './styles/tokens.css';
 import './styles/base.css';
 import './styles/app.css';
-import './styles/flipbook.css';
+import './styles/paper-reader.css';
 import './styles/unified-shell.css';
 import './styles/workbook.css';
 import './styles/print-aids.css';
@@ -12,7 +12,7 @@ import { startRouter, navigate, type RouteMatch } from './router';
 import { elem, clear } from './lib/dom';
 import type { View, ViewContext } from './views/context';
 import { solutions } from './views/solutions';
-import { pageViewer } from './views/pageViewer';
+import { paperReader } from './views/paperReader';
 import { book } from './views/book';
 import { printAids } from './views/printAids';
 import { unifiedBookSite } from './views/unifiedBookSite';
@@ -50,7 +50,7 @@ function resolve(match: RouteMatch): View {
     case 'book':
       return unifiedBookSite;
     case 'solutions': return solutions;
-    case 'page': return pageViewer(Number(match.params['n'] ?? '1'));
+    case 'page': return (ctx) => paperReader(ctx, Number(match.params['n'] ?? '1') + 1);
     case 'print': return book;
     case 'aids': return printAids;
   }
@@ -63,7 +63,7 @@ function render(match: RouteMatch): void {
   if (cleanup) { cleanup(); cleanup = undefined; }
   clear(outlet);
 
-  const isCanonicalBook = match.name === 'home' || match.name === 'menu' || match.name === 'book';
+  const isCanonicalBook = match.name === 'home' || match.name === 'menu' || match.name === 'book' || match.name === 'page';
   appbar.classList.toggle('appbar--hidden', isCanonicalBook);
 
   const ctx: ViewContext = { outlet, setTitle };

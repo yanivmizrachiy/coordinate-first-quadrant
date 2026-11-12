@@ -1,3 +1,8 @@
+/* Share the exact public Rubik typeface already used by the Pythagoras worksheets.
+ * Fallbacks are local to keep the workbook usable if the shared stylesheet is offline.
+ */
+@import url('https://yanivmizrachiy.github.io/pythagoras/vendor/fonts/rubik.css');
+
 /* ===========================================================================
    Canonical workbook sheet styles for the current printable A4 workbook.
    The cascade (including the later "override" blocks) is preserved on purpose.
@@ -22,8 +27,9 @@
 /* מספר העמוד בגובה זהה לגובה הכותרות (שורה 1+2) — „הגובה של מספר העמוד
    חייב להיות זהה לגובה של המלל כולל 2 השורות של הכותרות" (31.07.2026). */
 .sheet-number {
-  width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center;
-  background: var(--ink); color: white; font-size: 28px; font-weight: 900; flex: none;
+  width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center;
+  border: 2px solid var(--brand); background: #fff; color: var(--brand);
+  font-size: 16px; font-weight: 400; flex: none;
 }
 .sheet-content { padding-bottom: 12mm; }
 .two-col { display: block; font-size: 0; }
@@ -239,7 +245,7 @@ li .pair, p .pair, .completion-sentence .pair { margin-inline: 3px; }
    sheets, so its bespoke id-based sizing is gone. Nothing may key off a
    `#page-N` id any more — page numbers are positional and can be reordered. */
 
-/* Canonical booklet header/footer treatment. */
+/* Canonical booklet header/footer treatment, identical headline geometry to Pythagoras A4 base. */
 .sheet-header {
   align-items: flex-end;
   padding-bottom: 6px;
@@ -258,10 +264,10 @@ li .pair, p .pair, .completion-sentence .pair { margin-inline: 3px; }
   margin: 0;
 }
 .sheet-number {
-  width: 54px; height: 54px;
+  width: 32px; height: 32px;
   border: 2px solid #1d4ed8; color: #1d4ed8; background: #fff;
   border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  font-size: 28px; font-weight: 600; flex: 0 0 auto;
+  font-size: 16px; font-weight: 400; flex: 0 0 auto;
 }
 .sheet { width: 210mm; min-height: 297mm; height: 297mm; padding: 10mm 18mm; overflow: hidden; }
 .sheet-content { padding-bottom: 17mm; }
@@ -278,18 +284,18 @@ li .pair, p .pair, .completion-sentence .pair { margin-inline: 3px; }
      ליד הכחול של קו הכותרת. עכשיו אותו `--brand` בדיוק (#1d4ed8) שבו צבוע
      `border-bottom` של `.sheet-header`. נשאר 1px רגיל ולא 4px כפול — כותרת
      תחתונה לא אמורה לגבור על הכותרת הראשית, רק לדבר באותו צבע. */
-  padding: 3px 14mm 0; border-top: 1px solid var(--brand);
+  min-height: 13mm; padding: 3px 14mm 0; border-top: 1px solid var(--brand);
   display: flex; align-items: center; justify-content: center; gap: 9px;
   line-height: 1.2; background: #fff;
 }
 .gz-lines { text-align: center; }
 .gz-badge { flex: none; display: block; }
 .gz-badge img {
-  display: block; width: 34px; height: 34px; border-radius: 50%;
+  display: block; width: 40px; height: 40px; border-radius: 50%;
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
-.gz-footer .f1 { font-size: 13px; font-weight: 500; color: #1f2a44; }
-.gz-footer .f2 { font-size: 13px; color: #475569; }
+.gz-footer .f1 { font-size: 10.5px; font-weight: 500; color: #1f2a44; }
+.gz-footer .f2 { font-size: 9.5px; color: #475569; }
 
 /* No clipped headings: allow full RTL wrapping. */
 .sheet { scroll-margin-top: 86px; }
@@ -417,9 +423,9 @@ li .pair, p .pair, .completion-sentence .pair { margin-inline: 3px; }
   .sheet:last-child { break-after: auto; page-break-after: auto; }
   .q-card { box-shadow: none; }
   .sheet-header { padding-bottom: 2.5mm; margin-bottom: 2.5mm; }
-  .sheet-header h1 { font-size: 23px; }
+  .sheet-header h1 { font-size: 26px; }
   .sheet-header p { font-size: 13px; }
-  .sheet-number { width: 54px; height: 54px; font-size: 28px; }
+  .sheet-number { width: 32px; height: 32px; font-size: 16px; }
   .two-col > .q-card { font-size: 13px; margin-bottom: 6px; }
   .q-card { padding: 7px 9px; border-radius: 8px; }
   .q-card h3 { margin: -7px -9px 6px; padding: 5px 8px; font-size: 13px; }
@@ -519,95 +525,115 @@ td > .calc-pair, td .calc-pair { margin: 2px 0; }
 .calc-ltr__eq { color: var(--muted); }
 .calc-ltr__unit { color: var(--muted); font-weight: 600; }
 
-/* ---- the contents sheet ---------------------------------------------------
-   עמוד תוכן העניינים — „דף עיזבון על נייר" (31.07.2026, מחליף את גרסת ליל־הדיו).
-   הבחירה של יניב (אפשרות 2, בהשראת Hermès/Aesop): נייר שמנת חם, כותרת סריף
-   ממורכזת, וכל פרק בשורה משלו — שם הפרק בכתב סריף גדול מצד ימין, ספרת הפרק
-   הגדולה בצבע משלה, ומספר העמוד („עמוד N") מצד שמאל, גם הוא מוגדל.
-   „תגדיל מספרי העמודים ותגדיל כתב של שמות הפרקים, יותר רווחים כדי לנצל כל
-   העמוד כל הזמן": הטיפוגרפיה גדולה, וחמשת הפרקים נפרשים על מלוא גובה ה־A4.
-   הסריפים: Frank Ruhl Libre לעברית, Cormorant לספרות — ארוזים מקומית
-   (@fontsource), בלי fetch חיצוני בזמן ריצה. */
+/* The printable contents page shares the Pythagoras A4 language: white paper,
+ * Rubik-like sans-serif typography, regular blue headings and numbered links.
+ * All 14 chapters come from TOPICS/BOOK, not a second manually numbered list.
+ */
 .toc-sheet {
-  display: flex; flex-direction: column;
-  background: #f5efe3; border-color: #e6ddca;
-  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-color: #e2e8f0;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
-.toc-head { text-align: center; padding-top: 6mm; }
+.toc-head {
+  text-align: center;
+  padding-top: 5mm;
+  padding-bottom: 7mm;
+  border-bottom: 4px double #1d4ed8;
+}
 .toc-head__frame {
-  display: flex; align-items: center; gap: 14px; margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 8px;
 }
 .toc-head__frame::before, .toc-head__frame::after {
-  content: ''; height: 1px; flex: 1; background: #c3b696;
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: #d2dbe7;
 }
 .toc-head__kicker {
-  margin: 0; color: #8f8467; font-size: 13px; font-weight: 400;
-  letter-spacing: .4em; text-indent: .4em; white-space: nowrap;
-  font-family: 'Frank Ruhl Libre', serif;
+  margin: 0;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: .06em;
+  white-space: nowrap;
+  font-family: "Rubik", "Noto Sans Hebrew", Arial, sans-serif;
 }
 .toc-sheet h1.toc-head__title {
-  margin: 0; color: #241f14; font-size: 46px; font-weight: 300; line-height: 1.1;
-  font-family: 'Frank Ruhl Libre', serif;
+  margin: 0;
+  color: #1d4ed8;
+  font-size: 27px;
+  font-weight: 400;
+  line-height: 1.3;
+  font-family: "Rubik", "Noto Sans Hebrew", Arial, sans-serif;
 }
 .toc-head__sub {
-  margin: 4px 0 0; color: #8f8467; font-size: 15px; font-style: italic;
-  font-family: 'Frank Ruhl Libre', serif;
+  margin: 4px 0 0;
+  color: #475569;
+  font-size: 14px;
+  font-style: normal;
+  font-family: "Rubik", "Noto Sans Hebrew", Arial, sans-serif;
 }
-/* the chapters fill the whole height of the page */
-.toc-sheet .sheet-content { flex: 1; display: flex; padding-bottom: 16mm; }
+.toc-sheet .sheet-content {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  padding-bottom: 17mm;
+}
 .toc-buttons {
-  flex: 1; display: flex; flex-direction: column;
-  justify-content: space-evenly; align-items: stretch;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: stretch;
 }
-/* one chapter per row: big colour index (right) · name · page (left).
-   The name flexes, so the row always spans the full width of the sheet. */
 .toc-btn {
-  display: flex; align-items: center; gap: 22px;
-  width: 100%; padding: 14px 6px; border: 0; border-top: 1px solid #ddd3bd;
-  background: transparent; cursor: pointer; font: inherit; text-align: start;
-  transition: background var(--dur-quick) ease, transform var(--dur-quick) var(--ease);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  padding: 7px 5px;
+  border: 0;
+  border-bottom: 1px solid #e2e8f0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  text-align: start;
 }
-.toc-buttons .toc-btn:last-child { border-bottom: 1px solid #ddd3bd; }
-/* שם הפרק — סריף גדול. „תגדיל כתב של שמות הפרקים". */
+.toc-btn:hover, .toc-btn:focus-visible { background: #f3f7ff; }
 .toc-btn__name {
-  /* השם תופס רק את רוחבו — הקו המנוקד ממלא את השאר עד המספר. */
-  flex: 0 1 auto; min-width: 0;
-  color: #241f14; font-family: 'Frank Ruhl Libre', serif;
-  font-size: 30px; font-weight: 400; line-height: 1.2;
-  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  flex: 0 1 auto;
+  min-width: 0;
+  color: #111827;
+  font-family: "Rubik", "Noto Sans Hebrew", Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.35;
 }
-/* הקו המנוקד — מוביל את העין מהכותרת אל מספר העמוד בשמאל, כמו בתוכן
-   עניינים של ספר אמיתי (31.07.2026). */
 .toc-btn__leader {
-  flex: 1 1 auto; min-width: 28px; align-self: center;
-  border-bottom: 3px dotted #b9ac8b; transform: translateY(9px);
-  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  flex: 1;
+  min-width: 12px;
+  border-bottom: 1px dotted #94a3b8;
+  transform: translateY(-2px);
 }
-/* מספר אחד בלבד: המספר הצבעוני הגדול הוא מספר העמוד, בקצה השמאלי, בצבע
-   הפרק. הצבע דוהק דיו כדי לעבור 4.5:1 על השמנת; רוחב מזערי קבוע כדי שכל
-   המספרים יתיישרו בטור. */
 .toc-btn__no {
-  flex: none; min-width: 1.6em; text-align: left;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 60px; font-weight: 700; line-height: .85; color: var(--toc-colour);
-  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  flex: 0 0 30px;
+  min-width: 30px;
+  text-align: left;
+  color: #1d4ed8;
+  font-family: "Rubik", Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
 }
-.toc-btn:hover { background: #00000008; transform: translateX(-3px); }
-.toc-btn:active { transform: translateX(0); transition-duration: var(--dur-press); }
-.toc-btn:focus-visible { outline: 2px solid #8f8467; outline-offset: 3px; }
-/* the canonical footer keeps its place; on the cream page its rule warms up */
-.toc-sheet .gz-footer { background: transparent; border-top-color: #c3b696; }
-.toc-sheet .gz-footer .f1 { color: #2a2417; }
-.toc-sheet .gz-footer .f2 { color: #6b6349; }
-/* black-and-white print: the cream lifts to white, the colours to measured ink */
-body.bw-print .sheet.toc-sheet { background: #fff; border-color: #dfe4ec; }
-body.bw-print .toc-head__kicker, body.bw-print .toc-head__sub { color: #555 !important; }
-body.bw-print .toc-sheet h1.toc-head__title,
-body.bw-print .toc-btn__name, body.bw-print .toc-btn__no { color: #111 !important; }
-body.bw-print .toc-btn__leader { border-bottom-color: #888 !important; }
-body.bw-print .toc-head__frame::before, body.bw-print .toc-head__frame::after { background: #999; }
-body.bw-print .toc-btn { border-top-color: #ccc; }
-body.bw-print .toc-buttons .toc-btn:last-child { border-bottom-color: #ccc; }
-body.bw-print .toc-sheet .gz-footer { border-top-color: #1d4ed8; }
-body.bw-print .toc-sheet .gz-footer .f1 { color: #1f2a44; }
-body.bw-print .toc-sheet .gz-footer .f2 { color: #475569; }
+.toc-sheet .gz-footer {
+  background: #fff;
+  border-top-color: #1d4ed8;
+}
+body.bw-print .toc-sheet { background: #fff; }
+body.bw-print .toc-btn__no { color: #111827; }
+body.bw-print .toc-btn { border-bottom-color: #b4b9c2; }

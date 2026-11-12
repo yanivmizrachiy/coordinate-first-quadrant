@@ -17,6 +17,8 @@ jobs:
       - run: npm ci
       - name: Typecheck
         run: npm run typecheck
+      - name: Reject stale or mismatched PDF downloads
+        run: npm run pdf:check
       - name: Unit & content tests
         run: npm test
       - name: Build

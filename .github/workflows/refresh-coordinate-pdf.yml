@@ -1,0 +1,52 @@
+name: Verify and refresh coordinate-workbook PDFs (design branch only)
+
+# This intentionally does not deploy. The teacher-facing main site is untouched.
+on:
+  push:
+    branches:
+      - design/pythagoras-style-single-source-20261112
+    paths-ignore:
+      - public/hoveret.pdf
+      - public/hoveret-bw.pdf
+      - public/hoveret-map.json
+      - public/hoveret-provenance.json
+
+concurrency:
+  group: coordinate-pdf-20261112
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  verify-and-refresh:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Install browser
+        run: npx playwright install --with-deps chromium
+      - name: Compile canonical source
+        run: npm run build
+      - name: Regenerate both A4 PDFs, page map and content provenance
+        run: npm run pdf
+      - name: Verify A4 and source/PDF hashes
+        run: node scripts/check-pdf-provenance.mjs
+      - name: Run full type/content/visual checks
+        run: npm run verify
+      - name: Commit only the verified generated outputs back to this branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/hoveret.pdf public/hoveret-bw.pdf public/hoveret-map.json public/hoveret-provenance.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'build: refresh verified coordinate A4 booklets'
+            git push origin HEAD:design/pythagoras-style-single-source-20261112
+          fi

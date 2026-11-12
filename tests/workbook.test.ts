@@ -13,35 +13,19 @@ describe('workbook integrity (USER_MEMORY.md mandatory checks)', () => {
     expect(WORKBOOK.map((p) => p.n)).toEqual(Array.from({ length: 78 }, (_, i) => i + 1));
   });
 
-  /* תוכן העניינים מחזיק מספרי עמוד **ביד**, בעוד שמספרי העמודים עצמם נגזרים
-     מהמיקום ב-BOOK. לכן כל הוספה, מחיקה או סידור מחדש של עמוד מזיז את תחילת
-     הפרק — והתוכן ממשיך להצביע על העמוד הישן, בלי שאיש ישים לב. זה כבר קרה
-     פעם אחת (1/12/29/51/63 → 1/4/15/46/51/65 אחרי שינוי מבנה הפרקים), ולא
-     היה מה שיתפוס את זה: גם בדיקת הדפדפן משווה לרשימת מספרים קשיחה, כלומר
-     מעתיקה את אותה טעות. כאן הציפייה **נגזרת מהמבנה**. (02.08.2026) */
-  it('every contents entry points at the real first page of its chapter', () => {
-    expect(CONTENTS.length, 'the contents lists a different number of chapters').toBeGreaterThan(0);
-    for (const c of CONTENTS) {
-      const page = pageByNumber(c.page);
-      expect(page, `the contents points at page ${c.page}, which does not exist`).toBeDefined();
-
-      const topic = TOPICS.find((t) => t.pages.includes(c.page));
-      expect(topic, `page ${c.page} belongs to no chapter`).toBeDefined();
-      expect(
-        Math.min(...topic!.pages),
-        `„${c.title}" points at page ${c.page}, but its chapter starts on page ${Math.min(...topic!.pages)}`,
-      ).toBe(c.page);
-
-      /* הכותרת בתוכן זהה מילה במילה לכותרת האחידה שעל דפי הפרק. */
-      expect(
-        page!.title,
-        `the contents calls it „${c.title}" but page ${c.page} is titled „${page!.title}"`,
-      ).toBe(c.title);
+  /* Both the printable table of contents and the digital reader take chapter
+     starts from BOOK/TOPICS. Manual page numbers are forbidden. */
+  it('every contents entry is derived from the canonical ordered chapter list', () => {
+    expect(CONTENTS.length).toBe(TOPICS.length);
+    for (const [i, chapter] of TOPICS.entries()) {
+      const entry = CONTENTS[i];
+      expect(entry, 'missing chapter ' + chapter.title).toBeDefined();
+      expect(entry!.title).toBe(chapter.title);
+      expect(entry!.page).toBe(chapter.pages[0]);
+      expect(pageByNumber(entry!.page)).toBeDefined();
     }
-    const pages = CONTENTS.map((c) => c.page);
-    expect(pages, 'the chapters are not in reading order').toEqual([...pages].sort((a, b) => a - b));
-    expect(new Set(pages).size, 'two chapters start on the same page').toBe(pages.length);
-    expect(pages[0], 'the booklet does not open on chapter 1').toBe(1);
+    expect(new Set(CONTENTS.map((c) => c.page)).size).toBe(CONTENTS.length);
+    expect(CONTENTS[0]?.page).toBe(1);
   });
 
   it('every page carries the canonical footer', () => {

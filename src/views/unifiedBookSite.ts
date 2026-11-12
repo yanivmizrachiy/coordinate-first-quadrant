@@ -2,7 +2,7 @@ import { elem } from '../lib/dom';
 import { navigate } from '../router';
 import { OPENING_FILM } from '../data/cover';
 import type { ViewContext } from './context';
-import { flipbook } from './flipbook';
+import { paperReader } from './paperReader';
 
 const YOUTUBE_ID = 'h5wegXI2ZGw';
 const YOUTUBE_TITLE = 'מערכת צירים ברביע הראשון — איילת קריספין';
@@ -14,11 +14,11 @@ function makeAction(label: string, title: string, onClick: () => void): HTMLButt
 }
 
 export function unifiedBookSite(ctx: ViewContext): (() => void) | void {
-  const cleanupBook = flipbook(ctx);
+  const cleanupBook = paperReader(ctx);
   ctx.setTitle('מערכת צירים — הרביע הראשון');
 
-  const stage = ctx.outlet.querySelector<HTMLElement>('.lx-stage');
-  const actions = stage?.querySelector<HTMLElement>('.lx-topbar__acts');
+  const stage = ctx.outlet.querySelector<HTMLElement>('.cr-reader');
+  const actions = stage?.querySelector<HTMLElement>('.cr-actions');
   if (!stage || !actions) return cleanupBook;
 
   // The old site had a separate landing/menu. The book is now the site itself,
