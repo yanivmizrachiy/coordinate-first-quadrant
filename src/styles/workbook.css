@@ -240,7 +240,7 @@ li .pair, p .pair, .completion-sentence .pair { margin-inline: 3px; }
    sheets, so its bespoke id-based sizing is gone. Nothing may key off a
    `#page-N` id any more — page numbers are positional and can be reordered. */
 
-/* Canonical booklet header/footer treatment. */
+/* Canonical booklet header/footer treatment, identical headline geometry to Pythagoras A4 base. */
 .sheet-header {
   align-items: flex-end;
   padding-bottom: 6px;
@@ -279,18 +279,18 @@ li .pair, p .pair, .completion-sentence .pair { margin-inline: 3px; }
      ליד הכחול של קו הכותרת. עכשיו אותו `--brand` בדיוק (#1d4ed8) שבו צבוע
      `border-bottom` של `.sheet-header`. נשאר 1px רגיל ולא 4px כפול — כותרת
      תחתונה לא אמורה לגבור על הכותרת הראשית, רק לדבר באותו צבע. */
-  padding: 3px 14mm 0; border-top: 1px solid var(--brand);
+  min-height: 13mm; padding: 3px 14mm 0; border-top: 1px solid var(--brand);
   display: flex; align-items: center; justify-content: center; gap: 9px;
   line-height: 1.2; background: #fff;
 }
 .gz-lines { text-align: center; }
 .gz-badge { flex: none; display: block; }
 .gz-badge img {
-  display: block; width: 34px; height: 34px; border-radius: 50%;
+  display: block; width: 40px; height: 40px; border-radius: 50%;
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
-.gz-footer .f1 { font-size: 13px; font-weight: 500; color: #1f2a44; }
-.gz-footer .f2 { font-size: 13px; color: #475569; }
+.gz-footer .f1 { font-size: 10.5px; font-weight: 500; color: #1f2a44; }
+.gz-footer .f2 { font-size: 9.5px; color: #475569; }
 
 /* No clipped headings: allow full RTL wrapping. */
 .sheet { scroll-margin-top: 86px; }
