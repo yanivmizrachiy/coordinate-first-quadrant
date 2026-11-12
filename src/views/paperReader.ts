@@ -174,6 +174,8 @@ export function paperReader({ outlet, setTitle }: ViewContext): () => void {
     const fit = Math.min(1, available / (PAPER_WIDTH * fitCount));
     const scale = Math.max(0.2, fit * zoom / 100);
     pages.style.setProperty('--cr-scale', scale.toFixed(5));
+    pages.style.setProperty('--cr-width', (PAPER_WIDTH * scale).toFixed(2) + 'px');
+    pages.style.setProperty('--cr-height', (PAPER_WIDTH * 297 / 210 * scale).toFixed(2) + 'px');
     updateCounter();
   }
 
