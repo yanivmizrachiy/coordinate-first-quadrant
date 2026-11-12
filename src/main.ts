@@ -1,7 +1,7 @@
 import './styles/tokens.css';
 import './styles/base.css';
 import './styles/app.css';
-import './styles/flipbook.css';
+import './styles/paper-reader.css';
 import './styles/unified-shell.css';
 import './styles/workbook.css';
 import './styles/print-aids.css';
