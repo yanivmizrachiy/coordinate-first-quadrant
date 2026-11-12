@@ -1,49 +1,50 @@
 import { test, expect } from '@playwright/test';
 
-test('the canonical address opens directly on the digital book', async ({ page }) => {
+test('one canonical white A4 reader replaces the old blue flipbook', async ({ page }) => {
   await page.goto('/#/');
-  await expect(page.locator('.lxbook')).toHaveCount(1);
-  await expect(page.locator('.lx-half--left .cover-sheet')).toHaveCount(1);
-  await expect(page.locator('.landing')).toHaveCount(0);
-  await expect(page.locator('.lx-entry__btn')).toHaveText('התחל');
+  await expect(page.locator('.cr-reader')).toHaveCount(1);
+  await expect(page.locator('.cr-pages > .cr-cell')).toHaveCount(80);
+  await expect(page.locator('.cr-cell[data-index="0"] .cover-sheet')).toHaveCount(1);
+  await expect(page.locator('.lxbook, .lx-stage, .landing')).toHaveCount(0);
+  await expect(page.locator('.cr-pages')).toHaveAttribute('data-view', 'scroll');
+  const bg = await page.locator('.cr-reader').evaluate((el) => getComputedStyle(el).backgroundColor);
+  expect(bg).toBe('rgb(243, 244, 246)');
   const barDisplay = await page.locator('.appbar').evaluate((el) => getComputedStyle(el).display);
   expect(barDisplay).toBe('none');
 });
 
-test('legacy teacher links remain compatible with the same book', async ({ page }) => {
+test('existing teacher links keep reaching the same reader', async ({ page }) => {
   for (const hash of ['#/', '#/menu', '#/book', '#/workbook', '#/games']) {
     await page.goto('/' + hash);
-    await expect(page.locator('.lxbook'), `${hash} does not reach the canonical reader`).toHaveCount(1);
-    await expect(page.locator('.lx-half--left .cover-sheet')).toHaveCount(1);
+    await expect(page.locator('.cr-reader'), hash).toHaveCount(1);
+    await expect(page.locator('.cr-cell[data-index="0"] .cover-sheet')).toHaveCount(1);
   }
 });
 
-test('all former site materials are reachable from the book toolbar', async ({ page }) => {
+test('book actions are available without duplicated toolbars', async ({ page }) => {
   await page.goto('/#/');
-  const acts = page.locator('.lx-topbar__acts');
-  for (const label of ['סרטון', 'פתיח', 'תשובות', 'המחשות', 'מצב קריאה נגיש', 'הורדת החוברת', 'הדפסה', 'שיתוף']) {
-    await expect(acts.getByText(label, { exact: false }), `missing action ${label}`).toBeVisible();
+  const actions = page.locator('.cr-actions');
+  for (const label of ['הורדה', 'הדפסה', 'סרטון', 'פתיח', 'תשובות', 'המחשות', 'שיתוף']) {
+    await expect(actions.getByText(label, { exact: true }), label).toHaveCount(1);
   }
-  await expect(acts.getByText('חזרה לאתר')).toHaveCount(0);
+  await expect(page.locator('.cr-bar')).toHaveCount(1);
+  await expect(page.locator('.cr-pages')).toHaveCount(1);
 });
 
-test('the curriculum video opens immediately in one privacy-enhanced modal', async ({ page }) => {
+test('privacy-enhanced video remains accessible in one modal', async ({ page }) => {
   await page.goto('/#/');
   await page.getByRole('button', { name: 'סרטון', exact: true }).click();
   const modal = page.locator('.unified-media__dialog');
   await expect(modal).toBeVisible();
-  const frame = modal.locator('iframe');
-  await expect(frame).toHaveCount(1);
-  const src = await frame.getAttribute('src');
+  const src = await modal.locator('iframe').getAttribute('src');
   expect(src).toContain('youtube-nocookie.com/embed/h5wegXI2ZGw');
   expect(src).toContain('autoplay=1');
   expect(src).toContain('cc_load_policy=1');
   await page.getByRole('button', { name: 'סגירה' }).click();
-  await expect(page.locator('.unified-media')).toHaveCount(0);
-  await expect(page.locator('.lxbook')).toHaveCount(1);
+  await expect(modal).toHaveCount(0);
 });
 
-test('the original local opening film is preserved in the unified site', async ({ page }) => {
+test('the original local opening film stays linked', async ({ page }) => {
   await page.goto('/#/');
   await page.getByRole('button', { name: 'פתיח', exact: true }).click();
   const video = page.locator('.unified-media video');
@@ -52,57 +53,67 @@ test('the original local opening film is preserved in the unified site', async (
   await expect(video.locator('source[type="video\/mp4"]')).toHaveAttribute('src', /opening-720\.mp4/);
 });
 
-test('the book opens naturally from the cover to contents/page 1', async ({ page }) => {
+test('single-sheet navigation uses the actual A4 content and source ordering', async ({ page }) => {
   await page.goto('/#/');
-  await expect(page.locator('.lxbook')).toHaveAttribute('data-open', 'false');
-  await page.locator('.lx-entry__btn').click();
-  await expect(page.locator('.lxbook')).toHaveAttribute('data-open', 'true', { timeout: 4000 });
-  const view = await page.locator('.lxbook').getAttribute('data-view');
-  if (view === 'double') {
-    await expect(page.locator('.lx-half--right .toc-sheet')).toHaveCount(1);
-    await expect(page.locator('.lx-half--left .sheet-number')).toHaveText('1');
-  } else {
-    await expect(page.locator('.lx-half--left .toc-sheet')).toHaveCount(1);
-  }
-  await expect(page.locator('.lx-toolbar')).toBeVisible();
+  await page.getByRole('button', { name: 'עמוד', exact: true }).click();
+  await expect(page.locator('.cr-pages')).toHaveAttribute('data-view', 'single');
+  await expect(page.locator('.cr-cell:not([hidden])')).toHaveCount(1);
+  await page.getByRole('button', { name: 'העמוד הבא' }).click();
+  await expect(page.locator('.cr-cell[data-index="1"] .toc-sheet')).toBeVisible();
+  await page.getByRole('button', { name: 'העמוד הבא' }).click();
+  await expect(page.locator('.cr-cell[data-index="2"] .sheet-number')).toHaveText('1');
+  await expect(page.locator('.cr-count')).toHaveText('עמוד 1 מתוך 78');
 });
 
-test('phone layout is a readable single page without horizontal overflow', async ({ page }) => {
+test('contents navigation is derived from workbook chapters', async ({ page }) => {
+  await page.goto('/#/');
+  await expect(page.locator('.cr-toc-link')).toHaveCount(16);
+  const last = page.locator('.cr-toc-link').last();
+  await last.click();
+  await expect(page.locator('.cr-count')).toContainText('עמוד');
+});
+
+test('phone has no body-level horizontal overflow and scales identical A4', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/#/');
-  await expect(page.locator('.lxbook')).toHaveAttribute('data-view', 'single');
+  await expect(page.locator('.cr-reader')).toBeVisible();
+  const scale = await page.locator('.cr-pages').evaluate((el) =>
+    Number(getComputedStyle(el).getPropertyValue('--cr-scale')),
+  );
+  expect(scale).toBeGreaterThan(0);
+  expect(scale).toBeLessThan(0.6);
   const overflow = await page.evaluate(() => document.scrollingElement!.scrollWidth - window.innerWidth);
   expect(overflow).toBeLessThanOrEqual(1);
-  const startBox = await page.locator('.lx-entry__btn').boundingBox();
-  expect(startBox?.width ?? 0).toBeGreaterThanOrEqual(44);
-  expect(startBox?.height ?? 0).toBeGreaterThanOrEqual(44);
+  await page.getByRole('button', { name: 'תוכן העניינים', exact: true }).click();
+  await expect(page.locator('.cr-toc')).toBeVisible();
 });
 
-test('a direct worksheet link still renders the live canonical page', async ({ page }) => {
+test('direct worksheet link still shows the canonical page', async ({ page }) => {
   await page.goto('/#/workbook/3');
   await expect(page.locator('.sheet')).toHaveCount(1);
   expect(await page.locator('.coordinate-grid svg').count()).toBeGreaterThan(0);
   await expect(page.locator('.appbar')).toBeVisible();
 });
 
-test('print surface remains the complete 80-sheet A4 book', async ({ page }) => {
+test('print surface preserves the full 80-sheet A4 book', async ({ page }) => {
   await page.goto('/#/print');
   await expect(page.locator('.book > .sheet')).toHaveCount(80, { timeout: 15000 });
   await expect(page.locator('.cover-sheet')).toHaveCount(1);
   await expect(page.locator('.toc-sheet')).toHaveCount(1);
+  await expect(page.locator('.toc-buttons > .toc-btn')).toHaveCount(14);
 });
 
-test('the approved cover is never stretched', async ({ page }) => {
+test('cover artwork is never stretched or cropped', async ({ page }) => {
   await page.goto('/#/print');
   const ratios = await page.locator('.cover-image').evaluate((el) => {
-    const image = el as HTMLImageElement;
-    const rect = image.getBoundingClientRect();
-    return { natural: image.naturalWidth / image.naturalHeight, shown: rect.width / rect.height };
+    const img = el as HTMLImageElement;
+    const rect = img.getBoundingClientRect();
+    return { natural: img.naturalWidth / img.naturalHeight, shown: rect.width / rect.height };
   });
   expect(Math.abs(ratios.natural - ratios.shown)).toBeLessThan(0.02);
 });
 
-test('answers and aids keep an obvious route back to the same book', async ({ page }) => {
+test('answers and print aids continue linking to the main reader', async ({ page }) => {
   for (const hash of ['#/solutions', '#/print-aids']) {
     await page.goto('/' + hash);
     await expect(page.locator('.appbar')).toBeVisible();
