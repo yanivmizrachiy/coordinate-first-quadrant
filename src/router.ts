@@ -1,14 +1,14 @@
 /* Hash-based router — works on any static host (GitHub Pages included) with no
    server rewrites. Routes:
-     #/                  the landing site — the tram film is its front page
-     #/menu              everything you can do
+     #/                  canonical A4 paper reader, opens on cover
+     #/menu              backward-compatible alias for the same reader
      #/solutions         print-only solutions booklet
      #/workbook/:n       single page viewer
-     #/book              the digital flipbook — the way the booklet is READ
+     #/book              same canonical reader, modes: scroll/single/spread
      #/print             continuous full booklet — the way the booklet PRINTS
    There is no chapter-list page: Yaniv asked for one contents page only, the
-   coloured one that prints as the booklet's second sheet. Bare #/workbook and
-   the legacy #/games both land on the flipbook, where that page lives.
+   A4 sheet generated from TOPICS. Bare #/workbook and
+   the legacy #/games both land on the canonical paper reader.
 */
 export interface RouteMatch {
   name: 'home' | 'menu' | 'solutions' | 'page' | 'book' | 'print' | 'aids';
