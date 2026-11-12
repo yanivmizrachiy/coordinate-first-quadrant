@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "source": "257d095be4104d6b6d8f2040749f33e0d6db46d9881d79e6360cdcc5a6df4b34",
+  "source": "e2eb71f0557888fe17bd1d11ec7c8cff833ca53abe2931acab95708dcda19e81",
   "total": 80,
   "artifacts": {
-    "hoveret.pdf": "07685433ef5b747bcc1f0ef50db973e53e3134008c5615f421437cc5e0ff07d8",
-    "hoveret-bw.pdf": "cedb19ea3b7e1c05c6118c63e9e57a2d91de915c8ce1d61d68b3ecec8f690b95",
+    "hoveret.pdf": "e849c2c9ed6261b092a337eff77e2bd1ea695f550c5ce607cc2e4545bebcefa5",
+    "hoveret-bw.pdf": "60500af49f06c811e5c436ea2376c101b3e64b38e32ce26fb0a430c4a33b4c64",
     "hoveret-map.json": "9bdad5103a931d0c0153cd76f14607491f118109f2da008c11b699520ae078e4"
   }
 }
