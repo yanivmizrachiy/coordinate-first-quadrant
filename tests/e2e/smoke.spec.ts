@@ -68,6 +68,9 @@ test('single-sheet navigation uses the actual A4 content and source ordering', a
 test('contents navigation is derived from workbook chapters', async ({ page }) => {
   await page.goto('/#/');
   await expect(page.locator('.cr-toc-link')).toHaveCount(16);
+  if ((page.viewportSize()?.width ?? 1200) <= 780) {
+    await page.getByRole('button', { name: 'תוכן העניינים', exact: true }).click();
+  }
   const last = page.locator('.cr-toc-link').last();
   await last.click();
   await expect(page.locator('.cr-count')).toContainText('עמוד');
