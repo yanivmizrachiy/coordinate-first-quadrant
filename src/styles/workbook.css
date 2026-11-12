@@ -1,3 +1,8 @@
+/* Share the exact public Rubik typeface already used by the Pythagoras worksheets.
+ * Fallbacks are local to keep the workbook usable if the shared stylesheet is offline.
+ */
+@import url('https://yanivmizrachiy.github.io/pythagoras/vendor/fonts/rubik.css');
+
 /* ===========================================================================
    Canonical workbook sheet styles for the current printable A4 workbook.
    The cascade (including the later "override" blocks) is preserved on purpose.
