@@ -10,6 +10,7 @@ import { chromium } from '@playwright/test';
 import { preview } from 'vite';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { PDFDocument, PDFName } from 'pdf-lib';
+import { buildPdfProvenance, PROVENANCE_PATH } from './pdf-provenance.mjs';
 
 const server = await preview({ preview: { port: 4177, strictPort: true } });
 const url = 'http://localhost:4177/#/print';
@@ -106,5 +107,9 @@ for (const s of sheets) {
   if (s.n) pages[String(s.n)] = { at, len: s.pages };
   at += s.pages;
 }
+if (expected !== 80 || sheets.length !== 80 || Object.keys(pages).length !== 78) {
+  throw new Error('The workbook must produce exactly 80 A4 pages, 78 numbered; got ' + expected);
+}
 writeFileSync('public/hoveret-map.json', JSON.stringify({ total: expected, pages }));
+writeFileSync(PROVENANCE_PATH, JSON.stringify(buildPdfProvenance(expected), null, 2) + '\n');
 console.log(`public/hoveret.pdf written — ${expected} pdf pages for ${sheets.length} sheets, map verified`);
