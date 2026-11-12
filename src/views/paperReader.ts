@@ -16,10 +16,10 @@ const ZOOMS = [75, 90, 100, 110, 125] as const;
  * No copy of a worksheet or teacher-facing page is stored in the reader.
  * Index: 0 cover, 1 contents, 2..79 numbered pages 1..78.
  */
-export function paperReader({ outlet, setTitle }: ViewContext): () => void {
+export function paperReader({ outlet, setTitle }: ViewContext, initialSheet = 0): () => void {
   setTitle('מערכת צירים — הרביע הראשון');
-  let current = 0;
-  let mode: ReaderMode = 'scroll';
+  let current = Math.max(0, Math.min(SHEETS - 1, Math.trunc(initialSheet) || 0));
+  let mode: ReaderMode = current > 0 ? 'single' : 'scroll';
   let zoom = 100;
   let tocOpen = false;
   let frame = 0;
