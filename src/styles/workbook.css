@@ -423,7 +423,7 @@ li .pair, p .pair, .completion-sentence .pair { margin-inline: 3px; }
   .sheet:last-child { break-after: auto; page-break-after: auto; }
   .q-card { box-shadow: none; }
   .sheet-header { padding-bottom: 2.5mm; margin-bottom: 2.5mm; }
-  .sheet-header h1 { font-size: 23px; }
+  .sheet-header h1 { font-size: 26px; }
   .sheet-header p { font-size: 13px; }
   .sheet-number { width: 32px; height: 32px; font-size: 16px; }
   .two-col > .q-card { font-size: 13px; margin-bottom: 6px; }
