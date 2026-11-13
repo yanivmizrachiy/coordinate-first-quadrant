@@ -48,7 +48,7 @@ function isCounterMap(value: unknown): value is Record<string, number> {
   return Object.values(value as Record<string, unknown>).every((entry) => typeof entry === 'number' && Number.isFinite(entry) && entry >= 0);
 }
 function validCommon(parsed: { completedIds?: unknown; attemptsByActivity?: unknown; mastery?: unknown }) {
-  return Array.isArray(parsed.completedIds) && isCounterMap(parsed.attemptsByActivity) && isSkillState(parsed.mastery);
+  return Array.isArray(parsed.completedIds) && parsed.completedIds.every((id: unknown) => typeof id === 'string') && isCounterMap(parsed.attemptsByActivity) && isSkillState(parsed.mastery);
 }
 
 function normalizeV4(parsed: Partial<AdaptiveSession>): AdaptiveSession | null {
@@ -87,7 +87,7 @@ export function loadSession(storage: Storage = localStorage): AdaptiveSession {
       const v2 = JSON.parse(raw) as any;
       if (v2.version === 2 && validCommon(v2)) return {
         version: 4, variantSeed: 0, currentActivityId: null,
-        completedIds: [...new Set(v2.completedIds)], attemptsByActivity: { ...v2.attemptsByActivity }, hintsUsedByActivity: {}, mastery: { ...v2.mastery },
+        completedIds: [...new Set<string>(v2.completedIds as string[])], attemptsByActivity: { ...v2.attemptsByActivity }, hintsUsedByActivity: {}, mastery: { ...v2.mastery },
         updatedAt: typeof v2.updatedAt === 'string' ? v2.updatedAt : new Date(0).toISOString(),
       };
     }
