@@ -39,7 +39,9 @@ function hashSeed(seed: VariantSeed, salt: string) {
 }
 
 function choose<T>(items: readonly T[], seed: VariantSeed, salt: string): T {
-  return items[hashSeed(seed, salt) % items.length];
+  const selected = items[hashSeed(seed, salt) % items.length];
+  if (selected === undefined) throw new Error(`No variant choices available: ${salt}`);
+  return selected;
 }
 
 function regionOf(p: Point): 'origin' | 'x-axis' | 'y-axis' | 'first-quadrant' {
